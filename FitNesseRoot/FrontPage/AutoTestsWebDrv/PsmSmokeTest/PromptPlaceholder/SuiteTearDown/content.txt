@@ -1,5 +1,0 @@
-!include -c <AutoTestsWebDrv.SessionAlertsScenarios.ScenarioLibrary
-!|script                  |
-|Remove User|${Requestor} |
-|Remove User|${Requestor}2|
-

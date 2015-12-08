@@ -1,6 +1,0 @@
-!define ProfileName {${SystemName}AccDiscProfile5}
-!include -c <AutoTestsWebDrv.PlatformsTesting.MySql
-!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
-!include -c <AutoTestsWebDrv.PlatformsTesting.MySql.PlatformSpecific
-!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary.DbScenarioLibrary
-!define TemplateName {${SystemName}Template}

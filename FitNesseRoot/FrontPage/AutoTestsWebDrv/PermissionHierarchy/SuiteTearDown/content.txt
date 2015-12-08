@@ -1,6 +1,0 @@
-!include -c <FrontPage.AutoTestsWebDrv.SetUp
-
-!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
-
-!|script                                   |
-|Delete User      |${Requestor}            |

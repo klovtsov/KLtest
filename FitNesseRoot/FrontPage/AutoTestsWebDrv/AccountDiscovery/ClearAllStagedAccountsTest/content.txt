@@ -1,7 +1,0 @@
-!define ProfileName {${prefix}CASATAccDiscProfile5}
-
-!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
-!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
-
-!include -c <AutoTestsWebDrv.AccountDiscovery.ProfileNotify.TestSpecific
-!include -c <AutoTestsWebDrv.AccountDiscovery.ClearAllStagedAccountsTest.TestSpecific

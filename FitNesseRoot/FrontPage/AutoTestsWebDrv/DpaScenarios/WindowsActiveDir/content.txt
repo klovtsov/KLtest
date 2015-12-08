@@ -1,8 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.WindowsActiveDir
-!include -c <AutoTestsWebDrv.ScenarioLibrary
-!include -c <DpaScenarios.ScenarioLibrary
-!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsActiveDir.PlatformSpecific
-
-
-
-

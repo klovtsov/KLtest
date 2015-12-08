@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.MacOsxSix
-!include -c <JavaApiScenarios.ScenarioLibrary
-

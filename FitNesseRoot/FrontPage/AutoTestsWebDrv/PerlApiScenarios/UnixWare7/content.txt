@@ -1,5 +1,0 @@
-!include -c <AutoTestsWebDrv.PerlApiScenarios.MiscellaneousTests
-!include <AutoTestsWebDrv.PlatformsTesting.UnixWare7
-!include -c <PerlApiScenarios.ScenarioLibrary
-!include -c <AutoTestsWebDrv.PerlApiScenarios.UnixWare7.PlatformSpecific
-

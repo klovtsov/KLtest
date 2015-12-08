@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.EdmzSpcw2
-!include -c <AutoTestsWebDrv.PlatformsTesting.EdmzSpcw2.PlatformSpecific
-!include -c >PlatformSpecific
-
-

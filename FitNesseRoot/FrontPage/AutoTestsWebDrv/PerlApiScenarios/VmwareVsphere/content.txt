@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.VmwareVsphere
-!include -c <PerlApiScenarios.ScenarioLibrary
-

@@ -1,4 +1,0 @@
-!define FreeSpaceThreshold {8000}
-
-!|script                                    |
-|Check Disk Free Space|${FreeSpaceThreshold}|

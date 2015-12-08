@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.UnixWare7
-!include -c <CliScenarios.ScenarioLibrary
-!include -c <AutoTestsWebDrv.CliScenarios.UnixWare7.PlatformSpecific

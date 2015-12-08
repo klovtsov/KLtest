@@ -1,2 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.DellRemoteAccess
-!include -c <DpaScenarios.ScenarioLibrary

@@ -1,3 +1,0 @@
-!include <AutoTestWebDrv.PlatformsTesting.ScoOpenServer
-!include -c <PerlApiScenarios.ScenarioLibrary
-

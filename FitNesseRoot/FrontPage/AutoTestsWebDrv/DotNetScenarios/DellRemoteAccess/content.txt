@@ -1,6 +1,0 @@
-!define PpmScheduleTimeWindow {150000}
-!include <AutoTestsWebDrv.PlatformsTesting.DellRemoteAccess
-!define ResetPasswordSuccessful {successful;;Success}
-!define ManAccntCheckPassword {${CheckPasswordSuccessful}}
-
-!include -c <DotNetScenarios.ScenarioLibrary

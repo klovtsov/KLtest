@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.WindowsAccountsManagement.TestCase
-
-#!|script|
-#|stop   |
-

@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.CliScenarios.HpuxTrusted
-!include -c ScenarioLibrary
-!include -c <AutoTestsWebDrv.PlatformsTesting.PlatformSpecific.PasswordRuleNoMoreThanEightCharacters
-!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.PasswordRuleNoMoreThanEightCharacters
-!include -c <AutoTestsWebDrv.DpaCliScenarios.PlatformSpecific.PasswordRuleNoMoreThanEightCharacters

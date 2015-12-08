@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.OracleTen
-!include -c <PerlApiScenarios.ScenarioLibrary
-!include -c <PerlApiScenarios.OraclePlatform.PlatformSpecific
-
-

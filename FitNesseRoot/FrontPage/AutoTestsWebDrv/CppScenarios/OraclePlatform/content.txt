@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.OraclePlatform
-!include -c <CppScenarios.ScenarioLibrary
-!include -c <CppScenarios.OraclePlatform.PlatformSpecific
-!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword
-

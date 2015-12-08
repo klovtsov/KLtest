@@ -1,6 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.HpuxUntrusted
-!define PpmScheduleTimeWindow {250000}
-!include -c <DotNetScenarios.ScenarioLibrary
-!include -c <AutoTestsWebDrv.PlatformsTesting.HpuxShadow.PlatformSpecific
-
-

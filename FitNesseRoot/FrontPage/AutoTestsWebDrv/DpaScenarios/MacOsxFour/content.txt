@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.MacOsxFour
-!include -c <DpaScenarios.ScenarioLibrary
-

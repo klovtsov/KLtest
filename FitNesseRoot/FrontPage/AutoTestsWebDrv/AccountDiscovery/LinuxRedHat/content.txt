@@ -1,8 +1,0 @@
-!define ProfileName {${SystemName}AccDiscProfile5}
-
-!include -c <AutoTestsWebDrv.PlatformsTesting.LinuxRedHat
-!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
-!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary.NixScenarioLibrary
-!include -c <AutoTestsWebDrv.AccountDiscovery.LinuxRedHat.PlatformSpecific
-
-!define TemplateName {${SystemName}Template}

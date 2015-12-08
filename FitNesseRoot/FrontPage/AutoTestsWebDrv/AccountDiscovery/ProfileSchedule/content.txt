@@ -1,4 +1,0 @@
-!define ProfileName {${prefix}PSAccDiscProfile5}
-!include -c <AutoTestsWebDrv.AccountDiscovery.FreeBsd
-!include -c <AutoTestsWebDrv.AccountDiscovery.ProfileSchedule.TestSpecific
-!define ProfileName {PSAccDiscProfile5}

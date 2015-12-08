@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.HpuxTrusted
-!include -c <PerlApiScenarios.ScenarioLibrary
-#!include -c <AutoTestsWebDrv.PerlApiScenarios.HpuxTrusted.BugWorkaround
-
-

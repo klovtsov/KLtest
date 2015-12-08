@@ -1,8 +1,0 @@
-!define CreateSystemMethod {Add System with specific key}
-!define RetrieveKeyMethod {Retrieve System Specific Key}
-!define keyFormat {OpenSSH}
-!define keyFileOrigin {ssh-dss}
-!include -c <AutoTestsWebDrv.ScenarioLibrary
-
-!3 Run the test
-!include <SystemSshKey.RetrieveSystemKeyBaseTest

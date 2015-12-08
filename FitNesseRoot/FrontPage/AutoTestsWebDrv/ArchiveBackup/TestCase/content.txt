@@ -1,7 +1,0 @@
-!contents
-
-!include -c <AutoTestsWebDrv.ScenarioLibrary
-
-!|script                                                                                                                                                                   |
-|$res=            |RunBatchGetOutputFull|ArchiveRetention\checkbackup.bat;${ArchiveServer};${ArchiveServerUser};${ArchiveServerUserPassword};${ArchiveServerPath};${HowOld}|
-|Verify_Contain_OR|$res;;${WhatToFind}                                                                                                                                     |

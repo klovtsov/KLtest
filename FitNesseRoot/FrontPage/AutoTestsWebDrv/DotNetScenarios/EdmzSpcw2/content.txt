@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.EdmzSpcw2
-!define PpmScheduleTimeWindow {150000}
-!include -c <DotNetScenarios.ScenarioLibrary
-!include -c <DotNetScenarios.EdmzSpcw2.PlatformSpecific
-

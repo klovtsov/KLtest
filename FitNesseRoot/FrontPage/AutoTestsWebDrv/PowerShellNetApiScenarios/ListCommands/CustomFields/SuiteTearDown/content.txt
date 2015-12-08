@@ -1,9 +1,0 @@
-!include -c <AutoTestsWebDrv.SetUp
-!*> Includes
-!include -c <AutoTestsWebDrv.ConfigInterfaceSmokeTest.ScenarioLibrary
-!include -c <AutoTestsWebDrv.MiscellaneousTests.CustomColumns.ScenarioLibrary
-*!
-
-!|script                                                  |
-|Delete Custom Columns|${SysAdminUser}||${SysAdminUserPwd}|
-|DeleteSysAdminUser   |${SysAdminUser}                    |

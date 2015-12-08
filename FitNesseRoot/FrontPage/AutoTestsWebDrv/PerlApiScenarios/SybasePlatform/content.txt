@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.SybasePlatform
-!include -c <PerlApiScenarios.ScenarioLibrary
-

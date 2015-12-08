@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.LdAps
-!include -c <DpaScenarios.ScenarioLibrary
-

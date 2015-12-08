@@ -1,2 +1,0 @@
-!include <AutoTestsWebDrv.CliScenarios.LinuxRedHat
-!include -c ScenarioLibrary

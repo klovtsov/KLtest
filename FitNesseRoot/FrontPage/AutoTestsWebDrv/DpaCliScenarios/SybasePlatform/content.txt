@@ -1,2 +1,0 @@
-!include <AutoTestsWebDrv.CliScenarios.SybasePlatform
-!include -c ScenarioLibrary

@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.SybasePlatform
-!include -c <DpaScenarios.ScenarioLibrary
-
-
-

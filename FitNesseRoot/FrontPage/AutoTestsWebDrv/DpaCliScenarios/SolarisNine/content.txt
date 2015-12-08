@@ -1,2 +1,0 @@
-!include <AutoTestsWebDrv.CliScenarios.SolarisNine
-!include -c ScenarioLibrary

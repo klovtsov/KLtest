@@ -1,8 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.CiscoRouterSsh
-!include -c <JavaApiScenarios.ScenarioLibrary
-
-
-
-
-
-

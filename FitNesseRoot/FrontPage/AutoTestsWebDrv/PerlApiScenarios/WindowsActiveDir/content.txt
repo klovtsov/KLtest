@@ -1,6 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.WindowsActiveDir
-!include -c <PerlApiScenarios.ScenarioLibrary
-!include -c <PerlApiScenarios.WindowsActiveDir.PlatformSpecific
-
-
-

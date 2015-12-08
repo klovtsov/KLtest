@@ -1,7 +1,0 @@
-!include -c <AutoTestsWebDrv.SetUp
-!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
-
-!|script                                       |
-|Delete fake external auth system|${AuthSystem}|
-
-!include <PropagateOptionsFromTemplate.TearDown

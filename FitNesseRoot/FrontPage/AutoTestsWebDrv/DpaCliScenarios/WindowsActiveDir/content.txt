@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.CliScenarios.WindowsActiveDir
-!include -c ScenarioLibrary
-!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword

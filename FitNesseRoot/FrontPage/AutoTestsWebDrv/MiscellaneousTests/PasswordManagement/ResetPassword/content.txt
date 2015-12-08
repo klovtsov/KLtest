@@ -1,5 +1,0 @@
-!define expectedMessage {was successfully changed}
-!include -c ScenarioLibrary
-
-!|script                                     |
-|Reset Password Individual|${expectedMessage}|

@@ -1,2 +1,0 @@
-!include <AutoTestsWebDrv.CliScenarios.OracleEleven
-!include -c ScenarioLibrary

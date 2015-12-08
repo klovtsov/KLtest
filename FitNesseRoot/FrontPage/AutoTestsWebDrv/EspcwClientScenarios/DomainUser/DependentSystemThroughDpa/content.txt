@@ -1,9 +1,0 @@
-!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
-!include -c <AutoTestsWebDrv.EspcwClientScenarios.DomainUser.ScenarioLibrary
-
-!|script                                                                    |
-|Set Dependent System Affinity|DPA                                          |
-|Reset Password               |${ManagedAccount}||${ResetPasswordSuccessful}|
-|pause                        |${ExecDelay}                                 |
-|Check dependent password change                                            |
-|Set Dependent System Affinity|Local                                        |

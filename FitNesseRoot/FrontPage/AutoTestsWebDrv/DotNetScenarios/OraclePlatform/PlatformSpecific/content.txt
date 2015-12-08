@@ -1,4 +1,0 @@
-!| scenario       |Add system                                                                                                                                                                                                                                                                       |
-|$res=            |NetAPI|${APIBatch} ${CommandTimeout} AddSystem ${SystemName} ${SystemAddress} "${SystemPlatform}" "${SystemDescription}" ${SystemTimeout} ${FunctAcct} ${FunctAcctPwd} ${Port} SID ${SID}|
-|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                 |
-

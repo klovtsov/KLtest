@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.IbmHmc
-!include -c <PerlApiScenarios.ScenarioLibrary
-
-
-

@@ -1,7 +1,0 @@
-!define seleniumTimeout {200}
-
-!include <AutoTestsWebDrv.PlatformsTesting.HpuxTrusted
-!include -c <CliScenarios.ScenarioLibrary
-!include -c <AutoTestsWebDrv.PlatformsTesting.HpuxShadow.PlatformSpecific
-!include -c <AutoTestsWebDrv.PlatformsTesting.PlatformSpecific.PasswordRuleNoMoreThanEightCharacters
-!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.PasswordRuleNoMoreThanEightCharacters

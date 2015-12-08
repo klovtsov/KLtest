@@ -1,8 +1,0 @@
-!include -c <AutoTestsWebDrv.SetUp
-
-!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
-!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
-
-!|script                                                                                                                                                                                            |
-|Add system          |${SystemName}  |with address|${SystemAddress}|platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-description "${sysDescription}"|
-|Make System Template|${TemplateName}|from        |${SystemName}   |with account|${FunctAcct}                                                                                                       |

@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.DotNetScenarios.SqlServerSpecificPort
-!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
-!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword
-!include -c ScenarioLibrary
-!include -c >PlatformSpecific

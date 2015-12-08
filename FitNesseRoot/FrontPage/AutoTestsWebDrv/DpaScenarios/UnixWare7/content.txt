@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.UnixWare7
-!include -c <AutoTestsWebDrv.PlatformsTesting.UnixWare7.PlatformSpecific
-!include -c >PlatformSpecific

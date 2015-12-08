@@ -1,8 +1,0 @@
-!include -c <AutoTestsWebDrv.ScenarioLibrary
-!include -c <EmailScenarios.ScenarioLibrary
-!include -c .FrontPage.AutoTestsWebDrv.SetUp
-
-!|script           |
-|Remove Environment|
-
-!include -c <EmailScenarios.TearDown

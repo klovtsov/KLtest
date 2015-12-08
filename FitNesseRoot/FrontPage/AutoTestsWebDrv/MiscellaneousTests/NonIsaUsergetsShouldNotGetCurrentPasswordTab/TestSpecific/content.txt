@@ -1,5 +1,0 @@
-!|scenario         |Current Password Tab Is not available                                                                      |
-|$res =            |GroovyWebDriver|checkCurrntPwdNotAvail;${TPAMHost};${nonIsaUser};${UserPwd};${SystemName};${ManagedAccount}|
-|Verify_Contain_NOT|$res;;something went wrong                                                                                 |
-|Verify_Contain_NOT|$res;;Error: Current password tab is enabled!                                                              |
-|Verify_Contain_OR |$res;;Ok: Current password tab is disbled.                                                                 |

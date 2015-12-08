@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.WindowsDesktop
-!include -c <DpaScenarios.ScenarioLibrary
-

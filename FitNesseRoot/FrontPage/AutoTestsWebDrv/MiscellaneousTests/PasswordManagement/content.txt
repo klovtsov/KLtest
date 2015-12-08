@@ -1,4 +1,0 @@
-!note Managed System settings
-!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsDesktop
-!define NotFailed {successfully} 
-!contents -g -p -f -h

@@ -1,3 +1,0 @@
-!| scenario       |Add system                                                                                                                                                                             |
-|$res=            |CppAPI|${APIBatch} AddSystem ${SystemName} ${SystemAddress} "${SystemPlatform}" "${SystemDescription}" ${SystemTimeout} ${FunctAcct} ${FunctAcctPwd} ${NETBIOSDomainName} ${DomainName}|
-|Verify_Contain_OR|$res;;successful                                                                                                                                                                       |

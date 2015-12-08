@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.HpuxUntrusted
-!include -c <DpaScenarios.ScenarioLibrary
-

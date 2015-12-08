@@ -1,3 +1,0 @@
-!|scenario        |SysLogChecker        |SysLogHost | |SysLogHostUser | |HostUserPwd | |Date | |TPAMUser | |Operation ||Object||Result|
-|$res=            |RunBatchGetOutput|SysLogChecker.bat;@SysLogHost;@SysLogHostUser;@HostUserPwd;@Date;@TPAMUser;@Operation;@Object|
-|Verify_Contain_OR|$res;;@Result                                                                                                      |

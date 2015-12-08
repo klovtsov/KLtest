@@ -1,1 +1,0 @@
-qwinsta %~1 | find %1 |find %2

@@ -1,2 +1,0 @@
-!|scenario|bfer 7629|
-|List Sync Password properties|syncPassName,PasswordCheckProfile,PasswordChangeProfile|contains    |${SyncPasswordName}\s+${SyncPwdCheckProfile}\s+N                                            |

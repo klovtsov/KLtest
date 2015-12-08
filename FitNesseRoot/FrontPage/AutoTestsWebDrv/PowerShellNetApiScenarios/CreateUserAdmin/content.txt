@@ -1,8 +1,0 @@
-!define testUser {${prefix}tUserAdmin}
-
-!include -c <PowerShellNetApiScenarios.ScenarioLibrary
-
-!|script                                                                |
-|Add User           |${testUser}        |usertype           |UserAdmin  |
-|List User by filter|-userType UserAdmin|and result contains|${testUser}|
-|Delete User        |${testUser}                                        |

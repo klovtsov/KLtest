@@ -1,7 +1,0 @@
-!define escaltnTimeValue {3}
-!include -c  <PowerShellNetApiScenarios.ScenarioLibrary
-
-!|script                                                                                                                                                                                                           |
-|Add system     |${SystemName}            |with address |${SystemAddress}         |platform|Linux                             |additional parameters|-EscalationEmail test@test -EscalationTime ${escaltnTimeValue}|
-|List Systems by|-systemName ${SystemName}|output params|SystemName,EscalationTime|contain |${SystemName}.*${escaltnTimeValue}|                                                                                    |
-|Delete System  |${SystemName}                                                                                                                                                                                     |

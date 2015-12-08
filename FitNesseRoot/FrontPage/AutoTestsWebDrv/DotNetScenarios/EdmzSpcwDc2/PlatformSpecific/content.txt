@@ -1,3 +1,0 @@
-!| scenario       |Add system                                                                                                                                                                                                  |
-|$res=            |NetAPI|${APIBatch} ${CommandTimeout} AddSystem ${SystemName} ${SystemAddress} "${SystemPlatform}" "${SystemDescription}" ${SystemTimeout} ${ParFunctAcct} ${FunctAcctPwd} ${NETBIOSDomainName} ${DomainName}|
-|Verify_Contain_OR|$res;;successful                                                                                                                                                                                            |

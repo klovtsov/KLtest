@@ -1,7 +1,0 @@
-!|Script                                                                                                                                                                       |
-|Add User                 |${CLIBatch}            ||--UserName ${WebUserAdministrator} --FirstName test --LastName test --UserType UserAdmin --Password Password1||successful  |
-|Change Pwd               |${WebUserAdministrator}||Password1                                                                                                    ||Password2   |
-|Check Non Admin Interface|${TPAMHost}            ||${WebUserAdministrator}                                                                                      ||Password2   |
-|Verify_Contain_OR        |$res;;Ready.GO.Add UserID exists.Manage UserIDs exists.Finished.                                                                                    |
-|Check UserAdmin User     |${WebUserAdministrator}                                                                                                                             |
-|Delete User              |${CLIBatch}            ||--UserName ${WebUserAdministrator}                                                                           ||successfully|

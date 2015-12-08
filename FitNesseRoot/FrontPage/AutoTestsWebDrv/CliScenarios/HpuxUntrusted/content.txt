@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.HpuxUntrusted
-!include -c <CliScenarios.ScenarioLibrary
-!include -c <AutoTestsWebDrv.PlatformsTesting.HpuxShadow.PlatformSpecific
-
-

@@ -1,9 +1,0 @@
-!include -c <FrontPage.AutoTestsWebDrv.SetUp
-!include -c <AutoTestsWebDrv.UserSshKey.ScenarioLibrary
-!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
-!include -c ScenarioLibrary
-
-!|script                             |
-|Delete Sys-Admin User|${CliSysAdmin}|
-
-!include -c TearDown

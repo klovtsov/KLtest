@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.WindowsActiveDir
-!include -c <JavaApiScenarios.ScenarioLibrary
-!include -c <JavaApiScenarios.WindowsActiveDir.PlatformSpecific
-
-

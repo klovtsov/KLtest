@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.SqlServer
-!include -c <PerlApiScenarios.ScenarioLibrary
-

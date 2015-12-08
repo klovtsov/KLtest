@@ -1,6 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.LdAp
-!define ManAccntCheckPassword {Success}
-!include -c <DotNetScenarios.ScenarioLibrary
-!include -c <DotNetScenarios.LdAp.PlatformSpecific
-
-

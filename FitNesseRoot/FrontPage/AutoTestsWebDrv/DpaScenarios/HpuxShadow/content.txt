@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.HpuxShadow
-!include -c <DpaScenarios.ScenarioLibrary
-

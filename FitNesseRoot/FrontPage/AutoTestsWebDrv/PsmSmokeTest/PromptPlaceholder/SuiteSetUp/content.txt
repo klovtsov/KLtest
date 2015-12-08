@@ -1,7 +1,0 @@
-!include -c <FrontPage.AutoTestsWebDrv.SetUp
-!include -c <AutoTestsWebDrv.SessionAlertsScenarios.ScenarioLibrary
-
-!|script                        |
-|Prepare Requestor|${Requestor} |
-|Prepare Requestor|${Requestor}2|
-!include -c  <PsmSmokeTest.TearDown

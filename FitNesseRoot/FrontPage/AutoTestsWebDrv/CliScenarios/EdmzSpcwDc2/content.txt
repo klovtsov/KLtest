@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.EdmzSpcwDc2
-!include -c <CliScenarios.ScenarioLibrary
-!include -c <CliScenarios.EdmzSpcwDc2.PlatformSpecific

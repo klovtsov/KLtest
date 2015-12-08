@@ -1,3 +1,0 @@
-!|scenario        |Check Duplicate button is disabled|accountName                                                                 |
-|$res=            |GroovyWebDriver                   |DisabledDuplicateButton;${TPAMHost};${PpmIsaUserName};NPasword1;@accountName|
-|Verify_Contain_OR|$res;;Duplicate button is disabled!                                                                            |

@@ -1,8 +1,0 @@
-!define notifyEmail {escalator@gmail.com}
-!include -c  <PowerShellNetApiScenarios.ScenarioLibrary
-
-!|script                                                                                                                                                                                             |
-|Add system                                                                                                                                                                                          |
-|Add account            |${ManagedAccount}                                                                                   |on system|${SystemName}|with options|-ReleaseNotifyEmail ${notifyEmail}|
-|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount} -propsToList accountname,relNotifyEmail|contains |${ManagedAccount}.*${notifyEmail}                            |
-|Delete System          |${SystemName}                                                                                                                                                               |

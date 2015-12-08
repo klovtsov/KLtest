@@ -1,4 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.HpuxShadow
-!include -c <CppScenarios.ScenarioLibrary
-!include -c <AutoTestsWebDrv.PlatformsTesting.HpuxShadow.PlatformSpecific
-

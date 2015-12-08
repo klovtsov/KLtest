@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.MySql
-!include -c <JavaApiScenarios.ScenarioLibrary
-!include -c <JavaApiScenarios.MySql.PlatformSpecific
-
-

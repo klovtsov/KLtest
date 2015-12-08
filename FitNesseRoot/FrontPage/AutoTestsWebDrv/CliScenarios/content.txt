@@ -1,4 +1,0 @@
-!define NotFailed {successfully}
-!define SystemTimeout {90}
-
-!contents -R

@@ -1,8 +1,0 @@
-!include -c <FrontPage.AutoTestsWebDrv.GroovyJavaApiScenarios.ListCommands.ScenarioLibrary
-!include -c <FrontPage.AutoTestsWebDrv.GroovyJavaApiScenarios.ScenarioLibrary
-
-
-!|script                                                            |
-|Add Group       |${prefix}GroupEx                                  |
-|Try to Add Group|${prefix}GroupEx||${prefix}GroupEx already exists.|
-|Delete Group    |${prefix}GroupEx                                  |

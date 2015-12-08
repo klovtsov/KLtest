@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.NovellNds
-!include -c <CliScenarios.ScenarioLibrary
-!include -c <CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword
-!include -c <CliScenarios.NovellNds.PlatformSpecific
-

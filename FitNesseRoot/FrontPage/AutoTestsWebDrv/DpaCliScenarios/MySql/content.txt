@@ -1,2 +1,0 @@
-!include <AutoTestsWebDrv.CliScenarios.MySql
-!include -c ScenarioLibrary

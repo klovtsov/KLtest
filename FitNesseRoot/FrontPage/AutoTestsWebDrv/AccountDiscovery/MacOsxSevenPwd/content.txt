@@ -1,5 +1,0 @@
-!define ProfileName {${SystemName}Prof5}
-!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSeven
-!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
-!include -c <AutoTestsWebDrv.AccountDiscovery.SolarisNine.TestSpecific
-!define TemplateName {${SystemName}Template}

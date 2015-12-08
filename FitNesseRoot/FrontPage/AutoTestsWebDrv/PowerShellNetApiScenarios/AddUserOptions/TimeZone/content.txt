@@ -1,7 +1,0 @@
-!define userTimeZone {Moscow}
-!include -c <PowerShellNetApiScenarios.ScenarioLibrary
-
-!|script                                                                                                      |
-|Add User       |${TestUserName}       |with options|-LocalTimezone ${userTimeZone}                           |
-|List properties|username,LocalTimezone|for user    |${TestUserName}|contains|${TestUserName}.*${userTimeZone}|
-|Delete User    |${TestUserName}                                                                              |

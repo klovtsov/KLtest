@@ -1,5 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.FreeBsd
-!include -c <AutoTestsWebDrv.PerlApiScenarios.ScenarioLibrary
-
-
-

@@ -1,3 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.AixPlatform
-!include -c <DpaScenarios.ScenarioLibrary
-

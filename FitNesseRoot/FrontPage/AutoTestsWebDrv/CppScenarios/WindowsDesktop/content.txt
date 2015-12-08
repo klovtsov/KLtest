@@ -1,4 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.WindowsDesktop
-!include -c <CppScenarios.ScenarioLibrary
-#!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword
-

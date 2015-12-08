@@ -1,4 +1,0 @@
-!| scenario       |Add system                                                                                                                                         |
-|$res=            |JavaAPI|${APIBatch};addSystemMySQL;${SystemName};${SystemAddress};${SystemPlatform};${FunctAcct};${FunctAcctPwd};${SystemTimeout};${ConnectionPort}|
-|Verify_Contain_OR|$res;;successfully                                                                                                                                 |
-

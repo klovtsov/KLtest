@@ -1,4 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.MySql
-!include -c <CliScenarios.ScenarioLibrary
-!include -c <CliScenarios.MySql.PlatformSpecific
-

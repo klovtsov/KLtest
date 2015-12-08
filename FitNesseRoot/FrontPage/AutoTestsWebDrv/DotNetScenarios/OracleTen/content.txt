@@ -1,4 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.OracleTen
-!include -c <DotNetScenarios.ScenarioLibrary
-!include -c <DotNetScenarios.OraclePlatform.PlatformSpecific
-

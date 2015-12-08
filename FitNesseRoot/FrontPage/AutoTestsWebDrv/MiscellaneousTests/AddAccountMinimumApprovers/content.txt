@@ -1,9 +1,0 @@
-!define SystemName {${prefix}SystemMA}
-!define AccountName {${prefix}AccountMA}
-
-!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
-
-!|script                                                                                                                                                                                                           |
-|Add System   |${CLIBatch}||--SystemName ${SystemName} --PlatformName \"Windows Active Dir\" --NetworkAddress 7.6.5.4 --NetBiosName NetBios --DomainName Domain.name||successfull                                  |
-|Add Account  |${CLIBatch}||--SystemName ${SystemName} --AccountName ${AccountName} --minimumApprovers 33333                                                        ||Minimum Approvers must be between 0 and 32767|
-|Delete System|${CLIBatch}||--SystemName ${SystemName}                                                                                                              ||successfully                                 |

@@ -1,5 +1,0 @@
-!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
-
-!|script                         |
-|Remove account|${ManagedAccount}|
-|Remove system |${SystemName}    |

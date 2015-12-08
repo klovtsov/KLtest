@@ -1,7 +1,0 @@
-!define TestUserName {${prefix}tstUser}
-!define newUserName {${prefix}newUser}
-!define TestUserFirstName {Jimmy}
-!define TestUserLastName {Hocking}
-!define AuthType {WinAD}
-!define AuthSystem {abSysOne}
-!contents -p -g -h -f

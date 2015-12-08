@@ -1,6 +1,0 @@
-!include -c <AutoTestsWebDrv.PlatformsTesting.AixPlatform
-
-!include -c <AutoTestsWebDrv.ScenarioLibrary
-!include -c <AutoTestsWebDrv.PlatformsTesting.AixPlatform.PlatformSpecific
-
-!include -c <JavaApiScenarios.ScenarioLibrary

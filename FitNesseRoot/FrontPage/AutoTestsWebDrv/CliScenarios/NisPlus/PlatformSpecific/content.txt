@@ -1,7 +1,0 @@
-!|scenario    |Set password                   |one                   |                  |switch                  |
-|accountAction|${SystemPlatform};;corrupt;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${PathtoKey};;@switch|
-
-
-!| scenario           |Add system                                                                                                                                                                                                                      |
-|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --FunctionalAccount ${FunctAcct} --FuncAcctCred ${FunctAcctPwd} --DomainName \"${DomainName}.\" --Timeout ${SystemTimeout}|
-|Verify_Contain_OR    |$res;;successful                                                                                                                                                                                                                |

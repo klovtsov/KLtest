@@ -1,2 +1,0 @@
-!include <AutoTestsWebDrv.PlatformsTesting.MacOsxSeven
-!include -c <CppScenarios.ScenarioLibrary

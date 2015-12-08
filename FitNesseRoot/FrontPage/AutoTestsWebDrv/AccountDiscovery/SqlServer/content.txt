@@ -1,4 +1,0 @@
-!include -c <AutoTestsWebDrv.PlatformsTesting.SqlServer
-!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
-!include -c <AutoTestsWebDrv.AccountDiscovery.SqlServer.PlatformSpecific
-!define TemplateName {${SystemName}Template}

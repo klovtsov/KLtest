@@ -1,0 +1,12 @@
+!contents
+
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.FailoverScenarios.ScenarioLibrary
+
+
+!|script            |
+|Prepare Environment|
+|Set Affinity       |
+|DPA Failover       |
+|Failback           |
+|Clear Environment  |

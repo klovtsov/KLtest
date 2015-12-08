@@ -1,0 +1,11 @@
+#!define APIBatch {-i autotest_user_api ${API_user_1} ${TPAMHost}}
+#!define APIBatch2 {-i autotest_user2_api ${API_user_2} ${TPAMHost}}
+!define NotFailed {successfully}
+!define TestSystemSuccessful {Success;;successful}
+!define TestSystemFailed {failed;;.does not exist;;timed out;;Timed out;;Failure;;Host Unreachable}
+!define CheckPasswordFailed {failed;;does not exist;;invalid user;;NOT MATCH;;error occurred;;timed out;;Timed out;;Failure;;Unreachable}
+!define CheckPasswordNotMatch {NOT MATCH;;Timed out;;Failure}
+!define ResetPasswordFailed {rror;;timed out;;Timed out;;Failure;;Host Unreachable}
+!define ResetPasswordSuccessful {successful;;Success}
+
+!contents -R

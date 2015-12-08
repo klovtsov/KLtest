@@ -1,0 +1,4 @@
+!include <AutomatedTesting.PlatformsTesting.LdAps
+!include -c <CppScenarios.ScenarioLibrary
+!include -c <CppScenarios.NovellNds.PlatformSpecific
+!include -c <CppScenarios.LdAp.PlatformSpecific

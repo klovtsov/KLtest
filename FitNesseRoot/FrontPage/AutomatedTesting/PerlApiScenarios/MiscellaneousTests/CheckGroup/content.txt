@@ -1,0 +1,16 @@
+!define GroupName {${prefix}PerlGroup1}
+
+!|script                                                                                   |
+|Add Group|${PerlAPIparams}||--GroupName=${GroupName};--Description=collection||successfull|
+
+!|script                                                                                      |
+|Add Group|${PerlAPIparams}||--GroupName=${GroupName};--Description=collection||already exists|
+
+!|script                                                                                                                                        |
+|Add Group|${PerlAPIparams}||--GroupName=${GroupName}123456789123456789123456789;--Description=collection||GroupName cannot exceed 30 characters|
+
+!|script                                                                       |
+|List Group|${PerlAPIparams}||--GroupName=${GroupName}||groupName: ${GroupName}|
+
+!|script                                                             |
+|Delete Group|${PerlAPIparams}||--GroupName=${GroupName}||successfull|

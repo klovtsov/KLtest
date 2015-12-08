@@ -1,0 +1,3 @@
+!|scenario|Copy key to system                                                 |secureflag                                                 |
+|runBatch |UploadRootPublicSshKey.bat;${SystemAddress};${FunctAcct};${FunctAcctPwd};${BrowserDownloadDir};${AuthorizedKeysFile};id_dsa.pub|
+

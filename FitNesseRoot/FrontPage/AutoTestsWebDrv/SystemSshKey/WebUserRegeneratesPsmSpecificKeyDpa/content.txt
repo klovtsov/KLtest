@@ -1,0 +1,32 @@
+!*> Test Description
+This test is equal to WebUserRegeneratesPsmSpecificKey but for system managed through DPA
+*!
+
+!define keyFormat {OpenSSH}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SessionArchiving.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.FileTransfer.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!4 Run the test
+
+!|script                                                                   |
+|${addPsmAccountMethod}                                                    |
+|Set PSM Affinity                       |${SystemName}|Local Server|2|DPA|1|
+|Set ISA permission on account for      |${CLI_user_1}                     |
+|Create Account on System               |${ManagedAccount}                 |
+|Retrieve Account Specific Key                                             |
+|Copy account key to system             |${keyFormat}                      |
+|Set Requestor permission on account for|${CLI_user_1}                     |
+|Add Session Request                                                       |
+|Open session  and Check Logon                                             |
+|Regenerate Account Specific Key by UI  |2048                              |
+|Try to open session  and Check Logon failure                              |
+|Set ISA permission on account for      |${CLI_user_1}                     |
+|Retrieve Account Specific Key                                             |
+|Copy account key to system             |${keyFormat}                      |
+|Open session  and Check Logon                                             |
+|Cancel Session Request                                                    |
+|Delete Account on System               |${ManagedAccount}                 |
+|Remove system                          |${SystemName}                     |

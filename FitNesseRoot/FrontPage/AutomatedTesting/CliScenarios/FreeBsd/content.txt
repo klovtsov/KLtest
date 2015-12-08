@@ -1,0 +1,5 @@
+!include <AutomatedTesting.PlatformsTesting.FreeBsd
+!include -c <CliScenarios.ScenarioLibrary
+
+
+

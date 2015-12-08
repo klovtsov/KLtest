@@ -1,0 +1,21 @@
+!define SystemName {${prefix}_PsmWebAccess}
+!define SystemPlatform {PSM Web Access}
+!define ManagedAccount {WebAccessAccount}
+!define RestrictedURL {ALLOWNAV;http://10.30.38.91/psmwebaccess/index.html}
+
+
+
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios.ScenarioLibrary
+
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios
+!include -c <AutoTestsWebDrv.PsmSmokeTest.PsmWebAccess.PlatformSpecific
+
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|
+
+
+

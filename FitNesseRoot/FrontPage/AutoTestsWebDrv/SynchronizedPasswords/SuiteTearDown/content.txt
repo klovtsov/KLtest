@@ -1,0 +1,11 @@
+!include -c <AutoTestsWebDrv.SetUp
+!include -c <SynchronizedPasswords.ScenarioLibrary
+
+!|script                          |
+|Remove Account from First System |
+|Remove Account from Second System|
+|Remove     |${SystemName}        |
+|Remove     |${SecSystemName}     |
+
+
+!include -c <AutoTestsWebDrv.SynchronizedPasswords.TearDown

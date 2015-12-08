@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<properties>
+	<Edit/>
+	<Files/>
+	<Properties/>
+	<RecentChange/>
+	<Refactor/>
+	<Search/>
+	<Suite/>
+	<Suites></Suites>
+	<SymbolicLinks>
+		<PlatformsTesting>.FrontPage.AutoTestsWebDrv.PlatformsTesting</PlatformsTesting>
+		<RemoteLinuxMachine>.FrontPage.DeployWebDrv.PlinkConfiguration.RemoteLinuxMachine</RemoteLinuxMachine>
+		<RadiusLinuxMachine>.FrontPage.DeployWebDrv.PlinkConfiguration.RadiusLinuxMachine</RadiusLinuxMachine>
+                <CliScenarios.WindowsEight>.FrontPage.AutoTestsWebDrv.CliScenarios.WindowsLocalHostEight</CliScenarios.WindowsEight>
+		<CliScenarios.WindowsTen>.FrontPage.AutoTestsWebDrv.CliScenarios.WindowsLocalHostTen</CliScenarios.WindowsTen>
+		<CliScenarios.WindowsActiveDirTwelve>.FrontPage.AutoTestsWebDrv.CliScenarios.WindowsActiveDirTwelve</CliScenarios.WindowsActiveDirTwelve>
+		<CliScenarios.SolarisEleven>.FrontPage.AutoTestsWebDrv.CliScenarios.SolarisEleven</CliScenarios.SolarisEleven>
+		<DotNetScenarios.SqlServerSpecificPort>.FrontPage.AutoTestsWebDrv.DotNetScenarios.SqlServerSpecificPort</DotNetScenarios.SqlServerSpecificPort>
+	</SymbolicLinks>
+	<Versions/>
+	<WhereUsed/>
+</properties>
+
+

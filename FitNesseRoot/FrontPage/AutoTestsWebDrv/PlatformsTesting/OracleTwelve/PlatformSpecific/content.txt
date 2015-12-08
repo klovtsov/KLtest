@@ -1,0 +1,34 @@
+!|scenario            |Set Connection Tab                                 |
+|waitForElementPresent|id=Connection           |                          |
+|click                |id=Connection           |                          |
+|type;                |id=PARFuncAcct          |${FunctAcct}              |
+|type;                |id=pword                |${FunctAcctPwd}           |
+|type;                |id=ConfPword            |${FunctAcctPwd}           |
+|type;                |id=Timeout              |${SystemTimeout}          |
+|type;                |id=Port                 |${Port}                   |
+|click                |id=rb_Service                                      |
+|type;                |id=SIDSN                |${SID}                    |
+|click                |id=bt_Save                                         |
+|waitForResult        |System changes for ${SystemName} saved successfully|
+
+
+
+!|scenario        |Create Account on System                                                                                                                 |
+|$res=            |RunBatchGetOutput|Oracle12.bat;create;${SystemAddress};${Port};${SID};${FunctAcct};${FunctAcctPwd};${ManagedAccount};${ManagedAccountPwd}|
+|Verify_Contain_OR|$res;;create...                                                                                                                          |
+
+
+!|scenario        |Change Account Password on System|NewPwd                                                                                                      |
+|$res=            |RunBatchGetOutput                |Oracle12.bat;password;${SystemAddress};${Port};${SID};${FunctAcct};${FunctAcctPwd};${ManagedAccount};@NewPwd|
+|Verify_Contain_OR|$res;;password...                                                                                                                             |
+
+
+!|scenario        |Login Account to System|ManPwd                                                                      |
+|$res=            |RunBatchGetOutput      |Oracle12.bat;login;${SystemAddress};${Port};${SID};${ManagedAccount};@ManPwd|
+|Verify_Contain_OR|$res;;login...                                                                                      |
+
+
+!|scenario        |Delete Account on System                                                                                            |
+|$res=            |RunBatchGetOutput|Oracle12.bat;delete;${SystemAddress};${Port};${SID};${FunctAcct};${FunctAcctPwd};${ManagedAccount}|
+|Verify_Contain_OR|$res;;delete...                                                                                                     |
+

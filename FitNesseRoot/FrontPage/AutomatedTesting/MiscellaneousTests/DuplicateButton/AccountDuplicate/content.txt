@@ -1,0 +1,48 @@
+!********> Test Description
+This test checks that Dublicate button for account is working.
+Duplicated account has same membership and permission as original one. 
+**************!
+!define accntName {${prefix}_Castor}
+!define duplAccntName {${prefix}_Pollux}
+!define CollctnName {${prefix}TColl}
+!define collDescription {ahaha}
+!define test_policy {\"PPM Requestor\"}
+!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${API_user_1} -apiUser ${API_user_1}}
+
+!note Managed System settings
+!include <AutomatedTesting.CliScenarios.WindowsActiveDirTwelve
+!define dcName {kldozen}
+!define SystemName {${prefix}_winad}
+!define SystemPlatform {Windows Active Dir}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.PermissionHierarchy.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!* Create Environment
+!|script                                                                                                                                                                                                                                                  |
+|Create Account on AD System|${accntName}    |with password|${ManagedAccountPwdNew}                                                                                                                                                                          |
+|Create Account on AD System|${duplAccntName}|with password|${ManagedAccountPwdNew}                                                                                                                                                                          |
+|Add system              |${SystemName}   |with address |${SystemAddress}       |platform     |"${SystemPlatform}"|managed by|${FunctAcct}|additional parameters|-functAcctPwd ${FunctAcctPwd} -domainName ${DomainName} -NetBiosName ${NETBIOSDomainName}|
+|Add account             |${accntName}    |with password|${ManagedAccountPwdNew}|             |successfully                                                                                                                                               |
+|Add Collection          |${CollctnName}                                                                                                                                                                                                                  |
+|Add Account             |${accntName}    |from system  |${SystemName}          |to collection|${CollctnName}                                                                                                                                             |
+|Set policy              |${test_policy}  |on account   |${accntName}           |for user     |${CLI_user_2}                                                                                                                                              |
+*!
+
+!|script                                                                                                                   |
+|Duplicate                           |account                      |                   |${accntName} |to  |${duplAccntName}|
+|pause                               |${ApplyNewPoliciesInterval}                                                          |
+|List Collection Membership by filter|-collection ${CollctnName}   |and result contains|${duplAccntName}                   |
+|List Policies by filter             |-accountName ${duplAccntName}|contains           |${CLI_user_2}.*Requestor.*         |
+|Reset Password                      |${duplAccntName}             |from system        |${SystemName}|with|Success         |
+
+!* Remove All
+!|script                                  |
+|Remove system           |${SystemName}   |
+|Delete Collection       |${CollctnName}  |
+|Delete Account on AD System|${accntName}    |
+|Delete Account on AD System|${duplAccntName}|
+*!

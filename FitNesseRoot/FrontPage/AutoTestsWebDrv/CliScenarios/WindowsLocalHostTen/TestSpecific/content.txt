@@ -1,0 +1,15 @@
+!|scenario        |Create Account on System                                                                                                           |
+|$res=            |PowerShellScript|manageLOCALusers.ps1 create ${SystemAddress} ${FunctAcct} ${FunctAcctPwd} ${ManagedAccount} "${ManagedAccountPwd}"|
+|Verify_Contain_OR|$res;;successful                                                                                                                   |
+
+!|scenario        |Change Account Password on System|NewPwd                                               |                                               |
+|$res=            |PowerShellScript                 |manageLOCALusers.ps1 password ${SystemAddress} ${FunctAcct} ${FunctAcctPwd} ${ManagedAccount} @NewPwd|
+|Verify_Contain_OR|$res;;successful                                                                                                                       |
+
+!|scenario        |Login Account to System|ManPwd                               |                               |
+|$res=            |PowerShellScript       |manageLOCALusers.ps1 login ${SystemAddress} ${ManagedAccount} @ManPwd|
+|Verify_Contain_OR|$res;;successful                                                                             |
+
+!|scenario        |Delete Account on System                                                                                    |
+|$res=            |PowerShellScript|manageLOCALusers.ps1 delete ${SystemAddress} ${FunctAcct} ${FunctAcctPwd} ${ManagedAccount}|
+|Verify_Contain_OR|$res;;successful                                                                                            |

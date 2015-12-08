@@ -1,0 +1,16 @@
+!contents
+
+
+
+!| scenario       |Add User|userName                                                                                                                                                                                                                                                     |
+|$res=            |CLI     |${CLIBatch} AddUser --UserName @userName --LastName Doe --FirstName John --Password ${UserInitialPassword} --UserType Admin --PrimaryAuthType Local --SecondaryAuth Defender --SecondaryAuthSystem ${DefenderName} --SecondaryUserID ${DefenderSynchronousTokenUserName}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                      |
+
+
+!|scenario         |Test Login                                                                                                                     |
+|Change Pwd       |${UserName}    |                  |${UserInitialPassword}                  |                  |${UserPassword}                 |
+|$res=            |GroovyWebDriver|LoginWithToken;${TPAMHost};${UserName};${UserPassword};${PathToDefenderDesktopToken};${DefenderTokenPassphrase};${DefenderSynchronousToken}|
+|Verify_Contain_OR|$res;;First authentication succeeded.*Token authentication succeeded                                              |
+
+!|scenario  |Clear Test    |
+|Delete User|${UserName}   |

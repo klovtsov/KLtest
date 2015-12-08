@@ -1,0 +1,27 @@
+!include -c <AutomatedTesting.PlatformsTesting.AixPlatform
+!define ManagedAccount {${prefix}psAcnt}
+!define TemplateName {${prefix}Temple}
+!define newSystemName {${prefix}fromTemple}
+!define sysDescription {Test system}
+!define accDescription {Test account}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                                                                                 |
+|Add system             |${SystemName}                                                                                              |with address   |${SystemAddress}                   |platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-ChangeFrequency 0 -description "${sysDescription}"|
+|Add account            |${ManagedAccount}                                                                                          |on system      |${SystemName}                      |with options|-description "${accDescription}"                                                                                   |
+|Open                   |${TPAMURL}                                                                                                 |               |${TPAMAdmin}                       |            |${DefaultPwd}                                                                                                      |
+|Choose System          |${SystemName}                                                                                                                                                                                                                                                                                   |
+|Set Template                                                                                                                                                                                                                                                                                                            |
+|Try to Add system      |${newSystemName}                                                                                           |with parameters|-templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully                                                             |
+|List Systems by        |-systemName ${newSystemName}                                                                               |output params  |SystemName                         |contain     |${newSystemName}                                                                                                   |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount} -propsToList accountname,changefreq,description|contains       |${ManagedAccount}.*0.*${accDescription}                                                                                                                             |
+
+!*> Clean Up
+!|script                       |
+|Delete System|${SystemName}   |
+|Delete System|${newSystemName}|
+|Choose System|${TemplateName} |
+|Remove system|${TemplateName} |
+*!

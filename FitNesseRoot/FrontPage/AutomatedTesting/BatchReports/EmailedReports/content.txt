@@ -1,0 +1,25 @@
+!contents
+
+!|script                                |
+|Check Emailed Report|DlyActivityLog     |
+|Check Emailed Report|DlyFailedLogins    |
+|Check Emailed Report|DlyFileAging       |
+|Check Emailed Report|DlyFileRelActivity |
+|Check Emailed Report|DlyFirewallLog     |
+|Check Emailed Report|DlyPasswordAging   |
+|Check Emailed Report|DlyPwdTestSummary  |
+|Check Emailed Report|DlyPwdUpdateResults|
+|Check Emailed Report|DlyPwdUpdateSummary|
+|Check Emailed Report|DlyReleaseActivity |
+|Check Emailed Report|DlySecurityLog     |
+|Check Emailed Report|DlySysAdminActivity|
+|Check Emailed Report|MgmtSummaryReport  |
+|Check Emailed Report|SystemsNoAccount   |
+|Check Emailed Report|SystemsNoCollection|
+|Check Emailed Report|UserEntitlement    |
+|Check Emailed Report|UserFileEntitlement|
+|Check Emailed Report|UsersNoGroup       |
+|Check Emailed Report|WklyAppUsageReport |
+|Check Emailed Report|WklyFileRelActivity|
+|Check Emailed Report|WklyReleaseActivity|
+#|Check Stored Daily Report |DlyPwdTestResults  |

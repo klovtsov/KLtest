@@ -1,0 +1,22 @@
+!*> Prepare environment: Add system, create users and set permissions
+!|script                                                               |
+|Create Account on System                                              |
+|Add System                                                            |
+|Set policy|${PolicyName}|on system|${SystemName}|for user|${Requestor}|
+#|Set local affinity                                                    |
+
+*!
+
+!|script                                       |
+|Create account with placeholder|${PlaceHolder}|
+|Set required approvers         |0             |
+|Request Session                               |
+|Open session check prompt                     |
+|Check File Transfer settings                  |
+|Cancel psm request                            |
+
+!*> Remove system and users
+!|script                                   |
+|Remove system           |${SystemName}    |
+|Delete Account on System|${ManagedAccount}|
+*!

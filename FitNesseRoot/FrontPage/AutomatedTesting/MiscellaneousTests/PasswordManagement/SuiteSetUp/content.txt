@@ -1,0 +1,11 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <FrontPage.AutomatedTesting.SetUp
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+
+!|script                                                                                |
+|Create Account on System                                                               |
+|Add system                                                                             |
+|Add account         |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed}|
+|Set User Permissions|${CLI_user_1}                                                     |
+|Set User Permissions|${CLI_user_2}                                                     |
+!include -c  <MiscellaneousTests.TearDown

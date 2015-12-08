@@ -1,0 +1,7 @@
+!define expectedResult {was successfully changed}
+!include -c ScenarioLibrary
+
+!|script                               |
+|Make account nonmanaged               |
+|Reset Non Managed Password  with alert|
+|Make account automanaged              |

@@ -1,0 +1,2 @@
+!include <AutoTestsWebDrv.PlatformsTesting.MacOsxSeven
+!include -c <PerlApiScenarios.ScenarioLibrary

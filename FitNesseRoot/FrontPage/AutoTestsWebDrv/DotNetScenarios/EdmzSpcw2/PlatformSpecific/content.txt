@@ -1,0 +1,40 @@
+!| scenario       |Add system                                                                                                                                                               |
+|$res=            |NetAPI|${APIBatch} ${CommandTimeout} AddSystem ${SystemName} ${SystemAddress} "${SystemPlatform}" "${SystemDescription}" ${SystemTimeout} ${ParFunctAcct} ${FunctAcctPwd}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                         |
+
+!|scenario    |Set password                   |one                   |                  |switch                  |
+|accountAction|${SystemPlatform};;corrupt;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${PathtoKey};;@switch|
+
+!| scenario    |Managed System                              |
+|Create Account on System                                   |
+|Open          |${TPAMURL}     ||${TPAMAdmin}||${DefaultPwd}|
+|Add system                                                 |
+|Test System   |${TestSystemSuccessful}                     |
+|Set password  |${FunctAcct}   ||${FunctAcctWrongPwd}       |
+|Test System   |${TestSystemFailed}                         |
+|Check Password|${ParFunctAcct}||${CheckPasswordFailed}     |
+
+!note A pause between two psexec calls is necessary (i.e. between "Change Account Password on System" and "Set password" steps)
+!| scenario                       |Managed Account                                                                                                                                               |
+|Add PPM account                  |${ManagedAccount}                    |with password|${ManagedAccountPwd}   |and profiles|${PpmCheckProfile}||${PpmChangeProfile}                ||${NotFailed}|
+|Inspect Scheduled Password Check and Change|Failed                                                                                                                                             |
+|Reset Password                   |${ManagedAccount}                    |             |${ResetPasswordFailed}                                                                                    |
+|Check Password                   |${ManagedAccount}                    |             |${CheckPasswordFailed}                                                                                    |
+|Remove account                   |${ManagedAccount}                                                                                                                                             |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                                                       |
+|pause                            |30000                                                                                                                                                         |
+|Set password                     |${FunctAcct}                         |             |${FunctAcctPwd}                                                                                           |
+|pause                            |${RestoreFunctAcctPasswordTimeout}                                                                                                                            |
+|Add PPM account                  |${ManagedAccount}                    |with password|${ManagedAccountPwd}   |and profiles|${PpmCheckProfile}||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Schedule Check Password          |Failed                                                                                                                                                        |
+|pause                            |${PpmScheduleTimeWindow}                                                                                                                                      |
+|Check Status                               |${ResetPasswordSuccessful}|for reason   |Mismatch                                                                                                  |
+|Remove account                   |${ManagedAccount}                                                                                                                                             |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                                                       |
+|Add PPM account                  |${ManagedAccount}                    |with password|${ManagedAccountPwdNew}|and profiles|${PpmCheckProfile}||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Schedule Check Password          |Success                                                                                                                                                       |
+|Remove account                   |${ManagedAccount}                                                                                                                                             |
+|Add PPM account                  |${ManagedAccount}                    |with password|${ManagedAccountPwd}   |and profiles|${PpmCheckProfile}||${PpmChangeProfile}                ||${NotFailed}|
+|Inspect Scheduled Password Check and Change|Success                                                                                                                                            |
+|Reset Password                   |${ManagedAccount}                    |             |${ResetPasswordSuccessful}                                                                                |
+|Check Password                   |${ManagedAccount}                    |             |${CheckPasswordSuccessful}                                                                                |

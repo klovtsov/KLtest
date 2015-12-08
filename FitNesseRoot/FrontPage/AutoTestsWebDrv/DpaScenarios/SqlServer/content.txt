@@ -1,0 +1,3 @@
+!include <AutoTestsWebDrv.PlatformsTesting.SqlServer
+!include -c <DpaScenarios.ScenarioLibrary
+

@@ -1,0 +1,3 @@
+!|scenario        |NetTools       |TPAMHost | |Path||userName||userPwd||Command||SystemAddress||Result|
+|$res=            |GroovyWebDriver|NetTools;@TPAMHost;@Path;@userName;@userPwd;@Command;@SystemAddress|
+|Verify_Contain_OR|$res;;@Result.*Finished                                                            |

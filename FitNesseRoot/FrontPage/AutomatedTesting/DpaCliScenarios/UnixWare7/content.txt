@@ -1,0 +1,4 @@
+!include <AutomatedTesting.CliScenarios.UnixWare7
+!include -c ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.UnixWare7.PlatformSpecific
+!include -c <AutomatedTesting.DpaCliScenarios.UnixWare7.PlatformSpecific

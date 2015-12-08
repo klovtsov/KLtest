@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.UnixWare7
+!include -c <DotNetScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.DotNetScenarios.UnixWare7.PlatformSpecific
+

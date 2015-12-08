@@ -1,0 +1,8 @@
+!contents
+
+!| scenario|Upload Generated Key                                                                                                       |
+|runBatch  |UploadRootPublicSshKeySolaris.bat;${SystemAddress};${FunctAcct};${FunctAcctPwd};${BrowserDownloadDir};${AuthorizedKeysFile}|
+
+!| scenario|Empty Authorized Keys File                                                                 |
+|runBatch  |EmptyKeyFileSolaris.bat;${SystemAddress};${FunctAcct};${FunctAcctPwd};${AuthorizedKeysFile}|
+

@@ -1,0 +1,12 @@
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.ReportActivity.ScenarioLibrary
+
+!|script            |
+|Prepare Environment|
+|Single Day         |
+|Date Range         |
+|Roles              |
+|MaxRows4           |
+|Group              |
+|Sort               |
+|Clear Environment  |

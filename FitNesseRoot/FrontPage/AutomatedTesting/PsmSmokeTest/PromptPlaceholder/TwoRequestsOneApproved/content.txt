@@ -1,0 +1,38 @@
+!include <AutomatedTesting.PlatformsTesting.EdmzSpcw2
+!define SystemDescription {lalala}
+#!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${API_user_1} -apiUser ${API_user_1}}
+
+!define PolicyName {"PSM Requestor"}
+!define PlaceHolder {:prompt:}
+!define goodProxyType {"RDP - Interactive Login"}
+!define ManagedAccountPwd {P@r0leAA}
+!define pause {40000}
+
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PsmSmokeTest.ScenarioLibrary
+!include -c >WorkAround
+
+!* Prepare environment: Add system, create placeholder account and set permissions
+!|script                                                                                                                                      |
+|Add System                                                                                                                                   |
+|Add account    |${PlaceHolder}      |on system   |${SystemName}                  |with options                 |-AutoFlag N                  |
+|Enable PSM for |${PlaceHolder}      |with options|-proxyType ${goodProxyType} -minApprovers 1 -maxSessionCount 3 -passwordMethod "Not Stored"|
+|Set Permissions|${PolicyName}       |on  account |${PlaceHolder}                 |for user                     |${Requestor}                 |
+|Set Permissions|${PolicyName}       |on  account |${PlaceHolder}                 |for user                     |${Requestor}2                |
+|Set Permissions|"PSM Approver"      |on  account |${PlaceHolder}                 |for user                     |${API_user_2}                |
+|Set Permissions|"Approver-Requestor"|on  account |${PlaceHolder}                 |for user                     |${API_user_1}                |
+*!
+
+!|script                                                                               |
+|Make first Request Session to |${PlaceHolder}|on system|${SystemName}|by|${Requestor} |
+|Make second Request Session to|${PlaceHolder}|on system|${SystemName}|by|${Requestor}2|
+|Approve Session request with  |$firstReqId   |by       |${API_user_2}                 |
+|Get Session Request with      |$firstReqId   |status   |Active/Approved               |
+|Get Session Request with      |$secReqId     |status   |Pending Approval              |
+
+!*> Remove system and users
+!|script                    |
+|Delete system|${SystemName}|
+#|Cancel psm request with Id|$firstReqId|by|${Requestor}|
+#|Cancel psm request with Id|$secReqId  |by|${Requestor}2|
+*!

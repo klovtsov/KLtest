@@ -1,0 +1,5 @@
+!define content {${ATPath}\PlatformsTesting\DellRemoteAccess\content.txt}
+
+
+!include -c <AutomatedTesting.PlatformsTesting.DellRemoteAccess
+!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

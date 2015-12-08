@@ -1,0 +1,133 @@
+     
+  Alert Engine             
+ eDMZ-AlertEng-ProcessFail 2 The Alert Engine was unable to start the %1% process: %2%.           
+ eDMZ-AlertEng-AlertLog 2 Errors were encountered loading alerts to the AlertLog: %1%.          
+  Appliance Health and Welfare             
+ eDMZ-Heartbeat 0 The %1% appliance is up.           
+ eDMZ-Health-Starting 0 The TPAM Health and Welfare Agent is starting           
+ eDMZ-Health-Stopping 0 The TPAM Health and Welfare Agent is stopping           
+ eDMZ-Health-ProcErr 2 The TPAM Health and Welfare process %1% failed to start. The error description is %2%.           
+ eDMZ-Health-SysError 3 A Windows System Error occurred. EventID:%1% Source:%2% Description:%3%           
+ eDMZ-Health-AppError 3 A Windows Application Error occurred. EventID:%1% Source:%2% Description:%3%           
+ eDMZ-Health-Abort 3 The TPAM Health and Welfare terminated process %1% because it has been running for more than %2% minutes.           
+ eDMZ-Health-runLevel 1 The run level for %1% is changing from %2% to %3%.           
+ eDMZ-Comp-Restarted 1 The %1% unexpectedly entered the stopped state, restarting now.           
+ eDMZ-Disk-Space 1 The utilization of the appliance hard drive is %1% percent, exceeding the threshold of %2% percent.           
+ eDMZ-AutoEng-Stopped 1 The TPAM Password Management engine on the primary is currently stopped and there are %1% work items queued           
+ eDMZ-PwdChg-Disabled 1 The Password Change process is disabled and there are currently %1% queued password changes.           
+ eDMZ-PwdChk-Disabled 1 The Password Check process is disabled and there are currently %1% queued password checks.           
+ eDMZ-DAPwdChg-Disabled 1 The Domain Account Password Change process is disabled and there are currently %1% queued DA password changes.           
+ eDMZ-PwdChgMan-Disabled 1 The Manual Password Change Notification process is disabled and there are currently %1% queued Manual Password Change Notifications.           
+ eDMZ-Health-Mail 1 The Mail Agent on the Primary/Standalone appliance is STOPPED. Email notifications will NOT be sent.           
+ eDMZ-Health-CPU 1 The appliance CPU has exceeded %1%% for %2% successive checks occuring every %3% minute(s)           
+ eDMZ-Health-DBJobFailed 1 Database job: %1% failed, ElapseTime: %2%, Message: %3%.           
+ eDMZ-Health-ScheduledJob 1 Scheduled job %1% has been in an inconsistent state for %2% seconds, resetting.           
+ eDMZ-SystemTimeChange 0 System time has been set %1% approximately %2% minutes.           
+ eDMZ-SyncPassChg-Disabled 1 The SyncPassword Change process is disabled and there are currently %1% queued SyncPassword changes.           
+ eDMZ-AcctDisc-Disabled 1 The Account Discovery process is disabled and there are currently %1% queued Account Discovery tasks.          
+  Auto Discovery             
+ eDMZ-AutoInt-Starting 0 The TPAM Auto Discovery service is starting.           
+ eDMZ-AutoInt-Stopping 0 The TPAM Auto Discovery service is stopping.           
+ eDMZ-AutoInt-DBError1 3 The account discovery process was unable to connect to the database to retrieve the work queue.           
+ eDMZ-AutoInt-DBError2 3 The account discovery process was unable to retrieve the work queue.           
+ eDMZ-AutoInt-DiscError1 3 The process to account discovery accounts on %1% timed out after %2% seconds.           
+ eDMZ-AutoInt-DiscError2 3 An error occurred starting the account discovery process on %1%, rc=%2%.           
+ eDMZ-AutoInt-DiscError3 3 Error spawning process to account discovery accounts on %1%, Error: %2%.           
+ eDMZ-AutoInt-DBError3 3 Failed to queue account discovery email.           
+ eDMZ-AutoInt-DBError4 3 Account Discovery db connection failed for system: %1.          
+  Auto Management Engine             
+ eDMZ-AutoEng-Starting 0 The TPAM Password Management Engine is starting.           
+ eDMZ-AutoEng-Stopping 0 The TPAM Password Management Engine is stopping.           
+ eDMZ-AutoEng-Restart 2 The TPAM Password Management engine intelligent scheduler appears to be in a hung state - restarting now.           
+ eDMZ-AutoEng-Error 3 The TPAM Password Management engine intelligent scheduler failed to start. The error description is %1%.           
+ eDMZ-AutoEng-DBError 2 The TPAM Password Management engine was unable to connect to the database to retrieve work queue information.           
+ eDMZ-AutoEng-ProcError 2 The TPAM Password Management engine intelligent scheduler failed to start a worker process. The failed process is %1% and the error description is %2%.          
+  Backup             
+ eDMZ-Backup-Abort 0 Aborting the requested backup because another backup process is already running           
+ eDMZ-Backup-Patch 0 Aborting the requested backup because a patch is currently being applied to this system           
+ eDMZ-Backup-Fatal 3 A fatal error occurred in the backup at step %1%           
+ eDMZ-Backup-Archive2 2 Failed to archive the backup to %1% at %2% using %3%          
+  Batch Reports             
+ eDMZ-Reports-Failed 3 Batch Reports failed at step %1%.           
+ eDMZ-Reports-Smtp 3 Batch Report: %1%, Subscriber Email: %2%, SMTP Failure Message: %3%.          
+  Cache Server             
+ eDMZ-Cache-Error-A 2 Alert from Password Cache Appliance: %1%           
+ eDMZ-Cache-Error-B 1 Cannot connect to Cache Server at %1%!           
+ eDMZ-Cache-Error-C 1 Cache Server domain is NOT running at %1%!           
+ eDMZ-Cache-Error-D 2 Message processor for Cache Server at %1% terminated!           
+ eDMZ-Cache-Error-E 3 Failed processing message for cache server %1%, Message: %2%, Error: %3%. Message is deleted.           
+ eDMZ-Cache-Error-F 3 Cache server %1% has %2% pending messages: %3%          
+  Cluster             
+ eDMZ-Cluster-Exception 2 %1% caught an unexpected exception %2%: %3%           
+ eDMZ-Cluster-RoleChgd 1 %1% cluster role changed from %2% to %3% (customer data was reset).           
+ eDMZ-Cluster-MbrFailed 2 %1% detected that cluster member %2% has failed.           
+ eDMZ-Cluster-RoleChgdX 1 %1% cluster role changed from %2% to %3% (customer data was NOT reset).           
+ eDMZ-Cluster-EnrollBnd 0 %1% made an enrollment bundle for replica %2%.           
+ eDMZ-Cluster-PriUpdErr 0 %1% encountered a serious error updating replica %2%. A full update of the replica will be performed.           
+ eDMZ-Cluster-FbackProc 1 %1% processed failback data from replica %2%.           
+ eDMZ-Cluster-PriTrnsfr 1 %1% transferred its authoritative primary role to replica %2%.           
+ eDMZ-Cluster-MultiPri 2 %1% detected other cluster members reporting primary cluster role: %2%           
+ eDMZ-Cluster-Enrolled 0 %1% is being enrolled as a replica of primary %2%.           
+ eDMZ-Cluster-SetPri 1 %1% changed its authoritative primary to %2%.           
+ eDMZ-Cluster-FailedOver 2 %1% has failed over: %2%           
+ eDMZ-Cluster-StrtFback 0 %1% is starting failback: %2%           
+ eDMZ-Cluster-ComplFback 1 %1% completed failback: %2%           
+ eDMZ-Cluster-FbackErr 0 %1% encountered a serious error failing back to primary %2%.          
+  Domain Account Password Change Processes             
+ eDMZ-DAPwdChg-DBErrorQ 1 The Domain Account service/identity password change process was unable to connect to the database to retrieve the work queue           
+ eDMZ-DAPwdChg-Timeout 1 The process to change the Domain Account service/identity password for %1% on %2% timed out after %3% seconds           
+ eDMZ-DAPwdChg-Fail 1 An error occurred changing the Domain Account service/identity password for %1% on %2%, rc=%3%           
+ eDMZ-DAPwdChg-Spawn 1 Error spawning process to change the Domain Account service/identity password for %1% on %2%: %3%          
+  Firewall             
+ eDMZ-Firewall-Drops 1 There have been %1% Firewall Drop messages in the last %2% minute(s)!          
+  Kiosk             
+ eDMZ-Kiosk-Reset-AuthChal 2 Kiosk authentication for reset passwords started using email address %1%.           
+ eDMZ-Kiosk-Reset-AuthComp 1 Kiosk authentication for reset passwords completed using email address %1%.           
+ eDMZ-Kiosk-Reset-Perform 0 Kiosk reset passwords operation performed using keys from %1%.           
+ eDMZ-Kiosk-Rstr-AuthChal 2 Kiosk authentication for restore backup started using email address %1%.           
+ eDMZ-Kiosk-Rstr-AuthComp 1 Kiosk authentication for restore backup completed using email address %1%.           
+ eDMZ-Kiosk-Rstr-Perform 0 Kiosk restore backup operation performed using keys from %1%.           
+ eDMZ-Kiosk-Rvrt-AuthChal 2 Kiosk authentication for revert to snapshot started using email address %1%.           
+ eDMZ-Kiosk-Rvrt-AuthComp 1 Kiosk authentication for revert to snapshot completed using email address %1%.           
+ eDMZ-Kiosk-Rvrt-Perform 0 Kiosk revert to snapshot operation performed using keys from %1%.          
+  Mail Agent             
+ eDMZ-MailAgnt-Starting 0 The Mail Agent is starting           
+ eDMZ-MailAgnt-Stopping 0 The Mail Agent is stopping           
+ eDMZ-MailAgnt-Abort 2 An error occurred that caused mail processing to abort. The step is %1%          
+  Password Change Processes             
+ eDMZ-PwdChg-DBErrorQ 1 The password change process was unable to connect to the database to retrieve the work queue           
+ eDMZ-PwdChg-DBError 1 The password change process was unable to retrieve the work queue           
+ eDMZ-PwdChg-Timeout 1 The process to change the password for %1% on %2% timed out after %3% seconds           
+ eDMZ-PwdChg-ProcError 1 An error occurred starting the password change process for %1% on %2%, rc=%3%           
+ eDMZ-PwdChg-SpawnError 1 Error spawning process to change the password for %1% on %2%: %3%           
+ eDMZ-PwdChg-ChgFail 1 An error occurred changing the password for %1% on %2%.           
+ eDMZ-PwdChg-RecFail 2 Unable to record the failed password change for %1% on %2% in the database due to a deadlock.           
+ eDMZ-PwdChg-RecSucc 1 Unable to record the successful password change for %1% on %2% in the database due to a deadlock.           
+ eDMZ-PwdChg-DisableFail 1 An error occurred disabling the account %1% on %2%.          
+  Password Testing Processes             
+ eDMZ-PwdChk-DBError 1 The password check process was unable to connect to the database to retrieve the work queue           
+ eDMZ-PwdChk-Timeout 1 The process to check the password for %1% on %2% timed out after %3% seconds           
+ eDMZ-PwdChk-ProcError 1 An error occurred starting the password check process for %1% on %2%, rc=%3%           
+ eDMZ-PwdChk-SpawnError 1 Error spawning process to check password for %1% on %2%: %3%           
+ eDMZ-PwdChk-DBErrorQ 1 The password check process was unable to retrieve the work queue          
+  Request Monitor Processes             
+ eDMZ-ReqMon-DBConnError 1 The request monitor process was unable to connect to the database to process the work queue           
+ eDMZ-ReqMon-DBError 1 The request monitor process encountered an unrecoverable database error: Step %1%, Error:%2%          
+  Restore             
+ eDMZ-Restore-Fatal 3 A fatal error occurred in the restore at step %1%          
+  Security Events             
+ eDMZ-Login-Failure 1 A Login failure occurred for user:%1% to computer:%2% from network address:%3%          
+  Session Events             
+ eDMZ-Session-Event 0 Restricted command was detected in PSM session for Request: %3%, by User: %2%, System/Account/Command: %1%           
+ eDMZ-Session-KillCommand 1 Restricted command was detected and killed in PSM session for Request: %3%, by User: %2%, System/Account/Command: %1%           
+ eDMZ-Session-KillLogin 1 Restricted command was detected and login killed in PSM session for Request: %3%, by User: %2%, System/Account/Command: %1%           
+ eDMZ-Session-KillSession 1 Restricted command was detected and session killed in PSM session for Request: %3%, by User: %2%, System/Account/Command: %1%          
+  Sync Pass Change Processes             
+ eDMZ-SyncPwChg-DBErrorQ 1 The sync password change process was unable to connect to the database to retrieve the work queue           
+ eDMZ-SyncPwChg-DBError 1 The sync password change process was unable to reset the password for %1%           
+ eDMZ-SyncPwChg-Timeout 1 The process to sync the password for %1% on %2% timed out after %3% seconds           
+ eDMZ-SyncPwChg-ProcError 1 An error occurred starting the sync password change process for %1% on %2%, rc=%3%           
+ eDMZ-SyncPwChg-SpawnError 1 Error spawning process to sync the password for %1% on %2%: %3%           
+ eDMZ-SyncPwChg-DBErrorN 1 Error getting the next synchronized password to change           
+ eDMZ-SyncPwChg-DBErr-A 1 Error getting the list of subscribers requiring a password change for %1%           
+ eDMZ-SyncPwChg-DBErr-B 1 Error setting the status of synchronized password change for %1%     

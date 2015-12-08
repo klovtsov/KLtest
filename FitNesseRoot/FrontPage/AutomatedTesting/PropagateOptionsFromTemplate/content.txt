@@ -1,0 +1,9 @@
+!include -c <AutomatedTesting.PlatformsTesting.AixPlatform
+!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${API_user_1} -apiUser ${API_user_1}}
+!define ManagedAccount {${prefix}psAcnt}
+!define TemplateName {${prefix}Temple}
+!define newSystemName {${prefix}fromTemple}
+!define sysDescription {Test system}
+!define accDescription {Test account}
+
+!contents -R2 -p -g -h -f

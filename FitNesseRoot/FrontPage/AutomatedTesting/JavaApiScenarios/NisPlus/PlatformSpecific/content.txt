@@ -1,0 +1,4 @@
+!| scenario       |Add system                                                                                                                                         |
+|$res=            |JavaAPI|${APIBatch};addSystemNISPlus;${SystemName};${SystemAddress};${SystemPlatform};${FunctAcct};${FunctAcctPwd};${SystemTimeout};${DomainName}.|
+|Verify_Contain_OR|$res;;successfully                                                                                                                                 |
+

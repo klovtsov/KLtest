@@ -1,0 +1,51 @@
+!* Test description
+Two groups have permissions for an system collections.
+Permissions should be merged.
+*!
+
+!define GroupName {${prefix}grp}
+!define GroupName2 {${prefix}grpTwo}
+!define CollectionName {${prefix}SysColtn}
+!define CollectionName2 {${prefix}SecSysColtn}
+
+
+!*> Include section
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SystemSshKey.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+
+!*> Create Environment
+!|script                                                                                    |
+|Add Group               |${GroupName}                                                      |
+|Add Group               |${GroupName2}                                                     |
+|Add User To Group       |${CLI_user_2}    |             |${GroupName}                      |
+|Add User To Group       |${CLI_user_2}    |             |${GroupName2}                     |
+|Add system                                                                                 |
+|Add account             |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed}|
+|Add Collection          |${CollectionName}                                                 |
+|Add Collection          |${CollectionName2}                                                |
+|Add System To Collection|${SystemName}    |             |${CollectionName}                 |
+|Add System To Collection|${SystemName}    |             |${CollectionName2}                |
+|Change User Type        |Basic            |for user     |${CLI_user_2}                     |
+*!
+
+!|script                                                                                                                      |
+|Set policy           |ISA              |on collection|${CollectionName} |for group|${GroupName}                              |
+|Set policy           |Requestor        |on collection|${CollectionName2}|for group|${GroupName2}                             |
+|pause                |${ApplyNewPoliciesInterval}                                                                            |
+|Try to Update Account|${ManagedAccount}|by user      |${CLI_user_2}     |params   |--Description AaA|with result|successfully|
+|Request Pwd by       |${CLI_user_2}    |with result  |submitted                                                              |
+|Cancel Pwd Request by|${CLI_user_2}                                                                                          |
+
+!*> Clear Environment
+!|script                             |
+|Remove account   |${ManagedAccount} |
+|Remove system    |${SystemName}     |
+|Delete Group     |${GroupName}      |
+|Delete Group     |${GroupName2}     |
+|Delete Collection|${CollectionName} |
+|Delete Collection|${CollectionName2}|
+*!

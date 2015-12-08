@@ -1,0 +1,12 @@
+!| scenario    |Managed System                    |
+|Create Account on System                         |
+|Open|${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Add system                                       |
+|Set Connection Tab                               |
+|Test System   |${TestSystemSuccessful}           |
+|Choose Account|${FunctAcct}                      |
+|Set password  |${FunctAcct}||${FunctAcctWrongPwd}|
+|Choose System |${SystemName}                     |
+|BFER3743                                         |
+|Choose Account|${FunctAcct}                      |
+|Check Password|${CheckPasswordFailed}            |

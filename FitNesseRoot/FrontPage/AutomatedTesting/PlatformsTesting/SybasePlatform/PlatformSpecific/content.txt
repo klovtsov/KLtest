@@ -1,0 +1,11 @@
+!|scenario    |Create Account on System                                                                                     |
+|accountAction|${SystemPlatform};;create;;${SystemAddress};;${Port};;${Catalog};;${FunctAcct};;${FunctAcctPwd};;${ManagedAccount};;${ManagedAccountPwd}|
+
+!|scenario    |Change Account Password on System                             |NewPwd                             |
+|accountAction|${SystemPlatform};;password;;${SystemAddress};;${Port};;${Catalog};;${FunctAcct};;${FunctAcctPwd};;${ManagedAccount};;@NewPwd|
+
+!|scenario    |Login Account to System                  |ManPwd                  |
+|accountAction|${SystemPlatform};;login;;${SystemAddress};;${Port};;${Catalog};;${ManagedAccount};;@ManPwd|
+
+!|scenario    |Delete Account on System                                                                |
+|accountAction|${SystemPlatform};;delete;;${SystemAddress};;${Port};;${Catalog};;${FunctAcct};;${FunctAcctPwd};;${ManagedAccount}|

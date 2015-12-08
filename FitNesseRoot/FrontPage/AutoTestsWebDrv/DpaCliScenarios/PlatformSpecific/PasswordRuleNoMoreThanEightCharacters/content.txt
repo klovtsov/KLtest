@@ -1,0 +1,12 @@
+!| scenario                       |Managed System                                             |
+|Create Account on System                                                                     |
+|Create Password Rule No More Than Eight Chars|${RuleNameEightChars}                                        |
+|Login                            |${TPAMURL}                 |   |${TPAMAdmin}||${DefaultPwd}|
+|Add system                                                                                   |
+|Set description                  |\"${FunctAcctDescription}\"|for|${FunctAcct}               |
+|Set Affinity                                                                                 |
+|Test System                      |${TestSystemSuccessful}                                    |
+|Set password                     |${FunctAcct}               |   |${FunctAcctWrongPwd}       |
+|Test System                      |${TestSystemFailed}                                        |
+|Check Password                   |${FunctAcct}               |   |${CheckPasswordFailed}     |
+

@@ -1,0 +1,68 @@
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+
+!define CSVEthalonFile {${ProjDir}\Scripts\Ethalons\ListOperations\Export\ExportAccounts.csv}
+!define ASPEthalonFile {${ProjDir}\Scripts\Ethalons\ListOperations\Export\ExportAccounts.xls}
+!define CSVResultFile {${ProjDir}\Scripts\Ethalons\ListOperations\ExportAccounts.csv}
+!define ASPResultFile {${ProjDir}\Scripts\Ethalons\ListOperations\ExportAccounts.xls}
+
+!define PSMCSVEthalonFile {${ProjDir}\Scripts\Ethalons\ListOperations\Export\ExportPSMAccounts.csv}
+!define PSMASPEthalonFile {${ProjDir}\Scripts\Ethalons\ListOperations\Export\ExportPSMAccounts.xls}
+!define PSMCSVResultFile {${ProjDir}\Scripts\Ethalons\ListOperations\ExportPSMAccounts.csv}
+!define PSMASPResultFile  {${ProjDir}\Scripts\Ethalons\ListOperations\ExportPSMAccounts.xls}
+!define PathResultFile {${ProjDir}\Scripts\Ethalons\ListOperations\}
+
+!define SystemName {${prefix}ListSystem}
+!define SystemName1 {${SystemName}1}
+
+!define AccountName {${prefix}ListAccount}
+!define AccountName1 {${AccountName}1}
+!define AccountName2 {${AccountName}12}
+
+!define CollectionName {${prefix}ListCollection}
+!define CollectionName1 {${CollectionName}1}
+!define CollectionName2 {${CollectionName}2}
+
+!define UserName {${prefix}ListUser}
+!define UserName1 {${UserName}1}
+!define UserName2 {${UserName}2}
+!define UserName3 {${UserName}3}
+
+!define GroupName {${prefix}ListGroup}
+!define GroupName1 {${GroupName}1}
+
+!include -c <AutoTestsWebDrv.ListOperations.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                    |
+|Add User             |${CLIBatch}      ||--UserName ${UserName1} --FirstName Mr --LastName White                                                                                                                         ||successfully                    |
+|Add User             |${CLIBatch}      ||--UserName ${UserName2} --FirstName Mr --LastName Black                                                                                                                         ||successfully                    |
+|Add User             |${CLIBatch}      ||--UserName ${UserName3} --FirstName Mr --LastName Red                                                                                                                           ||successfully                    |
+|Add Group            |${CLIBatch}      ||--GroupName ${GroupName1}                                                                                                                                                       ||successfully                    |
+|Add Grp member       |${CLIBatch}      ||--GroupName ${GroupName1} --UserName ${UserName2}                                                                                                                               ||successfully                    |
+|Add System           |${CLIBatch}      ||--SystemName ${SystemName1} --Platform Windows --NetworkAddress 1.1.1.1                                                                                                         ||successfully                    |
+|Add Account          |${CLIBatch}      ||--SystemName ${SystemName1} --AccountName ${AccountName1} --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile  ${PersistentPasswordChangeProfile1}||successfully                    |
+|Add Account          |${CLIBatch}      ||--SystemName ${SystemName1} --AccountName ${AccountName2} --PasswordCheckProfile ${PersistentPasswordCheckProfile2} --PasswordChangeProfile  ${PersistentPasswordChangeProfile2}||successfully                    |
+|Update PSM Account   |${CLIBatch}      ||--System ${SystemName1} --Account ${AccountName1} --EnableFlag Y --ProxyType \"RDP - Automatic Login Using Password\"                                                           ||successfully                    |
+|Add Collection       |${CLIBatch}      ||--CollectionName ${CollectionName1}                                                                                                                                             ||successfully                    |
+|Add Collection member|${CLIBatch}      ||--CollectionName ${CollectionName1} --SystemName ${SystemName1} --AccountName ${AccountName1}                                                                                   ||successfully                    |
+|Add Collection member|${CLIBatch}      ||--CollectionName ${CollectionName1} --SystemName ${SystemName1} --AccountName ${AccountName2}                                                                                   ||successfully                    |
+|Add Collection       |${CLIBatch}      ||--CollectionName ${CollectionName2}                                                                                                                                             ||successfully                    |
+|Add Collection member|${CLIBatch}      ||--CollectionName ${CollectionName2} --SystemName ${SystemName1} --AccountName ${AccountName1}                                                                                   ||successfully                    |
+|Set Access Policy    |${CLIBatch}      ||--SystemName ${SystemName1} --AccountName ${AccountName1} --Action ADD --AccessPolicyNam Approver --UserName ${UserName1}                                                       ||successfully                    |
+|Set Access Policy    |${CLIBatch}      ||--SystemName ${SystemName1} --AccountName ${AccountName1} --Action ADD --AccessPolicyNam Requestor --GroupName ${GroupName1}                                                    ||successfully                    |
+|Set Access Policy    |${CLIBatch}      ||--CollectionName ${CollectionName2} --Action ADD --AccessPolicyNam ISA --UserName ${UserName3}                                                                                  ||successfully                    |
+|pause                |30000                                                                                                                                                                                                                                |
+|List Accounts                                                                                                                                                                                                                                              |
+|List PSMAccounts                                                                                                                                                                                                                                           |
+|Check Accounts Export                                                                                                                                                                                                                                      |
+|Open                 |${TPAMURL}       ||${TPAMAdmin}                                                                                                                                                                    ||${DefaultPwd}                   |
+|Account Listing      |!=${AccountName2}||${CollectionName1}                                                                                                                                                              ||${AccountName1}||${AccountName2}|
+|stop                                                                                                                                                                                                                                                       |
+|Delete System        |${CLIBatch}      ||--SystemName ${SystemName1}                                                                                                                                                     ||successfully                    |
+|Drop Collection      |${CLIBatch}      ||--CollectionName ${CollectionName1}                                                                                                                                             ||successfully                    |
+|Drop Collection      |${CLIBatch}      ||--CollectionName ${CollectionName2}                                                                                                                                             ||successfully                    |
+|Delete User          |${CLIBatch}      ||--UserName ${UserName1}                                                                                                                                                         ||successfully                    |
+|Delete User          |${CLIBatch}      ||--UserName ${UserName2}                                                                                                                                                         ||successfully                    |
+|Delete User          |${CLIBatch}      ||--UserName ${UserName3}                                                                                                                                                         ||successfully                    |
+|Drop Group           |${CLIBatch}      ||--GroupName ${GroupName1}                                                                                                                                                       ||successfully                    |
+
+

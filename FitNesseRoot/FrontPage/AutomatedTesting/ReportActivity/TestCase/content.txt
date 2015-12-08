@@ -1,0 +1,12 @@
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.ReportActivity.ScenarioLibrary
+
+!|script            |
+|Prepare Environment|
+|Single Day         |
+|Date Range         |
+|Roles              |
+|MaxRows4           |
+|Group              |
+|Sort               |
+|Clear Environment  |

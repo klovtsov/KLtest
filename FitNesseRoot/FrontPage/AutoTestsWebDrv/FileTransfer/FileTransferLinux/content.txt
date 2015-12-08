@@ -1,0 +1,18 @@
+!define psmProxyType {\"SSH - Automatic Login Using Password\"}
+
+!define shareFolder {./shared}
+!define fileToDownload {${prefix}test File.txt}
+!define fileToUpload {UploadedFile.txt}
+!define secondFileToUpload {sec ond.txt}
+!define TransferMethod {SCP}
+!define AcceptImage {Accept4.png}
+!note Credentials which are specified at transfer time
+!include <AutoTestsWebDrv.PlatformsTesting.LinuxRedHat
+!define content {${ATPath}\PlatformsTesting\LinuxRedHat\content.txt}
+!define FileTransUser {${ManagedAccount}}
+!define  isFileTransfUsrFunctional {N}
+!include -c <AutoTestsWebDrv.PlatformsTesting.LinuxRedHat.PlatformSpecific
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+!include -c >PlatformSpecific
+!include CommonFileTransferTest

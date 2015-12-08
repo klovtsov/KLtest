@@ -1,0 +1,13 @@
+!define SystemName {${prefix}_ldaps}
+!define SystemPlatform {LDAPS}
+!define SystemAddress {10.30.46.227}
+!define FunctAcct {master}
+!define FunctAcctPwd {=1qwerty}
+!define DomainName {mundo2.spb.qsft}
+!define Context {ou=people,dc=mundo2,dc=spb,dc=qsft}
+!define FunctAcctDescription {cn=master,dc=mundo2,dc=spb,dc=qsft}
+!define ManagedAccountDescription {uid=${ManagedAccount},${Context}}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.NovellNds.PlatformSpecific
+!include -c <AutomatedTesting.PlatformsTesting.LdAp.PlatformSpecific
+

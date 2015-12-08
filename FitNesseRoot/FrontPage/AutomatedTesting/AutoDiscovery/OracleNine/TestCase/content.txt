@@ -1,0 +1,13 @@
+!contents
+
+!include -c .FrontPage.AutomatedTesting.AutoDiscovery.ScenarioLibrary
+!include -c .FrontPage.AutomatedTesting.AutoDiscovery.OracleNine.ScenarioLibrary
+
+
+
+
+!|script      |
+|Prepare Test |
+|Auto Discovery |
+|Clear Objects|
+

@@ -1,0 +1,1 @@
+klbatchsys49,klbatchacc,U,2,1020,Y,20:00,,PersPwdRule,,,4,,release@tpam.spb.qsft,N,N,Y,600,accdesc,,Y,PersTicketSystem,Y,N,Y,klticketnotify@tpam.spb.qsft,2,Auditor,,escalatereview@tpam.spb.qsft,4,N,3,N,N,,,,,,,Y,,,N,klbatch_group1;klbatch_group2,,,PersPassCheckProfile_2,PersPassChangeProfile_2,,,Y

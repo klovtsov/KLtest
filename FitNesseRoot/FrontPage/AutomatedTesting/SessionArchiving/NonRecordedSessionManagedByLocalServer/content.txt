@@ -1,0 +1,29 @@
+!include -c <AutomatedTesting.PsmSmokeTest.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!* Prepare Environment (Given)
+!|script                                                                          |
+|Set LocalServer to use archive server|${ArchiveServerName}|use for replay|n      |
+|Set PSM Affinity                     |${SystemName}       |Local Server  |1|DPA|2|
+*!
+
+!* Make request and open session (When)
+!|script                                                 |
+|Update PSM session record option|N|for|${ManagedAccount}|
+|Request Session                                         |
+|Open automatic ssh session                              |
+|Cancel psm request                                      |
+*!
+
+!* Check session archive (Then)
+!|script                                                                                                  |
+|Check Session Log for|$RequestID|ArchiveServer|Empty |Server Path|Empty|Duration|Not Recorded|File Size|0|
+|Check DPA log for    |local     |contains     |Starting new non-recorded session .* RequestID: $RequestID|
+|Check no files on server                                                                                 |
+*!
+
+!* Clean Up
+!|script                                                                       |
+|Update PSM session record option     |Y      |for           |${ManagedAccount}|
+|Set LocalServer to use archive server|default|use for replay|Y                |
+*!

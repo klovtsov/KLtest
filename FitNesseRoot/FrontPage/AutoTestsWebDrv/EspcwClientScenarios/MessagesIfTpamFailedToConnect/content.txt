@@ -1,0 +1,7 @@
+!******** Suite Description
+In this suite a new feature of TPAM 2.5.909 is tested
+5603??? Added more informative messages for the user if TPAM fails to connect using the SPCW client.
+**************!
+!include -c <AutoTestsWebDrv.PlatformsTesting.EdmzSpcw2
+
+!contents -R -p -g

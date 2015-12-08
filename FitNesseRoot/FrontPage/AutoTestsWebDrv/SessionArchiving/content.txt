@@ -1,0 +1,20 @@
+!include -c <AutoTestsWebDrv.DataExtract
+!define ArchiveServerName {${prefix}PsmArchServer}
+#!define ArchiveServerAddress {10.30.46.205}
+#!define ArchiveServerRootName {root}
+#!define ArchiveServerRootPassword {=1qwerty}
+!define ArchiveServerUserName {${prefix}PsmArchiver}
+!define ArchiveFolder {psmArchive}
+!define ArchiveServerFullPath {/home/${ArchiveServerUserName}/${ArchiveFolder}}
+!define AuthorizedKeysFile {authorized_keys2}
+
+!*> Managed System
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSeven
+!define PolicyName {\"PSM Requestor\"}
+!define ManagedAccountPwd {P@r0leAA}
+!define PlaceHolder {${ManagedAccount}}
+!define psmProxyType {\"SSH - Automatic Login Using Password\"}
+!define expectedImageOnScreen {psm_last_login_black.png}
+*!
+
+!contents -R -g -p -h -f

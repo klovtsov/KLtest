@@ -1,0 +1,4 @@
+!define ManAccntCheckPassword {Success}
+!define PpmScheduleTimeWindow {150000}
+!include <AutoTestsWebDrv.PlatformsTesting.SybasePlatform
+!include -c <DotNetScenarios.ScenarioLibrary

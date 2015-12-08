@@ -1,0 +1,8 @@
+!include <AutoTestsWebDrv.PlatformsTesting.DellRemoteAccess
+
+!define ResetPasswordFailed {Failure}
+!define ResetPasswordSuccessful {uccess}
+!define CheckPasswordNotMatch {Failure}
+!define CheckPasswordFailed {Host Unreachable}
+
+!include -c <PerlApiScenarios.ScenarioLibrary

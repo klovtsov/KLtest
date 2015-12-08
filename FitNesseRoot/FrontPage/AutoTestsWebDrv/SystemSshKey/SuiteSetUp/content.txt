@@ -1,0 +1,9 @@
+!include -c <FrontPage.AutoTestsWebDrv.SetUp
+!include -c <AutoTestsWebDrv.UserSshKey.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script|
+|Add Web-disabled Sys-Admin User|${CliSysAdmin} |
+
+!include -c TearDown

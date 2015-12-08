@@ -1,0 +1,6 @@
+/usr/lbin/tsconvert -r
+#
+pwconv
+yes/no
+yes
+#

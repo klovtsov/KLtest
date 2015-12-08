@@ -1,0 +1,480 @@
+!| scenario|Prepare Environment|
+|Set Permissions               |
+
+!| scenario|Clear Environment|
+|Remove Permissions          |
+
+
+!| scenario                            |Set Permissions                                                                   |
+|Set Group Permissions Account Level   |${GroupAccountRequestors}   ||\"${PasswordRequestorPolicy}\"                      |
+|Set Group Permissions Account Level   |${GroupAccountApprovers}    ||\"${PasswordApproverPolicy}\"                       |
+|Set Group Permissions Account Level   |${GroupAccountReviewers}    ||\"${PasswordReviewerPolicy}\"                       |
+|Set Group Permissions Account Level   |${GroupAccountIsas}         ||\"${PasswordIsaPolicy}\"                            |
+|Set Group Permissions Account Level   |${GroupAccountPacs}         ||\"${PasswordPacPolicy}\"                            |
+|Set Group Permissions System Level    |${GroupSystemRequestors}    ||\"${PasswordRequestorPolicy}\"                      |
+|Set Group Permissions System Level    |${GroupSystemApprovers}     ||\"${PasswordApproverPolicy}\"                       |
+|Set Group Permissions System Level    |${GroupSystemReviewers}     ||\"${PasswordReviewerPolicy}\"                       |
+|Set Group Permissions System Level    |${GroupSystemIsas}          ||\"${PasswordIsaPolicy}\"                            |
+|Set Group Permissions System Level    |${GroupSystemPacs}          ||\"${PasswordPacPolicy}\"                            |
+|Set Group Permissions Collection Level|${GroupCollectionRequestors}||\"${PasswordRequestorPolicy}\"||${AccountCollection}|
+|Set Group Permissions Collection Level|${GroupCollectionApprovers} ||\"${PasswordApproverPolicy}\" ||${AccountCollection}|
+|Set Group Permissions Collection Level|${GroupCollectionReviewers} ||\"${PasswordReviewerPolicy}\" ||${AccountCollection}|
+|Set Group Permissions Collection Level|${GroupCollectionIsas}      ||\"${PasswordIsaPolicy}\"      ||${AccountCollection}|
+|Set Group Permissions Collection Level|${GroupCollectionPacs}      ||\"${PasswordPacPolicy}\"      ||${AccountCollection}|
+|Set User Permissions Account Level    |${UserAccountRequestor}     ||\"${PasswordRequestorPolicy}\"                      |
+|Set User Permissions Account Level    |${UserAccountApprover}      ||\"${PasswordApproverPolicy}\"                       |
+|Set User Permissions Account Level    |${UserAccountReviewer}      ||\"${PasswordReviewerPolicy}\"                       |
+|Set User Permissions Account Level    |${UserAccountIsa}           ||\"${PasswordIsaPolicy}\"                            |
+|Set User Permissions Account Level    |${UserAccountPac}           ||\"${PasswordPacPolicy}\"                            |
+|Set User Permissions System Level     |${UserSystemRequestor}      ||\"${PasswordRequestorPolicy}\"                      |
+|Set User Permissions System Level     |${UserSystemApprover}       ||\"${PasswordApproverPolicy}\"                       |
+|Set User Permissions System Level     |${UserSystemReviewer}       ||\"${PasswordReviewerPolicy}\"                       |
+|Set User Permissions System Level     |${UserSystemIsa}            ||\"${PasswordIsaPolicy}\"                            |
+|Set User Permissions System Level     |${UserSystemPac}            ||\"${PasswordPacPolicy}\"                            |
+|Set User Permissions Collection Level |${UserCollectionRequestor}  ||\"${PasswordRequestorPolicy}\"||${SystemCollection} |
+|Set User Permissions Collection Level |${UserCollectionApprover}   ||\"${PasswordApproverPolicy}\" ||${SystemCollection} |
+|Set User Permissions Collection Level |${UserCollectionReviewer}   ||\"${PasswordReviewerPolicy}\" ||${SystemCollection} |
+|Set User Permissions Collection Level |${UserCollectionIsa}        ||\"${PasswordIsaPolicy}\"      ||${SystemCollection} |
+|Set User Permissions Collection Level |${UserCollectionPac}        ||\"${PasswordPacPolicy}\"      ||${SystemCollection} |
+|Set User Permissions On Fake Account  |${UserWithoutPermissions}   ||\"${PasswordRequestorPolicy}\"                      |
+|pause                                 |${ApplyNewPoliciesInterval}                                                       |
+
+
+
+!| scenario                             |Remove Permissions                                                                |
+|Remove Group Permissions On Account    |${GroupAccountRequestors}   ||\"${PasswordRequestorPolicy}\"                      |
+|Remove Group Permissions On Account    |${GroupAccountApprovers}    ||\"${PasswordApproverPolicy}\"                       |
+|Remove Group Permissions On Account    |${GroupAccountReviewers}    ||\"${PasswordReviewerPolicy}\"                       |
+|Remove Group Permissions On Account    |${GroupAccountIsas}         ||\"${PasswordIsaPolicy}\"                            |
+|Remove Group Permissions On Account    |${GroupAccountPacs}         ||\"${PasswordPacPolicy}\"                            |
+|Remove Group Permissions On System     |${GroupSystemRequestors}    ||\"${PasswordRequestorPolicy}\"                      |
+|Remove Group Permissions On System     |${GroupSystemApprovers}     ||\"${PasswordApproverPolicy}\"                       |
+|Remove Group Permissions On System     |${GroupSystemReviewers}     ||\"${PasswordReviewerPolicy}\"                       |
+|Remove Group Permissions On System     |${GroupSystemIsas}          ||\"${PasswordIsaPolicy}\"                            |
+|Remove Group Permissions On System     |${GroupSystemPacs}          ||\"${PasswordPacPolicy}\"                            |
+|Remove Group Permissions On Collection |${GroupCollectionRequestors}||\"${PasswordRequestorPolicy}\"||${AccountCollection}|
+|Remove Group Permissions On Collection |${GroupCollectionApprovers} ||\"${PasswordApproverPolicy}\" ||${AccountCollection}|
+|Remove Group Permissions On Collection |${GroupCollectionReviewers} ||\"${PasswordReviewerPolicy}\" ||${AccountCollection}|
+|Remove Group Permissions On Collection |${GroupCollectionIsas}      ||\"${PasswordIsaPolicy}\"      ||${AccountCollection}|
+|Remove Group Permissions On Collection |${GroupCollectionPacs}      ||\"${PasswordPacPolicy}\"      ||${AccountCollection}|
+|Remove User Permissions On Account     |${UserAccountRequestor}     ||\"${PasswordRequestorPolicy}\"                      |
+|Remove User Permissions On Account     |${UserAccountReviewer}      ||\"${PasswordReviewerPolicy}\"                       |
+|Remove User Permissions On Account     |${UserAccountApprover}      ||\"${PasswordApproverPolicy}\"                       |
+|Remove User Permissions On Account     |${UserAccountIsa}           ||\"${PasswordIsaPolicy}\"                            |
+|Remove User Permissions On Account     |${UserAccountPac}           ||\"${PasswordPacPolicy}\"                            |
+|Remove User Permissions On System      |${UserSystemRequestor}      ||\"${PasswordRequestorPolicy}\"                      |
+|Remove User Permissions On System      |${UserSystemApprover}       ||\"${PasswordApproverPolicy}\"                       |
+|Remove User Permissions On System      |${UserSystemReviewer}       ||\"${PasswordReviewerPolicy}\"                       |
+|Remove User Permissions On System      |${UserSystemIsa}            ||\"${PasswordIsaPolicy}\"                            |
+|Remove User Permissions On System      |${UserSystemPac}            ||\"${PasswordPacPolicy}\"                            |
+|Remove User Permissions On Collection  |${UserCollectionRequestor}  ||\"${PasswordRequestorPolicy}\"||${SystemCollection} |
+|Remove User Permissions On Collection  |${UserCollectionApprover}   ||\"${PasswordApproverPolicy}\" ||${SystemCollection} |
+|Remove User Permissions On Collection  |${UserCollectionReviewer}   ||\"${PasswordReviewerPolicy}\" ||${SystemCollection} |
+|Remove User Permissions On Collection  |${UserCollectionIsa}        ||\"${PasswordIsaPolicy}\"      ||${SystemCollection} |
+|Remove User Permissions On Collection  |${UserCollectionPac}        ||\"${PasswordPacPolicy}\"      ||${SystemCollection} |
+|Remove User Permissions On Fake Account|${UserWithoutPermissions}   ||\"${PasswordRequestorPolicy}\"                      |
+
+
+
+
+
+!|scenario              |Password Access Approved|Requestor|            |Approver|  |Reviewer  |
+|Login                  |${TPAMURL}              |         |${TPAMAdmin}|        |${DefaultPwd}|
+|$Requestor=            |getEval                 |var s = "@Requestor";return s;               |
+|$Approver=             |getEval                 |var s = "@Approver";return s;                |
+|$Reviewer=             |getEval                 |var s = "@Reviewer";return s;                |
+|Logout                                                                                        |
+|Request Password       |$Requestor                                                            |
+|Approve Password       |$Approver                                                             |
+|pause                  |15000                                                                 |
+|Get Login              |$Requestor                                                            |
+|Cancel Password Request|$Requestor                                                            |
+|Review Password        |$Reviewer                                                             |
+
+
+
+
+!|scenario              |Password Access Privileged|privUser                     |
+|Login                  |${TPAMURL}                | |${TPAMAdmin}||${DefaultPwd}|
+|$Requestor=            |getEval                   |var s = "@privUser";return s;|
+|Logout                                                                          |
+|Request Password       |$Requestor                                              |
+|pause                  |15000                                                   |
+|Get Login              |$Requestor                                              |
+|Cancel Password Request|$Requestor                                              |
+|Review Password        |${Auditor}                                              |
+
+
+!|scenario                  |Password Access ISA|isaUser                                         |
+|Get Login ISA              |@isaUser                                                            |
+|pause                      |1000000                                                             |
+|Complete ISA Release Review|${Auditor}         |       |${ManagedAccount}                       |
+|Login                      |${TPAMURL}         |       |@isaUser       |       |${UserPwd}      |
+|pause                      |5000                                                                |
+|Choose Account             |${ManagedAccount}                                                   |
+|click                      |id=Details                                                          |
+|waitForElementPresent      |id=AcctDesc                                                         |
+|$UniqueDesc=               |getEval            |var d = new Date();var s = d.getTime();return s;|
+|type;                      |id=AcctDesc        |new description $UniqueDesc                     |
+|click                      |id=SubmitChangesButton                                              |
+|waitForTextPresent         |Changes saved successfully                                          |
+|Reset Password             |successfully                                                        |
+|Logout                                                                                          |
+
+!|scenario        |Complete ISA Release Review|reviewerName                              |                             |accountName                             |
+|$res=            |GroovyWebDriver            |CompleteISAReleaseReview;${TPAMHost};@reviewerName;${UserPwd};@accountName;This review completed by @reviewerName|
+|Verify_Contain_OR|$res;;Review completed                                                                                                                       |
+|Verify_Contain_OR|$res;;This review completed by @reviewerName                                                                                                 |
+
+
+
+
+!|scenario                                   |Password Access Denied|deniedUser|           |restrictedObject|
+|Login                                       |${TPAMURL}            |          |@deniedUser|   |${UserPwd}  |
+|pause                                       |10000                                                         |
+|clickOnLink                                 |link=Add Password Request                                     |
+|type;                                       |id=SystemNm           |${SystemName}                          |
+|type;                                       |id=AccountNm          |${ManagedAccount}                      |
+|click                                       |id=Accounts                                                   |
+|pause                                       |5000                                                          |
+|$Where=                                     |getText               |xpath=//table[@id='accountsTable']     |
+|Verify_Contain_OR                           |$Where;;${ManagedAccount}                                     |
+|Logout                                                                                                     |
+|Set User Permissions @restrictedObject Level|@deniedUser           |          |\"${PasswordDeniedPolicy}\" |
+|pause                                       |${ApplyNewPoliciesInterval}                                   |
+|Login                                       |${TPAMURL}            |          |@deniedUser|   |${UserPwd}  |
+|pause                                       |10000                                                         |
+|clickOnLink                                 |link=Add Password Request                                     |
+|type;                                       |id=SystemNm           |${SystemName}                          |
+|type;                                       |id=AccountNm          |${ManagedAccount}                      |
+|click                                       |id=Accounts                                                   |
+|pause                                       |5000                                                          |
+|$Where=                                     |getText               |xpath=//table[@id='accountsTable']     |
+|Verify_Contain_NOT                          |$Where;;${ManagedAccount}                                     |
+|Remove User Permissions On @restrictedObject|@deniedUser           |          |\"${PasswordDeniedPolicy}\" |
+|pause                                       |${ApplyNewPoliciesInterval}                                   |
+|Logout                                                                                                     |
+
+
+!|scenario                                   |Password Access Not Denied|deniedUser|           |restrictedObject|
+|Login                                       |${TPAMURL}                |          |@deniedUser|   |${UserPwd}  |
+|pause                                       |10000                                                             |
+|clickOnLink                                 |link=Add Password Request                                         |
+|type;                                       |id=SystemNm               |${SystemName}                          |
+|type;                                       |id=AccountNm              |${ManagedAccount}                      |
+|click                                       |id=Accounts                                                       |
+|pause                                       |5000                                                              |
+|$Where=                                     |getText                   |xpath=//table[@id='accountsTable']     |
+|Verify_Contain_OR                           |$Where;;${ManagedAccount}                                         |
+|Logout                                                                                                         |
+|Set User Permissions @restrictedObject Level|@deniedUser               |          |\"${PasswordDeniedPolicy}\" |
+|pause                                       |${ApplyNewPoliciesInterval}                                       |
+|Login                                       |${TPAMURL}                |          |@deniedUser|   |${UserPwd}  |
+|pause                                       |10000                                                             |
+|clickOnLink                                 |link=Add Password Request                                         |
+|type;                                       |id=SystemNm               |${SystemName}                          |
+|type;                                       |id=AccountNm              |${ManagedAccount}                      |
+|click                                       |id=Accounts                                                       |
+|pause                                       |5000                                                              |
+|$Where=                                     |getText                   |xpath=//table[@id='accountsTable']     |
+|Verify_Contain_OR                           |$Where;;${ManagedAccount}                                         |
+|Remove User Permissions On @restrictedObject|@deniedUser               |          |\"${PasswordDeniedPolicy}\" |
+|pause                                       |${ApplyNewPoliciesInterval}                                       |
+|Logout                                                                                                         |
+
+
+!|scenario                            |Password Access Denied on Collection Level|deniedUser|                           |collectionName  |
+|Login                                |${TPAMURL}                                |          |@deniedUser                ||${UserPwd}     |
+|pause                                |10000                                                                                             |
+|clickOnLink                          |link=Add Password Request                                                                         |
+|type;                                |id=SystemNm                               |${SystemName}                                          |
+|type;                                |id=AccountNm                              |${ManagedAccount}                                      |
+|click                                |id=Accounts                                                                                       |
+|pause                                |5000                                                                                              |
+|$Where=                              |getText                                   |xpath=//table[@id='accountsTable']                     |
+|Verify_Contain_OR                    |$Where;;${ManagedAccount}                                                                         |
+|Logout                                                                                                                                  |
+|Set User Permissions Collection Level|@deniedUser                               |          |\"${PasswordDeniedPolicy}\"||@collectionName|
+|pause                                |${ApplyNewPoliciesInterval}                                                                       |
+|Login                                |${TPAMURL}                                |          |@deniedUser                ||${UserPwd}     |
+|pause                                |10000                                                                                             |
+|clickOnLink                          |link=Add Password Request                                                                         |
+|type;                                |id=SystemNm                               |${SystemName}                                          |
+|type;                                |id=AccountNm                              |${ManagedAccount}                                      |
+|click                                |id=Accounts                                                                                       |
+|pause                                |5000                                                                                              |
+|$Where=                              |getText                                   |xpath=//table[@id='accountsTable']                     |
+|Verify_Contain_NOT                   |$Where;;${ManagedAccount}                                                                         |
+|Remove User Permissions On Collection|@deniedUser                               |          |\"${PasswordDeniedPolicy}\"||@collectionName|
+|pause                                |${ApplyNewPoliciesInterval}                                                                       |
+|Logout                                                                                                                                  |
+
+
+!|scenario                            |Password Access Not Denied on Collection Level|deniedUser|                           |collectionName  |
+|Login                                |${TPAMURL}                                    |          |@deniedUser                ||${UserPwd}     |
+|pause                                |10000                                                                                                 |
+|clickOnLink                          |link=Add Password Request                                                                             |
+|type;                                |id=SystemNm                                   |${SystemName}                                          |
+|type;                                |id=AccountNm                                  |${ManagedAccount}                                      |
+|click                                |id=Accounts                                                                                           |
+|pause                                |5000                                                                                                  |
+|$Where=                              |getText                                       |xpath=//table[@id='accountsTable']                     |
+|Verify_Contain_OR                    |$Where;;${ManagedAccount}                                                                             |
+|Logout                                                                                                                                      |
+|Set User Permissions Collection Level|@deniedUser                                   |          |\"${PasswordDeniedPolicy}\"||@collectionName|
+|pause                                |${ApplyNewPoliciesInterval}                                                                           |
+|Login                                |${TPAMURL}                                    |          |@deniedUser                ||${UserPwd}     |
+|pause                                |10000                                                                                                 |
+|clickOnLink                          |link=Add Password Request                                                                             |
+|type;                                |id=SystemNm                                   |${SystemName}                                          |
+|type;                                |id=AccountNm                                  |${ManagedAccount}                                      |
+|click                                |id=Accounts                                                                                           |
+|pause                                |5000                                                                                                  |
+|$Where=                              |getText                                       |xpath=//table[@id='accountsTable']                     |
+|Verify_Contain_OR                    |$Where;;${ManagedAccount}                                                                             |
+|Remove User Permissions On Collection|@deniedUser                                   |          |\"${PasswordDeniedPolicy}\"||@collectionName|
+|pause                                |${ApplyNewPoliciesInterval}                                                                           |
+|Logout                                                                                                                                      |
+
+
+
+!|scenario                                |Password Access Without Permissions|deniedUser|             |allowedObject   |
+|Login                                    |${TPAMURL}                         |          |@deniedUser  |   |${UserPwd}  |
+|pause                                    |10000                                                                        |
+|clickOnLink                              |link=Add Password Request                                                    |
+|type;                                    |id=SystemNm                        |${SystemName}                            |
+|type;                                    |id=AccountNm                       |${ManagedAccount}                        |
+|click                                    |id=Accounts                                                                  |
+|pause                                    |5000                                                                         |
+|$Where=                                  |getText                            |xpath=//table[@id='accountsTable']       |
+|Verify_Contain_NOT                       |$Where;;${ManagedAccount}                                                    |
+|Logout                                                                                                                 |
+|Set User Permissions @allowedObject Level|@deniedUser                        |          |\"${PasswordRequestorPolicy}\"|
+|pause                                    |${ApplyNewPoliciesInterval}                                                  |
+|Login                                    |${TPAMURL}                         |          |@deniedUser  |   |${UserPwd}  |
+|pause                                    |10000                                                                        |
+|clickOnLink                              |link=Add Password Request                                                    |
+|type;                                    |id=SystemNm                        |${SystemName}                            |
+|type;                                    |id=AccountNm                       |${ManagedAccount}                        |
+|click                                    |id=Accounts                                                                  |
+|pause                                    |5000                                                                         |
+|$Where=                                  |getText                            |xpath=//table[@id='accountsTable']       |
+|Verify_Contain_OR                        |$Where;;${ManagedAccount}                                                    |
+|Remove User Permissions On @allowedObject|@deniedUser                        |          |\"${PasswordRequestorPolicy}\"|
+|pause                                    |${ApplyNewPoliciesInterval}                                                  |
+|Logout                                                                                                                 |
+
+############################################
+
+!| scenario        |Request Password |requestorName                                                                                                                                                      |
+|Login             |${TPAMURL}       |                                  |@requestorName                                  |                                  |${UserPwd}                                  |
+|pause             |10000                                                                                                                                                                                |
+|clickOnLink       |link=Add Password Request                                                                                                                                                            |
+|type;             |id=SystemNm      |${SystemName}                                                                                                                                                      |
+|type;             |id=AccountNm     |${ManagedAccount}                                                                                                                                                  |
+|click             |id=Accounts      |                                                                                                                                                                   |
+|click             |xpath=//input[@type='checkbox']                                                                                                                                                      |
+|click             |id=Details                                                                                                                                                                           |
+|select;           |id=DurationHrs   |label=0                                                                                                                                                            |
+|select;           |id=DurationQtrHrs|label=15                                                                                                                                                           |
+|type;             |id=RequestReason |password request                                                                                                                                                   |
+|click             |id=SubmitChanges                                                                                                                                                                     |
+|waitForTextPresent|*RequestID:*has been submitted.*                                                                                                                                                     |
+|$res=             |getText          |xpath=//div[@id='ResultsDiv']                                                                                                                                      |
+|$RequestID=       |getEval          |var rstr = "RequestID: ";var i1 = "$res".indexOf(rstr);var i2 = "$res".substring(i1 + rstr.length);var i3 = i2.indexOf(" ");var i4 = i2.substring (0,i3);return i4;|
+|Logout                                                                                                                                                                                                  |
+
+!| scenario        |Approve Password   |approverName                |
+|Login             |${TPAMURL}         | |@approverName ||${UserPwd}|
+|pause             |10000                                           |
+|click             |id=Approvals                                    |
+|click             |link=Pwd(${ManagedAccount})                     |
+|click             |xpath=//td[contains(text(),'${ManagedAccount}')]|
+|click             |id=Details                                      |
+|type;             |id=ResponseComment |ok to approve               |
+|click             |id=ApproveReq                                   |
+|waitForTextPresent|*The response* was submitted successfully*      |
+|Logout                                                             |
+
+!|scenario         |Review Password    |reviewerName              |
+|Login             |${TPAMURL}         ||@reviewerName||${UserPwd}|
+|pause             |10000                                         |
+|click             |id=PendingReviews                             |
+|click             |link=$RequestID                               |
+|type;             |id=NewReviewComment|I saw it                  |
+|pause             |2000                                          |
+|click             |id=CompleteReviewButton                       |
+|waitForTextPresent|Saved Successfully*                           |
+|Logout                                                           |
+
+
+!| scenario        |Cancel Password Request   |requestorName                      |
+|Login             |${TPAMURL}                |  |@requestorName  |  |${UserPwd}  |
+|pause             |10000                                                         |
+|click             |id=CurrentRequests        |                                   |
+|click             |xpath=//table[@id='requestsTable']//tr[contains(@id,'P')]/td/a|
+|type;             |id=ResponseComment        |Decline                            |
+|click             |id=SubmitChanges                                              |
+|waitForTextPresent|*The response* was submitted successfully*                    |
+|Logout                                                                           |
+
+
+!| scenario             |Get Login                      |requestorName                                                                          |
+|Login                  |${TPAMURL}                     |                |@requestorName                |              |${UserPwd}              |
+|pause                  |5000                                                                                                                   |
+|click                  |id=CurrentRequests             |                                                                                       |
+|click                  |xpath=//td[contains(text(),'${SystemName}')]/../td/a[contains(text(),'${ManagedAccount}')]                             |
+|click                  |xpath=//table[@id='MainListingTable']//td[contains(text(),'${SystemName}')]/../td[contains(text(),'${ManagedAccount}')]|
+|click                  |id=Password                                                                                                            |
+|pause                  |5000                                                                                                                   |
+|waitForElementPresent  |xpath=//div[@class='displayPassword']                                                                                  |
+|$passwordstr=          |getText                        |xpath=//div[@class='displayPassword']                                                  |
+|$GeneratedPwd=         |get_password                   |$passwordstr                                                                           |
+|Logout                                                                                                                                         |
+|Login Account to System|$GeneratedPwd                                                                                                          |
+
+
+!| scenario             |Get Login ISA         |requestorName                               |
+|Login                  |${TPAMURL}            |     |@requestorName     |    |${UserPwd}   |
+|clickOnLink            |link=Manage Accounts                                               |
+|type;                  |id=SystemNm           |${SystemName}                               |
+|type;                  |id=AccountNm          |${ManagedAccount}                           |
+|click                  |id=Listing                                                         |
+|click                  |xpath=//table[@id='AccountListing']//td[text()='${ManagedAccount}']|
+|click                  |id=Passwords                                                       |
+|type;                  |id=ReleaseReasonText  |show me the password                        |
+|click                  |id=Password                                                        |
+|pause                  |5000                                                               |
+|waitForElementPresent  |xpath=//div[@class='displayPassword']                              |
+|$passwordstr=          |getText               |xpath=//div[@class='displayPassword']       |
+|$GeneratedPwd=         |get_password          |$passwordstr                                |
+|Logout                                                                                     |
+|Login Account to System|$GeneratedPwd                                                      |
+
+
+
+
+!|scenario         |Set Min Approve number|appruveNumber      |
+|click             |id=Details            |                   |
+|type;             |id=MinApprovers       |@appruveNumber     |
+|type;             |id=AcctDesc           |Set approvers count|
+|click             |id=SubmitChangesButton|                   |
+|waitForTextPresent|Changes saved successfully for            |
+
+
+
+!|scenario         |Set Manual Management         |
+|click             |id=Details                    |
+|click             |id=pwdMgmtManual              |
+|click             |id=SubmitChangesButton        |
+|waitForTextPresent|Changes saved successfully for|
+
+!|scenario         |Set Auto Management           |
+|click             |id=Details                    |
+|click             |id=pwdMgmtAuto                |
+|typeKeys;         |id=AcctDesc         |a        |
+|click             |id=SubmitChangesButton        |
+|waitForTextPresent|Changes saved successfully for|
+
+
+
+
+!|scenario         |XXXXSchedule Reset Password|testResult                                                                                                                                     |
+|click             |id=Details                                                                                                                                                                 |
+|click             |id=Management                                                                                                                                                              |
+|$Hours=           |getEval                    |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);var s = d.getUTCHours();if ((s + "").length == 1) s = "0" + s;else d.getUTCHours();    |
+|$Minutes=         |getEval                    |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);var s = d.getUTCMinutes();if ((s + "").length == 1) s = "0" + s;else d.getUTCMinutes();|
+|$Months=          |getEval                    |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);var s = d.getUTCMonth()+1;if ((s + "").length == 1) s = "0" + s;else d.getUTCMonth()+1;|
+|$Days=            |getEval                    |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);var s = d.getUTCDate();if ((s + "").length == 1) s = "0" + s;else d.getUTCDate();      |
+|$Years=           |getEval                    |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);d.getUTCFullYear();                                                                    |
+|type;             |id=Hr                      |$Hours                                                                                                                                         |
+|typeKeys;         |id=Hr                      |$Hours                                                                                                                                         |
+|type;             |id=Min                     |$Minutes                                                                                                                                       |
+|type;             |id=Mon                     |$Months                                                                                                                                        |
+|type;             |id=DayNumber               |$Days                                                                                                                                          |
+|type;             |id=YearNumber              |$Years                                                                                                                                         |
+|click             |id=Information             |                                                                                                                                               |
+|type;             |id=RelNotifyEmail          |${AccountEMail}                                                                                                                                |
+|type;             |id=RelNotifyEmail          |                                                                                                                                               |
+|click             |id=SubmitChangesButton     |                                                                                                                                               |
+|waitForTextPresent|*Changes saved successfully for*                                                                                                                                           |
+
+
+
+
+
+!|scenario                  |Password Release Request And Responce                                                      |
+|Login                      |${TPAMURL}                           ||${TPAMAdmin}                         ||${DefaultPwd}|
+|pause                      |10000                                                                                      |
+|Choose Account             |${ManagedAccount}                                                                          |
+|Set Min Approve number     |${ApproversCount}                                                                          |
+|Set Auto Management                                                                                                    |
+|Set Min Reviews            |1                                                                                          |
+|Logout                                                                                                                 |
+|Request Pwd                |${ManagedAccount}                                                                          |
+|pause                      |200000                                                                                     |
+|Check Mail                 |${UserAccountRequestorEMail}         ||Release Request Notification         ||$RequestID   |
+|Check Approvers Mailboxes  |Release Request Notification         ||$RequestID                                          |
+|Approve Pwd                                                                                                            |
+|Cancel Request                                                                                                         |
+|pause                      |200000                                                                                     |
+|Check Mail                 |${SystemEscalationEMail}             ||Release Request Notification         ||$RequestID   |
+|Delete Mails               |${SystemEscalationEMail}                                                                   |
+|Check Mail                 |${UserAccountRequestorEMail}         ||Release Request Response notification||$RequestID   |
+|Check Approvers Mailboxes  |Release Request Response notification||$RequestID                                          |
+|Delete Mails               |${UserAccountRequestorEMail}                                                               |
+|Clear Approvers Mailboxes                                                                                              |
+|Check All Mailboxes No Mail|Release Request Notification         ||$RequestID                                          |
+|Check All Mailboxes No Mail|Release Request Response notification||$RequestID                                          |
+
+
+
+
+!|scenario                  |Password Release Review Request                                              |
+|Login                      |${TPAMURL}                                      ||${TPAMAdmin}||${DefaultPwd}|
+|Choose Account             |${ManagedAccount}                                                            |
+|Set Min Approve number     |0                                                                            |
+|Set Min Reviews            |1                                                                            |
+|Logout                                                                                                   |
+|Request Pwd                |${ManagedAccount}                                                            |
+|Get Login                                                                                                |
+|Cancel Request                                                                                           |
+|pause                      |200000                                                                       |
+|Check Reviewers Mailboxes  |Password Release Review Requirement Notification||$RequestID                 |
+|Clear Reviewers Mailboxes                                                                                |
+|Check All Mailboxes No Mail|Password Release Review Requirement Notification||$RequestID                 |
+|Delete Mails               |${AccountEMail}                                                              |
+
+!|scenario                  |Privileged Password Release                                                                                                                                                                                    |
+|Login                      |${TPAMURL}                                     ||${TPAMAdmin}                                   ||${DefaultPwd}                                                                                                |
+|Choose Account             |${ManagedAccount}                                                                                                                                                                                              |
+|Set Min Approve number     |0                                                                                                                                                                                                              |
+|Set Min Reviews            |0                                                                                                                                                                                                              |
+|Logout                                                                                                                                                                                                                                     |
+|Request Pwd                |${ManagedAccount}                                                                                                                                                                                              |
+|Get Login                                                                                                                                                                                                                                  |
+|pause                      |200000                                                                                                                                                                                                         |
+|Cancel Request                                                                                                                                                                                                                             |
+|Check Mail                 |${AccountEMail}                                ||Special Privilege Password Release Notification||password for ${ManagedAccount} on ${SystemName} was retrieved without dual control by ${UserAccountRequestor}|
+|Delete Mails               |${AccountEMail}                                                                                                                                                                                                |
+|Check All Mailboxes No Mail|Special Privilege Password Release Notification||password for ${ManagedAccount} on ${SystemName} was retrieved without dual control by ${UserAccountRequestor}                                                 |
+
+
+!|scenario         |Set Min Reviews       |reviewsNumber             |
+|click             |id=Reviews            |                          |
+|type;             |id=PwdReviewCnt       |@reviewsNumber            |
+|type;             |id=PwdEscalationEmail |${ReviewerEscalationEMail}|
+|click             |id=SubmitChangesButton|                          |
+|waitForTextPresent|Changes saved successfully for                   |
+
+
+!|scenario         |Reset Password                    |testResult  |
+|click             |id=ResetPassButton                             |
+|waitForTextPresent|*Results from the*                             |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||@testResult|
+
+!|scenario    |Login Account to System                    |ManPwd                    |
+|accountAction|${SystemPlatform};;login;;${SystemAddress};;${ManagedAccount};;@ManPwd|
+
+
+

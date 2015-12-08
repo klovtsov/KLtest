@@ -1,0 +1,60 @@
+!define CSVEthalonFile {${ProjDir}\Scripts\Ethalons\ListOperations\Export\ExportFiles.csv}
+!define ASPEthalonFile {${ProjDir}\Scripts\Ethalons\ListOperations\Export\ExportFiles.xls}
+!define CSVResultFile {${ProjDir}\Scripts\Ethalons\ListOperations\ExportFiles.csv}
+!define ASPResultFile {${ProjDir}\Scripts\Ethalons\ListOperations\ExportFiles.xls}
+!define PathResultFile {${ProjDir}\Scripts\Ethalons\ListOperations\}
+
+!define DateTimeRegExp {(\d+)/(\d+)/(\d+) (\d+):(\d+):(\d+) (?:AM|PM)}
+
+!define SystemName {${prefix}ListSystem}
+!define SystemName1 {${SystemName}1}
+!define SystemName2 {${SystemName}12}
+
+!define FilePath {${ProjDir}\Scripts\Ethalons\ListOperations\}
+
+!define FileName {${prefix}ListFile}
+!define FileName1 {${FileName}1}
+!define FileName2 {${FileName}12}
+
+!define FileEmailAddr {${prefix}ListFile@email.com}
+
+!define UserName {${prefix}ListUser}
+!define UserName1 {${UserName}1}
+!define UserName2 {${UserName}2}
+!define UserName3 {${UserName}3}
+
+!define GroupName {${prefix}ListGroup}
+!define GroupName1 {${GroupName}1}
+!define GroupName2 {${GroupName}12}
+
+!define CollectionName {${prefix}ListCollection}
+!define CollectionName1 {${CollectionName}1}
+
+
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.ListOperations.ScenarioLibrary
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+
+!|script                                                                                                                                                                                       |
+|Create File          |${FilePath}       ||${FileName1}                                                                                                                                        |
+|Create File          |${FilePath}       ||${FileName2}                                                                                                                                        |
+|Add System           |${CLIBatch}       ||--SystemName ${SystemName1} --Platform Windows --NetworkAddress 1.1.1.1                                                 ||successfully              |
+|Add File             |${SystemName1}    ||${FileName1}.txt                                                                                                                                    |
+|Add File             |${SystemName1}    ||${FileName2}.txt                                                                                                                                    |
+|Add User             |${CLIBatch}       ||--UserName ${UserName1} --FirstName Mr --LastName White                                                                 ||successfully              |
+|Add User             |${CLIBatch}       ||--UserName ${UserName2} --FirstName Mr --LastName Black                                                                 ||successfully              |
+|Add Collection       |${CLIBatch}       ||--CollectionName ${CollectionName1}                                                                                     ||successfully              |
+|Add Collection member|${CLIBatch}       ||--CollectionName ${CollectionName1} --SystemName ${SystemName1} --FileName ${FileName1}.txt                             ||successfully              |
+|Add Collection member|${CLIBatch}       ||--CollectionName ${CollectionName1} --SystemName ${SystemName1} --FileName ${FileName2}.txt                             ||successfully              |
+|Set Access Policy    |${CLIBatch}       ||--SystemName ${SystemName1} --FileName ${FileName1}.txt --Action ADD --AccessPolicyNam Approver --UserName ${UserName1} ||successfully              |
+|Set Access Policy    |${CLIBatch}       ||--SystemName ${SystemName1} --FileName ${FileName1}.txt --Action ADD --AccessPolicyNam Requestor --UserName ${UserName2}||successfully              |
+|pause                |30000                                                                                                                                                                   |
+|List Files                                                                                                                                                                                    |
+|DateTime replacer                                                                                                                                                                             |
+|Check Files Export                                                                                                                                                                            |
+|Open                 |${TPAMURL}        ||${TPAMAdmin}                                                                                                            ||${DefaultPwd}             |
+|File Listing         |!=${FileName2}.txt||${CollectionName1}                                                                                                      ||${FileName1}||${FileName2}|
+|Delete System        |${CLIBatch}       ||--SystemName ${SystemName1}                                                                                             ||successfully              |
+|Delete User          |${CLIBatch}       ||--UserName ${UserName1}                                                                                                 ||successfully              |
+|Delete User          |${CLIBatch}       ||--UserName ${UserName2}                                                                                                 ||successfully              |
+|Drop Collection      |${CLIBatch}       ||--CollectionName ${CollectionName1}                                                                                     ||successfully              |

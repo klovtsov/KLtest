@@ -1,0 +1,3 @@
+!|scenario    |Login Account to System                                 |ManPwd                                |
+|accountAction|${SystemPlatform};;password;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${ManagedAccount}|
+|accountAction|${SystemPlatform};;login;;${SystemAddress};;${ManagedAccount};;@ManPwd                         |

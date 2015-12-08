@@ -1,0 +1,10 @@
+!define SystemName {${prefix}_win7}
+!define SystemPlatform {Windows Desktop}
+!define SystemAddress {10.30.38.23}
+!define FunctAcct {cotin}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {`123qwe}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+#!include -c <AutoTestsWebDrv.PlatformsTesting.PlatformSpecific.ManagedAccountCanCheckPassword
+

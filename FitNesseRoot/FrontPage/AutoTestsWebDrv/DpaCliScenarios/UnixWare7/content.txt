@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.CliScenarios.UnixWare7
+!include -c ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.UnixWare7.PlatformSpecific
+!include -c <AutoTestsWebDrv.DpaCliScenarios.UnixWare7.PlatformSpecific

@@ -1,0 +1,42 @@
+UserName	FullName	ExtAuthReqd	GroupName	SystemName	AccountName	FileName	CollectionName	AccessPolicyName	PolicySource	PermissionType	PermissionName	CmdName	EffectiveFl
+			Global Appr/Req Group				All Systems	Approver-Requestor	Group-Collection(S)				Yes
+			Global Approver Group				All Systems	Approver	Group-Collection(S)				Yes
+			Global ISA Group				All Systems	ISA	Group-Collection(S)				Yes
+			Global PPM Appr/Req Group				All Systems	PPM Approver-Requestor	Group-Collection(S)				Yes
+			Global PPM Approver Group				All Systems	PPM Approver	Group-Collection(S)				Yes
+			Global PPM ISA Group				All Systems	PPM ISA	Group-Collection(S)				Yes
+			Global PPM Priv. Access Group				All Systems	PPM Privileged Access	Group-Collection(S)				Yes
+			Global PPM Requestor Group				All Systems	PPM Requestor	Group-Collection(S)				Yes
+			Global PPM Reviewer Group				All Systems	PPM Reviewer	Group-Collection(S)				Yes
+			Global Privileged Access Group				All Systems	Privileged Access	Group-Collection(S)				Yes
+			Global PSM Appr/Req Group				All Systems	PSM Approver-Requestor	Group-Collection(S)				Yes
+			Global PSM Approver Group				All Systems	PSM Approver	Group-Collection(S)				Yes
+			Global PSM ISA Group				All Systems	PSM ISA	Group-Collection(S)				Yes
+			Global PSM Priv. Access Group				All Systems	PSM Privileged Access	Group-Collection(S)				Yes
+			Global PSM Requestor Group				All Systems	PSM Requestor	Group-Collection(S)				Yes
+			Global PSM Reviewer Group				All Systems	PSM Reviewer	Group-Collection(S)				Yes
+			Global Requestor Group				All Systems	Requestor	Group-Collection(S)				Yes
+			Global Reviewer Group				All Systems	Reviewer	Group-Collection(S)				Yes
+			klbatch_group1				klbatch_collection2	Requestor	Group-Collection(A/F)				Yes
+			klbatch_group1				klbatch_collection2	Requestor	Group-Collection(S)				Yes
+			klbatch_group1	klbatchsys15				PPM Approver-Requestor	Group-System				Yes
+			klbatch_group2	klbatchsys16				PPM Denied	Group-System				Yes
+			klbatch_group1	klbatchsys17				PPM ISA	Group-System				Yes
+			klbatch_group2	klbatchsys18				PPM Privileged Access	Group-System				Yes
+			klbatch_group1	klbatchsys19				PPM Requestor	Group-System				Yes
+			klbatch_group1	klbatchsys25	klbatchacc			PSM ISA	Group-Account				Yes
+			klbatch_group2	klbatchsys26	klbatchacc			PSM Privileged Access	Group-Account				Yes
+			klbatch_group1	klbatchsys27	klbatchacc			PSM Requestor	Group-Account				Yes
+			klbatch_group2	klbatchsys28	klbatchacc			PSM Reviewer	Group-Account				Yes
+			klbatch_group1	klbatchsys29	klbatchacc			Requestor	Group-Account				Yes
+klbatchuser1	Doe, John	None		klbatchsys10				Approver	User-System				Yes
+klbatchuser1	Doe, John	None		klbatchsys21	klbatchacc			Privileged Access	User-Account				Yes
+klbatchuser2	Doe, John	None		klbatchsys11				Approver-Requestor	User-System				Yes
+klbatchuser2	Doe, John	None		klbatchsys22	klbatchacc			PSM Approver	User-Account				Yes
+klbatchuser3	Ivanov, Ivan	None		klbatchsys12				Denied	User-System				Yes
+klbatchuser3	Ivanov, Ivan	None		klbatchsys23	klbatchacc			PSM Approver-Requestor	User-Account				Yes
+klbatchuser5	Doe, Jane	None		klbatchsys14				PPM Approver	User-System				Yes
+klbatchuser6	Doe, John	None					klbatch_collection3	Requestor	User-Collection(S)				Yes
+klbatchuser6	Doe, John	None		klbatchsys20	klbatchacc			PPM Reviewer	User-Account				Yes
+klbatchuserwithveryverybigname	Doe, John	None		klbatchsys13				ISA	User-System				Yes
+klbatchuserwithveryverybigname	Doe, John	None		klbatchsys24	klbatchacc			PSM Denied	User-Account				Yes

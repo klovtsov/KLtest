@@ -1,0 +1,8 @@
+!contents
+
+!include -c <AutomatedTesting.PlatformsTesting.LinuxRedHat
+!define AuthorizedKeysFile {authorized_keys2}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.LinuxRedHat.PlatformSpecific
+!include -c <AutomatedTesting.SshPlatformsTests.AixSshPlatform.PlatformSpecific

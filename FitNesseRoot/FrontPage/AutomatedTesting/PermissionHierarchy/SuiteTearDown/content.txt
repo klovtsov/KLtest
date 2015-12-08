@@ -1,0 +1,7 @@
+!include -c <FrontPage.AutomatedTesting.SetUp
+
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+
+!|script                                   |
+|Delete User      |${Requestor}            |
+!include -c <PermissionHierarchy.TearDown

@@ -1,0 +1,12 @@
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+
+!4 Create example user, make user template and create a new user from template
+!|script                                                                                                          |
+|Add User          |${TestUserName}|with options |-MobileAllowedFlag Y                                            |
+|Make User Template|${TemplateName}|from         |${TestUserName}|retain permissions|false|retain membership|false|
+|Create User       |${newUserName} |from template|${TemplateName}                                                 |
+
+!4 Check new user properties
+!|script                                                                                       |
+|List properties|userName,MobileAllowedFlag|for user|${newUserName}|contains|${newUserName}\s+Y|

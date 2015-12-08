@@ -1,0 +1,245 @@
+#!|scenario            |BFER3624                                                                                                                                                                           |
+#|click                |id=Details                                                                                                                                                                         |
+#|click                |id=Management                                                                                                                                                                      |
+#|$Hours=              |getEval                                        |var d = new Date();d.setMinutes(d.getMinutes()+1);var s = d.getHours();if ((s + "").length == 1) s = "0" + s;else d.getHours();    |
+#|$Minutes=            |getEval                                        |var d = new Date();d.setMinutes(d.getMinutes()+1);var s = d.getMinutes();if ((s + "").length == 1) s = "0" + s;else d.getMinutes();|
+#|$Months=             |getEval                                        |var d = new Date();d.setMinutes(d.getMinutes()+1);var s = d.getMonth()+1;if ((s + "").length == 1) s = "0" + s;else d.getMonth()+1;|
+#|$Days=               |getEval                                        |var d = new Date();d.setMinutes(d.getMinutes()+1);var s = d.getDate();if ((s + "").length == 1) s = "0" + s;else d.getDate();      |
+#|$Years=              |getEval                                        |var d = new Date();d.setMinutes(d.getMinutes()+1);d.getFullYear();                                                                 |
+#|type;                |id=Hr                                          |$Hours                                                                                                                             |
+#|typeKeys;            |id=Hr                                          |$Hours                                                                                                                             |
+#|type;                |id=Min                                         |$Minutes                                                                                                                           |
+#|type;                |id=Mon                                         |$Months                                                                                                                            |
+#|type;                |id=DayNumber                                   |$Days                                                                                                                              |
+#|type;                |id=YearNumber                                  |$Years                                                                                                                             |
+#|click                |id=Information                                 |                                                                                                                                   |
+#|type;                |id=RelNotifyEmail                              |just a test                                                                                                                        |
+#|type;                |id=RelNotifyEmail                              |                                                                                                                                   |
+#|click                |id=SubmitChangesButton                         |                                                                                                                                   |
+#|waitForTextPresent   |*Changes saved successfully for*                                                                                                                                                   |
+#|pause                |${SchedulePasswordResetTimeout}                                                                                                                                                    |
+#|Choose Account       |${ManagedAccount}                                                                                                                                                                  |
+#|click                |id=Logs                                                                                                                                                                            |
+#|click                |id=ChangeLog                                                                                                                                                                       |
+#|waitForElementPresent|//table[@id='changeLogTable']/tbody/tr[@id='0']|                                                                                                                                   |
+#|$Where=              |getText                                        |//table[@id='changeLogTable']/tbody/tr[@id='0']                                                                                    |
+#|Verify_Contain_NOT   |$Where;;Scheduled                                                                                                                                                                  |
+
+
+
+#!|scenario            |Workaround BFER3724-5                          |testResult|       |testReason      |
+#|Choose Account       |${ManagedAccount}                                                                  |
+#|waitForElementPresent|id=Logs                                                                            |
+#|click                |id=Logs                                                                            |
+#|waitForElementPresent|id=rb_LogsDtAll                                                                    |
+#|click                |id=rb_LogsDtAll                                                                    |
+#|waitForElementPresent|id=ChangeLog                                                                       |
+#|click                |id=ChangeLog                                                                       |
+#|waitForElementPresent|//table[@id='changeLogTable']/tbody/tr[@id='0']                                    |
+#|verifyText           |//table[@id='changeLogTable']/tbody/tr[@id='0']|          |@testReason.*@testResult|
+#
+
+#!|scenario     |BFER3520                                            |
+#|Check Password|${ManagedAccount}||was checked successfully;;Success|
+#|BFER3520(common)                                                   |
+
+#!|scenario     |BFER3520(GUI)                    |
+#|Check Password|was checked successfully;;Success|
+#|BFER3520(common)                                |
+
+#!|scenario            |BFER3520(common)                                                                               |
+#|pause                |${RestoreFunctAcctPasswordTimeout}                                                             |
+#|Choose Account       |${ManagedAccount}                                                                              |
+#|click                |id=Logs                                                                                        |
+#|click                |id=ChangeLog                                                                                   |
+#|waitForElementPresent|//table[@id='changeLogTable']/tbody/tr[@id='0']|                                               |
+#|$Where=              |getText                                        |//table[@id='changeLogTable']/tbody/tr[@id='0']|
+#|Verify_Contain_NOT   |$Where;;Mismatch.*Success                                                                      |
+
+
+#!|scenario  |BFER3523                 |
+#|Test System|Active Server Pages error|
+
+#!|scenario     |BFER3618            |
+#|Reset Password|successfully changed|
+
+#!|scenario     |BFER3575                      |
+#|Check Password|PAR matches the managed system|
+
+#!|scenario     |BFER3629                                         |
+#|Reset Password|Unable to determine UID of the ${ManagedAccount}!|
+
+#!|scenario     |BFER3767                |
+#|Reset Password|was successfully changed|
+
+#!|scenario         |BFER3743                          |
+#|click             |id=bt_Test                        |
+#|waitForTextPresent|ajax                              |
+#|verifyText        |//div[@id='ResultDetailDiv']||ajax|
+
+
+
+#!|scenario         |BFER3744                                                                                                  |
+#|click             |id=CheckPassButton                                                                                        |
+#|waitForTextPresent|Procedure                                                                                                 |
+#|verifyText        |//div[@id='ResultDetailDiv']||Procedure 'CheckPass' expects parameter '@AccountID', which was not supplied|
+
+
+#!|scenario         |BFER3746                                                                                                    |
+#|click             |id=ResetPassButton                                                                                          |
+#|waitForTextPresent|Procedure                                                                                                   |
+#|verifyText        |//div[@id='ResultDetailDiv']||Procedure 'ForceChange' expects parameter '@AccountID', which was not supplied|
+
+
+
+#!|scenario |BFER3844                                                                                 |
+#|Check Mail|${SystemEMail}||password release request expiration||The password for non-managed account|
+
+
+#!|scenario    |BFER3868                                                           |
+#|Check No Mail|${GroupCollectionApprover}@${TPAMEMailDomain}||${FRRN} ||$RequestID|
+#|Check No Mail|${GroupCollectionApprover}@${TPAMEMailDomain}||${FRRRN}||$RequestID|
+#|Check No Mail|${GroupFileApprover}@${TPAMEMailDomain}      ||${FRRN} ||$RequestID|
+#|Check No Mail|${GroupFileApprover}@${TPAMEMailDomain}      ||${FRRRN}||$RequestID|
+
+
+#!|scenario          |BFER3869                                                                                |
+#|Request File       |${SystemName}                                 ||${FileName}||${GroupFileRequestor}      |
+#|Approve File       |${GroupFileApprover}                                                                    |
+#|pause              |300000                                                                                  |
+#|Check No Mail      |${GroupFileRequestor}@${TPAMEMailDomain}      ||${FRRN}    ||$RequestID                 |
+#|Check No Mail      |${GroupFileRequestor}@${TPAMEMailDomain}      ||${FRRRN}   ||$RequestID                 |
+#|Cancel File Request|${GroupFileRequestor}                                                                   |
+#|Request File       |${SystemName}                                 ||${FileName}||${GroupCollectionRequestor}|
+#|Approve File       |${GroupCollectionApprover}                                                              |
+#|pause              |300000                                                                                  |
+#|Check No Mail      |${GroupCollectionRequestor}@${TPAMEMailDomain}||${FRRN}    ||$RequestID                 |
+#|Check No Mail      |${GroupCollectionRequestor}@${TPAMEMailDomain}||${FRRRN}   ||$RequestID                 |
+#|Cancel File Request|${GroupCollectionRequestor}                                                             |
+
+
+
+#!|scenario                  |BFER3863                                                                                          |
+#|Open Session               |$Requestor                                                                                        |
+#|pause                      |120000                                                                                            |
+#|Check Mail                 |${UserAccountReviewer}@${TPAMEMailDomain}    ||Session Review Requirement Notification||$RequestID|
+#|Check Mail                 |${UserSystemReviewer}@${TPAMEMailDomain}     ||Session Review Requirement Notification||$RequestID|
+#|Check Mail                 |${UserCollectionReviewer}@${TPAMEMailDomain} ||Session Review Requirement Notification||$RequestID|
+#|Check Mail                 |${GroupAccountReviewer}@${TPAMEMailDomain}   ||Session Review Requirement Notification||$RequestID|
+#|Check Mail                 |${GroupSystemReviewer}@${TPAMEMailDomain}    ||Session Review Requirement Notification||$RequestID|
+#|Check Mail                 |${GroupCollectionReviewer}@${TPAMEMailDomain}||Session Review Requirement Notification||$RequestID|
+#|Check Mail                 |${GlobalGroupReviewer}@${TPAMEMailDomain}    ||Session Review Requirement Notification||$RequestID|
+#|Check Mail                 |${GlobalGroupApprover}@${TPAMEMailDomain}    ||Session Review Requirement Notification||$RequestID|
+#|Check Mail                 |${AuditorEMail}                              ||Session Review Requirement Notification||$RequestID|
+#|Delete Mails               |${UserAccountReviewer}@${TPAMEMailDomain}                                                         |
+#|Delete Mails               |${UserSystemReviewer}@${TPAMEMailDomain}                                                          |
+#|Delete Mails               |${UserCollectionReviewer}@${TPAMEMailDomain}                                                      |
+#|Delete Mails               |${GroupAccountReviewer}@${TPAMEMailDomain}                                                        |
+#|Delete Mails               |${GroupSystemReviewer}@${TPAMEMailDomain}                                                         |
+#|Delete Mails               |${GroupCollectionReviewer}@${TPAMEMailDomain}                                                     |
+#|Delete Mails               |${GlobalGroupReviewer}@${TPAMEMailDomain}                                                         |
+#|Delete Mails               |${GlobalGroupApprover}@${TPAMEMailDomain}                                                         |
+#|Delete Mails               |${AuditorEMail}                                                                                   |
+#|pause                      |3600000                                                                                           |
+#|Check All Mailboxes No Mail|Session Review Requirement Notification      ||$RequestID                                         |
+
+
+
+
+#!|scenario                        |BFER3899                                                                                               |
+#|Check Password                   |${ManagedAccount}||Unable to connect to ${SystemName}, or the account ${ManagedAccount} does not exist.|
+#|Choose System                                                                                                                            |
+#|click                            |id=Affinity                                                                                            |
+#|waitForElementPresent            |id=rbPARAffinityAny                                                                                    |
+#|click                            |id=rbPARAffinityAny                                                                                    |
+#|click                            |id=bt_Save                                                                                             |
+#|waitForTextPresent               |System changes for * saved successfully                                                                |
+#|Choose Account                   |${ManagedAccount}                                                                                      |
+#|Check Password                   |NOT MATCH                                                                                              |
+#|pause                            |${RestoreFunctAcctPasswordTimeout}                                                                     |
+#|Change Account Password on System|${ManagedAccountPwdNew}                                                                                |
+#|pause                            |${ChangeManagedAccountPasswordTimeout}                                                                 |
+#|Set Affinity                                                                                                                             |
+#|Choose Account                   |${ManagedAccount}                                                                                      |
+#|Check Password                   |${CheckPasswordNotMatch}                                                                               |
+#|pause                            |${RestoreFunctAcctPasswordTimeout}                                                                     |
+
+
+#!|scenario            |BFER3949                            |systemName||userName||permission|
+#|clickAndWait         |link=Manage Systems                                                  |
+#|type;                |id=SystemNm                         |@systemName                     |
+#|click                |id=Listing                          |                                |
+#|waitForElementPresent|//td[contains(text(),'@systemName')]|                                |
+#|mouseDown            |//td[contains(text(),'@systemName')]|                                |
+#|click                |//td[contains(text(),'@systemName')]|                                |
+#|click                |id=Permissions                                                       |
+#|waitForElementPresent|id=cbxNotAssigned                                                    |
+#|click                |id=cbxNotAssigned                                                    |
+#|click                |//div[@id='permissionTabs']/ul/li[2]/a                               |
+#|waitForElementPresent|//div[@id='collTableDiv']                                            |
+#|$res=                |getText                             |//div[@id='permTableDiv']       |
+#|Verify_Contain_NOT   |$res;;@userName (Doe, John) @permission                              |
+
+
+#!|scenario            |BFER3957|userName          |          |groupName          |
+#|clickAndWait         |link=Manage UserIDs                                       |
+#|waitForElementPresent|id=UsrNm                                                  |
+#|type;                |id=UsrNm|@userName                                        |
+#|click                |id=Listing                                                |
+#|waitForElementPresent|//td[contains(text(),'@userName')]                        |
+#|mouseDown            |//td[contains(text(),'@userName')]                        |
+#|click                |//td[contains(text(),'@userName')]                        |
+#|click                |id=GroupMembership                                        |
+#|waitForElementPresent|id=cb_Assigned                                            |
+#|click                |id=cb_Assigned                                            |
+#|click                |id=Results                                                |
+#|waitForElementPresent|//div[@id='membershipList']/table/tbody/tr/td/div         |
+#|$res=                |getText |//div[@id='membershipList']/table/tbody/tr/td/div|
+#|Verify_Contain_NOT   |$res;;@groupName                                          |
+
+
+#!|scenario            |BFER3957-2                          |systemName||userName||permission|
+#|clickAndWait         |link=Manage Systems                                                  |
+#|type;                |id=SystemNm                         |@systemName                     |
+#|click                |id=Listing                          |                                |
+#|waitForElementPresent|//td[contains(text(),'@systemName')]|                                |
+#|mouseDown            |//td[contains(text(),'@systemName')]|                                |
+#|click                |//td[contains(text(),'@systemName')]|                                |
+#|click                |id=Permissions                                                       |
+#|waitForElementPresent|id=cbxNotAssigned                                                    |
+#|click                |id=cbxNotAssigned                                                    |
+#|click                |//div[@id='permissionTabs']/ul/li[2]/a                               |
+#|waitForElementPresent|//div[@id='collTableDiv']                                            |
+#|$res=                |getText                             |//div[@id='permTableDiv']       |
+#|Verify_Contain_NOT   |$res;;@userName (Doe, John) @permission                              |
+
+
+#!|scenario            |BFER3917                            |filename                                 |
+#|clickAndWait         |link=Batch Update Accounts          |                                         |
+#|pause                |2000                                                                          |
+#|SWait                |browse.PNG                                                                    |
+#|SClick               |browse.PNG                                                                    |
+#|pause                |1500                                                                          |
+#|SType                |${PathToBatch}@filename.$Extention                                            |
+#|pause                |1500                                                                          |
+#|SWait                |open.PNG                                                                      |
+#|SClick               |open.PNG                                                                      |
+#|click                |id=Radio2                           |                                         |
+#|type;                |id=Comment2                         |update accounts                          |
+#|click                |id=B1                               |                                         |
+#|pause                |1500                                                                          |
+#|SWait                |ok.PNG                                                                        |
+#|SClick               |ok.PNG                                                                        |
+#|waitForElementPresent|//tr[@id='5']                                                                 |
+#|pause                |90000                                                                         |
+#|verifyText           |//div[@id='detailTab']/div/div/table||The following Accounts are being updated|
+#|List Accounts                                                                                       |
+#|Compare Files        |cliout.tmp                          ||${PathToEthalon}ethalon_@filename.txt   |
+
+#!|scenario        |BFER5439                                                                        |
+#|$res=            |CLI|${CLIBatch} UpdateSystem --SystemName ${SystemName} --NetworkAddress 1.2.3.4|
+#|Verify_Contain_OR|$res;;${NotFailed}                                                              |
+#|Set Affinity                                                                                      |
+
+!|scenario                 |BFER5873        |
+|Get Session Request Status|Pending Approval|

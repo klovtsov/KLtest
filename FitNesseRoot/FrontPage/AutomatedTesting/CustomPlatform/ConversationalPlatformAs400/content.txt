@@ -1,0 +1,40 @@
+!contents
+
+
+!define SystemName {${prefix}CustSys}
+!define SystemAddress {10.10.180.6}
+!define SystemDescription {Custom Platform-based System}
+!define SystemPort {23}
+!define SystemTimeout {60}
+!define FuncAcct {QCINST}
+!define FuncAcctPassword {qcpass}
+!define FuncAcctDescription {System Functional Account}
+!define ManagedAccount {KLMAN}
+!define ManagedAccountPassword {frujiE15}
+!define ManagedAccountPwdNew {grain42R}
+!define ManagedAccountDescription {Managed Account}
+
+
+!define CommandTimeout {60}
+
+!define SystemPlatform {AS400}
+
+!define CustomPlatformName {${prefix}CP14}
+!define CustomPlatformType {Conversational}
+!define CustomPLatformPort {23}
+!define PathToXML {${ProjDir}\Scripts\CustomPlatformAS400.xml}
+
+!include -c .FrontPage.AutomatedTesting.ScenarioLibrary
+!include -c .FrontPage.AutomatedTesting.CustomPlatform.ScenarioLibrary
+!include -c .FrontPage.AutomatedTesting.CustomPlatform.ConversationalPlatform.ScenarioLibrary
+!include -c .FrontPage.AutomatedTesting.CustomPlatform.ConversationalPlatformAs400.ScenarioLibrary
+
+
+!|script                              |
+|Create Custom Conversational Platform|
+|Test UI Custom Platform              |
+|Delete Custom Conversational Platform|
+
+#|Test CLI Custom Platform             |
+#|Check Automation Inactive Platform   |
+#|Check API Calls                      |

@@ -1,0 +1,9 @@
+!define SystemName {${prefix}_Macosx10.4}
+!define SystemPlatform {MacOSX 10.4}
+!define SystemAddress {10.30.36.206}
+!define SystemTimeout {55}
+!define FunctAcct {master}
+!define FunctAcctPwd {=1qwerty}
+!define ManagedAccountPwd {PArr0le}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.MacOsxSix.PlatformSpecific

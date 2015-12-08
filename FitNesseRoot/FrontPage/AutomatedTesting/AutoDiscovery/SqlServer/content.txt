@@ -1,0 +1,22 @@
+!contents
+
+
+!include -c .FrontPage.AutomatedTesting.AutoDiscovery.ScenarioLibrary
+
+
+
+!define newprefix {${prefix}6}
+!define SystemName {${prefix}MSSQL}
+!define SystemPlatform {MS SQL Server}
+!define SystemAddress {10.30.36.205}
+!define FunctAcct {sa}
+!define FunctAcctPwd {master}
+!define ManagedAccount {${prefix}Acc}
+!define ManagedAccountPwd {frujiE15}
+
+
+!define SelectUserQuery {SELECT * FROM ${DatabaseName}.dbo.${UserTableName}}
+!define SelectComputerQuery {SELECT * FROM ${DatabaseName}.dbo.${ComputerTableName}}
+
+
+

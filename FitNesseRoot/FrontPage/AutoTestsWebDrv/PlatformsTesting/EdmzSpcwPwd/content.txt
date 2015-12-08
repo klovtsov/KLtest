@@ -1,0 +1,7 @@
+!include -c <AutoTestsWebDrv.PlatformsTesting.EdmzSpcw2
+!define SystemName {${prefix}_edmzPwd}
+!define SystemPlatform {SPCW Pwd}
+!define ManagedAccount {${prefix}pwAcc}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <PlatformsTesting.EdmzSpcw2.PlatformSpecific
+!include -c >PlatformSpecific

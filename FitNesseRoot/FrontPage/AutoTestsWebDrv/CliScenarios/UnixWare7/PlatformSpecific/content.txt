@@ -1,0 +1,25 @@
+!| scenario                       |Managed System                                             |
+|Create Account on System                                                                     |
+|Create Password Rule For UnixWare|${UnixWareRuleName}                                        |
+|Login                            |${TPAMURL}                 |   |${TPAMAdmin}||${DefaultPwd}|
+|Add system                                                                                   |
+|Set description                  |\"${FunctAcctDescription}\"|for|${FunctAcct}               |
+|Test System                      |${TestSystemSuccessful}                                    |
+|Set password                     |${FunctAcct}               |   |${FunctAcctWrongPwd}       |
+|Test System                      |${TestSystemFailed}                                        |
+|Check Password                   |${FunctAcct}               |   |${CheckPasswordFailed}     |
+
+!| scenario       |Add system                                                                                                                                                                                                                                                   |
+|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --Timeout ${SystemTimeout} --PasswordRule ${UnixWareRuleName}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                             |
+
+
+!| scenario              |Delete All         |
+|Revoke User Permissions |${CLI_user_1}      |
+|Revoke User Permissions |${CLI_user_2}      |
+|Remove account          |${ManagedAccount}  |
+|Remove system           |${SystemName}      |
+|Hard-Delete System      |${SystemName}      |
+|Delete Account on System|${ManagedAccount}  |
+|Delete Password Rule    |${UnixWareRuleName}|
+

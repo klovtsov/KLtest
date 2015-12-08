@@ -1,0 +1,51 @@
+!*> Variables list
+!define CheckProfile {${prefix}FirstCheck}
+!define ChangeProfile {${prefix}FirstChange}
+!define CheckDisabledProfile {${prefix}CheckDisabledProfile}
+!define ChangeDisabledProfile {${prefix}ChangeDisabledProfile}
+!define CheckTimeout {10}
+!define ChangeTimeout {10}
+*!
+
+''System''
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+''Libraries''
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <PasswordProfiles.ScenarioLibrary
+
+
+
+!*> Prepare
+!|script                                                                                                                                                                                                                                                                                                                                                                    |
+|Open                                                   |${TPAMURL} ||${TPAMAdmin}                                                                                                                                                                                                                                                                           ||${DefaultPwd}|
+|Add System                                             |${CLIBatch}||--SystemName ${SystemName} --PlatformName ${SystemPlatform} --NetworkAddress ${SystemAddress} --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}||successfully |
+|Create Password Profile With Monthly First Day Schedule|Check      ||${CheckProfile}                                                                                                                                                                                                                                                                                       |
+|Create Password Profile With Monthly First Day Schedule|Change     ||${ChangeProfile}                                                                                                                                                                                                                                                                                      |
+|Create Password Profile With No Schedule               |Check      ||${CheckDisabledProfile}                                                                                                                                                                                                                                                                               |
+|Create Password Profile With No Schedule               |Change     ||${ChangeDisabledProfile}                                                                                                                                                                                                                                                                              |
+  
+
+*!
+
+!|script                                                                                                                                                                                                                                               |
+|Add Account                 |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeDisabledProfile} --PasswordCheckProfile ${CheckDisabledProfile}||successfully|
+|Management tab              |${ManagedAccount}                                                                                                                                                                                                        |
+|Next Scheduled Check Window |n/a        ||notcontian                                                                                                                                                                                                  |
+|Next Scheduled Change Window|n/a        ||notcontian                                                                                                                                                                                                  |
+|Update Account              |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile} --PasswordCheckProfile ${CheckProfile} --AutoFlag M   ||successfully|
+|Management tab              |${ManagedAccount}                                                                                                                                                                                                        |
+|Next Scheduled Change Window|.          ||n/a                                                                                                                                                                                                         |
+
+
+
+!*> Cleanup
+!|script                                                                                                                                                                                  |
+|Update Account         |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --AutoFlag N --PasswordCheckProfile "!NULL" --PasswordChangeProfile "!NULL"||successfully|
+|Delete Account         |${CLIBatch}||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                           ||successfully|
+|Delete Password Profile|Change     ||${ChangeProfile}                                                                                                                                    |
+|Delete Password Profile|Check      ||${CheckProfile}                                                                                                                                     |
+|Delete System          |${CLIBatch}||--SystemName ${SystemName}                                                                                                            ||successfully|
+|Delete Password Profile|Change     ||${ChangeDisabledProfile}                                                                                                                            |
+|Delete Password Profile|Check      ||${CheckDisabledProfile}                                                                                                                             |
+|stop                                                                                                                                                                                     |
+*!

@@ -1,0 +1,31 @@
+!*> Test description
+1. ForceReset command does to not support manually managed accounts.
+2. For the manually managed accounts ForceResetManual command is used.  It returns Password and PasswordID.
+3. ManualPasswordReset still provides the final step for manually managed accounts.
+*!
+!define expectedBtnStatus {Check Password Button is Disabled}
+!define ForceResetResult {You must use ForceResetManual command}
+!define ManualManagedAccount {${prefix}Manul}
+
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.SynchronizedPasswords.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                                                                                       |
+|Add account                              |${ManualManagedAccount}|with auto flag|M                                            |
+|ForceReset for manual managed account    |${ManualManagedAccount}|from          |${SystemName}|results in|${ForceResetResult} |
+|Force Reset manual password              |${ManualManagedAccount}|from          |${SystemName}                                |
+|Confirm Manual Password reset with status|fail                   |and result is |Successful rollback                          |
+|Force Reset manual password              |${ManualManagedAccount}|from          |${SystemName}                                |
+|Confirm Manual Password reset with status|success                |and result is |Successful commit                            |
+|Get Check Password button status for     |${ManualManagedAccount}|from          |${SystemName}|          |${expectedBtnStatus}|
+
+!* Check ForceResetManual and ManualPasswordReset help
+!|script                                                                                                 |
+|Get help for command|ForceResetManual   ||Usage: ForceResetManual --SystemName sName --AccountName aName|
+|Get help for command|ManualPasswordReset||Usage: ManualPasswordReset --PasswordID passwordID --Status   |
+*!
+!*> CleanUp
+!|script                               |
+|Remove account|${ManualManagedAccount}|
+*!

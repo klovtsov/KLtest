@@ -1,0 +1,606 @@
+!contents
+
+!|scenario        |Prepare Test                                                                        |
+|Add System       |${SystemName}   ||${SystemAddress}||${SystemPlatform}||${FunctAcct}||${FunctAcctPwd}|
+|Set Affinity                                                                                          |
+|Add User To Group|${CLI_user_1}   ||\"Global PSM Requestor Group\"                                    |
+|Prepare Account  |${prefix}remote0||${SystemName}   ||${SystemAddress}                                |
+|Prepare Account  |${prefix}remote1||${SystemName}   ||${SystemAddress}                                |
+|Prepare Account  |${prefix}remote2||${SystemName}   ||${SystemAddress}                                |
+|Prepare Account  |${prefix}remote3||${SystemName}   ||${SystemAddress}                                |
+|Prepare Account  |${prefix}remote4||${SystemName}   ||${SystemAddress}                                |
+|Prepare Account  |${prefix}remote5||${SystemName}   ||${SystemAddress}                                |
+|Prepare Account  |${prefix}remote6||${SystemName}   ||${SystemAddress}                                |
+|Prepare Account  |${prefix}remote7||${SystemName}   ||${SystemAddress}                                |
+|Prepare Account  |${prefix}remote8||${SystemName}   ||${SystemAddress}                                |
+|Prepare Account  |${prefix}remote9||${SystemName}   ||${SystemAddress}                                |
+|Prepare Requestor|${Requestor}                                                                        |
+|Prepare Reviewer |${Reviewer}                                                                         |
+
+
+
+
+!|scenario      |Run Test                   |
+|Open Sessions  |${SystemName}||${Requestor}|
+|Cancel Sessions|${SystemName}||${Requestor}|
+|Replay Sessions|${SystemName}||${Reviewer} |
+
+
+
+!|scenario               |Clear Objects                                |
+|pause                   |60000                                        |
+|Remove User From Group  |${CLI_user_1}||\"Global PSM Requestor Group\"|
+|Remove System           |${SystemName}                                |
+|Delete Account on System|${prefix}remote0                             |
+|Delete Account on System|${prefix}remote1                             |
+|Delete Account on System|${prefix}remote2                             |
+|Delete Account on System|${prefix}remote3                             |
+|Delete Account on System|${prefix}remote4                             |
+|Delete Account on System|${prefix}remote5                             |
+|Delete Account on System|${prefix}remote6                             |
+|Delete Account on System|${prefix}remote7                             |
+|Delete Account on System|${prefix}remote8                             |
+|Delete Account on System|${prefix}remote9                             |
+|Hard-Delete System      |${SystemName}                                |
+|Remove User             |${Requestor}                                 |
+|Remove User             |${Reviewer}                                  |
+
+
+
+!|scenario               |Prepare Account|accountName  |                         |systemName||systemAddress|
+|Add Account             |@accountName   |on system    |@systemName                                        |
+|pause                   |10000                                                                            |
+|Update PSM Details      |@accountName   |on system    |@systemName                                        |
+|Create Account on System|@accountName   |with password|${ManagedAccountPassword}|on system |@systemAddress|
+|pause                   |10000                                                                            |
+
+
+!| scenario       |Add System|systemName                     |                    |systemAddress                    |                    |systemPlatform                    |                    |functAcct                    |                    |functAcctPwd                    |
+|$res=            |CLI       |${CLIBatch} AddSystem --SystemName @systemName --NetworkAddress @systemAddress --PlatformName \"@systemPlatform\" --FunctionalAccount @functAcct --FuncAcctCred @functAcctPwd --Timeout ${SystemTimeout} --MaxReleaseDuration 120 --ReleaseChangeFlag N|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                  |
+
+
+!| scenario       |Add Account|accountName                                                         |on system                                                        |systemName                                                        |
+|$res=            |CLI        |${CLIBatch} AddAccount --SystemName @systemName --AccountName @accountName --Password ${ManagedAccountPassword}  --Description \"@accountName description\" --MinimumApprovers 0 --MaxReleaseDuration 120|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                     |
+
+
+!| scenario       |Update PSM Details|accountName                                                                                     |on system                                                                                    |systemName                                                                                    |
+|$res=            |CLI               |${CLIBatch} UpdateEGPAccount --System @systemName --Account @accountName  --ProxyType \"RDP - Automatic Login Using Password\" --ColorDepth 16 --DefaultSessionDuration 120 --EnableFlag Y --MaxSessionCount 10 --MinApprovers 0 --RecordingRequiredFlag Y --ReviewCount 1 --ReviewerType Any|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                                                |
+
+
+!|scenario    |Create Account on System  |accountName  |with password |pwd |on system |systemAddress |
+|accountAction|${SystemPlatform};create;@systemAddress;${FunctAcct};${FunctAcctPwd};@accountName;@pwd|
+
+!|scenario    |Delete Account on System                        |accountName                       |
+|accountAction|${SystemPlatform};delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};@accountName|
+
+
+
+!|scenario        |Prepare Requestor|UserName                       |
+|Add User         |@UserName        ||${DefaultPwd}                 |
+|pause            |20000                                            |
+|Change Pwd       |@UserName        ||${DefaultPwd}  |  |${UserPwd} |
+|Add User To Group|@UserName        ||\"Global PSM Requestor Group\"|
+
+
+!|scenario        |Prepare Reviewer|UserName                      |
+|Add User         |@UserName       ||${DefaultPwd}                |
+|pause            |20000                                          |
+|Change Pwd       |@UserName       ||${DefaultPwd}  | |${UserPwd} |
+|Add User To Group|@UserName       ||\"Global PSM Reviewer Group\"|
+
+
+
+!|scenario        |Add User|UserName                             |                            |Password                            |
+|$res=            |CLI     |${CLIBatch} AddUser --UserName @UserName --FirstName Testfirst --LastName Testlast --Password @Password|
+|Verify_Contain_OR|$res;;successful                                                                                                |
+
+
+!|scenario        |Add User To Group|UserName          |         |GroupName         |
+|$res=            |CLI              |${CLIBatch} AddGroupMember @UserName,@GroupName|
+|Verify_Contain_OR|$res;;successful                                                 |
+
+!|scenario        |Remove User From Group|UserName          |          |GroupName         |
+|$res=            |CLI                   |${CLIBatch} DropGroupMember @UserName,@GroupName|
+|Verify_Contain_OR|$res;;successful                                                       |
+
+
+!| scenario       |Remove System|sysName                          |
+|$res=            |CLI          |${CLIBatch} DeleteSystem @sysName|
+|Verify_Contain_OR|$res;;successful                               |
+
+!| scenario       |Remove User|userName                        |
+|$res=            |CLI        |${CLIBatch} DeleteUser @userName|
+|Verify_Contain_OR|$res;;successful                            |
+
+
+#!|scenario            |Open Session         |requestorName                   |                   |systemName                  |                  |accountName                  |
+#|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+#|Verify_Contain_OR    |$res;;submitted                                                                                                                                         |
+#|$RequestID=          |get_session_RequestID|$res                                                                                                                              |
+#|Login                |${TPAMURL}||@requestorName       |                                |${UserPwd}                                                                                       |
+#|pause                |20000                                                                                                                                                   |
+#|click                |id=CurrentRequests                                                                                                                                      |
+#|waitForElementPresent|link=$RequestID                                                                                                                                         |
+#|clickAndWait         |link=$RequestID                                                                                                                                         |
+#|waitForElementPresent|id=StartSessionButton                                                                                                                                   |
+#|click                |id=StartSessionButton                                                                                                                                   |
+#|pause                |10000                                                                                                                                                   |
+#|type;                |id=ResponseComment     |cancel             |
+#|typeKeys;            |id=ResponseComment     |request            |
+#|click                |id=SubmitChanges                           |
+#|waitForTextPresent   |*The response * was submitted successfully*|
+#|click                |id=TerminateSessionButton|
+#|pause                |10000                    |
+
+
+!|scenario            |Open Sessions        |systemName                                     |                                    |requestorName                                    |
+|Login                |${TPAMURL}||@requestorName       |                                               |${UserPwd}                                                                            |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName ${prefix}remote0 --ForUserName @requestorName --RequestNotes test|
+|pause                |20000                                                                                                                                                       |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                             |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                  |
+|pause                |20000                                                                                                                                                       |
+|click                |id=CurrentRequests                                                                                                                                          |
+|waitForElementPresent|link=$RequestID                                                                                                                                             |
+|clickAndWait         |link=$RequestID                                                                                                                                             |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                       |
+|click                |id=StartSessionButton                                                                                                                                       |
+|pause                |30000                                                                                                                                                       |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName ${prefix}remote1 --ForUserName @requestorName --RequestNotes test|
+|pause                |20000                                                                                                                                                       |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                             |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                  |
+|pause                |5000                                                                                                                                                        |
+|clickAndWait         |id=homeButton                                                                                                                                               |
+|pause                |5000                                                                                                                                                        |
+|click                |id=CurrentRequests                                                                                                                                          |
+|waitForElementPresent|link=$RequestID                                                                                                                                             |
+|clickAndWait         |link=$RequestID                                                                                                                                             |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                       |
+|click                |id=StartSessionButton                                                                                                                                       |
+|pause                |30000                                                                                                                                                       |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName ${prefix}remote2 --ForUserName @requestorName --RequestNotes test|
+|pause                |20000                                                                                                                                                       |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                             |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                  |
+|pause                |5000                                                                                                                                                        |
+|clickAndWait         |id=homeButton                                                                                                                                               |
+|pause                |5000                                                                                                                                                        |
+|click                |id=CurrentRequests                                                                                                                                          |
+|waitForElementPresent|link=$RequestID                                                                                                                                             |
+|clickAndWait         |link=$RequestID                                                                                                                                             |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                       |
+|click                |id=StartSessionButton                                                                                                                                       |
+|pause                |30000                                                                                                                                                       |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName ${prefix}remote3 --ForUserName @requestorName --RequestNotes test|
+|pause                |20000                                                                                                                                                       |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                             |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                  |
+|pause                |5000                                                                                                                                                        |
+|clickAndWait         |id=homeButton                                                                                                                                               |
+|pause                |5000                                                                                                                                                        |
+|click                |id=CurrentRequests                                                                                                                                          |
+|waitForElementPresent|link=$RequestID                                                                                                                                             |
+|clickAndWait         |link=$RequestID                                                                                                                                             |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                       |
+|click                |id=StartSessionButton                                                                                                                                       |
+|pause                |30000                                                                                                                                                       |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName ${prefix}remote4 --ForUserName @requestorName --RequestNotes test|
+|pause                |20000                                                                                                                                                       |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                             |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                  |
+|pause                |5000                                                                                                                                                        |
+|clickAndWait         |id=homeButton                                                                                                                                               |
+|pause                |5000                                                                                                                                                        |
+|click                |id=CurrentRequests                                                                                                                                          |
+|waitForElementPresent|link=$RequestID                                                                                                                                             |
+|clickAndWait         |link=$RequestID                                                                                                                                             |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                       |
+|click                |id=StartSessionButton                                                                                                                                       |
+|pause                |30000                                                                                                                                                       |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName ${prefix}remote5 --ForUserName @requestorName --RequestNotes test|
+|pause                |20000                                                                                                                                                       |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                             |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                  |
+|pause                |5000                                                                                                                                                        |
+|clickAndWait         |id=homeButton                                                                                                                                               |
+|pause                |5000                                                                                                                                                        |
+|click                |id=CurrentRequests                                                                                                                                          |
+|waitForElementPresent|link=$RequestID                                                                                                                                             |
+|clickAndWait         |link=$RequestID                                                                                                                                             |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                       |
+|click                |id=StartSessionButton                                                                                                                                       |
+|pause                |30000                                                                                                                                                       |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName ${prefix}remote6 --ForUserName @requestorName --RequestNotes test|
+|pause                |20000                                                                                                                                                       |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                             |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                  |
+|pause                |5000                                                                                                                                                        |
+|clickAndWait         |id=homeButton                                                                                                                                               |
+|pause                |5000                                                                                                                                                        |
+|click                |id=CurrentRequests                                                                                                                                          |
+|waitForElementPresent|link=$RequestID                                                                                                                                             |
+|clickAndWait         |link=$RequestID                                                                                                                                             |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                       |
+|click                |id=StartSessionButton                                                                                                                                       |
+|pause                |30000                                                                                                                                                       |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName ${prefix}remote7 --ForUserName @requestorName --RequestNotes test|
+|pause                |20000                                                                                                                                                       |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                             |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                  |
+|pause                |5000                                                                                                                                                        |
+|clickAndWait         |id=homeButton                                                                                                                                               |
+|pause                |5000                                                                                                                                                        |
+|click                |id=CurrentRequests                                                                                                                                          |
+|waitForElementPresent|link=$RequestID                                                                                                                                             |
+|clickAndWait         |link=$RequestID                                                                                                                                             |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                       |
+|click                |id=StartSessionButton                                                                                                                                       |
+|pause                |30000                                                                                                                                                       |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName ${prefix}remote8 --ForUserName @requestorName --RequestNotes test|
+|pause                |20000                                                                                                                                                       |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                             |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                  |
+|pause                |5000                                                                                                                                                        |
+|clickAndWait         |id=homeButton                                                                                                                                               |
+|pause                |5000                                                                                                                                                        |
+|click                |id=CurrentRequests                                                                                                                                          |
+|waitForElementPresent|link=$RequestID                                                                                                                                             |
+|clickAndWait         |link=$RequestID                                                                                                                                             |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                       |
+|click                |id=StartSessionButton                                                                                                                                       |
+|pause                |30000                                                                                                                                                       |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName ${prefix}remote9 --ForUserName @requestorName --RequestNotes test|
+|pause                |20000                                                                                                                                                       |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                             |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                  |
+|pause                |5000                                                                                                                                                        |
+|clickAndWait         |id=homeButton                                                                                                                                               |
+|pause                |5000                                                                                                                                                        |
+|click                |id=CurrentRequests                                                                                                                                          |
+|waitForElementPresent|link=$RequestID                                                                                                                                             |
+|clickAndWait         |link=$RequestID                                                                                                                                             |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                       |
+|click                |id=StartSessionButton                                                                                                                                       |
+|pause                |300000                                                                                                                                                      |
+|Logout                                                                                                                                                                            |
+
+
+!|scenario            |Cancel Sessions   |systemName||requestorName|
+|Login                |${TPAMURL}||@requestorName    |          |${UserPwd}    |
+|pause                |20000                                       |
+|click                |id=CurrentRequests                          |
+|waitForElementPresent|link=Sess(${prefix}remote0)                 |
+|clickAndWait         |link=Sess(${prefix}remote0)                 |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote0')]   |
+|mouseDown            |//td[contains(text(),'${prefix}remote0')]   |
+|click                |//td[contains(text(),'${prefix}remote0')]   |
+|click                |id=Details                                  |
+|waitForElementPresent|id=ResponseComment                          |
+|type;                |id=ResponseComment|cancel                   |
+|typeKeys;            |id=ResponseComment|request                  |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*The response * was submitted successfully* |
+|click                |id=TerminateSessionButton                   |
+|pause                |10000                                       |
+|clickAndWait         |id=homeButton                               |
+|pause                |20000                                       |
+|click                |id=CurrentRequests                          |
+|waitForElementPresent|link=Sess(${prefix}remote1)                 |
+|clickAndWait         |link=Sess(${prefix}remote1)                 |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote1')]   |
+|mouseDown            |//td[contains(text(),'${prefix}remote1')]   |
+|click                |//td[contains(text(),'${prefix}remote1')]   |
+|click                |id=Details                                  |
+|waitForElementPresent|id=ResponseComment                          |
+|type;                |id=ResponseComment|cancel                   |
+|typeKeys;            |id=ResponseComment|request                  |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*The response * was submitted successfully* |
+|click                |id=TerminateSessionButton                   |
+|pause                |10000                                       |
+|clickAndWait         |id=homeButton                               |
+|pause                |20000                                       |
+|click                |id=CurrentRequests                          |
+|waitForElementPresent|link=Sess(${prefix}remote2)                 |
+|clickAndWait         |link=Sess(${prefix}remote2)                 |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote2')]   |
+|mouseDown            |//td[contains(text(),'${prefix}remote2')]   |
+|click                |//td[contains(text(),'${prefix}remote2')]   |
+|click                |id=Details                                  |
+|waitForElementPresent|id=ResponseComment                          |
+|type;                |id=ResponseComment|cancel                   |
+|typeKeys;            |id=ResponseComment|request                  |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*The response * was submitted successfully* |
+|click                |id=TerminateSessionButton                   |
+|pause                |10000                                       |
+|clickAndWait         |id=homeButton                               |
+|pause                |20000                                       |
+|click                |id=CurrentRequests                          |
+|waitForElementPresent|link=Sess(${prefix}remote3)                 |
+|clickAndWait         |link=Sess(${prefix}remote3)                 |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote3')]   |
+|mouseDown            |//td[contains(text(),'${prefix}remote3')]   |
+|click                |//td[contains(text(),'${prefix}remote3')]   |
+|click                |id=Details                                  |
+|waitForElementPresent|id=ResponseComment                          |
+|type;                |id=ResponseComment|cancel                   |
+|typeKeys;            |id=ResponseComment|request                  |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*The response * was submitted successfully* |
+|click                |id=TerminateSessionButton                   |
+|pause                |10000                                       |
+|clickAndWait         |id=homeButton                               |
+|pause                |20000                                       |
+|click                |id=CurrentRequests                          |
+|waitForElementPresent|link=Sess(${prefix}remote4)                 |
+|clickAndWait         |link=Sess(${prefix}remote4)                 |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote4')]   |
+|mouseDown            |//td[contains(text(),'${prefix}remote4')]   |
+|click                |//td[contains(text(),'${prefix}remote4')]   |
+|click                |id=Details                                  |
+|waitForElementPresent|id=ResponseComment                          |
+|type;                |id=ResponseComment|cancel                   |
+|typeKeys;            |id=ResponseComment|request                  |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*The response * was submitted successfully* |
+|click                |id=TerminateSessionButton                   |
+|pause                |10000                                       |
+|clickAndWait         |id=homeButton                               |
+|pause                |20000                                       |
+|click                |id=CurrentRequests                          |
+|waitForElementPresent|link=Sess(${prefix}remote5)                 |
+|clickAndWait         |link=Sess(${prefix}remote5)                 |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote5')]   |
+|mouseDown            |//td[contains(text(),'${prefix}remote5')]   |
+|click                |//td[contains(text(),'${prefix}remote5')]   |
+|click                |id=Details                                  |
+|waitForElementPresent|id=ResponseComment                          |
+|type;                |id=ResponseComment|cancel                   |
+|typeKeys;            |id=ResponseComment|request                  |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*The response * was submitted successfully* |
+|click                |id=TerminateSessionButton                   |
+|pause                |10000                                       |
+|clickAndWait         |id=homeButton                               |
+|pause                |20000                                       |
+|click                |id=CurrentRequests                          |
+|waitForElementPresent|link=Sess(${prefix}remote6)                 |
+|clickAndWait         |link=Sess(${prefix}remote6)                 |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote6')]   |
+|mouseDown            |//td[contains(text(),'${prefix}remote6')]   |
+|click                |//td[contains(text(),'${prefix}remote6')]   |
+|click                |id=Details                                  |
+|waitForElementPresent|id=ResponseComment                          |
+|type;                |id=ResponseComment|cancel                   |
+|typeKeys;            |id=ResponseComment|request                  |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*The response * was submitted successfully* |
+|click                |id=TerminateSessionButton                   |
+|pause                |10000                                       |
+|clickAndWait         |id=homeButton                               |
+|pause                |20000                                       |
+|click                |id=CurrentRequests                          |
+|waitForElementPresent|link=Sess(${prefix}remote7)                 |
+|clickAndWait         |link=Sess(${prefix}remote7)                 |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote7')]   |
+|mouseDown            |//td[contains(text(),'${prefix}remote7')]   |
+|click                |//td[contains(text(),'${prefix}remote7')]   |
+|click                |id=Details                                  |
+|waitForElementPresent|id=ResponseComment                          |
+|type;                |id=ResponseComment|cancel                   |
+|typeKeys;            |id=ResponseComment|request                  |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*The response * was submitted successfully* |
+|click                |id=TerminateSessionButton                   |
+|pause                |10000                                       |
+|clickAndWait         |id=homeButton                               |
+|pause                |20000                                       |
+|click                |id=CurrentRequests                          |
+|waitForElementPresent|link=Sess(${prefix}remote8)                 |
+|clickAndWait         |link=Sess(${prefix}remote8)                 |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote8')]   |
+|mouseDown            |//td[contains(text(),'${prefix}remote8')]   |
+|click                |//td[contains(text(),'${prefix}remote8')]   |
+|click                |id=Details                                  |
+|waitForElementPresent|id=ResponseComment                          |
+|type;                |id=ResponseComment|cancel                   |
+|typeKeys;            |id=ResponseComment|request                  |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*The response * was submitted successfully* |
+|click                |id=TerminateSessionButton                   |
+|pause                |10000                                       |
+|clickAndWait         |id=homeButton                               |
+|pause                |20000                                       |
+|click                |id=CurrentRequests                          |
+|waitForElementPresent|link=Sess(${prefix}remote9)                 |
+|clickAndWait         |link=Sess(${prefix}remote9)                 |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote9')]   |
+|mouseDown            |//td[contains(text(),'${prefix}remote9')]   |
+|click                |//td[contains(text(),'${prefix}remote9')]   |
+|click                |id=Details                                  |
+|waitForElementPresent|id=ResponseComment                          |
+|type;                |id=ResponseComment|cancel                   |
+|typeKeys;            |id=ResponseComment|request                  |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*The response * was submitted successfully* |
+|click                |id=TerminateSessionButton                   |
+|pause                |10000                                       |
+
+
+
+
+
+
+!|scenario            |Replay Sessions |systemName||reviewerName|
+|Login                |${TPAMURL}||@reviewerName   |          |${UserPwd}   |
+|pause                |20000                                    |
+|clickAndWait         |link=Session Logs                        |
+|type;                |id=SystemNm     |@systemName             |
+|type;                |id=AccountNm    |${prefix}remote0        |
+|click                |id=Listing                               |
+|pause                |10000                                    |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote0')]|
+|mouseDown            |//td[contains(text(),'${prefix}remote0')]|
+|click                |//td[contains(text(),'${prefix}remote0')]|
+|pause                |2000                                     |
+|click                |id=ReplayButton                          |
+|pause                |30000                                    |
+|clickAndWait         |id=homeButton                            |
+|pause                |5000                                     |
+|clickAndWait         |link=Session Logs                        |
+|type;                |id=SystemNm     |@systemName             |
+|type;                |id=AccountNm    |${prefix}remote1        |
+|click                |id=Listing                               |
+|pause                |10000                                    |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote1')]|
+|mouseDown            |//td[contains(text(),'${prefix}remote1')]|
+|click                |//td[contains(text(),'${prefix}remote1')]|
+|pause                |2000                                     |
+|click                |id=ReplayButton                          |
+|pause                |30000                                    |
+|clickAndWait         |id=homeButton                            |
+|pause                |5000                                     |
+|clickAndWait         |link=Session Logs                        |
+|type;                |id=SystemNm     |@systemName             |
+|type;                |id=AccountNm    |${prefix}remote2        |
+|click                |id=Listing                               |
+|pause                |10000                                    |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote2')]|
+|mouseDown            |//td[contains(text(),'${prefix}remote2')]|
+|click                |//td[contains(text(),'${prefix}remote2')]|
+|pause                |2000                                     |
+|click                |id=ReplayButton                          |
+|pause                |30000                                    |
+|clickAndWait         |id=homeButton                            |
+|pause                |5000                                     |
+|clickAndWait         |link=Session Logs                        |
+|type;                |id=SystemNm     |@systemName             |
+|type;                |id=AccountNm    |${prefix}remote3        |
+|click                |id=Listing                               |
+|pause                |10000                                    |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote3')]|
+|mouseDown            |//td[contains(text(),'${prefix}remote3')]|
+|click                |//td[contains(text(),'${prefix}remote3')]|
+|pause                |2000                                     |
+|click                |id=ReplayButton                          |
+|pause                |30000                                    |
+|clickAndWait         |id=homeButton                            |
+|pause                |5000                                     |
+|clickAndWait         |link=Session Logs                        |
+|type;                |id=SystemNm     |@systemName             |
+|type;                |id=AccountNm    |${prefix}remote4        |
+|click                |id=Listing                               |
+|pause                |10000                                    |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote4')]|
+|mouseDown            |//td[contains(text(),'${prefix}remote4')]|
+|click                |//td[contains(text(),'${prefix}remote4')]|
+|pause                |2000                                     |
+|click                |id=ReplayButton                          |
+|pause                |30000                                    |
+|clickAndWait         |id=homeButton                            |
+|pause                |5000                                     |
+|clickAndWait         |link=Session Logs                        |
+|type;                |id=SystemNm     |@systemName             |
+|type;                |id=AccountNm    |${prefix}remote5        |
+|click                |id=Listing                               |
+|pause                |10000                                    |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote5')]|
+|mouseDown            |//td[contains(text(),'${prefix}remote5')]|
+|click                |//td[contains(text(),'${prefix}remote5')]|
+|pause                |2000                                     |
+|click                |id=ReplayButton                          |
+|pause                |30000                                    |
+|clickAndWait         |id=homeButton                            |
+|pause                |5000                                     |
+|clickAndWait         |link=Session Logs                        |
+|type;                |id=SystemNm     |@systemName             |
+|type;                |id=AccountNm    |${prefix}remote6        |
+|click                |id=Listing                               |
+|pause                |10000                                    |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote6')]|
+|mouseDown            |//td[contains(text(),'${prefix}remote6')]|
+|click                |//td[contains(text(),'${prefix}remote6')]|
+|pause                |2000                                     |
+|click                |id=ReplayButton                          |
+|pause                |30000                                    |
+|clickAndWait         |id=homeButton                            |
+|pause                |5000                                     |
+|clickAndWait         |link=Session Logs                        |
+|type;                |id=SystemNm     |@systemName             |
+|type;                |id=AccountNm    |${prefix}remote7        |
+|click                |id=Listing                               |
+|pause                |10000                                    |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote7')]|
+|mouseDown            |//td[contains(text(),'${prefix}remote7')]|
+|click                |//td[contains(text(),'${prefix}remote7')]|
+|pause                |2000                                     |
+|click                |id=ReplayButton                          |
+|pause                |30000                                    |
+|clickAndWait         |id=homeButton                            |
+|pause                |5000                                     |
+|clickAndWait         |link=Session Logs                        |
+|type;                |id=SystemNm     |@systemName             |
+|type;                |id=AccountNm    |${prefix}remote8        |
+|click                |id=Listing                               |
+|pause                |10000                                    |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote8')]|
+|mouseDown            |//td[contains(text(),'${prefix}remote8')]|
+|click                |//td[contains(text(),'${prefix}remote8')]|
+|pause                |2000                                     |
+|click                |id=ReplayButton                          |
+|pause                |30000                                    |
+|clickAndWait         |id=homeButton                            |
+|pause                |5000                                     |
+|clickAndWait         |link=Session Logs                        |
+|type;                |id=SystemNm     |@systemName             |
+|type;                |id=AccountNm    |${prefix}remote3        |
+|click                |id=Listing                               |
+|pause                |10000                                    |
+|waitForElementPresent|//td[contains(text(),'${prefix}remote9')]|
+|mouseDown            |//td[contains(text(),'${prefix}remote9')]|
+|click                |//td[contains(text(),'${prefix}remote9')]|
+|pause                |2000                                     |
+|click                |id=ReplayButton                          |
+|pause                |600000                                   |
+|Logout                                                         |
+
+
+
+
+
+!|scenario            |Set Affinity                                               |
+|Open|${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|pause                |20000                                                      |
+|Choose system        |${SystemName}                                              |
+|click                |id=Affinity                                                |
+|waitForElementPresent|id=rbEGPAffinitySelected                                   |
+|click                |id=rbEGPAffinitySelected                                   |
+|type;                |css=td[name="Priority"] > input[type="text"]|1             |
+|click                |id=bt_Save                                                 |
+|waitForTextPresent   |System changes for * saved successfully                    |
+
+
+!|scenario            |Hard-Delete System                  |systemName    |
+|Login                |${TPAMURL}||${TPAMAdmin}                        ||${DefaultPwd}|
+|pause                |20000                                              |
+|clickAndWait         |link=Deleted Systems                               |
+|type;                |id=SystemNm                         |@systemName   |
+|click                |id=Listing                          |              |
+|waitForElementPresent|//td[contains(text(),'@systemName')]|              |
+|mouseDown            |//td[contains(text(),'@systemName')]|              |
+|click                |//td[contains(text(),'@systemName')]|              |
+|click                |id=HardDeleteButton                 |              |
+|getConfirmation                                                          |
+|waitForTextPresent   |has been successfully deleted                      |
+|pause                |1000                                               |
+
+
+!|scenario   |Logout     |
+|clickAndWait|link=Logout|
+|click       |id=B1      |
+

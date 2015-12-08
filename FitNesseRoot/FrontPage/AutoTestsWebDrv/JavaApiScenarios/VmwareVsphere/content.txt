@@ -1,0 +1,11 @@
+!include <AutoTestsWebDrv.PlatformsTesting.VmwareVsphere
+!*> Added to workaround Java API issues with difficult passwords
+!define FunctAcct {root}
+!define FunctAcctPwd {Q1w2e3r4}
+!define ManagedAccountPwd {Q1w2e3r4t5}
+!define ManagedAccountPwdNew {P5q2N6s4v9y6}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.VmwareVsphere.PlatformSpecific
+*!
+!include -c <JavaApiScenarios.ScenarioLibrary
+

@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.LdAps
+!include -c <JavaApiScenarios.ScenarioLibrary
+!include -c <JavaApiScenarios.LdAp.PlatformSpecific
+

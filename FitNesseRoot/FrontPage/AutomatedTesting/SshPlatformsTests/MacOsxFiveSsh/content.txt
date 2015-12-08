@@ -1,0 +1,8 @@
+!contents
+
+!include -c <AutomatedTesting.PlatformsTesting.MacOsxFive
+!define AuthorizedKeysFile {authorized_keys}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.MacOsxSix.PlatformSpecific
+!include -c <AutomatedTesting.SshPlatformsTests.AixSshPlatform.PlatformSpecific

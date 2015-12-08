@@ -1,0 +1,6 @@
+!|scenario         |Reset Password              |testResult  |
+|click             |id=ResetPassButton                       |
+|pause             |60000                                    |
+|waitForTextPresent|*Results from the*                       |
+|verifyText        |//div[@id='ResultDetailDiv']||@testResult|
+

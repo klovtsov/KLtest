@@ -1,0 +1,17 @@
+!*> TEST WAS RENAMED.
+Change Frequency option IS OBSOLETE AND WILL BE REMOVED IN A FUTURE RELEASE.
+The functionality of the option has been assumed by the Password Change Profile in 915.
+*!
+!define ManagedAccount {${prefix}psAcnt}
+!define FlagValue {Y}
+!define systemChangeProfile {First of Month}
+!define accountChangeProfile {Daily}
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                                                    |
+|Add system             |${SystemName}                                                                                           |with address|${SystemAddress}|platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-passwordChangeProfile "${systemChangeProfile}"|
+|Add account            |${ManagedAccount}                                                                                       |on system   |${SystemName}   |with options|-description AAA                                                                                               |
+|Add account            |${ManagedAccount}2                                                                                      |on system   |${SystemName}   |with options|-passwordChangeProfile ${accountChangeProfile}                                                                 |
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount} -propsToList accountname,passwordChangeProfile |contains    |${ManagedAccount}.*${systemChangeProfile}                                                                                                    |
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount}2 -propsToList accountname,passwordChangeProfile|contains    |${ManagedAccount}.*${accountChangeProfile}                                                                                                   |
+|Delete System          |${SystemName}                                                                                                                                                                                                                                                      |

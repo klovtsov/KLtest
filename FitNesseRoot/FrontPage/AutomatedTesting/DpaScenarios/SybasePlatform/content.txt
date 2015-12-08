@@ -1,0 +1,5 @@
+!include <AutomatedTesting.PlatformsTesting.SybasePlatform
+!include -c <DpaScenarios.ScenarioLibrary
+
+
+

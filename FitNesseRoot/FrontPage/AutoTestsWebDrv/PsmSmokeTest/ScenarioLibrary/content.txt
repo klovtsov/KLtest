@@ -1,0 +1,166 @@
+!|scenario            |Open Session Do Nothing|requestorName         |                       |systemName         |         |accountName         |         |responceAction        |
+|$res=                |CLI                    |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                           |
+|$RequestID=          |get_session_RequestID  |$res                                                                                                                              |
+|stop                                                                                                                                                                            |
+|Login                |${TPAMURL}             |                      |@requestorName         |                   |${UserPwd}                                                     |
+|pause                |5000                                                                                                                                                      |
+|click                |id=CurrentRequests                                                                                                                                        |
+|waitForElementPresent|link=$RequestID                                                                                                                                           |
+|clickOnLink          |link=$RequestID                                                                                                                                           |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                     |
+|click                |id=StartSessionButton                                                                                                                                     |
+|pause                |30000                                                                                                                                                     |
+|selectWindow         |Quest Software PSM Session (${SystemName}/${ManagedAccount}/$RequestID)                                                                                   |
+|pause                |150000                                                                                                                                                    |
+|stop                                                                                                                                                                            |
+|selectWindow         |Quest Software TPAM                                                                                                                                       |
+|stop                                                                                                                                                                            |
+|Cancel Session Request                                                                                                                                                          |
+
+!|scenario            |Add PSM Account                           |accountName       |on system      |systemName      |
+|clickOnLink          |link=Add Account                          |                                                   |
+|type;                |id=SystemNm                               |@systemName                                        |
+|click                |id=System                                 |                                                   |
+|waitForElementPresent|xpath=//td[contains(text(),'@systemName')]|                                                   |
+|click                |xpath=//td[contains(text(),'@systemName')]|                                                   |
+|click                |id=Details                                |                                                   |
+|type;                |id=AccountName                            |@accountName                                       |
+|type;                |id=sPswd                                  |${ManagedAccountPwd}                               |
+|type;                |id=sConfPswd                              |${ManagedAccountPwd}                               |
+|click                |id=SubmitChangesButton                    |                                                   |
+|pause                |10000                                                                                         |
+|waitForTextPresent   |Changes saved successfully for @accountName                                                   |
+|click                |id=PSMDetails                                                                                 |
+|pause                |10000                                                                                         |
+|waitForElementPresent|id=cb_EnableFl                                                                                |
+|click                |id=cb_EnableFl                                                                                |
+|select;              |id=ProxyType                              |label=${ProxyType} - Automatic Login Using Password|
+|type;                |id=EgpMinApprovers                        |0                                                  |
+|select;              |id=EgpDurationQtrHrs                      |label=15                                           |
+|select;              |id=EgpDurationHrs                         |label=0                                            |
+|select;              |id=EgpDurationDays                        |label=0                                            |
+|click                |id=cb_RecordingRequiredFl                 |                                                   |
+|click                |id=SubmitChangesButton                    |                                                   |
+|waitForTextPresent   |PSM Details saved successfully                                                                |
+
+!|scenario|Create logon script                                                                             |
+|runBatch |logon;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${ManagedAccount};${OSType};${prefix}|
+
+!|scenario        |Check logon script                                                                             |
+|$res=            |RunBatchGetOutput|logon;check;${SystemAddress};${FunctAcct};${FunctAcctPwd};${OSType};${prefix}|
+|Verify_Contain_OR|$res;;testsuccessfully                                                                         |
+
+!|scenario|Delete logon script                                                                              |
+|runBatch |logon;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${ManagedAccount};${OSType};${prefix}||
+
+!|scenario        |Prepare Test                                                                                                     |
+|Login            |${TPAMURL}       |          |${TPAMAdmin}     |         |${DefaultPwd}                                           |
+|Add System       |${SystemName}    |          |${SystemAddress} |         |${SystemPlatform}|        |${FunctAcct}||${FunctAcctPwd}|
+|Prepare Account  |${ManagedAccount}|          |${SystemName}    |         |${SystemAddress}                                        |
+|Prepare Requestor|${Requestor}                                                                                                     |
+|Assign Policy    |${PolicyName}    |To Account|${ManagedAccount}|On System|${SystemName}    |And User|${Requestor}                 |
+|Assign Policy    |Requestor        |To Account|${ManagedAccount}|On System|${SystemName}    |And User|${CLI_user_1}                |
+|pause            |${ApplyNewPoliciesInterval}                                                                                      |
+|Create logon script                                                                                                                |
+
+!|Scenario              |Open Session                                                  |
+|Open Session Do Nothing|${Requestor}||${SystemName}||${ManagedAccount}||psm_do_nothing|
+|pause                  |60000                                                         |
+|Check logon script                                                                    |
+
+!|scenario               |Clear Objects                                          |
+|Remove system           |${SystemName}                                          |
+|Delete logon script                                                             |
+|Delete Account on System|${ManagedAccount}|on system|${SystemAddress}           |
+|Remove User             |${Requestor}                                           |
+|Login                   |${TPAMURL}       |         |${TPAMAdmin}||${DefaultPwd}|
+|Hard-Delete System      |${SystemName}                                          |
+
+!|Scenario        |Create account with placeholder|placehldr                                                                                                                |
+|$res=            |CLI                            |${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName @placehldr                                               |
+|Verify_Contain_OR|$res;;${AcntCanNotBeManagedMessage}                                                                                                                      |
+|$res=            |CLI                            |${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName @placehldr --AutoFlag N                                  |
+|Verify_Contain_OR|$res;;Changes saved successfully for @placehldr                                                                                                          |
+|$res=            |CLI                            |${CLIBatch} Updatepsmaccount --System ${SystemName} --Account @placehldr --EnableFlag Y --ProxyType \"${wrongProxyType}\"|
+|Verify_Contain_OR|$res;;${InteactiveAuthRequired}                                                                                                                          |
+|$res=            |CLI                            |${CLIBatch} Updatepsmaccount --System ${SystemName} --Account @placehldr --EnableFlag Y --ProxyType \"${goodProxyType}\" |
+|Verify_Contain_OR|$res;;PSM Details saved successfully                                                                                                                     |
+
+#Creation placeholder account without testing it properties (i.e. it should be nonmanaged and etc.)
+
+!|scenario        |Create placeholder account|placehldr                                                                                                               |
+|$res=            |CLI                       |${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName @placehldr --AutoFlag N                                 |
+|Verify_Contain_OR|$res;;Changes saved successfully for @placehldr                                                                                                    |
+|$res=            |CLI                       |${CLIBatch} Updatepsmaccount --System ${SystemName} --Account @placehldr --EnableFlag Y --ProxyType \"${goodProxyType}\"|
+|Verify_Contain_OR|$res;;PSM Details saved successfully                                                                                                               |
+
+!|Scenario        |Set required approvers|num                                                                                              |
+|$res=            |CLI                   |${CLIBatch} UpdateAccount --system ${SystemName} --AccountName ${PlaceHolder} --MinimumApprovers @num|
+|Verify_Contain_OR|$res;;successfully                                                                                                      |
+|$res=            |CLI                   |${CLIBatch} Updatepsmaccount --system ${SystemName} --Account ${PlaceHolder} --MinApprovers @num |
+|Verify_Contain_OR|$res;;PSM Details saved successfully                                                                                    |
+
+!|scenario        |Request Session                                                                                                |
+|$res =           |GroovyWebDriver      |requestSession;${TPAMHost};${Requestor};${UserPwd};make;${SystemName};${PlaceHolder};test|
+|Verify_Contain_OR|$res;;RequestID: .* for a PSM Session for account ${PlaceHolder}/${SystemName} has been submitted.             |
+|$RequestID=      |get_session_RequestID|$res                                                                                     |
+
+!|scenario        |Make first Request Session to|accnt        |on system        |systemName        |by       |user       |
+|$res =           |GroovyWebDriver              |requestSession;${TPAMHost};@user;${UserPwd};make;@systemName;@accnt;test|
+|Verify_Contain_OR|$res;;RequestID: .* for a PSM Session for account @accnt/@systemName has been submitted.              |
+|$firstReqId=     |get_session_RequestID        |$res                                                                    |
+
+!|scenario        |Make second Request Session to|accnt         |on system         |systemName         |by         |user        |
+|$res =           |GroovyWebDriver               |requestSession;${TPAMHost};@user;${UserPwd};make;@systemName;@accnt;test again|
+|Verify_Contain_OR|$res;;RequestID: .* for a PSM Session for account @accnt/@systemName has been submitted.                     |
+|$secReqId=       |get_session_RequestID         |$res                                                                          |
+
+!|scenario        |Cancel psm request                                                                       |
+|$res =           |GroovyWebDriver|requestSession;${TPAMHost};${Requestor};${UserPwd};cancel;$RequestID;test|
+|Verify_Contain_OR|$res;;was submitted successfully                                                         |
+
+!|scenario        |Cancel psm request with Id|ID                 |by                |user                |
+|$res =           |GroovyWebDriver           |requestSession;${TPAMHost};@user;${UserPwd};cancel;@ID;test|
+|Verify_Contain_OR|$res;;was submitted successfully                                                      |
+
+
+!|Scenario         |Open session check prompt                                                                                                                                   |
+|$res =            |GroovyWebDriver|requestSession;${TPAMHost};${Requestor};${UserPwd};login;$RequestID;${ManagedAccount};${ManagedAccountPwd};${pause};${expectedImageOnScreen}|
+|Verify_Contain_NOT|$res;;something went wrong;;Account prompt image wasn't found;;No one from expected window was found                                                        |
+#|Terminate Session                                                                                                         |
+
+!|Scenario         |Open session by account|accnt                              |with password                              |passwd                              |
+|$res =            |GroovyWebDriver        |requestSession;${TPAMHost};${Requestor};${UserPwd};login;$RequestID;@accnt;@passwd;${pause};${expectedImageOnScreen}|
+|Verify_Contain_NOT|$res;;something went wrong;;Account prompt image wasn't found;;No one from expected window was found                                        |
+
+!|scenario         |Open RDP interactive session with request|reqId                            |with password                            |passwd                            |
+|$res =            |GroovyWebDriver                          |openInteractiveSshSession;${TPAMHost};${Requestor};${UserPwd};@reqId;@passwd;${pause};${expectedImageOnScreen}|
+|Verify_Contain_NOT|$res;;something went wrong;;Account prompt image wasn't found;;No one from expected window was found                                                    |
+
+!|scenario         |Check File Transfer settings                                                                                                                     |
+|$res =            |GroovyWebDriver           |checkFileTransSettingPlaceholder;${TPAMHost};${TPAMAdmin};${DefaultPwd};${SystemName};${PlaceHolder};${SystemPlatform}|
+|Verify_Contain_NOT|$res;;something went wrong|                                                                                                                      |
+
+!|Scenario         |Set local affinity                                                                 |
+|$res =            |GroovyWebDriver|setPsmAffinity;${TPAMHost};${TPAMAdmin};${DefaultPwd};${SystemName}|
+|Verify_Contain_NOT|$res;;something went wrong                                                         |
+
+!|Scenario         |Open session VNC                                                                                                |
+|$res =            |GroovyWebDriver|openSessionVnc;${TPAMHost};${Requestor};${UserPwd};$RequestID;${vncPwd};${expectedImageOnScreen}|
+|Verify_Contain_NOT|$res;;something went wrong;;FindFailed: can not find                                                            |
+
+!|Scenario         |Open automatic ssh session                                                                            |
+|$res =            |GroovyWebDriver|openSshSession;${TPAMHost};${Requestor};${UserPwd};$RequestID;${expectedImageOnScreen}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                            |
+|Verify_Contain_OR |$res;;CLICK on                                                                                        |
+
+!|Scenario         |Set PSM Functional Account|psmAccnt                    |for system                   |sysName                   |
+|$res =            |GroovyWebDriver           |setSpcwPsmFunctionalAccount;${TPAMHost};${TPAMAdmin};${DefaultPwd};@sysName;@psmAccnt|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                      |
+|Verify_Contain_OR |$res;;Script finished                                                                                           |
+
+
+!|scenario        |Try to Delete Account|SystemName                  |                  |AccountName                  |
+|$res=            |CLI                  |${CLIBatch} DeleteAccount --SystemName @SystemName --AccountName @AccountName|
+|Verify_Contain_OR|$res;;${AccountFailedDeleteMessage}                                                                |

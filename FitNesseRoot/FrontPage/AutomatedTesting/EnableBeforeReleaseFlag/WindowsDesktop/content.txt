@@ -1,0 +1,33 @@
+!contents
+
+
+!define SystemPlatform {Windows Desktop}
+!define SystemAddress {10.30.38.23}
+!define FunctAcct {cotin}
+!define FuncAccPwd {frujiE15}
+
+!define ImageToWait {start.png}
+
+!include -c <AutomatedTesting.EnableBeforeReleaseFlag.ScenarioLibrary
+!include -c <AutomatedTesting.EnableBeforeReleaseFlag.WindowsDesktop.ScenarioLibrary
+
+
+
+
+!|script                                                                         |
+|Prepare Environment                                                             |
+|Set Affinity to DPA                                                             |
+|Check Password Released and Account Enabled                                     |
+|Password Cannot Be Released If Account Cannot Be Enabled                        |
+|Check ISA Password Retrieved and Account Enabled                                |
+|Check Session Opened and Account Enabled                                        |
+|Session Cannot Be Opened If Account Cannot Be Enabled                           |
+|Check that EnableBeforeReleaseFlag Checkbox is not present or is disabled       |
+|Account Disabled by Scheduled Password Reset                                    |
+|Account Disabled by Manual Password Reset                                       |
+|Account Disabled and Password Reset by Manual Password Check                    |
+|Manual Check of Disabled Account                                                |
+|Check That Password Is Not Reset If Currently In Use And Account Is Not Disabled|
+|Clear Objects                                                                   |
+
+#|Set Affinity to DPA                                                             |

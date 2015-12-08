@@ -1,0 +1,10 @@
+!include -c <AutomatedTesting.SetUp
+
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+
+!|script                                                                                                                                                                                            |
+|Add system          |${SystemName}  |with address|${SystemAddress}|platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-ChangeFrequency 0 -description "${sysDescription}"|
+|Make System Template|${TemplateName}|from        |${SystemName}   |with account|${FunctAcct}                                                                                                       |
+
+!include <PropagateOptionsFromTemplate.TearDown

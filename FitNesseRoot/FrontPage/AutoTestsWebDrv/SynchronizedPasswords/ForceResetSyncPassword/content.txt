@@ -1,0 +1,23 @@
+!include -c <SynchronizedPasswords.ScenarioLibrary
+
+!4 Create Sync Password
+!|script                                                                                                                                                    |
+|Add Sync Password     |${SyncPasswordName}|with value   |${SincPwdInitialValue}|Check Profile|${SyncPwdCheckProfile}|Change Profile|${SyncPwdChangeProfile}|
+|Add Subscriber        |${ManagedAccount}  |from         |${SystemName}                                                                                     |
+|Add Subscriber        |${ManagedAccount}  |from         |${SecSystemName}                                                                                  |
+|pause                 |${PauseValue}                                                                                                                       |
+|Login to first system |${SystemAddress}   |with password|${SincPwdInitialValue}                                                                            |
+|Login to second system|${SecSystemAddress}|with password|${SincPwdInitialValue}                                                                            |
+
+!4 Reset to new value
+!|script                                                                                                                                   |
+|Reset Sync Password                                                                                                                       |
+|pause                                            |${PauseValue}                                                                           |
+|Check Sync Password                              |${SyncPasswordName}|subscriber|${ManagedAccount}|from|${SystemName}   |status is|Current|
+|Check Sync Password                              |${SyncPasswordName}|subscriber|${ManagedAccount}|from|${SecSystemName}|status is|Current|
+|Check Login to second system failed with password|${SincPwdInitialValue}                                                                  |
+
+!4 Delete sync password
+!|script                                                                            |
+|$res=            |CLI|${CLIBatch} DeleteSyncPass --SyncPassName ${SyncPasswordName}|
+|Verify_Contain_OR|$res;;successfully deleted                                       |

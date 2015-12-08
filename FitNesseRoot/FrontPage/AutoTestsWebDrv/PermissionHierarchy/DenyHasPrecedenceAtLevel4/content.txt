@@ -1,0 +1,42 @@
+!* Test description
+A Denied access policy assignment at any level overrides all other permissions at that level.
+This test that deny policy overrides ISA rights at level 4 (i.e. User to Collection of Systems)
+*!
+!define CollectionName {${prefix}AccntColtn}
+!define CollectionName2 {${prefix}SysColtn}
+
+!*> Include section
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+
+!*> Create Environment
+!|script                                                                                    |
+|Add system                                                                                 |
+|Add account             |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed}|
+|Add Collection          |${CollectionName}                                                 |
+|Add Collection          |${CollectionName2}                                                |
+|Add System To Collection|${SystemName}    |             |${CollectionName}                 |
+|Add System To Collection|${SystemName}    |             |${CollectionName2}                |
+|Change User Type        |Basic            |for user     |${CLI_user_2}                     |
+*!
+
+!|script                                                                                                                     |
+|Set policy           |ISA              |on collection|${CollectionName} |for user|${CLI_user_2}                             |
+|Set policy           |Denied           |on collection|${CollectionName2}|for user|${CLI_user_2}                             |
+|pause                |${ApplyNewPoliciesInterval}                                                                           |
+|Try to Update Account|${ManagedAccount}|by user      |${CLI_user_2}     |params  |--Description AaA|with result|You are not |
+|Revoke policy        |Denied           |on collection|${CollectionName2}|for user|${CLI_user_2}                             |
+|pause                |${ApplyNewPoliciesInterval}                                                                           |
+|Try to Update Account|${ManagedAccount}|by user      |${CLI_user_2}     |params  |--Description AaA|with result|successfully|
+
+!*> Clear Environment
+!|script                                       |
+|Change User Type |Admin|for user|${CLI_user_2}|
+|Remove account   |${ManagedAccount}           |
+|Remove system    |${SystemName}               |
+|Delete Collection|${CollectionName}           |
+|Delete Collection|${CollectionName2}          |
+*!

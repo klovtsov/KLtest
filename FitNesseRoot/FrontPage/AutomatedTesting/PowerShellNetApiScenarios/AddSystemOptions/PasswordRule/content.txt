@@ -1,0 +1,17 @@
+!define wrongPwdRuleName {nonRule}
+!define nonExisingMessage {Invalid password rule}
+!include -c  <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                      |
+|Add system             |${SystemName}1                                                                                |with address |${SystemAddress}       |platform|Linux                               |additional parameters|                            |
+|List Systems by        |-systemName ${SystemName}1                                                                    |output params|SystemName,PasswordRule|contain |${SystemName}.*Default Password Rule|                                                  |
+|Add system             |${SystemName}                                                                                 |with address |${SystemAddress}       |platform|Linux                               |additional parameters|-PasswordRule ${PersistentPwdRuleName}|
+|List Systems by        |-systemName ${SystemName}                                                                     |output params|SystemName,PasswordRule|contain |${SystemName}.*${PersistentPwdRuleName}       |                                                  |
+|Add account            |${ManagedAccount}                                                                             |with password|${ManagedAccountPwd}   |                                                                                                |
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount} -propsToList accountname,PasswordRule|contains     |${ManagedAccount}.*${PersistentPwdRuleName}                                                                                       |
+|Delete System          |${SystemName}                                                                                                                                                                                                                        |
+|Delete System          |${SystemName}1                                                                                                                                                                                                                       |
+
+!3 Wrong rule
+!|script                                                                                                                                                                                                                                             |
+|Try to Add system|${SystemName}|with parameters|-systemAddress ${SystemAddress} -platform ${SystemPlatform} -functAcct ${FunctAcct} -PasswordRule ${wrongPwdRuleName}|with result|${nonExisingMessage}|

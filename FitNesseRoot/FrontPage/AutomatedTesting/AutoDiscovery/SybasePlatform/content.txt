@@ -1,0 +1,23 @@
+!contents
+
+
+!include -c .FrontPage.AutomatedTesting.AutoDiscovery.ScenarioLibrary
+
+
+!define newprefix {${prefix}7}
+!define SystemName {${prefix}Sybase}
+!define SystemPlatform {Sybase}
+!define SystemAddress {10.30.38.5}
+!define Port {5000}
+!define Catalog {master}
+!define FunctAcct {sa}
+!define FunctAcctPwd {qwerty1}
+!define ManagedAccount {${prefix}Acc}
+!define ManagedAccountPwd {frujiE15}
+
+
+!define SelectUserQuery {SELECT * FROM ${DatabaseName}.dbo.${UserTableName}}
+!define SelectComputerQuery {SELECT * FROM ${DatabaseName}.dbo.${ComputerTableName}}
+
+
+

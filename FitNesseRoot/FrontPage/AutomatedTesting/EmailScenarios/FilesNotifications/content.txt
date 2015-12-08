@@ -1,0 +1,27 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.EmailScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EmailScenarios.FilesNotifications.ScenarioLibrary
+!include -c <AutomatedTesting.KnownIssues
+!include -c <EmailScenarios.FilesNotifications.BugWorkaround
+
+
+
+!|script                                                               |
+|Prepare Environment                                                   |
+|File Notifications|${GroupCollectionRequestor}||${GroupFileApprover}  |
+|File Notifications|${UserCollectionRequestor} ||${GlobalGroupApprover}|
+|File Notifications|${GlobalGroupRequestor}    ||${GroupSystemApprover}|
+|File Request(overdue)                                                 |
+|Manage Current File                                                   |
+|Clear Environment                                                     |
+
+
+#
+#|File Notifications|${UserSystemRequestor}     ||${UserSystemApprover}     |
+#|File Notifications|${UserCollectionRequestor} ||${UserCollectionApprover} |
+#|File Notifications|${GroupFileRequestor}      ||${GroupFileApprover}      |
+#|File Notifications|${GroupCollectionRequestor}||${GroupCollectionApprover}|
+#|File Notifications|${GroupSystemRequestor}    ||${GroupSystemApprover}    |
+#|File Notifications|${GlobalGroupRequestor}    ||${GlobalGroupApprover}    |
+#|File Request(overdue)                                                     |
+#|Manage Current File                                                       |

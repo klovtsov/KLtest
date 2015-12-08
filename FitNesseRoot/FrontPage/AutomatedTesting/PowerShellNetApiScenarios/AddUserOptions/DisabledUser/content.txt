@@ -1,0 +1,12 @@
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+!3 Create disabled user
+!|script                                                                                    |
+|Add User       |${TestUserName}   |with options|-Disable Y                                 |
+|List properties|username,disableFl|for user    |${TestUserName}|contains|${TestUserName}.*Y|
+|Delete User    |${TestUserName}                                                            |
+
+!3 Create enabled user
+!|script                                                                                      |
+|Add User       |${TestUserName}2  |with options|-Disable N                                   |
+|List properties|username,disableFl|for user    |${TestUserName}2|contains|${TestUserName}2.*N|
+|Delete User    |${TestUserName}2                                                             |

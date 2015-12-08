@@ -1,0 +1,17 @@
+!|import  |
+|selenesse|
+|TPAM     |
+
+
+!|Library               |
+|tpam|${seleniumBrowser};;${seleniumPort}|
+
+
+!|script                                                                                             |
+|start            |Slim Selenium Driver|${seleniumHost}|${seleniumPort}|${seleniumBrowser}|${baseURL}|
+|setTimeoutSeconds|${seleniumTimeout}                                                                |
+
+
+
+
+

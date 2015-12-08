@@ -1,0 +1,115 @@
+!*> Includes
+''System''
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+''Libraries''
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <PasswordProfiles.ScenarioLibrary
+!include -c >TestSpecific
+*!
+
+!define SystemNameDPA {${SystemName}DPA}
+!define SystemNameWrong {${SystemName}Wrong}
+!define SystemNameDPAWrong {${SystemName}DPAWrong}
+
+!|script                                                                                                                                                                                                                                                                                                                                                      |
+|Add System|${CLIBatch}||--SystemName ${SystemNameDPA} --PlatformName ${SystemPlatform} --NetworkAddress ${SystemAddress} --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\"  --PrimaryEma ${SystemEMail} --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}||successfully|
+|Add System|${CLIBatch}||--SystemName ${SystemNameWrong} --PlatformName ${SystemPlatform} --NetworkAddress wrong --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\"  --PrimaryEma ${SystemEMail} --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}         ||successfully|
+|Add System|${CLIBatch}||--SystemName ${SystemNameDPAWrong} --PlatformName ${SystemPlatform} --NetworkAddress Wrong --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\"  --PrimaryEma ${SystemEMail} --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}      ||successfully|
+
+
+''Test Port - Windows platform ''
+
+!|script                                                                                                                                                                                                       |
+|Open            |${TPAMURL}           ||${TPAMAdmin}                                                                                                                                       ||${DefaultPwd}    |
+|Set Affinity    |${SystemNameDPA}                                                                                                                                                                             |
+|Set Affinity    |${SystemNameDPAWrong}                                                                                                                                                                        |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort}   ||successfully     |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemName} --AccountName ${NotExist} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort}         ||successfully     |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemNameWrong} --AccountName ${NotExist} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort}    ||successfully     |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemNameDPA} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort}||successfully     |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemNameDPA} --AccountName ${NotExist} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort}      ||successfully     |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemNameDPAWrong} --AccountName ${NotExist} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort} ||successfully     |
+|pause           |${defaultPause}                                                                                                                                                                              |
+|Check Change Log|${SystemName}        ||${ManagedAccount}                                                                                                                                  ||Success          |
+|Check Change Log|${SystemName}        ||${NotExist}                                                                                                                                        ||Failed           |
+|Check Change Log|${SystemNameWrong}   ||${NotExist}                                                                                                                                        ||Port test failure|
+|Check Change Log|${SystemNameDPA}     ||${ManagedAccount}                                                                                                                                  ||Success          |
+|Check Change Log|${SystemNameDPA}     ||${NotExist}                                                                                                                                        ||Failed           |
+|Check Change Log|${SystemNameDPAWrong}||${NotExist}                                                                                                                                        ||Port test failure|
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --PasswordChangeProfile "!NULL" --AutoFlag N                                            ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                                        ||successfully     |
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemName} --AccountName ${NotExist} --PasswordChangeProfile "!NULL" --AutoFlag N                                                  ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemName}  --AccountName ${NotExist}                                                                                              ||successfully     |
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemNameWrong} --AccountName ${NotExist} --PasswordChangeProfile "!NULL" --AutoFlag N                                             ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemNameWrong}  --AccountName ${NotExist}                                                                                         ||successfully     |
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemNameDPA} --AccountName ${ManagedAccount} --PasswordChangeProfile "!NULL" --AutoFlag N                                         ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemNameDPA}  --AccountName ${ManagedAccount}                                                                                     ||successfully     |
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemNameDPA} --AccountName ${NotExist} --PasswordChangeProfile "!NULL" --AutoFlag N                                               ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemNameDPA}  --AccountName ${NotExist}                                                                                           ||successfully     |
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemNameDPAWrong} --AccountName ${NotExist} --PasswordChangeProfile "!NULL" --AutoFlag N                                          ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemNameDPAWrong}  --AccountName ${NotExist}                                                                                      ||successfully     |
+|stop                                                                       |
+
+
+!|script                                                                    |
+|Delete System|${CLIBatch}||--SystemName ${SystemNameDPA}     ||successfully|
+|Delete System|${CLIBatch}||--SystemName ${SystemNameDPAWrong}||successfully|
+|Delete System|${CLIBatch}||--SystemName ${SystemNameWrong}   ||successfully|
+
+''Test Port - FreeBsd platform''
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.FreeBsd 
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c >TestSpecific
+
+!|script                                                                                                                                                                                                                                                                                                                                                   |
+|Add System|${CLIBatch}||--SystemName ${SystemName} --PlatformName ${SystemPlatform} --NetworkAddress ${SystemAddress} --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\"  --PrimaryEma ${SystemEMail} --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}||successfully|
+|Create Account on System                                                                                                                                                                                                                                                                                                                                  |
+
+!define SystemNameDPA {${SystemName}DPA}
+!define SystemNameWrong {${SystemName}Wrong}
+!define SystemNameDPAWrong {${SystemName}DPAWrong}
+
+!|script                                                                                                                                                                                                                                                                                                                                                      |
+|Add System|${CLIBatch}||--SystemName ${SystemNameDPA} --PlatformName ${SystemPlatform} --NetworkAddress ${SystemAddress} --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\"  --PrimaryEma ${SystemEMail} --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}||successfully|
+|Add System|${CLIBatch}||--SystemName ${SystemNameWrong} --PlatformName ${SystemPlatform} --NetworkAddress wrong --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\"  --PrimaryEma ${SystemEMail} --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}         ||successfully|
+|Add System|${CLIBatch}||--SystemName ${SystemNameDPAWrong} --PlatformName ${SystemPlatform} --NetworkAddress Wrong --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\"  --PrimaryEma ${SystemEMail} --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}      ||successfully|
+
+
+!|script                                                                                                                                                                                                       |
+|Open            |${TPAMURL}           ||${TPAMAdmin}                                                                                                                                       ||${DefaultPwd}    |
+|Set Affinity    |${SystemNameDPA}                                                                                                                                                                             |
+|Set Affinity    |${SystemNameDPAWrong}                                                                                                                                                                        |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort}   ||successfully     |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemName} --AccountName ${NotExist} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort}         ||successfully     |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemNameWrong} --AccountName ${NotExist} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort}    ||successfully     |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemNameDPA} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort}||successfully     |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemNameDPA} --AccountName ${NotExist} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort}      ||successfully     |
+|Add Account     |${CLIBatch}          ||--SystemName ${SystemNameDPAWrong} --AccountName ${NotExist} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile ${ChangeProfile4TestPort} ||successfully     |
+|pause           |${defaultPause}                                                                                                                                                                              |
+|Check Change Log|${SystemName}        ||${ManagedAccount}                                                                                                                                  ||Success          |
+|Check Change Log|${SystemName}        ||${NotExist}                                                                                                                                        ||Failed           |
+|Check Change Log|${SystemNameWrong}   ||${NotExist}                                                                                                                                        ||Port test failure|
+|Check Change Log|${SystemNameDPA}     ||${ManagedAccount}                                                                                                                                  ||Success          |
+|Check Change Log|${SystemNameDPA}     ||${NotExist}                                                                                                                                        ||Failed           |
+|Check Change Log|${SystemNameDPAWrong}||${NotExist}                                                                                                                                        ||Port test failure|
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --PasswordChangeProfile "!NULL" --AutoFlag N                                            ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                                        ||successfully     |
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemName} --AccountName ${NotExist} --PasswordChangeProfile "!NULL" --AutoFlag N                                                  ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemName}  --AccountName ${NotExist}                                                                                              ||successfully     |
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemNameWrong} --AccountName ${NotExist} --PasswordChangeProfile "!NULL" --AutoFlag N                                             ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemNameWrong}  --AccountName ${NotExist}                                                                                         ||successfully     |
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemNameDPA} --AccountName ${ManagedAccount} --PasswordChangeProfile "!NULL" --AutoFlag N                                         ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemNameDPA}  --AccountName ${ManagedAccount}                                                                                     ||successfully     |
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemNameDPA} --AccountName ${NotExist} --PasswordChangeProfile "!NULL" --AutoFlag N                                               ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemNameDPA}  --AccountName ${NotExist}                                                                                           ||successfully     |
+|Update Account  |${CLIBatch}          ||--SystemName ${SystemNameDPAWrong} --AccountName ${NotExist} --PasswordChangeProfile "!NULL" --AutoFlag N                                          ||successfully     |
+|Delete Account  |${CLIBatch}          ||--SystemName ${SystemNameDPAWrong}  --AccountName ${NotExist}                                                                                      ||successfully     |
+
+
+!|script                                                                    |
+|Delete System|${CLIBatch}||--SystemName ${SystemName}        ||successfully|
+|Delete System|${CLIBatch}||--SystemName ${SystemNameDPA}     ||successfully|
+|Delete System|${CLIBatch}||--SystemName ${SystemNameDPAWrong}||successfully|
+|Delete System|${CLIBatch}||--SystemName ${SystemNameWrong}   ||successfully|
+|stop                                                                       |

@@ -1,0 +1,12 @@
+!define ManagedAccountDomain {parsec}
+!define HostName {parsec}
+!define ServiceAccount {${ManagedAccountDomain}\${ManagedAccount}}
+
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsActiveDir
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.WindowsActiveDir.PlatformSpecific
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ChangeScheduledTasks.TestSpecific
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ChangeServices.TestSpecific
+!include -c <AutoTestsWebDrv.WindowsAccountsManagement.ScenarioLibrary
+#!include -c <AutomatedTesting.WindowsAccountsManagement.WindowsActiveDir.BugWorkaround
+

@@ -1,0 +1,3 @@
+!include <AutoTestsWebDrv.PlatformsTesting.NovellNds
+!include -c <PerlApiScenarios.ScenarioLibrary
+!include -c <PerlApiScenarios.LdAp.PlatformSpecific

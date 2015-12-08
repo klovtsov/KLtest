@@ -1,0 +1,13 @@
+!include <AutomatedTesting.PlatformsTesting.EdmzSpcwDc
+
+
+!*> Added to workaround Java API issues with difficult passwords
+!define ManagedAccountPwd {`123qwe}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.EdmzSpcwDc2.PlatformSpecific
+!include -c <AutomatedTesting.PlatformsTesting.EdmzSpcwDc.PlatformSpecific
+*!
+
+
+!include -c <JavaApiScenarios.ScenarioLibrary
+!include -c <JavaApiScenarios.EdmzSpcwDc2.PlatformSpecific

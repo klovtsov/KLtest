@@ -1,0 +1,14 @@
+!contents
+
+
+!include -c .FrontPage.AutomatedTesting.CliScenarios.WindowsActiveDir.PlatformSpecific
+!include -c .FrontPage.AutomatedTesting.AutoDiscovery.ScenarioLibrary
+!include -c .FrontPage.AutomatedTesting.AutoDiscovery.WindowsActiveDir.ScenarioLibrary
+
+
+
+!|script      |
+|Prepare Test |
+|Auto Discovery |
+|Clear Objects|
+

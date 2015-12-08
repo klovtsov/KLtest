@@ -1,0 +1,7 @@
+!include <AutomatedTesting.AccountDiscovery.TestCase
+
+!|script |
+|stop    |
+|finalize|
+
+

@@ -1,0 +1,18 @@
+!define ManagedAccount {${prefix}psAcnt}
+!define flagReqValue {Y}
+!define flagAPIValue {Y}
+!define flagCLIValue {Y}
+!define flagISAValue {N}
+!define ticketSystem {${PersistentTicketSystemName}}
+!define ticketEmailNotify {test@test.com}
+
+!define releaseDuration {25}
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                                                                                                                                                   |
+|Add System                                                                                                                                                                                                                                                                                                                                                                                |
+|Add account            |${ManagedAccount}                                                                                                                                                    |on system|${SystemName}|with options|-RequireTicketForRequest ${flagReqValue} -RequireTicketForAPI ${flagAPIValue} -RequireTicketForCLI ${flagCLIValue} -RequireTicketForISA ${flagISAValue}|
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount} -propsToList accountname,requireTicketForRequest,requireTicketForAPI,requireTicketForCLI,requireTicketForISA|contains |${ManagedAccount}.*${flagReqValue}.*${flagAPIValue}.*${flagCLIValue}.*${flagISAValue}                                                                                             |
+|Add account            |${ManagedAccount}2                                                                                                                                                   |on system|${SystemName}|with options|-RequireTicketForRequest ${flagReqValue} -RequireTicketForAPI ${flagAPIValue} -TicketSystemName ${ticketSystem} -ticketEmailNotify ${ticketEmailNotify}|
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount}2 -propsToList accountname,requireTicketForRequest,TicketSystemName,ticketEmailNotify                        |contains |${ManagedAccount}.*${flagReqValue}.*${ticketSystem}.*${ticketEmailNotify}                                                                                                         |
+|Delete System          |${SystemName}                                                                                                                                                                                                                                                                                                                                                     |

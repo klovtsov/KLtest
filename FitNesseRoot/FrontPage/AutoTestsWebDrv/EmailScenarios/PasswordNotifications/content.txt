@@ -1,0 +1,22 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.PasswordNotifications.ScenarioLibrary
+
+
+
+!|script                                              |
+|Prepare Environment                                  |
+|Password Change Failure                              |
+|Password Check Failure                               |
+|Password Mismatch Failure                            |
+|Password Release Request And Responce                |
+|Password Release Request Overdue                     |
+|Password Release Review Request                      |
+|Privileged Password Release                          |
+|Privileged Password Release for Synchronized Password|
+|Password Request Without Ticket                      |
+|Scheduled Manual Password                            |
+|Non-managed Account Password Release Expiration      |
+|Clear Environment                                    |
+
+

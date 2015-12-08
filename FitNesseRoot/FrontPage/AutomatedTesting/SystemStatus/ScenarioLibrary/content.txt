@@ -1,0 +1,50 @@
+!|Scenario         |Check Disk Free Space|threshold                                                           |
+|$res =            |GroovyWebDriver      |checkDiskFreeSpace;${TPAMHost};${TPAMMaster};${MasterPwd};@threshold|
+|Verify_Contain_NOT|$res;;something went wrong                                                                |
+|Verify_Contain_OR |$res;;Ok                                                                                  |
+
+!|scenario            |Add CLI User     |UserName     |     |Passwd     |    |Type    |
+|pause                |5000                                                           |
+|clickAndWait         |link=Add UserID                                                |
+|pause                |5000                                                           |
+|waitForElementPresent|id=UserName                                                    |
+|type;                |id=UserName      |@UserName                                    |
+|type;                |id=FirstName     |John                                         |
+|type;                |id=LastName      |Smith                                        |
+|type;                |id=sPassword     |@Passwd                                      |
+|type;                |id=Confirm       |@Passwd                                      |
+|select;              |id=UType         |label=@Type                                  |
+|click                |id=cb_WebAccess                                                |
+|click                |id=KeyBased                                                    |
+|pause                |1000                                                           |
+|click                |id=cb_CliAccess                                                |
+|pause                |1000                                                           |
+|click                |id=SubmitChanges                                               |
+|waitForTextPresent   |*User added successfully*                                      |
+|pause                |1000                                                           |
+|click                |id=GetCliKey                                                   |
+|pause                |5000                                                           |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}@UserName.ppk|
+|Show Desktop                                                                         |
+|pause                |1000                                                           |
+|Generate Plink Key   |@UserName                                                      |
+
+
+!|scenario|Generate Plink Key                                           |keyName                                          |
+|runBatch |AutoIt3.exe;${ProjDir}\Scripts\generate_putty_key.au3;${ProjDir}\Scripts\puttygen.exe;${PathToKeys}@keyName.ppk|
+
+
+
+!|scenario        |Remove User|UserName                        |
+|$res=            |CLI        |${CLIBatch} DeleteUser @UserName|
+|Verify_Contain_OR|$res;;successful                            |
+
+!|scenario|Remove Key               |UserName              |
+|runBatch |DeleteFileByMask;${PathToKeys}@UserName.ppk;fake|
+
+!|scenario              |Check CPU Alerts                                                                                                                                                                                                    |
+|$res=                  |CheckMail   |${MailServer};${CPUAlertsReceiverEmail};${TPAMEMailPassword};${FromMail};TPAM Alert;The appliance CPU has exceeded ${Threshold}% for ${Cycles} successive checks occuring every ${CheckEvery} minute(s)|
+|Verify_Contain_OR_alnum|$res;;no messages                                                                                                                                                                                                   |
+|$res=                  |ClearMailbox|${MailServer};${CPUAlertsReceiverEmail};${TPAMEMailPassword}                                                                                                                                           |
+
+

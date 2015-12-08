@@ -1,0 +1,11 @@
+!define ManagedAccountDomain {.}
+!define HostName {yktpamw2k8r2sp1}
+!define ServiceAccount {${ManagedAccount}}
+
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ChangeScheduledTasks.TestSpecific
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ChangeServices.TestSpecific
+!include -c <AutoTestsWebDrv.WindowsAccountsManagement.ScenarioLibrary
+
+

@@ -1,0 +1,2 @@
+!include <AutoTestsWebDrv.CliScenarios.OraclePlatform
+!include -c ScenarioLibrary

@@ -1,0 +1,14 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.ReasonCodes.ScenarioLibrary
+
+!|script                                                                  |
+|Open                |${TPAMAdminURL}|        |${TPAMMaster}||${MasterPwd}|
+|Set  Permission     |${PolicyName}  |for user|${ReqvestorName}           |
+|pause               |${ApplyNewPoliciesInterval}                         |
+|${SettingMethod}    |${RequestReasonCodeSetting}                         |
+|${WithoutMethodName}|${RequestWithoutCodeResult}                         |
+|${CancelMethod}                                                          |
+|${WithMethodName}   |${RequestWithCodeResult}                            |
+|${CancelMethod}                                                          |
+|Revoke  Permission  |${PolicyName}  |for user|${ReqvestorName}           |

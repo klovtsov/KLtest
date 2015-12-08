@@ -1,0 +1,193 @@
+!contents
+
+
+!|scenario           |Prepare Test                                      |
+|Create LDAP Server for External Authentication                         |
+|Login               |${TPAMURL}           ||${TPAMAdmin}||${DefaultPwd}|
+|Add Group           |${TemplateGroupName}                              |
+|Add Collection      |${TemplateCollectionName}                         |
+|Add System                                                             |
+|Update Connection Settings                                             |
+|Create OUs                                                             |
+|Create Mailbox      |${AutoDiscoveryEMail}||${TPAMEMailPassword}       |
+|Create User Template|${UserTemplateName}                               |
+|Create LDAP User Mapping                                               |
+
+
+#!| scenario       |Add system                                                                                                                                                                                                                                           |
+#|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --Timeout ${SystemTimeout} --DomainName ${DomainName}|
+#|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                     |
+
+
+
+!|scenario                                         |BFER 6445 Auto Discover Externally Authenticated User                                    |
+|Login                                             |${TPAMURL}           ||${TPAMAdmin}                   ||${DefaultPwd}                    |
+|Create User in Directory                          |${DiscoveredUserName}                                                                    |
+|Run Discovery for                                 |${GroupName}                                                                             |
+|pause                                             |180000                                                                                   |
+|Check User                                        |${DiscoveredUserName}||Ivan                           ||Ivanov | |${DiscoveredUserEmail} |
+|BFER 6708 User Inherited Template Group Membership|${DiscoveredUserName}                                                                    |
+|Check Mail                                        |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group||Adding user ${DiscoveredUserName}|
+|Delete Mails                                      |${AutoDiscoveryEMail}                                                                    |
+|Logon Externally Authenticated Discovered User                                                                                              |
+
+
+
+!|scenario   |Logon Externally Authenticated Discovered User             |
+|Login       |${TPAMURL}    ||${DiscoveredUserName}||${ManagedAccountPwd}|
+|Add New User|${NewUserName}||${DefaultPwd}        ||${NewUserEmail}     |
+
+
+
+!|scenario            |Create User Template|templateName                    |
+|clickAndWait         |link=Add User Template                               |
+|pause                |5000                                                 |
+|waitForElementPresent|id=UserName                                          |
+|type;                |id=UserName         |@templateName                   |
+|type;                |id=FirstName        |John                            |
+|type;                |id=LastName         |Doe                             |
+|type;                |id=Phone            |777-777-777                     |
+|type;                |id=Pager            |888-888-888                     |
+|type;                |id=EmailID          |@templateName@${TPAMEMailDomain}|
+|type;                |id=Comment          |@templateName description       |
+|select;              |id=UType            |label=Administrator             |
+|click                |id=cbxMobile                                         |
+|select;              |id=PrimAuthType     |label=LDAP                      |
+|pause                |1000                                                 |
+|select;              |id=PrimAuthCfgID    |${LDAPServerName}               |
+|pause                |1000                                                 |
+|click                |id=SubmitChanges                                     |
+|waitForTextPresent   |*User added successfully*                            |
+|Add User To Group    |@templateName       |      |${TemplateGroupName}     |
+
+
+!|scenario         |Create LDAP User Mapping                                  |
+|clickAndWait      |link=LDAP Directory                                       |
+|click             |id=AddUsersButton                                         |
+|pause             |1000                                                      |
+|select;           |id=SystemID           |${SystemName}                      |
+|click             |id=btnDNAdd                                               |
+|pause             |3000                                                      |
+|type;             |id=DistinguishedName  |ou=${UserContainerName},${BaseName}|
+|select;           |id=AutoUpdFreq_Minutes|label=15                           |
+|select;           |id=NotifyType         |label=All                          |
+|type;             |id=NotifyEmail        |${AutoDiscoveryEMail}              |
+|select;           |id=ProtectedUser      |label=Create Unique                |
+|select;           |id=MissingDN          |label=Create Unique TPAM User      |
+|select;           |id=ExistingDN         |label=Create Unique TPAM User      |
+|select;           |id=DeletedSource      |label=Disable User in TPAM         |
+|type;             |id=PARGroupName       |${GroupName}                       |
+|select;           |id=TemplateID         |${UserTemplateName} [Administrator]|
+|click             |id=btnValidateDN                                          |
+|pause             |2000                                                      |
+|waitForTextPresent|The Distinguished name is valid                           |
+|pause             |1000                                                      |
+|click             |id=SaveButton                                             |
+|waitForTextPresent|New Auto Discovery mapping saved successfully             |
+
+
+
+
+
+!|scenario               |Clear Objects                          |
+|Login                   |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Delete Mailbox          |${AutoDiscoveryEMail}                  |
+|Delete User in Directory|${DiscoveredUserName}                  |
+|Delete OUs                                                      |
+|Delete LDAP User Mapping                                        |
+|Remove User             |${NewUserName}                         |
+|Remove User             |${DiscoveredUserName}                  |
+|Remove System           |${SystemName}                          |
+|Delete Group            |${GroupName}                           |
+|Delete User Template    |${UserTemplateName}                    |
+|Delete LDAP Server                                              |
+|Delete Group            |${TemplateGroupName}                   |
+|Delete Collection       |${TemplateCollectionName}              |
+
+
+
+!|scenario            |Check User        |userName  |  |firstName  |  |lastName  | |eMail |
+|clickAndWait         |link=Manage UserIDs                                                |
+|waitForElementPresent|id=UsrNm                                                           |
+|type;                |id=UsrNm          |@userName                                       |
+|click                |id=Listing                                                         |
+|waitForElementPresent|//td[contains(text(),'@userName')]                                 |
+|mouseDown            |//td[contains(text(),'@userName')]                                 |
+|click                |//td[contains(text(),'@userName')]                                 |
+|click                |id=Details        |                                                |
+|waitForElementPresent|id=cbxMobile                                                       |
+|pause                |5000                                                               |
+|$res=                |isChecked         |id=Disabled                                     |
+|Verify_Contain_OR    |$res;;false                                                        |
+|$res=                |getValue          |//input[@id='LastName']                         |
+|Verify_Contain_OR    |$res;;@lastName                                                    |
+|$res=                |getValue          |//input[@id='FirstName']                        |
+|Verify_Contain_OR    |$res;;@firstName                                                   |
+|$res=                |getValue          |//input[@id='Phone']                            |
+|Verify_Contain_OR    |$res;;777-777-777                                                  |
+|$res=                |getValue          |//input[@id='Pager']                            |
+|Verify_Contain_OR    |$res;;888-888-888                                                  |
+|$res=                |getValue          |//input[@id='EmailID']                          |
+|Verify_Contain_OR    |$res;;@eMail                                                       |
+|$res=                |getValue          |//textarea[@id='Comment']                       |
+|Verify_Contain_OR    |$res;;some words from AD                                           |
+|$res=                |getSelectedLabel  |id=UType                                        |
+|Verify_Contain_OR    |$res;;Administrator                                                |
+|$res=                |isChecked         |id=cb_WebAccess                                 |
+|Verify_Contain_OR    |$res;;true                                                         |
+|$res=                |isChecked         |id=cbxMobile                                    |
+|Verify_Contain_OR    |$res;;true                                                         |
+|$res=                |getSelectedLabel  |id=PrimAuthType                                 |
+|Verify_Contain_OR    |$res;;LDAP                                                         |
+|$res=                |getSelectedLabel  |id=PrimAuthCfgID                                |
+|Verify_Contain_OR    |$res;;${LDAPServerName}                                            |
+|$res=                |getValue          |//input[@id='PrimAuthID']                       |
+|Verify_Contain_OR    |$res;;${DiscoveredUserName}                                        |
+|$res=                |getValue          |//input[@id='PrimAuthExtra']                    |
+|Verify_Contain_OR    |$res;;uid=${DiscoveredUserName},ou=${UserContainerName},${BaseName}|
+
+
+
+
+
+
+!|scenario            |Add New User|UserName||Passwd||EMail|
+|clickAndWait         |link=Add UserID                     |
+|pause                |5000                                |
+|waitForElementPresent|id=UserName                         |
+|type;                |id=UserName |@UserName              |
+|type;                |id=FirstName|Vasily                 |
+|type;                |id=LastName |Pupkin                 |
+|type;                |id=EmailID  |@EMail                 |
+|type;                |id=sPassword|@Passwd                |
+|type;                |id=Confirm  |@Passwd                |
+|click                |id=SubmitChanges                    |
+|waitForTextPresent   |*User added successfully*           |
+|$res=                |getText     |//div[@id='ResultsDiv']|
+|Verify_Contain_OR    |$res;;User added successfully       |
+
+
+
+
+!|scenario         |Create LDAP Server for External Authentication|
+|Login             |${TPAMAdminURL}  ||${TPAMMaster}||${MasterPwd}|
+|pause             |10000                                         |
+|clickAndWait      |link=LDAP Config                              |
+|click             |id=NewSystemButton                            |
+|type;             |id=SystemName    |${LDAPServerName}           |
+|type;             |id=ServerAddress |${LDAPServerAddress}        |
+|type;             |id=AuthenTimeout |${AuthTimeout}              |
+|type;             |id=Port          |${LDAPPort}                 |
+|click             |id=SubmitChangesButton                        |
+|waitForTextPresent|New LDAP added successfully                   |
+
+
+
+!|scenario         |Delete LDAP Server                          |
+|Login             |${TPAMAdminURL}||${TPAMMaster}||${MasterPwd}|
+|pause             |10000                                       |
+|clickAndWait      |link=LDAP Config                            |
+|select;           |id=ExtAuthCfgID|label=${LDAPServerName}     |
+|click             |id=DeleteSystemButton                       |
+|getConfirmation                                                |
+|waitForTextPresent|*successfully                               |

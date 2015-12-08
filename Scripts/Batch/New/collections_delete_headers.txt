@@ -1,0 +1,4 @@
+Collection Name	Collection Description	PSM DPA Affinity
+klbatch_collection1	New TPAM Test Collection	DPAPLACEHOLDER/8
+klbatch_collection2	New TPAM Test Collection	DPAPLACEHOLDER/9
+klbatch_collection3	New TPAM Test Collection	DPAPLACEHOLDER/10

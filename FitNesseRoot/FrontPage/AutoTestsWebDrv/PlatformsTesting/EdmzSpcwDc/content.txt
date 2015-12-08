@@ -1,0 +1,17 @@
+!define SystemName {${prefix}_EdmzSpcwDc}
+!define SystemPlatform {SPCW (DC)}
+!define SystemAddress {10.30.38.82}
+!define DomainName {parone.spb.qsft}
+!define NETBIOSDomainName {parone}
+!define FunctAcct {administrator}
+!define FunctAcctPwd {=1qwerty}
+!define FunctAcctWrongPwd {1}
+!define ParFunctAcct {edmzpar}
+!define PsmFunctAcct {psmparmaster@${DomainName}}
+#!define ManagedAccountPwd {A\)&(d|ef<>$}
+!define ManagedAccountPwd {=1qwerty}
+!define PathtoKey {C:\Program Files\e-DMZ Security LLC\eDMZ Client for Windows\edmzsshd\home\${ParFunctAcct}\.ssh\authorized_keys}
+!define ChangeManagedAccountPasswordTimeout {350000}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.EdmzSpcwDc2.PlatformSpecific
+!include -c <AutoTestsWebDrv.PlatformsTesting.EdmzSpcwDc.PlatformSpecific

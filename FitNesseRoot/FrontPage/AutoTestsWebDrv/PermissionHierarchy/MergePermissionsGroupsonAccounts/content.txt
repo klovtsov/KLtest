@@ -1,0 +1,45 @@
+!* Test description
+Two groups have permissions for an account.
+Permissions should be merged.
+*!
+
+!define GroupName {${prefix}grp}
+!define GroupName2 {${prefix}grpTwo}
+
+!*> Include section
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SystemSshKey.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+
+!*> Create Environment
+!|script                                                                             |
+|Add Group        |${GroupName}                                                      |
+|Add Group        |${GroupName2}                                                     |
+|Add User To Group|${CLI_user_2}    |             |${GroupName}                      |
+|Add User To Group|${CLI_user_2}    |             |${GroupName2}                     |
+|Add system                                                                          |
+|Add account      |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed}|
+*!
+
+!|script                                                                                        |
+|Set policy             |\"PPM Requestor\"|on account |${ManagedAccount}|for user |${CLI_user_1}|
+|Set policy             |\"PPM Requestor\"|on account |${ManagedAccount}|for group|${GroupName} |
+|Set policy             |\"PPM Approver\" |on account |${ManagedAccount}|for group|${GroupName2}|
+|pause                  |${ApplyNewPoliciesInterval}                                            |
+|Request Pwd by         |${CLI_user_2}    |with result|submitted                                |
+|Cancel Pwd Request by  |${CLI_user_2}                                                          |
+|Request Pwd by         |${CLI_user_1}    |with result|submitted                                |
+|Approve Pwd request by |${CLI_user_2}    |with result|submitted                                |
+|Retrieve Pwd request by|${CLI_user_1}                                                          |
+
+
+!*> Clear Environment
+!|script                         |
+|Remove account|${ManagedAccount}|
+|Remove system |${SystemName}    |
+|Delete Group  |${GroupName}     |
+|Delete Group  |${GroupName2}    |
+*!

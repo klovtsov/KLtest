@@ -1,0 +1,19 @@
+!define ManagedAccount {Typer}
+!define defValue {Y}
+!define specValue {N}
+!define specValue2 {M}
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                  |
+|Add account            |${ManagedAccount}                                                                                      |on system      |${TemplateName}                    |with options|-description "${accDescription}" -AutoFlag ${specValue} |
+|Add account            |${ManagedAccount}Two                                                                                   |on system      |${TemplateName}                    |with options|-description "${accDescription}" -AutoFlag ${specValue2}|
+|Add account            |${ManagedAccount}Three                                                                                 |on system      |${TemplateName}                    |with options|-description "${accDescription}"                        |
+|Try to Add system      |${newSystemName}                                                                                       |with parameters|-templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully  |
+|List Systems by        |-systemName ${newSystemName}                                                                           |output params  |SystemName                         |contain     |${newSystemName}                                        |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount} -propsToList accountname,accountAutoFl     |contains       |${ManagedAccount}\s+${specValue}                                                                         |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount}Two -propsToList accountname,accountAutoFl  |contains       |${ManagedAccount}Two\s+${specValue2}                                                                     |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount}Three -propsToList accountname,accountAutoFl|contains       |${ManagedAccount}Three\s+${defValue}                                                                     |
+|Delete System          |${newSystemName}                                                                                                                                                                                                                 |
+|Delete managed account |${ManagedAccount}                                                                                      |on system      |${TemplateName}                                                                                          |
+|Delete managed account |${ManagedAccount}Two                                                                                   |on system      |${TemplateName}                                                                                          |
+|Delete managed account |${ManagedAccount}Three                                                                                 |on system      |${TemplateName}                                                                                          |

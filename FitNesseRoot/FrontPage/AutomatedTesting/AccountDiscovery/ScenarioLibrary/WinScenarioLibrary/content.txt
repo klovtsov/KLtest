@@ -1,0 +1,97 @@
+!contents
+
+!|scenario    |Create Group w Account on System                 |Account                 |                |Group                |
+|accountAction|${SystemPlatform};;group;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;@Account;;${ManagedAccountPwd};;@Group|
+
+!|scenario    |Delete Group w Account on System            |Account            |            |Group            |
+|accountAction|${SystemPlatform};;deletegrp;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;@Account;;@Group|
+
+
+!|scenario|Create Service which is run by|RunAsUser|and run under password is|RunAsPwd|on|System|
+|runBatch |manageServices;create;@System;${FunctAcct};${FunctAcctPwd};@RunAsUser;@RunAsPwd      |
+
+!|scenario|Create Scheduled Task|SchTaskName|which is run under|RunAsUser|and run under password is|RunUsPwd|on|System|
+|runBatch |manageScheduledTasks;create;@System;${FunctAcct};${FunctAcctPwd};@SchTaskName;@RunAsUser;@RunUsPwd         |
+
+!|scenario|Delete Scheduled Task         |SchTaskName         |on        |System        |
+|runBatch |manageScheduledTasks;delete;@System;${FunctAcct};${FunctAcctPwd};@SchTaskName|
+
+!|scenario|Delete Service on                 |System                 |
+|runBatch |manageServices;delete;@System;${FunctAcct};${FunctAcctPwd}|
+
+!|scenario                       |Create Environment                                                                                                                                     |
+|Create Account on System        |${AutoDiscoveryAccount3}                                                                                                                               |
+|pause                           |20000                                                                                                                                                  |
+|$uid=                           |RunBatchGetOutput              |getuid.bat;${AutoDiscoveryAccount3};${SystemAddress};${FunctAcct};${FunctAcctPwd};win                                  |
+|Create Account on System        |${ServiceAccount}                                                                                                                                      |
+|Create Account on System        |${TaskAccount}                                                                                                                                         |
+|Create Service which is run by  |.\${ServiceAccount}            |and run under password is|${ManagedAccountPwd}      |on                       |${SystemAddress}                        |
+|Create Scheduled Task           |${TaskName}                    |which is run under       |${HostName}\${TaskAccount}|and run under password is|${ManagedAccountPwd}|on|${SystemAddress}|
+|Create Account on System        |${ManagedAccount1}                                                                                                                                     |
+|Create Group w Account on System|${AutoDiscoveryAccount2}       |                         |${AutoDiscoveryGroup2}                                                                       |
+|Create Mailbox                  |${NewAccountDiscoveryEmail1}   |                         |password                                                                                     |
+|Create Mailbox                  |${DeleteAccountDiscoveryEmail1}|                         |password                                                                                     |
+|Create Mailbox                  |${SystemEMail}                 |                         |password                                                                                     |
+|Create Mailbox                  |${FuncAccEMail}                |                         |password                                                                                     |
+|Create Template                                                                                                                                                                         |
+|Create Account Discovery Profile                                                                                                                                                        |
+
+#|$sid=                           |Get Substring                   |$uid                     |from                      |4                        |to                  |                   |
+
+!|scenario                    |Create Account Discovery Profile                                                                                                                                                                              |
+|click                        |link=Profile Management                                                                                                                                                                                       |
+|pause                        |5000                                                                                                                                                                                                          |
+|waitForElementPresent        |id=NewButton            |                                                                                                                                                                                     |
+|click                        |id=NewButton                                                                                                                                                                                                  |
+|type;                        |id=ProfileName          |${ProfileName}                                                                                                                                                                       |
+|type;                        |id=Description          |Description                                                                                                                                                                          |
+|Set Delete Account properties|Both (Notify & Turn Off)||${DeleteAccountDiscoveryEmail1},:System:,:Functional:                                                                                                                               |
+|Add Detail                   |0                       ||Both (Notify & Create)||${TemplateName}/${AutoDiscoveryAccount1}||${NewAccountDiscoveryEmail1},:System:,:Functional:||||$uid||${AutoDiscoveryAccount1}||${AutoDiscoveryGroup2}|||||||
+|click                        |css=input.autoServiceFl.autoDiscCtrl                                                                                                                                                                          |
+|click                        |css=input.autoSchedTaskFl.autoDiscCtrl                                                                                                                                                                        |
+|click                        |id=SaveButton                                                                                                                                                                                                 |
+|waitForTextPresent           |The profile saved successfully                                                                                                                                                                                |
+
+!|scenario                         |New Account Action                                                                                  |
+|Remove account                    |${AutoDiscoveryAccount1}                                                                            |
+|Set AccDiscovery profile to System|${ProfileName}          ||${SystemName}                                                             |
+|Run AccDiscovery                                                                                                                       |
+|Check results                     |${AutoDiscoveryAccount1}||${SystemName}                                                             |
+|Check results                     |${AutoDiscoveryAccount2}||${SystemName}                                                             |
+|Check results                     |${ServiceAccount}       ||${SystemName}                                                             |
+|Check results                     |${TaskAccount}          ||${SystemName}                                                             |
+|Check results                     |${AutoDiscoveryAccount3}||${SystemName}                                                             |
+|Logout                                                                                                                                 |
+|pause                             |600000                                                                                              |
+|Check Mail                        |${MailServer}           ||${NewAccountDiscoveryEmail1}||password||${FromMail}||${AADNAN}||${AADNANb}|
+|Check Mail                        |${MailServer}           ||${SystemEMail}              ||password||${FromMail}||${AADNAN}||${AADNANb}|
+|Check Mail                        |${MailServer}           ||${FuncAccEMail}             ||password||${FromMail}||${AADNAN}||${AADNANb}|
+|Login                             |${TPAMURL}              ||${TPAMAdmin}                ||${DefaultPwd}                               |
+|pause                             |60000                                                                                               |
+
+!|scenario                         |Delete Environment                                                         |
+|Delete Mails                                                                                                  |
+|Delete Mailbox                    |${NewAccountDiscoveryEmail1}                                               |
+|Delete Mailbox                    |${DeleteAccountDiscoveryEmail1}                                            |
+|Delete Mailbox                    |${SystemEMail}                                                             |
+|Delete Mailbox                    |${FuncAccEMail}                                                            |
+|Set AccDiscovery profile to System|No Account Discovery Profile selected    |      |${SystemName}             |
+|Remove system                     |${SystemName}                                                              |
+|Delete Account Discovery Profile  |${ProfileName}                                                             |
+|Remove system                     |${TemplateName}                                                            |
+|Delete Group w Account on System  |${AutoDiscoveryAccount2}                 |      |${AutoDiscoveryGroup2}    |
+|Delete Scheduled Task             |${TaskName}                              |on    |${SystemAddress}          |
+|pause                             |60000                                                                      |
+|Delete Account on System          |${TaskAccount}                                                             |
+|Delete Account on System          |${AutoDiscoveryAccount3}                                                   |
+|Delete Service on                 |${SystemAddress}                                                           |
+|pause                             |60000                                                                      |
+|Delete Account on System          |${ServiceAccount}                                                          |
+|RunBatchGetOutput                 |CleanupSession;${SystemAddress};${FunctAcct};${FunctAcctPwd};${TaskAccount}|
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+SystemName	AccountName	PasswordMethod	ParCliUser	MinApprovers	AcctLockFl	DefaultSessionDuration	MaxSessionCnt	NotifyThresh	NotifyFreq	ProxyDesc	EnableFl	ColorDepth	DomainAccountName	DSSKeyType	FileTransPath	FileTransType	FileTransAuthMethod	ReviewCnt	ReviewerTypeDesc	ReviewerDesc	SessionStartNotifyEmail 	EscalationEmail	EscalationTime	ClipboardFl	ConsoleFl	RecordingRequiredFl	FileTransUpFl	FileTransDownFl	CLISystemName	CLIAccountName	CLIDomainName	ConnectionProfile	PostSessionProfile
+klbatchsys1	klbatchacc	DSS Key		1	N	135	1	0	0	SSH - Automatic Login Using DSS Key	Y			Standard		File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys10	klbatchacc	Local TPAM		1	N	120	3	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	1	Any			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys11	klbatchacc	Local TPAM		3	N	120	2	0	0	RDP - Interactive Login	Y	8				File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	Y	Y	N	N					
+klbatchsys12	klbatchacc	Local TPAM		2	N	120	1	0	0	VNC - Interactive Login	Y	0				File Transfer Disabled	Same	1	Any			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys13	klbatchacc	Local TPAM		1	N	120	3	0	0	Telnet - Interactive Login	Y					File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys14	klbatchacc	Local TPAM		3	N	120	2	0	0	VNC Enterprise - Interactive Login	Y	0				File Transfer Disabled	Same	1	Any			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys17	klbatchacc	Local TPAM		1	N	120	1	0	0	Telnet - Automatic Login Using Password	Y					File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys18	klbatchacc	DSS Key		2	N	120	3	0	0	SSH - Automatic Login Using DSS Key	Y			Standard		File Transfer Disabled	Same	1	Any			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys19	klbatchacc	Local TPAM		1	N	120	2	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys2	klbatchacc	Local TPAM		2	N	120	1	0	0	x5250 - Automatic Login Using Password	Y					File Transfer Disabled	Same	1	Any			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys20	klbatchacc	Local TPAM		2	N	120	3	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys21	klbatchacc	Local TPAM		1	N	120	1	0	0	HP Non-Stop - Interactive Login	N					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys22	klbatchacc	Local TPAM		3	N	120	2	0	0	Telnet - Interactive Login	Y					File Transfer Disabled	Same	1	Any			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys23	klbatchacc	DSS Key		1	N	120	1	0	0	SSH - Automatic Login Using DSS Key	Y			Standard		File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys24	klbatchacc	Local TPAM		1	N	120	3	0	0	VNC - Interactive Login	Y	3				File Transfer Disabled	Same	1	Any			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys25	klbatchacc	Local TPAM		3	N	120	2	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys26	klbatchacc	Local TPAM		2	N	120	1	0	0	Telnet - Interactive Login	Y					File Transfer Disabled	Same	1	Any			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys29	klbatchacc	Local TPAM		1	N	120	3	0	0	Telnet - Automatic Login Using Password	Y					File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys30	klbatchacc	Local TPAM		3	N	120	2	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	1	Any			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys31	klbatchacc	Local TPAM		2	N	120	1	0	0	VNC Enterprise - Interactive Login	Y	0				File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys32	klbatchacc	Local TPAM		1	N	120	3	0	0	x3270 - Interactive Login Using Password	Y					File Transfer Disabled	Same	1	Any			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys33	klbatchacc	Local TPAM		3	N	120	2	0	0	x3270 - Interactive Login Using Password	Y					File Transfer Disabled	Same	1	Auditor			klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys35	klbatchacc	Local TPAM		1	N	120	1	0	0	x3270 - Interactive Login Using Password	Y					File Transfer Disabled	Same	1	Any		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys36	klbatchacc	Local TPAM		3	N	90	3	0	0	x3270 - Interactive Login Using Password	Y					File Transfer Disabled	Same	1	Auditor		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys37	klbatchacc	Local TPAM		2	N	120	2	0	0	SQL Window - Interactive Login	Y					File Transfer Disabled	Same	1	Any		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys39	klbatchacc	DSS Key		1	N	120	1	0	0	SSH - Automatic Login Using DSS Key	Y			Standard		File Transfer Disabled	Same	1	Auditor		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys41	klbatchacc	DSS Key		2	N	120	3	0	0	SSH - Automatic Login Using DSS Key	Y			Standard		File Transfer Disabled	Same	1	Any		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys43	klbatchacc	Local TPAM		1	N	120	2	0	0	Telnet - Interactive Login	Y					File Transfer Disabled	Same	2	Auditor		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1	Y	N	Y	N	N					
+klbatchsys44	klbatchacc	Local TPAM		3	N	150	1	0	0	SQLPlus - Interactive Login	Y					File Transfer Disabled	Same	2	Any		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys47	klbatchacc	Local TPAM		3	N	180	3	0	0	Telnet - Interactive Login	Y					File Transfer Disabled	Same	2	Auditor		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys5	klbatchacc	Local TPAM		2	N	120	2	0	0	Telnet - Automatic Login Using Password	Y					File Transfer Disabled	Same	2	Any		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys50	klbatchacc	Local TPAM		2	N	120	1	0	0	VNC - Interactive Login	Y	1				File Transfer Disabled	Same	2	Auditor		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys51	klbatchacc	Local TPAM		1	N	120	3	0	0	VNC Enterprise - Interactive Login	Y	0				File Transfer Disabled	Same	2	Any		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys52	klbatchacc	Local TPAM		3	N	120	2	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	2	Auditor		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys53	klbatchacc	Local TPAM		2	N	120	1	0	0	SQL Window - Interactive Login	Y					File Transfer Disabled	Same	2	Any		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys57	klbatchacc	DSS Key		1	N	120	3	0	0	SSH - Automatic Login Using DSS Key	Y			Standard		File Transfer Disabled	Same	2	Auditor		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys58	klbatchacc	Local TPAM		3	N	120	2	0	0	Telnet - Interactive Login	Y					File Transfer Disabled	Same	1	Any		klsessstart@tpam.spb.qsft		1	N	N	N	N	N					
+klbatchsys6	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	1	Auditor		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys60	klbatchacc	Local TPAM		3	N	120	3	0	0	VNC - Interactive Login	Y	0				File Transfer Disabled	Same	1	Any		klsessstart@tpam.spb.qsft		1	N	N	N	N	N					
+klbatchsys61	klbatchacc	Local TPAM		1	N	120	2	0	0	RDP - Automatic Login Using Password	Y	8			myshare	Windows File Copy	Same	1	Auditor		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1	Y	N	Y	Y	Y				PersConnectionProfile	
+klbatchsys62	klbatchacc	Local TPAM		2	N	120	1	0	0	Telnet - Automatic Login Using Password	Y					File Transfer Disabled	Same	1	Any		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys7	klbatchacc	Local TPAM		3	N	120	3	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	1	Auditor		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsys8	klbatchacc	Local TPAM		2	N	120	2	0	0	Telnet - Automatic Login Using Password	Y					File Transfer Disabled	Same	2	Any		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					
+klbatchsyswithveryverylongname	klbatchacc	DSS Key		1	N	120	1	0	0	SSH - Automatic Login Using DSS Key	Y			Standard		File Transfer Disabled	Same	1	Auditor		klsessstart@tpam.spb.qsft		1	Y	N	Y	N	N					

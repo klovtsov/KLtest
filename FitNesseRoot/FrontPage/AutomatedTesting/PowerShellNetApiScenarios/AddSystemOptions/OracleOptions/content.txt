@@ -1,0 +1,12 @@
+!* Test description
+Check how Oracle specific options work.
+*!
+
+!include -c <AutomatedTesting.PlatformsTesting.OraclePlatform
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                 |
+|Add system     |${SystemName}            |with address |${SystemAddress}                 |platform|${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-functAcctPwd "${FunctAcctPwd}" -PortNumber ${Port} -OracleType SID -OracleSIDSN ${SID}|
+|Test System    |${TestSystemSuccessful}                                                                                                                                                                                                                 |
+|List Systems by|-systemName ${SystemName}|output params|SystemName,OracleType,OracleSIDSN|contain |${SystemName}.*SID.*${SID}                                                                                                                           |
+|Delete System  |${SystemName}                                                                                                                                                                                                                           |

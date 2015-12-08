@@ -1,0 +1,12 @@
+!contents
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.HpuxShadow
+
+#!define FunctAcct {klroot3}
+#!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {frujiE13}
+!define AuthorizedKeysFile {authorized_keys2}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.HpuxShadow.PlatformSpecific
+!include -c <AutoTestsWebDrv.SshPlatformsTests.AixSshPlatform.PlatformSpecific

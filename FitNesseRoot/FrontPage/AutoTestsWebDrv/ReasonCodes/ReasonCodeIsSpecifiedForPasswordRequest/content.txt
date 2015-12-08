@@ -1,0 +1,14 @@
+!define PolicyName {"Approver-Requestor"}
+!define RequestWithCodeResult {has been submitted}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.ReasonCodes.ScenarioLibrary
+
+!|script                                                                    |
+|Set  Permission                       |${PolicyName}|for user|${CLI_user_1}|
+|pause                                 |${ApplyNewPoliciesInterval}         |
+|Request Pwd with Reason Code          |${RequestWithCodeResult}            |
+|Check Pwd Request Contains Reason Code|${ReasonCodeName}                   |
+|Cancel Pwd Request                                                         |
+|Revoke  Permission                    |${PolicyName}|for user|${CLI_user_1}|

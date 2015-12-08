@@ -1,0 +1,23 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.DomainUser.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ChangeServices.TestSpecific
+
+!define ServiceAccount {${ManagedAccountDomain}\${ManagedAccount}}
+!define SuccessServiceStartResult {START_PENDING;;RUNNING}
+!define FailServiceStartResult {Error starting}
+
+!|script                                                                                                                               |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                             |
+|Create Service which is run by   |${ServiceAccount}           |and run under password is|${ManagedAccountPwdNew}|on|${DMSystemAddress}|
+|Check Checkbox                   |changesvcs                  |for user                 |DEFAULT                                      |
+|Reset Password                   |${ManagedAccount}           |                         |${ResetPasswordSuccessful}                   |
+|pause                            |${ExecDelay}                                                                                        |
+|Start Service                    |${SuccessServiceStartResult}|on                       |${DMSystemAddress}                           |
+|Stop Service on                  |${DMSystemAddress}                                                                                  |
+|Uncheck Checkbox                 |changesvcs                  |for user                 |DEFAULT                                      |
+|Reset Password                   |${ManagedAccount}           |                         |${ResetPasswordSuccessful}                   |
+|pause                            |${ExecDelay}                                                                                        |
+|Start Service                    |${FailServiceStartResult}   |on                       |${DMSystemAddress}                           |
+|Delete Service on                |${DMSystemAddress}                                                                                  |
+

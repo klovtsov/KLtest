@@ -1,0 +1,731 @@
+!contents
+
+
+!|scenario      |Prepare Test                                      |
+|Login          |${TPAMURL}           ||${TPAMAdmin}||${DefaultPwd}|
+|Add Groups and Collections                                        |
+|Add System                                                        |
+|Add Fake User  |${FakeUserName}1                                  |
+|Add Fake User  |${FakeUserName}2                                  |
+|Add Fake System|${FakeSystemName}1                                |
+|Add Fake System|${FakeSystemName}2                                |
+|Create OUs                                                        |
+|Create Mailbox |${AutoDiscoveryEMail}||${TPAMEMailPassword}       |
+|Create Templates                                                  |
+|Create Systems in Directory                                       |
+|Create Users in Directory                                         |
+
+
+
+!| scenario       |Add system                                                                                                                                                                                                                                                   |
+|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --NetBiosName ${NETBIOSDomainName} --DomainName ${DomainName}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                             |
+
+
+
+!|scenario               |Create Users in Directory                       |
+|Create User in Directory|${UserContainerName1}||${DiscoveredUserName}1   |
+|Create User in Directory|${UserContainerName1}||${DiscoveredUserName}3   |
+|Create User in Directory|${UserContainerName1}||${FakeUserName}1         |
+|Create User in Directory|${UserContainerName1}||${NotDiscoveredUserName}1|
+|Create User in Directory|${UserContainerName2}||${DiscoveredUserName}2   |
+|Create User in Directory|${UserContainerName2}||${RestrictedUserName}    |
+|Create User in Directory|${UserContainerName2}||${NotDiscoveredUserName}2|
+
+!|scenario                 |Create Systems in Directory                                                      |
+|Create System in Directory|${SystemContainerName1}||${DiscoveredSystemName}1   ||${DiscoveredSystemName}1   |
+|Create System in Directory|${SystemContainerName1}||${DiscoveredSystemName}3   ||${DiscoveredSystemName}3   |
+|Create System in Directory|${SystemContainerName1}||${NotDiscoveredSystemName}1||${NotDiscoveredSystemName}1|
+|Create System in Directory|${SystemContainerName2}||${DiscoveredSystemName}2   ||${DiscoveredSystemName}2   |
+|Create System in Directory|${SystemContainerName2}||${NotDiscoveredSystemName}2||${NotDiscoveredSystemName}2|
+|Create System in Directory|${SystemContainerName2}||${FakeSystemName}1         ||${FakeSystemName}1         |
+
+
+
+!|scenario|Create OUs                                                                                   |
+|runBatch |adou;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${UserContainerName1};${BaseName}  |
+|runBatch |adou;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${UserContainerName2};${BaseName}  |
+|runBatch |adou;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${SystemContainerName1};${BaseName}|
+|runBatch |adou;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${SystemContainerName2};${BaseName}|
+
+!|scenario|Create User in Directory                 |ouName                |                |userName                |
+|runBatch |aduser;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};@userName;ou=@ouName,${BaseName};${DomainName}|
+
+!|scenario|Create System in Directory         |ouName         |         |systemName         |         |preName        |
+|runBatch |adcomputer;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};@systemName;ou=@ouName,${BaseName};@preName|
+
+
+!|scenario|Delete OUs                                                                                   |
+|runBatch |adou;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${UserContainerName1};${BaseName}  |
+|runBatch |adou;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${UserContainerName2};${BaseName}  |
+|runBatch |adou;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${SystemContainerName1};${BaseName}|
+|runBatch |adou;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${SystemContainerName2};${BaseName}|
+
+!|scenario|Delete User in Directory             |ouName             |             |userName            |
+|runBatch |aduser;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};@userName;ou=@ouName,${BaseName}|
+
+!|scenario|Delete System in Directory              |ouName             |             |systemName             |
+|runBatch |adcomputer;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};@systemName;ou=@ouName,${BaseName}|
+
+
+!|scenario               |Delete Users in Directory                       |
+|Delete User in Directory|${UserContainerName1}||${NotDiscoveredUserName}1|
+|Delete User in Directory|${UserContainerName1}||${FakeUserName}1         |
+|Delete User in Directory|${UserContainerName1}||${FakeUserName}2         |
+|Delete User in Directory|${UserContainerName2}||${NotDiscoveredUserName}2|
+|Delete User in Directory|${UserContainerName2}||${RestrictedUserName}    |
+#|Delete User in Directory|${UserContainerName1}||${DiscoveredUserName}2         |
+
+!|scenario                 |Delete Systems in Directory                         |
+|Delete System in Directory|${SystemContainerName1}||${DiscoveredSystemName}2   |
+|Delete System in Directory|${SystemContainerName1}||${NotDiscoveredSystemName}1|
+|Delete System in Directory|${SystemContainerName2}||${NotDiscoveredSystemName}2|
+|Delete System in Directory|${SystemContainerName2}||${FakeSystemName}1         |
+|Delete System in Directory|${SystemContainerName2}||${FakeSystemName}2         |
+
+
+
+!|scenario                    |Auto Discovery                                                                                                                        |
+|Create LDAP User Mapping                                                                                                                                            |
+|Run Discovery                                                                                                                                                       |
+|Create LDAP System Mapping                                                                                                                                          |
+|Run Discovery                                                                                                                                                       |
+|pause                        |180000                                                                                                                                |
+|Users Discovered                                                                                                                                                    |
+|Users Not Discovered                                                                                                                                                |
+|Systems Discovered                                                                                                                                                  |
+|Systems Not Discovered                                                                                                                                              |
+|Errors Reported About Skipping Objects                                                                                                                              |
+|Check BFER 6708                                                                                                                                                     |
+|Check No Mail                |${AutoDiscoveryEMail}    ||TPAM LDAP Integration for Collection ${CollectionName}||Updated TPAM system                                |
+|Delete Mails                 |${AutoDiscoveryEMail}                                                                                                                 |
+|Check Ignore User Updates for                                                                                                                                       |
+|Delete User in Directory     |${UserContainerName1}    ||${DiscoveredUserName}1                                                                                     |
+|Delete System in Directory   |${SystemContainerName1}  ||${DiscoveredSystemName}1                                                                                   |
+|Create System in Directory   |${SystemContainerName1}  ||${DiscoveredSystemName}2                              ||${DiscoveredSystemName}X                           |
+|Select LDAP Mapping for      |${GroupName}                                                                                                                          |
+|Run Discovery                                                                                                                                                       |
+|Select LDAP Mapping for      |${CollectionName}                                                                                                                     |
+|Run Discovery                                                                                                                                                       |
+|pause                        |180000                                                                                                                                |
+|Errors Reported About Skipping Objects With Existing Mapping                                                                                                        |
+|Errors Reported About Deleting Objects                                                                                                                              |
+|Delete Mails                 |${AutoDiscoveryEMail}                                                                                                                 |
+|Select LDAP Mapping for      |${GroupName}                                                                                                                          |
+|Set User Collision Strategy  |Create Unique            ||Create Unique TPAM User                               ||Create Unique TPAM User||Disable User in TPAM      |
+|Delete User in Directory     |${UserContainerName1}    ||${DiscoveredUserName}3                                                                                     |
+|Run Discovery                                                                                                                                                       |
+|Select LDAP Mapping for      |${CollectionName}                                                                                                                     |
+|Set System Collision Strategy|Create Unique TPAM System||Create Unique TPAM System                             ||Soft Delete System regardless of other mappings    |
+|Delete System in Directory   |${SystemContainerName1}  ||${DiscoveredSystemName}3                                                                                   |
+|Run Discovery                                                                                                                                                       |
+|pause                        |180000                                                                                                                                |
+|Create Unique Name For Restricted User Name                                                                                                                         |
+|Create Unique User If User Exists Without Mapping                                                                                                                   |
+|Create Unique System If System Exists Without Mapping                                                                                                               |
+|Create Unique System If System Exists With Mapping                                                                                                                  |
+|User Disabled By Collision Strategy                                                                                                                                 |
+|System Deleted By Collision Strategy                                                                                                                                |
+|Check No Mail                |${AutoDiscoveryEMail}    ||TPAM LDAP Integration for Collection ${CollectionName}||Error reported per Collision Strategy              |
+|Check No Mail                |${AutoDiscoveryEMail}    ||TPAM LDAP Integration for Group ${GroupName}          ||Error reported per Collision Strategy              |
+|Delete Mails                 |${AutoDiscoveryEMail}                                                                                                                 |
+|Select LDAP Mapping for      |${GroupName}                                                                                                                          |
+|Set User Collision Strategy  |Create Unique            ||Map to Existing                                       ||Create Unique TPAM User||Leave User, remove mapping|
+|Delete User in Directory     |${UserContainerName2}    ||${DiscoveredUserName}2                                                                                     |
+|Create User in Directory     |${UserContainerName1}    ||${FakeUserName}2                                                                                           |
+|Run Discovery                                                                                                                                                       |
+|Select LDAP Mapping for      |${CollectionName}                                                                                                                     |
+|Set System Collision Strategy|Map to Existing          ||Create Unique TPAM System                             ||Leave System, remove mapping                       |
+|Delete System in Directory   |${SystemContainerName2}  ||${DiscoveredSystemName}2                                                                                   |
+|Create System in Directory   |${SystemContainerName2}  ||${FakeSystemName}2                                    ||${FakeSystemName}2                                 |
+|Run Discovery                                                                                                                                                       |
+|pause                        |180000                                                                                                                                |
+|Map Discovered User To Existing One                                                                                                                                 |
+|Map Discovered System To Existing One                                                                                                                               |
+|Leave User Deleted From Source And Remove Mapping                                                                                                                   |
+|Leave System Deleted From Source And Remove Mapping                                                                                                                 |
+|Delete Mails                 |${AutoDiscoveryEMail}                                                                                                                 |
+|BFER 7153 Duplicate Rows                                                                                                                                            |
+|BFER 7151 Long DN and Filter Support                                                                                                                                |
+|BFER 7156 Invalidate Distinguished Name Row                                                                                                                         |
+#|Create Unique User If User Exists With Mapping                                                                                                                                               |
+#|Add Mapping Row              |ou=${UserContainerName1},${BaseName}  ||${UserFilter3}                                        ||${UserTemplateName1} [Administrator]                           |
+#|Add Mapping Row              |ou=${SystemContainerName1},${BaseName}||${SystemFilter3}                                      ||${SystemTemplateName1} [Windows]                               |
+
+
+!|scenario             |Users Discovered                                                                                                       |
+|Check User            |${DiscoveredUserName}1||Ivan                                        ||Ivanov||${DiscoveredUserName}1@${TPAMEMailDomain}|
+|Check User            |${DiscoveredUserName}2||Ivan                                        ||Ivanov||${DiscoveredUserName}2@${TPAMEMailDomain}|
+|Check Group Membership|${GroupName}          ||${DiscoveredUserName}1                                                                         |
+|Check Group Membership|${GroupName}          ||${DiscoveredUserName}2                                                                         |
+|Check Group Membership|${GroupName}          ||${DiscoveredUserName}3                                                                         |
+|Check Mail            |${AutoDiscoveryEMail} ||TPAM LDAP Integration for Group ${GroupName}||Adding user ${DiscoveredUserName}1               |
+|Check Mail            |${AutoDiscoveryEMail} ||TPAM LDAP Integration for Group ${GroupName}||Adding user ${DiscoveredUserName}2               |
+|Check Mail            |${AutoDiscoveryEMail} ||TPAM LDAP Integration for Group ${GroupName}||Adding user ${DiscoveredUserName}3               |
+
+
+!|scenario    |Users Not Discovered     |
+|Check No User|${NotDiscoveredUserName}1|
+|Check No User|${NotDiscoveredUserName}2|
+
+!|scenario                  |Systems Discovered                                                                                                      |
+|Check System               |${DiscoveredSystemName}1||unspecified_in_Directory                                                                      |
+|Check System               |${DiscoveredSystemName}2||unspecified_in_Directory                                                                      |
+|Check Collection Membership|${CollectionName}       ||${DiscoveredSystemName}1                                                                      |
+|Check Collection Membership|${CollectionName}       ||${DiscoveredSystemName}2                                                                      |
+|Check Collection Membership|${CollectionName}       ||${DiscoveredSystemName}3                                                                      |
+|Check Mail                 |${AutoDiscoveryEMail}   ||TPAM LDAP Integration for Collection ${CollectionName}||Adding system ${DiscoveredSystemName}1|
+|Check Mail                 |${AutoDiscoveryEMail}   ||TPAM LDAP Integration for Collection ${CollectionName}||Adding system ${DiscoveredSystemName}2|
+|Check Mail                 |${AutoDiscoveryEMail}   ||TPAM LDAP Integration for Collection ${CollectionName}||Adding system ${DiscoveredSystemName}3|
+
+
+!|scenario      |Systems Not Discovered     |
+|Check No System|${NotDiscoveredSystemName}1|
+|Check No System|${NotDiscoveredSystemName}2|
+
+!|scenario                  |Previously Not Discovered Objects Added By New Filter Row                                                                                |
+|Check User                 |${NotDiscoveredUserName}1  ||Ivan                                                  ||Ivanov||${NotDiscoveredUserName}1@${TPAMEMailDomain}|
+|Check Group Membership     |${GroupName}               ||${NotDiscoveredUserName}1                                                                                   |
+|Check Mail                 |${AutoDiscoveryEMail}      ||TPAM LDAP Integration for Group ${GroupName}          ||Adding user ${NotDiscoveredUserName}1               |
+|Check No User              |${NotDiscoveredUserName}2                                                                                                                |
+|Check System               |${NotDiscoveredSystemName}1||unspecified_in_Directory                                                                                    |
+|Check Collection Membership|${CollectionName}          ||${NotDiscoveredSystemName}1                                                                                 |
+|Check Mail                 |${AutoDiscoveryEMail}      ||TPAM LDAP Integration for Collection ${CollectionName}||Adding system ${NotDiscoveredSystemName}1           |
+|Check No System            |${NotDiscoveredSystemName}2                                                                                                              |
+
+
+!|scenario      |Errors Reported About Skipping Objects                                                                                                                         |
+|Check Mail     |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group ${GroupName}          ||Skipping userID ${RestrictedUserName} because it is a reserved username in TPAM.|
+|Check Mail     |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group ${GroupName}          ||Skipping userID ${FakeUserName}1                                                |
+|Check Mail     |${AutoDiscoveryEMail}||TPAM LDAP Integration for Collection ${CollectionName}||Skipping system ${FakeSystemName}1 because this system already exists in TPAM.  |
+|Check No User  |${RestrictedUserName}_1                                                                                                                                        |
+|Check No User  |${FakeUserName}1_1                                                                                                                                             |
+|Check No System|${FakeSystemName}1_1                                                                                                                                           |
+
+!|scenario                       |Errors Reported About Deleting Objects                                                                                                                                                                                                                    |
+|Check Mail                      |${AutoDiscoveryEMail}   |          |TPAM LDAP Integration for Group ${GroupName}          |         |Error reported per Collision Strategy. ${DiscoveredUserName}1 removed from Directory Mapping for Group ${GroupName}. Mapping not removed             |
+|Check Mail                      |${AutoDiscoveryEMail}   |          |TPAM LDAP Integration for Collection ${CollectionName}|         |Error reported per Collision Strategy. ${DiscoveredSystemName}1 removed from Directory Mapping for Collection ${CollectionName}. Mapping not removed.|
+|Check Changed Attributes of User|${DiscoveredUserName}1  |First Name|Mohammed                                              |Last Name|Ali      |E-mail      |Mohammed@Ali      |Phone Number      |3-456-128-27-19     |Desription     |Mohammed description     |Disabled?     |false     |
+|Check System                    |${DiscoveredSystemName}1|          |unspecified_in_Directory                                                                                                                                                                                              |
+
+
+
+
+!|scenario      |Errors Reported About Skipping Objects With Existing Mapping                                                                                                                                    |
+|Check Mail     |${AutoDiscoveryEMail}||TPAM LDAP Integration for Collection ${CollectionName}||Skipping system ${DiscoveredSystemName}2 because there is an existing system in TPAM with a different DN mapping.|
+|Check No System|${DiscoveredSystemName}2_1                                                                                                                                                                      |
+#|Check Mail     |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group ${GroupName}          ||Skipping userID ${DiscoveredUserName}2 because there is an existing userid in TPAM with a different DN mapping   |
+#|Check No User  |${DiscoveredUserName}2_1                                                                                                                                                                        |
+
+!|scenario             |Create Unique Name For Restricted User Name                                                                            |
+|Check User            |${RestrictedUserName}_1||Ivan                                        ||Ivanov||${RestrictedUserName}@${TPAMEMailDomain}|
+|Check Group Membership|${GroupName}           ||${RestrictedUserName}_1                                                                       |
+|Check Mail            |${AutoDiscoveryEMail}  ||TPAM LDAP Integration for Group ${GroupName}||Adding user ${RestrictedUserName}_1             |
+
+
+!|scenario             |Create Unique User If User Exists Without Mapping                                                               |
+|Check User            |${FakeUserName}1_1   ||Ivan                                        ||Ivanov||${FakeUserName}1@${TPAMEMailDomain}|
+|Check Group Membership|${GroupName}         ||${FakeUserName}1_1                                                                       |
+|Check Mail            |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group ${GroupName}||Adding user ${FakeUserName}1_1             |
+
+
+!|scenario                  |Create Unique System If System Exists Without Mapping                                                            |
+|Check System               |${FakeSystemName}1_1 ||unspecified_in_Directory                                                                  |
+|Check Collection Membership|${CollectionName}    ||${FakeSystemName}1_1                                                                      |
+|Check Mail                 |${AutoDiscoveryEMail}||TPAM LDAP Integration for Collection ${CollectionName}||Adding system ${FakeSystemName}1_1|
+
+!|scenario             |Create Unique User If User Exists With Mapping                                                                           |
+|Check User            |${DiscoveredUserName}2_1||Ivan                                        ||Ivanov||${DiscoveredUserName}2@${TPAMEMailDomain}|
+|Check Group Membership|${GroupName}            ||${DiscoveredUserName}2_1                                                                       |
+|Check Mail            |${AutoDiscoveryEMail}   ||TPAM LDAP Integration for Group ${GroupName}||Adding user ${DiscoveredUserName}2_1             |
+
+!|scenario                  |Create Unique System If System Exists With Mapping                                                                          |
+|Check System               |${DiscoveredSystemName}2_1||unspecified_in_Directory                                                                        |
+|Check Collection Membership|${CollectionName}         ||${DiscoveredSystemName}2_1                                                                      |
+|Check Mail                 |${AutoDiscoveryEMail}     ||TPAM LDAP Integration for Collection ${CollectionName}||Adding system ${DiscoveredSystemName}2_1|
+
+!|scenario             |Map Discovered User To Existing One                                                                                                                                                  |
+|Check Mail            |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group ${GroupName}||Adding DN mapping for TPAM username ${FakeUserName}2 to CN=${FakeUserName}2,OU=${UserContainerName1},${BaseName}|
+|Check Mail            |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group ${GroupName}||Updated TPAM user ${FakeUserName}2 with changes from Directory unique userID                                    |
+|Check Mail            |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group ${GroupName}||Adding TPAM user ${FakeUserName}2(Directory UserName:${FakeUserName}2) to group ${GroupName}                    |
+|Check Mapped User     |${FakeUserName}2     ||Ivan                                        ||Ivanov                       |                       |${FakeUserName}2@${TPAMEMailDomain}                       |
+|Check Group Membership|${GroupName}         ||${FakeUserName}2                                                                                                                                              |
+
+
+!|scenario                  |Map Discovered System To Existing One                                                                                                                                                         |
+|Check Mail                 |${AutoDiscoveryEMail}||TPAM LDAP Integration for Collection ${CollectionName}||Adding DN mapping for system ${FakeSystemName}2 to CN=${FakeSystemName}2,OU=${SystemContainerName2},${BaseName}|
+|Check Mail                 |${AutoDiscoveryEMail}||TPAM LDAP Integration for Collection ${CollectionName}||Updated TPAM system ${FakeSystemName}2 with changes from Directory object                                      |
+|Check Mail                 |${AutoDiscoveryEMail}||TPAM LDAP Integration for Collection ${CollectionName}||Adding system ${FakeSystemName}2 to collection ${CollectionName}                                               |
+|Check Mail                 |${AutoDiscoveryEMail}||TPAM LDAP Integration for Collection ${CollectionName}||${FakeSystemName}2                                                                                             |
+|Check Mapped System        |${FakeSystemName}2   ||unspecified_in_Directory                                                                                                                                               |
+|Check Collection Membership|${CollectionName}    ||${FakeSystemName}2                                                                                                                                                     |
+
+!|scenario                |Leave User Deleted From Source And Remove Mapping                                                                                 |
+|Check Mail               |${AutoDiscoveryEMail} ||TPAM LDAP Integration for Group ${GroupName}||Removing user ${DiscoveredUserName}2 from group ${GroupName}|
+|Check User               |${DiscoveredUserName}2||Ivan                                        ||Ivanov    |    |${DiscoveredUserName}2@${TPAMEMailDomain}   |
+|Check No Group Membership|${GroupName}          ||${DiscoveredUserName}2                                                                                    |
+
+
+!|scenario                     |Leave System Deleted From Source And Remove Mapping                                                                                                         |
+|Check Mail                    |${AutoDiscoveryEMail}   ||TPAM LDAP Integration for Collection ${CollectionName}||Removing system ${DiscoveredSystemName}2 from collection ${CollectionName}|
+|Check System                  |${DiscoveredSystemName}2||unspecified_in_Directory                                                                                                          |
+|Check No Collection Membership|${CollectionName}       ||${DiscoveredSystemName}2                                                                                                          |
+
+
+!|scenario                |User Disabled By Collision Strategy                                                                                                                                                                                     |
+|Check User Disabled      |${DiscoveredUserName}3                                                                                                                                                                                                  |
+|Check User Disabled      |${DiscoveredUserName}1                                                                                                                                                                                                  |
+|Check No Group Membership|${GroupName}         ||${DiscoveredUserName}3                                                                                                                                                                           |
+|Check Mail               |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group ${GroupName}||Removing user ${DiscoveredUserName}3 from group ${GroupName}                                                                                       |
+|Check Mail               |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group ${GroupName}||Disabling user ${DiscoveredUserName}3 because it no longer belongs to any Directory group and the deletion strategy for this mapping is to disable.|
+|Check Mail               |${AutoDiscoveryEMail}||TPAM LDAP Integration for Group ${GroupName}||Disabling user ${DiscoveredUserName}1 because it no longer belongs to any Directory group and the deletion strategy for this mapping is to disable.|
+
+
+!|scenario                     |System Deleted By Collision Strategy                                                                                                                     |
+|Check No System               |${DiscoveredSystemName}3                                                                                                                                 |
+|Check No Collection Membership|${CollectionName}    ||${DiscoveredSystemName}3                                                                                                          |
+|Check Mail                    |${AutoDiscoveryEMail}||TPAM LDAP Integration for Collection ${CollectionName}||Removing system ${DiscoveredSystemName}3 from collection ${CollectionName}|
+|Check Mail                    |${AutoDiscoveryEMail}||TPAM LDAP Integration for Collection ${CollectionName}||${DiscoveredSystemName}3 has been successfully deleted                    |
+
+
+!|scenario             |Create Templates                                  |
+|Create User Template  |${UserTemplateName1}  ||${TemplateGroupName1}     |
+|Create User Template  |${UserTemplateName2}  ||${TemplateGroupName2}     |
+|Create System Template|${SystemTemplateName1}||${TemplateCollectionName1}|
+|Create System Template|${SystemTemplateName2}||${TemplateCollectionName2}|
+
+!|scenario             |Delete Templates      |
+|Delete User Template  |${UserTemplateName1}  |
+|Delete User Template  |${UserTemplateName2}  |
+|Delete System Template|${SystemTemplateName1}|
+|Delete System Template|${SystemTemplateName2}|
+
+
+
+!|scenario            |Create User Template|templateName   |   |groupName   |
+|clickOnLink          |link=Add User Template                               |
+|pause                |5000                                                 |
+|waitForElementPresent|id=UserName                                          |
+|type;                |id=UserName         |@templateName                   |
+|type;                |id=FirstName        |John                            |
+|type;                |id=LastName         |Doe                             |
+|type;                |id=Phone            |777-777-777                     |
+|type;                |id=Pager            |888-888-888                     |
+|type;                |id=EmailID          |@templateName@${TPAMEMailDomain}|
+|type;                |id=Comment          |@templateName description       |
+|select;              |id=UType            |label=Administrator             |
+|click                |id=cbxMobile                                         |
+|type;                |id=sPassword        |grain41R                        |
+|type;                |id=Confirm          |grain41R                        |
+|click                |id=KeyBased                                          |
+|waitForElementPresent|id=cb_CliAccess                                      |
+|click                |id=cb_CliAccess                                      |
+|click                |id=Time                                              |
+|waitForElementPresent|id=rbAllow                                           |
+|click                |id=rbAllow                                           |
+|click                |id=SubmitChanges                                     |
+|waitForTextPresent   |User added successfully                              |
+|Add User To Group    |@templateName       |               |@groupName      |
+
+!|scenario               |Create System Template    |templateName     |    |collectionName    |
+|clickOnLink             |link=Add System Template                                            |
+|pause                   |5000                                                                |
+|type;                   |id=SystemName             |@templateName                            |
+|type;                   |id=NetworkAddress         |1.1.1.1                                  |
+|select;                 |id=PlatformID             |label=Windows                            |
+|select;                 |id=MaxDurationDays        |label=3                                  |
+|type;                   |id=PrimaryEmail           |@templateName@${TPAMEMailDomain}         |
+|type;                   |id=Comment                |@templateName description                |
+|type;                   |id=EscalationTime         |30                                       |
+|type;                   |id=EscalationEmail        |Escalation@${TPAMEMailDomain}            |
+|click                   |id=Connection                                                       |
+|waitForElementPresent   |id=cb_AllowFuncReqFl                                                |
+|type;                   |id=PARFuncAcct            |funk                                     |
+|type;                   |id=pword                  |grain41R                                 |
+|type;                   |id=ConfPword              |grain41R                                 |
+|click                   |id=cb_AllowFuncReqFl                                                |
+|click                   |id=Management                                                       |
+|select;                 |id=PasswordCheckProfileID |label=${PersistentPasswordCheckProfile1} |
+|select;                 |id=PasswordChangeProfileID|label=${PersistentPasswordChangeProfile1}|
+|select;                 |id=DurationHrs            |label=3                                  |
+|select;                 |id=DurationQtrHrs         |label=30                                 |
+|click                   |id=cb_AllowISADuration                                              |
+|click                   |id=TicketSystem                                                     |
+|pause                   |1000                                                                |
+|click                   |id=RequireTixForRequest                                             |
+|click                   |id=RequireTixForCLI                                                 |
+|type;                   |id=TixEmailNotify         |TicketNotify@${TPAMEMailDomain}          |
+|click                   |id=bt_Save                                                          |
+|waitForTextPresent      |System changes for @templateName saved successfully                 |
+|Add System To Collection|@templateName             |                 |@collectionName        |
+
+!|scenario     |Add Groups and Collections|
+|Add Group     |${TemplateGroupName1}     |
+|Add Group     |${TemplateGroupName2}     |
+|Add Collection|${TemplateCollectionName1}|
+|Add Collection|${TemplateCollectionName2}|
+
+!|scenario        |Delete Groups and Collections|
+|Delete Group     |${TemplateGroupName1}        |
+|Delete Group     |${TemplateGroupName2}        |
+|Delete Group     |${GroupName}                 |
+|Delete Collection|${TemplateCollectionName1}   |
+|Delete Collection|${TemplateCollectionName2}   |
+|Delete Collection|${CollectionName}            |
+
+
+!|scenario                  |Create LDAP User Mapping                                                                   |
+|clickOnLink                |link=LDAP Directory                                                                        |
+|click                      |id=AddUsersButton                                                                          |
+|pause                      |5000                                                                                       |
+|select;                    |id=SystemID                         |label=${SystemName}                                   |
+|type;                      |id=PARGroupName                     |${GroupName}                                          |
+|Add Mapping Row            |ou=${UserContainerName1},${BaseName}||${UserFilter1} ||${UserTemplateName1} [Administrator]|
+|Add Mapping Row            |ou=${UserContainerName2},${BaseName}||${UserFilter2} ||${UserTemplateName2} [Administrator]|
+|Set Auto Update Minutes    |15                                                                                         |
+|select;                    |id=NotifyType                       |label=All                                             |
+|type;                      |id=NotifyEmail                      |${AutoDiscoveryEMail}                                 |
+|Set User Collision Strategy|Report as Error                     ||Report as Error||Report as Error  | |Report as Error |
+|click                      |id=SaveButton                                                                              |
+|waitForTextPresent         |New Auto Discovery mapping saved successfully                                              |
+|waitForTextPresent         |User Distinguished Name Filter * saved successfully                                        |
+|pause                      |10000                                                                                      |
+
+
+!|scenario                    |Create LDAP System Mapping                                                                |
+|pause                        |3000                                                                                      |
+|click                        |id=AddComputersButton                                                                     |
+|pause                        |5000                                                                                      |
+|select;                      |id=SystemID                           |label=${SystemName}                                |
+|type;                        |id=PARCollectionName                  |${CollectionName}                                  |
+|Add Mapping Row              |ou=${SystemContainerName1},${BaseName}||${SystemFilter1}||${SystemTemplateName1} [Windows]|
+|Add Mapping Row              |ou=${SystemContainerName2},${BaseName}||${SystemFilter2}||${SystemTemplateName2} [Windows]|
+|Set Auto Update Minutes      |15                                                                                        |
+|select;                      |id=NotifyType                         |label=All                                          |
+|type;                        |id=NotifyEmail                        |${AutoDiscoveryEMail}                              |
+|Set System Collision Strategy|Report as Error                       ||Report as Error ||Report as Error                 |
+|click                        |id=SaveButton                                                                             |
+|waitForTextPresent           |New Auto Discovery mapping saved successfully                                             |
+|waitForTextPresent           |Computer Distinguished Name Filter * saved successfully                                   |
+|pause                        |10000                                                                                     |
+
+
+
+!|scenario              |Delete LDAP Mapping for|container|
+|Select LDAP Mapping for|@container                       |
+|click                  |id=DeleteButton                  |
+|getConfirmation                                          |
+|pause                  |10000                            |
+
+!|scenario              |Clear Objects              |
+|Delete Users in Directory                          |
+|Delete Systems in Directory                        |
+|Delete OUs                                         |
+|Delete LDAP Mapping for|${CollectionName}          |
+|Delete LDAP Mapping for|${GroupName}               |
+|Remove User            |${FakeUserName}1           |
+|Remove User            |${FakeUserName}2           |
+|Remove User            |${RestrictedUserName}_1    |
+|Remove User            |${FakeUserName}1_1         |
+|Remove User            |${NotDiscoveredUserName}1  |
+|Remove User            |${DiscoveredUserName}1     |
+|Remove User            |${DiscoveredUserName}2     |
+|Remove User            |${DiscoveredUserName}3     |
+|Remove System          |${DiscoveredSystemName}2_1 |
+|Remove System          |${SystemName}              |
+|Remove System          |${FakeSystemName}1         |
+|Remove System          |${FakeSystemName}2         |
+|Remove System          |${FakeSystemName}1_1       |
+|Remove System          |${NotDiscoveredSystemName}1|
+|Remove System          |${DiscoveredSystemName}2   |
+|Delete Groups and Collections                      |
+|Delete Templates                                   |
+|Delete Mailbox         |${AutoDiscoveryEMail}      |
+|Logout                                             |
+#|Remove User            |${DiscoveredUserName}2_1               |
+
+!|scenario            |Check User      |userName||firstName||lastName||eMail|
+|clickOnLink          |link=Manage UserIDs                                  |
+|waitForElementPresent|id=UsrNm                                             |
+|type;                |id=UsrNm        |@userName                           |
+|click                |id=Listing                                           |
+|waitForElementPresent|xpath=//td[contains(text(),'@userName')]             |
+|mouseMoveOver        |xpath=//td[contains(text(),'@userName')]             |
+|click                |xpath=//td[contains(text(),'@userName')]             |
+|click                |id=Details      |                                    |
+|waitForElementPresent|id=cbxMobile                                         |
+|pause                |5000                                                 |
+|$res=                |isChecked       |id=Disabled                         |
+|Verify_Contain_OR    |$res;;false                                          |
+|$res=                |getValue        |xpath=//input[@id='LastName']       |
+|Verify_Contain_OR    |$res;;@lastName                                      |
+|$res=                |getValue        |xpath=//input[@id='FirstName']      |
+|Verify_Contain_OR    |$res;;@firstName                                     |
+|$res=                |getValue        |xpath=//input[@id='Phone']          |
+|Verify_Contain_OR    |$res;;777-777-777                                    |
+|$res=                |getValue        |xpath=//input[@id='Pager']          |
+|Verify_Contain_OR    |$res;;888-888-888                                    |
+|$res=                |getValue        |xpath=//input[@id='EmailID']        |
+|Verify_Contain_OR    |$res;;@eMail                                         |
+|$res=                |getValue        |xpath=//textarea[@id='Comment']     |
+|Verify_Contain_OR    |$res;;some words from AD                             |
+|$res=                |getSelectedLabel|id=UType                            |
+|Verify_Contain_OR    |$res;;Administrator                                  |
+|$res=                |isChecked       |id=cb_WebAccess                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxMobile                        |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |getSelectedLabel|id=PrimAuthType                     |
+|Verify_Contain_OR    |$res;;Local                                          |
+|$res=                |getSelectedLabel|id=ExtAuthType                      |
+|Verify_Contain_OR    |$res;;None                                           |
+|click                |id=KeyBased     |                                    |
+|waitForElementPresent|id=cb_CliAccess                                      |
+|$res=                |isChecked       |id=cb_CliAccess                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cb_ApiAccess                     |
+|Verify_Contain_OR    |$res;;false                                          |
+|click                |id=Time         |                                    |
+|waitForElementPresent|id=rbAllow                                           |
+|$res=                |isChecked       |id=rbAllow                          |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay1                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay2                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay3                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay4                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay5                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay6                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay7                     |
+|Verify_Contain_OR    |$res;;true                                           |
+
+!|scenario            |Check Mapped User|userName||firstName||lastName||eMail|
+|clickOnLink          |link=Manage UserIDs                                   |
+|waitForElementPresent|id=UsrNm                                              |
+|type;                |id=UsrNm         |@userName                           |
+|click                |id=Listing                                            |
+|waitForElementPresent|xpath=//td[contains(text(),'@userName')]              |
+|mouseMoveOver        |xpath=//td[contains(text(),'@userName')]              |
+|click                |xpath=//td[contains(text(),'@userName')]              |
+|click                |id=Details       |                                    |
+|waitForElementPresent|id=cbxMobile                                          |
+|pause                |5000                                                  |
+|$res=                |isChecked        |id=Disabled                         |
+|Verify_Contain_OR    |$res;;false                                           |
+|$res=                |getValue         |xpath=//input[@id='LastName']       |
+|Verify_Contain_OR    |$res;;@lastName                                       |
+|$res=                |getValue         |xpath=//input[@id='FirstName']      |
+|Verify_Contain_OR    |$res;;@firstName                                      |
+|$res=                |getValue         |xpath=//input[@id='Phone']          |
+|Verify_Contain_OR    |$res;;777-777-777                                     |
+|$res=                |getValue         |xpath=//input[@id='Pager']          |
+|Verify_Contain_OR    |$res;;888-888-888                                     |
+|$res=                |getValue         |xpath=//input[@id='EmailID']        |
+|Verify_Contain_OR    |$res;;@eMail                                          |
+|$res=                |getValue         |xpath=//textarea[@id='Comment']     |
+|Verify_Contain_OR    |$res;;some words from AD                              |
+|$res=                |getSelectedLabel |id=UType                            |
+|Verify_Contain_OR    |$res;;Basic                                           |
+
+!|scenario            |Check Mapped System|systemName    |   |systemAddress   |
+|clickOnLink          |link=Manage Systems                                    |
+|type;                |id=SystemNm        |@systemName                        |
+|click                |id=Listing                                             |
+|waitForElementPresent|xpath=//td[contains(text(),'@systemName')]             |
+|mouseMoveOver        |xpath=//td[contains(text(),'@systemName')]             |
+|click                |xpath=//td[contains(text(),'@systemName')]             |
+|click                |id=Details                                             |
+|waitForElementPresent|xpath=//input[@id='NetworkAddress']                    |
+|$res=                |getValue           |xpath=//input[@id='NetworkAddress']|
+|Verify_Contain_OR    |$res;;@systemAddress                                   |
+|$res=                |getSelectedLabel   |id=PlatformID                      |
+|Verify_Contain_OR    |$res;;Windows                                          |
+|$res=                |getSelectedLabel   |id=PwdRuleID                       |
+|Verify_Contain_OR    |$res;;Default Password Rule                            |
+|$res=                |getSelectedLabel   |id=MaxDurationDays                 |
+|Verify_Contain_OR    |$res;;7                                                |
+|$res=                |getSelectedLabel   |id=MaxDurationHrs                  |
+|Verify_Contain_OR    |$res;;0                                                |
+|$res=                |getSelectedLabel   |id=MaxDurationQtrHrs               |
+|Verify_Contain_OR    |$res;;0                                                |
+|$res=                |isChecked          |id=cb_SystemAutoFl                 |
+|Verify_Contain_OR    |$res;;true                                             |
+|$res=                |isChecked          |id=cb_EgpOnlyFl                    |
+|Verify_Contain_OR    |$res;;false                                            |
+
+!|scenario                  |BFER 6708 System Inherited Template Collection Membership|collectionName||systemName|
+|Check Collection Membership|@collectionName                                          |              |@systemName|
+
+!|scenario             |BFER 6708 User Inherited Template Group Membership|groupName||userName|
+|Check Group Membership|@groupName                                        |         |@userName|
+
+!|scenario                                                |Check BFER 6708                                     |
+|BFER 6708 User Inherited Template Group Membership       |${TemplateGroupName1}     ||${DiscoveredUserName}1  |
+|BFER 6708 User Inherited Template Group Membership       |${TemplateGroupName2}     ||${DiscoveredUserName}2  |
+|BFER 6708 System Inherited Template Collection Membership|${TemplateCollectionName1}||${DiscoveredSystemName}1|
+|BFER 6708 System Inherited Template Collection Membership|${TemplateCollectionName2}||${DiscoveredSystemName}2|
+
+!|scenario            |Check User Disabled     |userName       |
+|clickOnLink          |link=Manage UserIDs                     |
+|waitForElementPresent|id=UsrNm                                |
+|type;                |id=UsrNm                |@userName      |
+|click                |id=Listing                              |
+|waitForElementPresent|xpath=//td[contains(text(),'@userName')]|
+|mouseMoveOver        |xpath=//td[contains(text(),'@userName')]|
+|click                |xpath=//td[contains(text(),'@userName')]|
+|click                |id=Details              |               |
+|waitForElementPresent|id=cbxMobile                            |
+|pause                |5000                                    |
+|$res=                |isChecked               |id=Disabled    |
+|Verify_Contain_OR    |$res;;true                              |
+
+
+!|scenario         |BFER 7151 Long DN and Filter Support                      |
+|Create OU with Long Distinguished Name                                       |
+|clickOnLink       |link=LDAP Directory                                       |
+|click             |id=AddUsersButton                                         |
+|pause             |1000                                                      |
+|select;           |id=SystemID             |label=${SystemName}              |
+|click             |id=btnDNAdd                                               |
+|pause             |3000                                                      |
+|type;             |id=DistinguishedName    |${LongDistinguishedName}         |
+|pause             |3000                                                      |
+|type;             |id=FilterString         |${LongFilter}                    |
+|pause             |2000                                                      |
+|click             |id=btnValidateDN                                          |
+|pause             |2000                                                      |
+|waitForTextPresent|The Distinguished name is valid                           |
+|$res=             |getText                 |xpath=//div[@id='ResultsDiv']    |
+|Verify_Contain_OR |$res;;The Distinguished name is valid and contains 0 Users|
+|Verify_Contain_NOT|$res;;Exception                                           |
+|SWait             |valid_DN.png                                              |
+
+
+!|scenario|Create OU with Long Distinguished Name                                                                                            |
+|runBatch |adou;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${LongName}1;${BaseName}                                                |
+|runBatch |adou;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${LongName}2;ou=${LongName}1,${BaseName}                                |
+|runBatch |adou;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${LongName}3;ou=${LongName}2,ou=${LongName}1,${BaseName}                |
+|runBatch |adou;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${LongName}4;ou=${LongName}3,ou=${LongName}2,ou=${LongName}1,${BaseName}|
+
+
+!|scenario|Delete OU with Long Distinguished Name                                                                                            |
+|runBatch |adou;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${LongName}4;ou=${LongName}3,ou=${LongName}2,ou=${LongName}1,${BaseName}|
+|runBatch |adou;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${LongName}3;ou=${LongName}2,ou=${LongName}1,${BaseName}                |
+|runBatch |adou;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${LongName}2;ou=${LongName}1,${BaseName}                                |
+|runBatch |adou;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${LongName}1;${BaseName}                                                |
+
+!|scenario         |BFER 7156 Invalidate Distinguished Name Row                                 |
+|Delete OU with Long Distinguished Name                                                         |
+|pause             |2000                                                                        |
+|click             |id=btnValidateDN                                                            |
+|pause             |10000                                                                       |
+|waitForTextPresent|The distinguished name                                                      |
+|$res=             |getText                    |xpath=//div[@id='ResultsDiv']                   |
+|Verify_Contain_OR |$res;;The distinguished name ${LongDistinguishedName} could not be validated|
+|SWait             |invalid_DN.png                                                              |
+
+
+!|scenario                   |BFER 7153 Duplicate Rows    |
+|Select LDAP Mapping for     |${GroupName}                |
+|Duplicate Row Set Filter    |${UserFilter3}              |
+|Run Discovery                                            |
+|Select LDAP Mapping for     |${CollectionName}           |
+|Duplicate Row Set Filter    |${SystemFilter3}            |
+|Run Discovery                                            |
+|pause                       |180000                      |
+|Previously Not Discovered Objects Added By New Filter Row|
+|Delete Mails                |${AutoDiscoveryEMail}       |
+
+
+!|scenario|Duplicate Row Set Filter|newFilter |
+|click    |id=btnDNCopy                       |
+|pause    |1000                               |
+|type;    |id=FilterString         |@newFilter|
+|pause    |2000                               |
+|click    |id=btnValidateDN                   |
+|pause    |10000                              |
+
+#This scenario created JIC
+#!|scenario         |Duplicate Mapping Row|distinguishedName       |       |containerName       |      |newFilter      |
+#|$res=             |GroovyWebDriver      |DuplicateMappingRow;${TPAMHost};@distinguishedName;@containerName;@newFilter|
+#|Verify_Contain_NOT|$res;;Something went wrong                                                                        |
+#|Verify_Contain_OR |$res;;Row duplicated successfully                                                                 |
+
+
+######################## Ignore Chages to... #################################################################
+
+!|scenario            |Check Changed Attributes of User|userName|First Name|firstName|Last Name|lastName|E-mail|eMail|Phone Number|phone|Desription|description|Disabled?|disabledFlag|
+|clickOnLink          |link=Manage UserIDs                                                                                                                                            |
+|waitForElementPresent|id=UsrNm                                                                                                                                                       |
+|type;                |id=UsrNm                        |@userName                                                                                                                     |
+|click                |id=Listing                                                                                                                                                     |
+|click                |xpath=//td[contains(text(),'@userName')]                                                                                                                       |
+|click                |id=Details                      |                                                                                                                              |
+|waitForElementPresent|id=cbxMobile                                                                                                                                                   |
+|pause                |5000                                                                                                                                                           |
+|$res=                |isChecked                       |id=Disabled                                                                                                                   |
+|Verify_Contain_OR    |$res;;@disabledFlag                                                                                                                                            |
+|$res=                |getValue                        |xpath=//input[@id='LastName']                                                                                                 |
+|Verify_Contain_OR    |$res;;@lastName                                                                                                                                                |
+|$res=                |getValue                        |xpath=//input[@id='FirstName']                                                                                                |
+|Verify_Contain_OR    |$res;;@firstName                                                                                                                                               |
+|$res=                |getValue                        |xpath=//input[@id='Phone']                                                                                                    |
+|Verify_Contain_OR    |$res;;@phone                                                                                                                                                   |
+|$res=                |getValue                        |xpath=//input[@id='EmailID']                                                                                                  |
+|Verify_Contain_OR    |$res;;@eMail                                                                                                                                                   |
+|$res=                |getValue                        |xpath=//textarea[@id='Comment']                                                                                               |
+|Verify_Contain_OR    |$res;;@description                                                                                                                                             |
+#|$res=                |getValue                        |xpath=//input[@id='Pager']                                                                                             |
+#|Verify_Contain_OR    |$res;;888-888-888                                                                                                                                       |
+
+
+
+!|scenario              |Set Ignore User Settings |setting1 | |setting2 ||setting3|
+|Select LDAP Mapping for|${GroupName}                                             |
+|click                  |xpath=//select[@id='UpdateColumns']/option[.='@setting1']|
+|click                  |xpath=//select[@id='UpdateColumns']/option[.='@setting2']|
+|click                  |xpath=//select[@id='UpdateColumns']/option[.='@setting3']|
+|click                  |id=SaveButton                                            |
+|waitForTextPresent     |Auto Discovery mapping change saved successfully         |
+
+
+
+!|scenario              |Un-Set Ignore User Settings |setting1||setting2||setting3|
+|Select LDAP Mapping for|${GroupName}                                             |
+|click                  |xpath=//select[@id='UpdateColumns']/option[.='@setting1']|
+|click                  |xpath=//select[@id='UpdateColumns']/option[.='@setting2']|
+|click                  |xpath=//select[@id='UpdateColumns']/option[.='@setting3']|
+|click                  |id=SaveButton                                            |
+|waitForTextPresent     |Auto Discovery mapping change saved successfully         |
+
+
+!| scenario      |Update User in Data Source        |accountName        |FirstName        |firstName        |Last Name        |lastName        |Email        |email       |Phone Number       |phone       |Description       |desc       |Status       |enabledFl       |
+|PowerShellScript|changeADuser.ps1 -ADserver ${SystemAddress} -adminUser ${NETBIOSDomainName}\${FunctAcct} -PWord ${FunctAcctPwd} -accntName @accountName -lastName @lastName -firstName @firstName -phone "@phone" -email @email -description "@desc" -ustate @enabledFl|
+
+
+!|scenario                       |Check Ignore User Updates for                                                                                                                                       |
+|Set Ignore User Settings        |Last Name             |          |Phone        |         |Description                                                                                               |
+|Update User in Data Source      |${DiscoveredUserName}1|FirstName |Roy          |Last Name|Johns |Email |Roy@Johns   |Phone Number|7-812-364-35-36|Description|Roy description     |Status   |disable|
+|Run Discovery                                                                                                                                                                                        |
+|pause                           |180000                                                                                                                                                              |
+|Check Changed Attributes of User|${DiscoveredUserName}1|First Name|Roy          |Last Name|Ivanov|E-mail|Roy@Johns   |Phone Number|777-777-777    |Desription |some words from AD  |Disabled?|true   |
+|Un-Set Ignore User Settings     |Last Name             |          |Phone        |         |Description                                                                                               |
+|Run Discovery                                                                                                                                                                                        |
+|pause                           |180000                                                                                                                                                              |
+|Check Changed Attributes of User|${DiscoveredUserName}1|First Name|Roy          |Last Name|Johns |E-mail|Roy@Johns   |Phone Number|7-812-364-35-36|Desription |Roy description     |Disabled?|true   |
+|Set Ignore User Settings        |First Name            |          |Email Address|         |User Disabled                                                                                             |
+|Update User in Data Source      |${DiscoveredUserName}1|FirstName |Mohammed     |Last Name|Ali   |Email |Mohammed@Ali|Phone Number|3-456-128-27-19|Description|Mohammed description|Status   |enable |
+|Run Discovery                                                                                                                                                                                        |
+|pause                           |180000                                                                                                                                                              |
+|Check Changed Attributes of User|${DiscoveredUserName}1|First Name|Roy          |Last Name|Ali   |E-mail|Roy@Johns   |Phone Number|3-456-128-27-19|Desription |Mohammed description|Disabled?|true   |
+|Un-Set Ignore User Settings     |First Name            |          |Email Address|         |User Disabled                                                                                             |
+|Run Discovery                                                                                                                                                                                        |
+|pause                           |180000                                                                                                                                                              |
+|Check Changed Attributes of User|${DiscoveredUserName}1|First Name|Mohammed     |Last Name|Ali   |E-mail|Mohammed@Ali|Phone Number|3-456-128-27-19|Desription |Mohammed description|Disabled?|false  |
+
+

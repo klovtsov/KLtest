@@ -1,0 +1,87 @@
+!define SyncPasswordName {${prefix}Parole}
+!define SincPwdInitialValue {T0PsecreT}
+!define NewSyncPassword {gr@in41R}
+!define PauseValue {120000}
+!define ManagedAccount {${prefix}psSyncAcnt}
+!define PwdReleaseDuration {15}
+!define SyncPwdCheckProfile {${PpmCheckProfile}}
+!define SyncPwdChangeProfile {${PpmChangeProfile}}
+
+!*> First Sub System
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsActiveDir
+*!
+
+!*> Second Sub System
+!define SecSystemName {${prefix}_SyncPwd2}
+!define SecSystemPlatform {MySQL}
+!define SecSystemAddress {10.30.39.159}
+!define SecFunctAcct {UserMaster}
+!define SecFunctAcctPwd {=1qwerty}
+!define SecConnectionPort {3307}
+*!
+
+!include -c <AutoTestsWebDrv.SynchronizedPasswords.ScenarioLibrary
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!*> Test Set Up
+!|script                                                                                                                                                                                                                                     |
+|Create Account on First System                                                                                                                                                                                                              |
+|Create Account on Second System                                                                                                                                                                                                             |
+|Add system |${SystemName}    |with address|${SystemAddress}   |platform     |"${SystemPlatform}"   |managed by|${FunctAcct}   |additional parameters|-functAcctPwd ${FunctAcctPwd} -domainName ${DomainName} -NetBiosName ${NETBIOSDomainName}|
+|Add system |${SecSystemName} |with address|${SecSystemAddress}|platform     |${SecSystemPlatform}|managed by|${SecFunctAcct}|additional parameters|-functAcctPwd ${SecFunctAcctPwd} -PortNumber ${SecConnectionPort}                        |
+|Add Account|${ManagedAccount}|on          |${SystemName}      |with password|${ManagedAccountPwdNew}                                                                                                                                        |
+|Add Account|${ManagedAccount}|on          |${SecSystemName}   |with password|${ManagedAccountPwdNew}                                                                                                                                        |
+*!
+
+!3 Create Sync Password and add subscribers
+!|script                                                                        |
+|Add Sync Password     |${SyncPasswordName}|with value   |${SincPwdInitialValue}|check profile|${SyncPwdCheckProfile}|change profile|${SyncPwdChangeProfile}|
+|Add Subscriber        |${ManagedAccount}  |from         |${SystemName}         |
+|Add Subscriber        |${ManagedAccount}  |from         |${SecSystemName}      |
+|pause                 |${PauseValue}                                           |
+|Login to first system |${SystemAddress}   |with password|${SincPwdInitialValue}|
+|Login to second system|${SecSystemAddress}|with password|${SincPwdInitialValue}|
+
+!3 Reset Sync Password
+!|script                                                                    |
+|Reset Sync Password to|${NewSyncPassword}                                  |
+|pause                 |${PauseValue}                                       |
+|Login to first system |${SystemAddress}   |with password|${NewSyncPassword}|
+|Login to second system|${SecSystemAddress}|with password|${NewSyncPassword}|
+
+!3 Reset Password After Release
+!note A post release reset always happens! (See e-mail from Jeff Harkavy at June 25, 2015)
+!|script                                                       |
+|Set Permissions on account           |${ManagedAccount}       |
+|Reset Sync Password                                           |
+|pause                             |${PauseValue}        |
+|Retrieve Password                                             |
+|pause                             |${PauseValue}        |
+|Check Sync Password                              |${SyncPasswordName}|subscriber|${ManagedAccount}|from|${SystemName}   |status is|Current|
+|Check Sync Password                              |${SyncPasswordName}|subscriber|${ManagedAccount}|from|${SecSystemName}|status is|Current|
+|Check Login to second system failed with password|$GeneratedPwd                                                                           |
+#|Set Sync Password Release Duration|${PwdReleaseDuration}|
+
+!3 List Synchronized Password subscribers
+!|script                                                                   |
+|Check Sync Password|${SyncPasswordName}|contains account|${ManagedAccount}|
+
+!3 Drop Subscriber
+!|script                                                                                               |
+|Drop account from Sync Password                  |${ManagedAccount}|from         |${SecSystemName}    |
+|Reset Sync Password to                           |A${NewSyncPassword}B                                |
+|pause                                            |${PauseValue}                                       |
+|Login to first system                            |${SystemAddress} |with password|A${NewSyncPassword}B|
+|Check Login to second system failed with password|A${NewSyncPassword}B                                |
+ 
+!3 Delete Sync Password
+!|script                                 |
+|Delete Sync Password|${SyncPasswordName}|
+
+!*> Clean Up
+!|script                          |
+|Remove Account from First System |
+|Remove Account from Second System|
+|Delete system  |${SystemName}    |
+|Delete system  |${SecSystemName} |
+*!

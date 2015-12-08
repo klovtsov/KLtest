@@ -1,0 +1,18 @@
+!| scenario                       |Managed Account                                     |
+|Add account                      |${ManagedAccount}|with password|${ManagedAccountPwd}|
+|Reset Password                   |${ResetPasswordFailed}                              |
+|Schedule Reset Password          |Failed                                              |
+|Change Account Password on System|${ManagedAccountPwdNew}                             |
+|Choose Account                   |${FunctAcct}                                        |
+|Set password                     |${FunctAcct}     |             |${FunctAcctPwd}     |
+|pause                            |${RestoreFunctAcctPasswordTimeout}                  |
+|Choose Account                   |${ManagedAccount}                                   |
+|Check Password                   |${CheckPasswordNotMatch}                            |
+|pause                            |${RestoreFunctAcctPasswordTimeout}                  |
+|Check Status                     |Success          |for reason   |Mismatch            |
+|bfer5962                                                                              |
+
+
+!|scenario              |bfer5962                               |
+|Reset Password         |getconfig                              |
+|Schedule Reset Password|Scheduled .*Failed;;Scheduled .*Success|

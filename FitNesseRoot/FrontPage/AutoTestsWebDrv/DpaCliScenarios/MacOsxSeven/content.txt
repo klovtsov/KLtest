@@ -1,0 +1,2 @@
+!include <AutoTestsWebDrv.CliScenarios.MacOsxSeven
+!include -c ScenarioLibrary

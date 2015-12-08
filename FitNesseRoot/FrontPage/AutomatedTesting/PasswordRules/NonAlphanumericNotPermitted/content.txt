@@ -1,0 +1,15 @@
+!define ExpectedNonAlphaNumSymbols {%$&}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                                                 |
+|Login               |${TPAMAdminURL}  |             |${TPAMMaster}   |   |${MasterPwd}  |
+|pause               |5000                                                               |
+|Select Password Rule|${PasswdRuleName}                                                  |
+|Select value        |Not Permitted    |for          |ReqNonAN                           |
+|pause               |5000                                                               |
+|click               |id=SubmitChangesButton                                             |
+|Reset Password      |${ManagedAccount}|             |${ResetPasswordSuccessful}         |
+|Get Generated Password                                                                  |
+|check not           |echo             |$GeneratedPwd|=~/[${ExpectedNonAlphaNumSymbols}]/|

@@ -1,0 +1,8 @@
+!define sysCLIBatch {-i ${CliSysAdmin}.ppk -C ${CliSysAdmin}@${TPAMHost}}
+!define CreateSystemMethod {Add System with key}
+!define RetrieveKeyMethod {Retrieve Standard Key}
+!define keyFormat {OpenSSH}
+!define keyFileOrigin {ssh-dss}
+
+!3 Run the test
+!include <SystemSshKey.RetrieveSystemKeyBaseTest

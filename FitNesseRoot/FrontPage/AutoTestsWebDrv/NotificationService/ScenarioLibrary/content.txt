@@ -1,0 +1,97 @@
+!|scenario            |Choose system                             |SystemName |
+|clickOnLink          |link=Manage Systems                                   |
+|waitForElementPresent|id=SystemNm                                           |
+|type;                |id=SystemNm                               |@SystemName|
+|click                |id=Listing                                            |
+|waitForElementPresent|xpath=//td[contains(text(),'@SystemName')]            |
+|click                |xpath=//td[contains(text(),'@SystemName')]|           |
+
+!|scenario            |Choose Account      |SystemName      |      |accountName      |
+|clickOnLink          |link=Manage Accounts                                          |
+|waitForElementPresent|id=SystemNm                                                   |
+|type;                |id=SystemNm         |@SystemName                              |
+|click                |id=Listing                                                    |
+|waitForElementPresent|xpath=//table[@id='AccountListing']//td[text()='@accountName']|
+|click                |xpath=//table[@id='AccountListing']//td[text()='@accountName']|
+
+
+''Check Logs'' 
+
+!|scenario     |Check Full Test Log              |SystemName||accountName||testResult|
+|Choose Account|@SystemName                      |          |@accountName            |
+|click         |id=Logs                                                              |
+|click         |id=rb_LogsDtAll                                                      |
+|click         |id=TestLog                                                           |
+|verifyText    |xpath=//table[@id='testLogTable']|          |@testResult             |
+
+!|scenario     |Check Full Change Log              |SystemName||accountName||testResult|
+|Choose Account|@SystemName                        |          |@accountName            |
+|click         |id=Logs                                                                |
+|click         |id=rb_LogsDtAll                                                        |
+|click         |id=ChangeLog                                                           |
+|verifyText    |xpath=//table[@id='changeLogTable']|          |@testResult             |
+
+''Password Check and Change with Allow system to notify TPAM it is available for change creation''
+
+!|scenario    |Create Password Profile With Allow Notufy|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                                              |
+|select;      |id=ProfileType                           |label=Password @ProfileType|
+|click        |id=NewButton                                                         |
+|type;        |id=ProfileName                           |@ProfileName               |
+|click        |id=cbxAllowNotify                                                    |
+|click        |id=SaveButton                                                        |
+|waitForResult|The profile saved successfully                                       |
+
+
+!|scenario    |Download Certificate|SystemName|
+|Choose System|@SystemName                    |
+|click        |id=Details                     |
+|click        |id=Management                  |
+|click        |id=btnDownloadUserCert         |
+
+
+
+!|scenario|Move Certs                                                                    |
+|runBatch |movekey;${BrowserDownloadDir}\${SystemName1}.p12;${NotificationServiceTestDir}|
+|runBatch |movekey;${BrowserDownloadDir}\${SystemName2}.p12;${NotificationServiceTestDir}|
+|runBatch |movekey;${BrowserDownloadDir}\${SystemName3}.p12;${NotificationServiceTestDir}|
+|runBatch |movekey;${BrowserDownloadDir}\${SystemName4}.p12;${NotificationServiceTestDir}|
+|runBatch |movekey;${BrowserDownloadDir}\${SystemName5}.p12;${NotificationServiceTestDir}|
+
+!|scenario            |Check Logs                                     |
+|Check Full Test Log  |${SystemName1}||${AccountName}||${CheckResult} |
+|Check Full Change Log|${SystemName1}||${AccountName}||${ChangeResult}|
+|Check Full Test Log  |${SystemName2}||${AccountName}||${CheckResult} |
+|Check Full Change Log|${SystemName2}||${AccountName}||${ChangeResult}|
+|Check Full Test Log  |${SystemName3}||${AccountName}||${CheckResult} |
+|Check Full Change Log|${SystemName3}||${AccountName}||${ChangeResult}|
+|Check Full Test Log  |${SystemName4}||${AccountName}||${CheckResult} |
+|Check Full Change Log|${SystemName4}||${AccountName}||${ChangeResult}|
+|Check Full Test Log  |${SystemName5}||${AccountName}||${CheckResult} |
+|Check Full Change Log|${SystemName5}||${AccountName}||${ChangeResult}|
+
+!|scenario         |Ping                                                                                                          |
+|$res=             |RunBatchGetOutput|NotificationServiceTest\runNStest;${TPAMHost};1;5;${NotificationServiceTestDir};${SystemName};${ProfileCertPassword}|
+|Verify_Contain_NOT|$res;;ResultMessage.*Fail                                                                                     |
+|Verify_Contain_OR|$res;;Success.*Success.*Success.*Success.*Success                                                                                     |
+
+
+!|scenario   |Check Activity Report                                          |
+|clickOnLink2|link=Activity Report                                           |
+|click       |id=filterOp1                                                   |
+|select;     |id=logOp                          |label=Notification Available|
+|click       |id=run                                                         |
+|pause       |5000                                                           |
+|verifyText  |xpath=//tr[@id='highlight0']/td[9]|      |${Notification}      |
+|verifyText  |xpath=//tr[@id='highlight0']/td[8]|      |${SystemName5}       |
+|verifyText  |xpath=//tr[@id='highlight1']/td[9]|      |${Notification}      |
+|verifyText  |xpath=//tr[@id='highlight1']/td[8]|      |${SystemName4}       |
+|verifyText  |xpath=//tr[@id='highlight2']/td[9]|      |${Notification}      |
+|verifyText  |xpath=//tr[@id='highlight2']/td[8]|      |${SystemName3}       |
+|verifyText  |xpath=//tr[@id='highlight3']/td[9]|      |${Notification}      |
+|verifyText  |xpath=//tr[@id='highlight3']/td[8]|      |${SystemName2}       |
+|verifyText  |xpath=//tr[@id='highlight4']/td[9]|      |${Notification}      |
+|verifyText  |xpath=//tr[@id='highlight4']/td[8]|      |${SystemName1}       |
+
+
+

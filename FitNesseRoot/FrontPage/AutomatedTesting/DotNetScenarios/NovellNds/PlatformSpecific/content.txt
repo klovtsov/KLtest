@@ -1,0 +1,10 @@
+!| scenario       |Add system                                                                                                                                                                          |
+|$res=            |NetAPI|${APIBatch} ${CommandTimeout} AddSystem ${SystemName} ${SystemAddress} "${SystemPlatform}" "${SystemDescription}" ${SystemTimeout} ${FunctAcct} ${FunctAcctPwd} ${DomainName}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                    |
+
+
+!|scenario      |Account Not there                                             |
+|Add account    |AccNotThere              |with password|master | |${NotFailed}|
+|Set description|cn=AccNotThere,${Context}|for          |AccNotThere           |
+|Reset Password |AccNotThere              |             |${ResetPasswordFailed}|
+|Check Password |AccNotThere              |             |${CheckPasswordFailed}|

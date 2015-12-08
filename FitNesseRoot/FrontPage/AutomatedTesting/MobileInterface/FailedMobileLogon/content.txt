@@ -1,0 +1,16 @@
+!define UserName {${prefix}NotMobileUser}
+!define UserPwd {Password2}
+
+!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+!include -c <AutomatedTesting.MobileInterface.ScenarioLibrary
+
+
+!|script                                                                                                                                                        |
+|Add User   |${CLIBatch}||--UserName ${UserName} --FirstName User --LastName NotMobile --Password Password1 --UserType Admin --MobileAllowedFlag N||successfully|
+|Change Pwd |${UserName}||Password1                                                                                                               ||${UserPwd}  |
+|Failed Mobile Logon                                                                                                                                            |
+|Delete User|${CLIBatch}||--UserName ${UserName}                                                                                                  ||successfully|
+
+
+
+

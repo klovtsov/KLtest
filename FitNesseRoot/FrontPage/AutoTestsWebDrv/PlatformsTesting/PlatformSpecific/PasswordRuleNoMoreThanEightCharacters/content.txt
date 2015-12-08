@@ -1,0 +1,82 @@
+!define RuleNameEightChars {${prefix}_${SystemPlatform}_8_chars}
+!define browser {firefox}
+
+!|scenario    |Create Password Rule No More Than Eight Chars|ruleName                           |
+|Login        |${TPAMAdminURL}                              |  |${TPAMMaster}  |  |${MasterPwd} |
+|clickOnLink  |link=Password Rules                                                              |
+|click        |id=NewRuleButton                                                                 |
+|type;        |id=PwdRuleName                               |@ruleName                          |
+|type;        |id=PwdRuleDesc                               |For PPM tests: no more than 8 chars|
+|type;        |id=MaxChars                                  |8                                  |
+|type;        |id=MinChars                                  |7                                  |
+|click        |id=ReqFirst                                                                      |
+|select;      |id=ReqFirst                                  |label=Alpha Characters Only        |
+|click        |id=ReqUpper                                                                      |
+|select;      |id=ReqUpper                                  |label=Require at least 2           |
+|click        |id=ReqLower                                                                      |
+|select;      |id=ReqLower                                  |label=Require at least 2           |
+|click        |id=ReqNum                                                                        |
+|select;      |id=ReqNum                                    |label=Require at least 1           |
+|click        |id=ReqNonAN                                                                      |
+|select;      |id=ReqNonAN                                  |label=Not Permitted                |
+|click        |id=SubmitChangesButton                                                           |
+|waitForResult|Password Rule changes saved successfully                                         |
+|Logout                                                                                         |
+
+!|scenario        |Delete Password Rule|ruleName                                |
+|$res=            |GroovyWebDriver     |DeletePasswordRule;${TPAMHost};@ruleName|
+|Verify_Contain_OR|$res;;Rule deleted                                           |
+
+!|scenario         |Remove system       |sysName   |
+|Choose system     |@sysName                       |
+|click             |id=Details          |          |
+|type;             |id=NetworkAddress   |@sysName  |
+|click             |id=bt_Save          |          |
+|click             |id=bt_Clear         |          |
+|waitForTextPresent|*The results from the clearing*|
+|click             |id=bt_Del           |          |
+|getConfirmation                                   |
+|waitForResult     |has been successfully deleted  |
+
+
+
+!|scenario            |Hard-Delete System                        |systemName |
+|$res=             |GroovyWebDriver   |hardDeleteSystem;${TPAMHost};@systemName|
+|Verify_Contain_NOT|$res;;Something went wrong                                 |
+|Verify_Contain_OR |$res;;System hard-deleted                                  |
+
+!| scenario                                   |Managed System                           |
+|Create Account on System                                                               |
+|Create Password Rule No More Than Eight Chars|${RuleNameEightChars}                    |
+|Login                                        |${TPAMURL}  ||${TPAMAdmin}||${DefaultPwd}|
+|Add system                                                                             |
+|Set Connection Tab                                                                     |
+|Test System                                  |${TestSystemSuccessful}                  |
+|Choose Account                               |${FunctAcct}                             |
+|Set password                                 |${FunctAcct}||${FunctAcctWrongPwd}       |
+|Test System                                  |${TestSystemFailed}                      |
+|Choose Account                               |${FunctAcct}                             |
+|Check Password                               |${CheckPasswordFailed}                   |
+
+!|scenario            |Add system                                   |
+|clickOnLink          |link=Add System                              |
+|waitForElementPresent|id=SystemName                                |
+|type;                |id=SystemName    |${SystemName}              |
+|type;                |id=NetworkAddress|${SystemAddress}           |
+|select;              |id=PlatformID    |label=${SystemPlatform}    |
+|select;              |id=PwdRuleID     |label=${RuleNameEightChars}|
+
+
+!|scenario         |Cancel Password Request                                                                                                 |
+|$res=             |GroovyWebDriver|ppm_cancelPasswordRequest;${browser};${TPAMHost};${Requestor};${UserPwd};${SystemName};${ManagedAccount}|
+|Verify_Contain_OR |$res;;canceled                                                                                                          |
+|Verify_Contain_NOT|$res;;Exception                                                                                                         |
+
+
+!| scenario              |Delete All           |
+|Cancel Password Request                       |
+|Remove account          |${ManagedAccount}    |
+|Remove system           |${SystemName}        |
+|Hard-Delete System      |${SystemName}        |
+|Delete Account on System|${ManagedAccount}    |
+|Delete Password Rule    |${RuleNameEightChars}|

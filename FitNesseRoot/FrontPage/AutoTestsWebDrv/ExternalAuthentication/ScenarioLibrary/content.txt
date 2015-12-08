@@ -1,0 +1,202 @@
+!contents
+
+
+
+!| scenario       |Delete User|userName                        |
+|$res=            |CLI        |${CLIBatch} DeleteUser @userName|
+|Verify_Contain_OR|$res;;successful                            |
+
+
+!|scenario         |Add New User|UserName||Passwd||EMail|
+|clickOnLink       |link=Add UserID                     |
+|pause             |5000                                |
+|type;             |id=UserName |@UserName              |
+|type;             |id=FirstName|Vasily                 |
+|type;             |id=LastName |Pupkin                 |
+|type;             |id=EmailID  |@EMail                 |
+|type;             |id=sPassword|@Passwd                |
+|type;             |id=Confirm  |@Passwd                |
+|click             |id=SubmitChanges                    |
+|waitForTextPresent|*User added successfully*           |
+
+
+!|scenario  |Double Step Open|URL||userName||primUserPwd||secUserPwd|
+|open       |@URL                                                   |
+|click      |id=loginUserName                                       |
+|type;      |id=loginUserName|@userName                             |
+|click      |id=loginPassword                                       |
+|type;      |id=loginPassword|@primUserPwd                          |
+|pause |1000 |
+|click      |id=btnLogin                                            |
+|type;      |id=sPasscode    |@secUserPwd                           |
+|pause |1000 |
+|click      |name=B1                                                |
+
+
+
+!|scenario       |Double Step Login|URL|         |userName|            |primUserPwd||secUserPwd|
+|Double Step Open|@URL             |   |@userName|        |@primUserPwd|           |@secUserPwd|
+
+
+
+!|scenario         |Create Defender                    |
+|clickOnLink       |link=Defender Config               |
+|click             |id=NewSystemButton                 |
+|type;             |id=SystemName   |${DefenderName}   |
+|type;             |id=ServerAddress|${DefenderAddress}|
+|type;             |id=AuthenTimeout|${AuthTimeout}    |
+|type;             |id=Port         |${DefenderPort}   |
+|type;             |id=ServerSecret |${DefenderSecret} |
+|click             |id=SubmitChangesButton             |
+|waitForTextPresent|New Defender added successfully    |
+
+
+
+!|scenario         |Delete Defender                      |
+|clickOnLink       |link=Defender Config                 |
+|select;           |id=ExtAuthCfgID|label=${DefenderName}|
+|click             |id=DeleteSystemButton                |
+|getConfirmation                                         |
+|waitForTextPresent|*successfully                        |
+
+
+
+
+
+!|scenario         |Create LDAP Server                   |
+|clickOnLink       |link=LDAP Config                     |
+|click             |id=NewSystemButton                   |
+|type;             |id=SystemName   |${LDAPServerName}   |
+|type;             |id=ServerAddress|${LDAPServerAddress}|
+|type;             |id=AuthenTimeout|${AuthTimeout}      |
+|type;             |id=Port         |${LDAPPort}         |
+|click             |id=SubmitChangesButton               |
+|waitForTextPresent|New LDAP added successfully          |
+
+
+!|scenario         |Delete LDAP Server                     |
+|clickOnLink       |link=LDAP Config                       |
+|select;           |id=ExtAuthCfgID|label=${LDAPServerName}|
+|click             |id=DeleteSystemButton                  |
+|getConfirmation                                           |
+|waitForTextPresent|*successfully                          |
+
+
+!|scenario|Create OU                                                                                                                               |
+|runBatch |LDAPAction;createou;${LDAPServerAddress};ou=${LDAPUserContainerName},${LDAPBaseName};${LDAPServerAdminDescription};${LDAPServerAdminPwd}|
+
+!|scenario|Create User in Directory                                                                    |userName                                                                   |
+|runBatch |LDAPAction;createuser;${LDAPServerAddress};ou=${LDAPUserContainerName},${LDAPBaseName};${LDAPServerAdminDescription};${LDAPServerAdminPwd};@userName;${LDAPUserPassword}|
+
+!|scenario|Delete OU                                                                                                                               |
+|runBatch |LDAPAction;deleteou;${LDAPServerAddress};ou=${LDAPUserContainerName},${LDAPBaseName};${LDAPServerAdminDescription};${LDAPServerAdminPwd}|
+
+!|scenario|Delete User in Directory                                                          |userName                                                         |
+|runBatch |LDAPAction;deleteuser;${LDAPServerAddress};ou=${LDAPUserContainerName},${LDAPBaseName};${LDAPServerAdminDescription};${LDAPServerAdminPwd};@userName|
+
+
+
+
+!|scenario         |Create RADIUS Server                   |
+|clickOnLink       |link=RADIUS Config                     |
+|click             |id=NewSystemButton                     |
+|type;             |id=SystemName   |${RADIUSServerName}   |
+|type;             |id=ServerAddress|${RADIUSServerAddress}|
+|type;             |id=AuthenTimeout|${AuthTimeout}        |
+|type;             |id=Port         |${RADIUSPort}         |
+|type;             |id=ServerSecret |${RADIUSSecret}       |
+|click             |id=SubmitChangesButton                 |
+|waitForTextPresent|New RADIUS added successfully          |
+
+
+
+!|scenario         |Delete RADIUS Server                     |
+|clickOnLink       |link=RADIUS Config                       |
+|select;           |id=ExtAuthCfgID|label=${RADIUSServerName}|
+|click             |id=DeleteSystemButton                    |
+|getConfirmation                                             |
+|waitForTextPresent|*successfully                            |
+
+
+!|scenario|Create RADIUS User                         |userName                         |                         |userPassword                        |
+|runBatch |RADIUSAction;create;${RADIUSServerAddress};${RADIUSServerAdmin};${RADIUSServerAdminPwd};@userName;@userPassword;${RADIUSUsersConfigFilePath}|
+
+!|scenario|Add RADIUS Client                               |clientAddress                               |                               |serverSecret                               |
+|runBatch |RADIUSAction;config;${RADIUSServerAddress};${RADIUSServerAdmin};${RADIUSServerAdminPwd};${RADIUSClientsConfigFilePath};@clientAddress;@serverSecret;${RADIUSInitFilePath}|
+
+!|scenario|Rollback RADIUS Config                                                                                                                                                     |
+|runBatch |RADIUSAction;noconfig;${RADIUSServerAddress};${RADIUSServerAdmin};${RADIUSServerAdminPwd};${RADIUSClientsConfigFilePath};${RADIUSUsersConfigFilePath};${RADIUSInitFilePath}|
+
+
+
+
+!|scenario         |Create WinAD                   |
+|clickOnLink       |link=WinAD Config              |
+|click             |id=NewSystemButton             |
+|type;             |id=SystemName   |${DCName}     |
+|type;             |id=ServerAddress|${DCAddress}  |
+|type;             |id=AuthenTimeout|${AuthTimeout}|
+|click             |id=SubmitChangesButton         |
+|waitForTextPresent|New WinAD added successfully   |
+
+
+
+!|scenario         |Delete WinAD                   |
+|clickOnLink       |link=WinAD Config              |
+|select;           |id=ExtAuthCfgID|label=${DCName}|
+|click             |id=DeleteSystemButton          |
+|getConfirmation                                   |
+|waitForTextPresent|*successfully                  |
+
+
+!|scenario|Create User in AD                       |userName                      |                      |userPassword                      |
+|runBatch |adextuser;create;${DCAddress};${ADDomainAdmin};${ADDomainAdminPwd};@userName;@userPassword;cn=Users,${ADBaseName};${ADDomainName}|
+
+!|scenario|Delete User in AD                                     |userName                                    |
+|runBatch |adextuser;delete;${DCAddress};${ADDomainAdmin};${ADDomainAdminPwd};@userName;cn=Users,${ADBaseName}|
+
+
+!|scenario               |Prepare Environment                           |
+|Login                   |${TPAMAdminURL}  ||${TPAMMaster}||${MasterPwd}|
+|pause                   |10000                                         |
+|Create Defender                                                        |
+|Create LDAP Server                                                     |
+|Create OU                                                              |
+|Create User in Directory|${LDAPUserName}  ||${LDAPUserPassword}        |
+|Create RADIUS Server                                                   |
+|Create RADIUS User      |${RADIUSUserName}||${RADIUSUserPassword}      |
+|Add RADIUS Client       |${TPAMHost}      ||${RADIUSSecret}            |
+|Create WinAD                                                           |
+|Create User in AD       |${ADUserName}    ||${ADUserPassword}          |
+|Logout                                                                 |
+
+
+!|scenario               |Delete Environment                          |
+|Login                   |${TPAMAdminURL}||${TPAMMaster}||${MasterPwd}|
+|pause                   |10000                                       |
+|Delete Defender                                                      |
+|Delete LDAP Server                                                   |
+|Delete User in Directory|${LDAPUserName}                             |
+|Delete OU                                                            |
+|Delete RADIUS Server                                                 |
+|Rollback RADIUS Config                                               |
+|Delete WinAD                                                         |
+|Delete User in AD       |${ADUserName}  ||${ADUserPassword}          |
+|Logout                                                               |
+
+
+!|scenario  |Prepare Test|
+|Add User   |${UserName} |
+|pause      |5000       |
+|Update User|${UserName} |
+
+!| scenario       |Update User|userName                                                                                                                                            |
+|$res=            |CLI        |${CLIBatch} UpdateUser --UserName @userName --LastName Liu --FirstName Lucy --Email Lucy@Liu --Phone 77777777 --Mobile 888888 --Description opisanie|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                |
+
+
+
+
+!|scenario  |Clear Test    |
+|Delete User|${UserName}   |
+|Delete User|${NewUserName}|

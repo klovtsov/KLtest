@@ -1,0 +1,27 @@
+System Name	Account Name	Password Method	TPAM CLI User	Minimum Approvers	Default Session Duration	Maximum Simultaneous Sessions	Notification Threshold	Notification Frequency	Proxy Description	PSM Enabled?	Color Depth	Windows Domain Account	DSS Key Type	File Transfer Path	File Transfer Type	File Transfer Authentication Method	Reviews Required	Reviewer Type	Reviewer	Session Start Notify Email	Escalation Email	Escalation Time (hours)	Clipboard Flag	Console Flag	SessionLog Recording Required	Allow File Uploads Flag	Allow File Downloads Flag	Remote TPAM CLI System Name Description	Remote TPAM CLI Account Name	CLI Domain Name	Custom Connection Profile	Post Session Profile	Require Multi-Group Approval	Multi-Group Approver Names
+klbatchsys9	klbatchacc	Local TPAM							SSH - Interactive Login	Y																								
+klbatchsys8	klbatchacc	Local TPAM							Telnet - Interactive Login	Y																								
+klbatchsys7	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								
+klbatchsys62	klbatchacc	Local TPAM							RDP - Automatic Login Using Password	Y																								
+klbatchsys61	klbatchacc	Local TPAM							RDP - Automatic Login Using Password	Y																						PersPostSessionProfile		
+klbatchsys60	klbatchacc	Local TPAM		2	1440	3	60	120	RDP - Automatic Login Using Password	Y	16			\\share	Windows File Copy	Prompt	1	Auditor		sess.start@mail	sess.escalate@mail	3	Y	N	N	Y	Y				PersConnectionProfile	PersPostSessionProfile		
+klbatchsys6	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								
+klbatchsys58	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								
+klbatchsys57	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								
+klbatchsys53	klbatchacc	Local TPAM							SQL Window - Automatic Login Using Password	Y																								
+klbatchsys52	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								
+klbatchsys51	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								
+klbatchsys50	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								
+klbatchsys5	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								
+klbatchsys47	klbatchacc	Local TPAM							Telnet - Interactive Login	Y																								
+klbatchsys44	klbatchacc	Local TPAM							SQLPlus - Automatic Login Using Password	Y																								
+klbatchsys43	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								
+klbatchsys41	klbatchacc	Local TPAM							SSH - Interactive Login	Y																								
+klbatchsys39	klbatchacc	Local TPAM							SSH - Interactive Login	Y																								
+klbatchsys37	klbatchacc	Local TPAM							SQL Window - Automatic Login Using Password	Y																								
+klbatchsys36	klbatchacc	Local TPAM				15			x3270 - Automatic Login	Y																								
+klbatchsys35	klbatchacc	Local TPAM			180				x3270 - Automatic Login	Y																								
+klbatchsys33	klbatchacc	Local TPAM		10					x3270 - Automatic Login	Y																								
+klbatchsys32	klbatchacc	Local TPAM							x3270 - Automatic Login	Y																								
+klbatchsys31	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								
+klbatchsys30	klbatchacc	Local TPAM							SSH - Automatic Login Using Password	Y																								

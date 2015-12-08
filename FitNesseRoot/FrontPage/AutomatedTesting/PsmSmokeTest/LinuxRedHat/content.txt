@@ -1,0 +1,26 @@
+!define OSType {Nix}
+!define ProxyType {SSH}
+!include -c <AutomatedTesting.SessionAlertsScenarios
+!include -c <AutomatedTesting.PlatformsTesting.LinuxRedHat
+
+!define FunctAcct {root}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {grain41R}
+
+!include -c <AutomatedTesting.SessionAlertsScenarios.ScenarioLibrary
+
+
+
+!include -c <AutomatedTesting.SessionAlertsScenarios.WindowsEight.PlatformSpecific
+!include -c <AutomatedTesting.PsmSmokeTest.ScenarioLibrary
+
+!include -c <AutomatedTesting.PsmSmokeTest.LinuxRedHat.PlatformSpecific
+
+
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|
+

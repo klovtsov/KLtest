@@ -1,0 +1,26 @@
+!define PwdRequestFailed {You are not authorized to request the password}
+!*> Include necessary libraries
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EmailScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+!*> Remove account policies which were applied in the Suite Setup
+!|script                              |
+|Revoke User Permissions|${CLI_user_1}|
+*!
+
+!|script                                                           |
+|Open|${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Set User Permissions System Level|${CLI_user_1}||\"PPM Requestor\"|
+|Check Ignore System Policies checkbox                             |
+|Try Request Pwd with result      |${PwdRequestFailed}             |
+|Unheck Ignore System Policies checkbox                            |
+|Request Pwd                                                       |
+
+!*> Clean up section
+!|script                                                           |
+|Cancel Request                                           |
+|Remove User Permissions On System|${CLI_user_1}||\"PPM Requestor\"|
+|Set User Permissions             |${CLI_user_1}                   |
+*!

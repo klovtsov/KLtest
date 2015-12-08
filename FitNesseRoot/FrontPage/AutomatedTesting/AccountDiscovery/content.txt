@@ -1,0 +1,48 @@
+!contents -R
+
+
+
+!define SystemName {ADLinuxSystem}
+#!define SystemAddress {10.30.46.197}
+#!define SystemPlatform {Linux}
+
+!define TemplateName {${SystemName}Template}
+
+!define FunctAcct {root}
+!define FunctAcctPwd {master}
+
+!define AutoDiscoveryAccount1 {AATESTA1}
+!define AutoDiscoveryAccountPassword1 {1qwerty1}
+
+!define AutoDiscoveryAccount2 {AaTESTa2}
+!define AutoDiscoveryGroup2 {adgrp1}
+
+!define AutoDiscoveryAccount4 {AaTESTa6}
+!define AutoDiscoveryGroup4 {adgrp4}
+
+!define ManagedAccount1 {${AutoDiscoveryAccount1}}
+!define ManagedAccount {${AutoDiscoveryAccount1}}
+!define ManagedAccountPwd {${AutoDiscoveryAccountPassword1}}
+
+!define ServiceAccount {AaTESTa3}
+!define TaskAccount {AaTESTa4}
+
+!define TaskName {TestTask}
+
+!define ProfileName {AccDiscProfile5}
+
+!define AutoDiscoveryAccount3 {AaTiiTa5}
+
+!define NewAccountDiscoveryEmail1 {${prefix}NewAccDisc@tpam.spb.qsft}
+!define DeleteAccountDiscoveryEmail1 {${prefix}DelAccDisc@tpam.spb.qsft}
+
+!define SystemEMail {${prefix}AccDiscSystem@tpam.spb.qsft}
+!define FuncAccEMail {${prefix}AccDiscFuncAcc@tpam.spb.qsft}
+
+
+
+!define AADNAN {Auto Account Discovery New Account Notification}
+!define AADNANb {The Account Discovery agent has detected one or more new accounts}
+
+!define AADDAN {Auto Account Discovery Deleted Account Notification}
+!define AADDANb {The Account Discovery agent has detected one or more deleted accounts}

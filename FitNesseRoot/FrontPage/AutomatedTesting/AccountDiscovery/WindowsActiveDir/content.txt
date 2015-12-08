@@ -1,0 +1,13 @@
+!define ProfileName {${SystemName}AccDiscProfile5}
+!define HostName {${NETBIOSDomainName}}
+!define DomainDN {DC=parsec,DC=spb,DC=qsft}
+!define dcName {${SystemAddress}}
+
+!include -c <AutomatedTesting.PlatformsTesting.WindowsActiveDir
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.WindowsActiveDir
+!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary
+!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary.WinScenarioLibrary
+!include -c <AutomatedTesting.AccountDiscovery.WindowsActiveDir.TestSpecific
+
+!define TemplateName {${SystemName}Template}

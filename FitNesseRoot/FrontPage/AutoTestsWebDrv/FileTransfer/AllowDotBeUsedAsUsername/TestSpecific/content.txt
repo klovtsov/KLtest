@@ -1,0 +1,15 @@
+!|scenario|Set Transfer Credentials         |
+|type;    |id=tAccount |${ManagedAccount}   |
+|type;    |id=tPassword|${ManagedAccountPwd}|
+
+!|scenario            |Specify Creds at Transfer Time          |
+|Is download enable   |Y                                       |
+|Require to specify creds at transfer time                     |
+|Open Session                                                  |
+|type;                |id=FQFN              |${fileToDownload} |
+|Set Transfer Credentials                                      |
+|typeKeys;            |id=FQFN              |a                 |
+|click                |id=downloadButton                       |
+|pause                |10000                                   |
+|Check Downloaded File|${BrowserDownloadDir}||${fileToDownload}|
+|Terminate Session                                             |

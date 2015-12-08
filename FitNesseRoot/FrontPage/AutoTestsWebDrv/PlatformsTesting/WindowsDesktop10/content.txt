@@ -1,0 +1,14 @@
+!define SystemName {${prefix}_win10}
+!define SystemPlatform {Windows Desktop}
+#!define SystemAddress {192.168.159.177}
+#!define FunctAcct {Admin2}
+#!define FunctAcctPwd {`123qwe}
+!define SystemAddress {10.30.39.110}
+#!define FunctAcct {administrator}
+!define FunctAcct {admin2}
+!define FunctAcctPwd {=1qwerty}
+!define ManagedAccountPwd {`123qwe}
+#!define CheckPasswordFailed {failed;;does not exist;;invalid user;;error}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+#!include -c <AutoTestsWebDrv.PlatformsTesting.PlatformSpecific.ManagedAccountCanCheckPassword
+

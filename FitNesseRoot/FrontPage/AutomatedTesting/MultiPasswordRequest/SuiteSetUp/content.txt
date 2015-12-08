@@ -1,0 +1,11 @@
+!include -c <FrontPage.AutomatedTesting.SetUp
+!include -c <AutomatedTesting.SessionAlertsScenarios.ScenarioLibrary
+
+!|script                       |
+|Prepare Requestor|${Requestor}|
+|Prepare Requestor|${Approver} |
+|Prepare Requestor|${Reviewer} |
+
+
+
+!include -c TearDown

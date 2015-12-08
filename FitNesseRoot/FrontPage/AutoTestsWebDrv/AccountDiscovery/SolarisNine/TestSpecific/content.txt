@@ -1,0 +1,8 @@
+!|scenario|Add Detail                  |Index||NewAccountAction||TemplateAccount||EmailAddresses||UID||SID||Name||Group||Role||Task||Service|
+|click    |id=btnAddRow                                                                                                                     |
+|select;  |className=autoNewAction     |label=@NewAccountAction                                                                             |
+|select;  |className=autoAcctTemplate  |label=@TemplateAccount                                                                              |
+|type;    |className=autoEmailAddresses|@EmailAddresses                                                                                     |
+|type;    |className=autoUIDFilter     |@UID                                                                                                |
+|type;    |className=autoNameFilter    |@Name                                                                                               |
+|type;    |className=autoGroupFilter   |@Group                                                                                              |

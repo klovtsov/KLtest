@@ -1,0 +1,11 @@
+!|import  |
+|selenesse|
+|TPAM     |
+
+!|Library               |
+|tpam|${seleniumBrowser};;${seleniumPort}|
+
+
+!|script|
+|Verify_Contain_OR_alnum|1;;1|
+

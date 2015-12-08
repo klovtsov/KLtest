@@ -1,0 +1,8 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <TicketSystemScenarios.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.SetUp
+
+!|script           |
+|Clear Environment|
+
+!include -c <TicketSystemScenarios.TearDown

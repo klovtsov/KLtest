@@ -1,0 +1,21 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SynchronizedPasswords.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!4 Set the password rule settings.
+!|script                                                                               |
+|Login                              |${TPAMAdminURL}   |   |${TPAMMaster}||${MasterPwd}|
+|Let Off                                                                               |
+|Select value                       |Permitted         |for|ReqUpper                   |
+|Select value                       |Permitted         |for|ReqLower                   |
+|Select value                       |Permitted         |for|ReqNum                     |
+|Select value                       |Require at least 1|for|ReqNonAN                   |
+|Set Valid Non Alpha Numeric Symbols|;                                                 |
+|click                              |id=SubmitChangesButton                            |
+
+!4 Test the Rule
+!|script                                                                                                      |
+|Generated account password contains|.*;.*                                                                    |
+|Generated account password contains|.*;.*                                                                    |
+|Check that Synchronized Password   |${SyncPasswordName}|with Password Rule|${PasswdRuleName}||contains||.*;.*|

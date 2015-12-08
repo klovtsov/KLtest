@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<properties>
+	<Edit/>
+	<Files/>
+	<Properties/>
+	<RecentChange/>
+	<Refactor/>
+	<Search/>
+	<Suite/>
+	<Suites></Suites>
+	<SymbolicLinks>
+		<PlatformsTesting>.FrontPage.AutomatedTesting.PlatformsTesting</PlatformsTesting>
+		<RemoteLinuxMachine>.FrontPage.DeployProject.PlinkConfiguration.RemoteLinuxMachine</RemoteLinuxMachine>
+		<RadiusLinuxMachine>.FrontPage.DeployProject.PlinkConfiguration.RadiusLinuxMachine</RadiusLinuxMachine>
+                <CliScenarios.WindowsEight>.FrontPage.AutomatedTesting.CliScenarios.WindowsLocalHostEight</CliScenarios.WindowsEight>
+		<CliScenarios.WindowsTen>.FrontPage.AutomatedTesting.CliScenarios.WindowsLocalHostTen</CliScenarios.WindowsTen>
+		<CliScenarios.WindowsActiveDirTwelve>.FrontPage.AutomatedTesting.CliScenarios.WindowsActiveDirTwelve</CliScenarios.WindowsActiveDirTwelve>
+		<CliScenarios.SolarisEleven>.FrontPage.AutomatedTesting.CliScenarios.SolarisEleven</CliScenarios.SolarisEleven>
+	</SymbolicLinks>
+	<Versions/>
+	<WhereUsed/>
+</properties>
+
+

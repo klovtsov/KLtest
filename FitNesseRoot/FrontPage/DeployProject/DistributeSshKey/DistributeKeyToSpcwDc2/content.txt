@@ -1,0 +1,7 @@
+!include -c <FrontPage.AutomatedTesting.PlatformsTesting.EdmzSpcwDc2
+!include -c <FrontPage.AutomatedTesting.FailoverScenarios.ScenarioLibrary
+!include -c <FrontPage.DeployProject.ScenarioLibrary
+
+!|Script                                |
+|Get DPA Name and IP Address            |
+|Distribute Key to SPCW|${SystemAddress}|

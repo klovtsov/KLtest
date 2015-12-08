@@ -1,0 +1,8 @@
+!contents
+
+!include -c <AutomatedTesting.UserSshKey.ScenarioLibrary
+!include -c <AutomatedTesting.UsersTests.ScenarioLibrary
+
+
+!|script                         |
+|Test Restricted IP Users |

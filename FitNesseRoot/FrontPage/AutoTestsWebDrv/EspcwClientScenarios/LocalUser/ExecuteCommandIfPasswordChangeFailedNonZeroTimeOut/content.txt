@@ -1,0 +1,24 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <FrontPage.AutomatedTesting.KnownIssues
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ExecuteCommandBefore.TestSpecific
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ExecuteCommandIfPasswordChangeFailed.TestSpecific
+
+!define FileName {Fail}
+!define LogEntry {The Post-Failure processing command timed out before completion}
+
+!|script                                                                                                                                              |
+|ClearClientLogFile on       |${SystemAddress}                                                                                                        |
+|Create bat file on system   |${FileName}|which pauses on|5                         |on      |${SystemAddress}                                        |
+|Check Checkbox              |failenabled|for user       |DEFAULT                                                                                     |
+|Set Fail Command            |cmd.exe    |with parameters|/c c:\test\${FileName}.bat|cmd path|C:\windows\system32|for user|DEFAULT|on|${SystemAddress}|
+|Set Timeout                 |4          |for user       |DEFAULT                   |on      |${SystemAddress}                                        |
+|Attempt to change password                                                                                                                           |
+|ClientLogFileContains       |${LogEntry}|on             |${SystemAddress}                                                                            |
+|ClearClientLogFile on         |${SystemAddress}                                                                                            |
+|Set Timeout                 |7          |for user       |DEFAULT                   |on      |${SystemAddress}                                        |
+|Attempt to change password                                                                                                                           |
+|ClientLogFileDoesnotContains|${LogEntry}|on             |${SystemAddress}                                                                            |
+|Uncheck Checkbox            |failenabled|for user       |DEFAULT                                                                                     |
+|Delete files on             |${SystemAddress}                                                                                                        |

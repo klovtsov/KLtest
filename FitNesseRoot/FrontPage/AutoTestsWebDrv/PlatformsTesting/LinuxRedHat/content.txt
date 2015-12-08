@@ -1,0 +1,12 @@
+!define SystemName {${prefix}_RH}
+!define SystemPlatform {Linux}
+!define SystemAddress {10.30.38.252}
+!define SystemTimeout {60}
+!define FunctAcct {root3}
+!define FunctAcctPwd {!@#$%^&*()}
+!define ManagedAccountPwd {A\)&(d|ef<j>k$l1}
+!define seleniumTimeout {61}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.LinuxRedHat.PlatformSpecific
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSix.PlatformSpecific

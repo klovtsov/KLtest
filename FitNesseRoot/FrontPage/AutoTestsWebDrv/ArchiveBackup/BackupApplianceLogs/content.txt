@@ -1,0 +1,6 @@
+!define ArchiveServer {spb9449}
+!define ArchiveServerUser {root}
+!define ArchiveServerUserPassword {spb9449}
+!define ArchiveServerPath {/home/yk250/tpam}
+!define HowOld {-2}
+!define WhatToFind {Logs.*zip}

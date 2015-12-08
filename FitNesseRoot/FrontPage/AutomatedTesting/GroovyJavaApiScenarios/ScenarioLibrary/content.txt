@@ -1,0 +1,123 @@
+!| scenario|Lock User    |UserName          |
+|Login     |tpam/main.asp||@UserName||123456|
+|Login     |tpam/main.asp||@UserName||234567|
+|Login     |tpam/main.asp||@UserName||345678|
+|Login     |tpam/main.asp||@UserName||456789|
+|Login     |tpam/main.asp||@UserName||567890|
+
+!|scenario        |Unlock User      |UserName                                                                                                                     |
+|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;unlockUser.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};UserName=@UserName|
+|Verify_Contain_OR|$res;;successful                                                                                                                               |
+
+!|scenario        |Retrieve Password|options                                                                                                                  |
+|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;retrievePassword.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};@options|
+|Verify_Contain_OR|$res;;${Password}                                                                                                                          |
+
+
+!3 Sync Pass
+
+!|scenario        |Add Sync Password|options                                                                                                             |
+|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;addSyncPass.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};@options|
+|Verify_Contain_OR|$res;;successful                                                                                                                      |
+
+!|scenario        |Add Sync Password Subscriber|options                                                                                                               |
+|$res=            |RunBatchGetOutput           |GroovyJavaAPI\groovy_runner.bat;addSyncPwdSub.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};@options|
+|Verify_Contain_OR|$res;;successful                                                                                                                                   |
+
+!|scenario        |Delete Sync Password|SyncPassName                                                                                                                             |
+|$res=            |RunBatchGetOutput   |GroovyJavaAPI\groovy_runner.bat;deleteSyncPass.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};SyncPassName=@SyncPassName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                              |
+
+!|scenario        |Drop Sync Pwd Subscriber|SyncPassName                              |                              |SystemName                              |                             |AccountName                             |
+|$res=            |RunBatchGetOutput       |GroovyJavaAPI\groovy_runner.bat;dropSyncPwdSub.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};SyncPassName=@SyncPassName;SystemName=@SystemName;AccountName=@AccountName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                  |
+
+
+!| scenario              |Prepare                                                                                                                                                 |
+|Add System              |SystemName=${SystemName1};NetworkAddress=${SystemAddress1};FunctionalAccount=${FunctAcct1};FuncAcctCred=${FunctAcctPwd1};PlatformName=${SystemPlatform1}|
+|Add Account with options|${SystemName1}        |    |${AccountName1}      |    |Password=123qwe                                                                                  |
+|Add System              |SystemName=${SystemName2};NetworkAddress=${SystemAddress2};FunctionalAccount=${FunctAcct2};FuncAcctCred=${FunctAcctPwd2};PlatformName=${SystemPlatform2}|
+|Add Account with options|${SystemName2}        |    |${AccountName2}      |    |Password=123qwe                                                                                  |
+|Create Account on System|${SystemPlatform1}    |    |${SystemAddress1}    |    |${FunctAcct1}    |    |${FunctAcctPwd1}    |    |${AccountName1}    |   |${ManagedAccountPwd1}   |
+|Create Account on System|${SystemPlatform2}    |    |${SystemAddress2}    |    |${FunctAcct2}    |    |${FunctAcctPwd2}    |    |${AccountName2}    |   |${ManagedAccountPwd2}   |
+
+
+!| scenario                  |Add Sync Password Add Subscribers                                                       |
+|Add Sync Password           |SyncPassName=${prefix}SyncPassName;Password=${Password}                                 |
+|Add Sync Password Subscriber|SyncPassName=${prefix}SyncPassName;SystemName=${SystemName1};AccountName=${AccountName1}|
+|Add Sync Password Subscriber|SyncPassName=${prefix}SyncPassName;SystemName=${SystemName2};AccountName=${AccountName2}|
+
+!| scenario             |Check Passwords   |Password                                      |
+|pause                  |30000                                                            |
+|Login Account to System|${SystemPlatform2}||${SystemAddress2}||${AccountName2}||@Password|
+|Login Account to System|${SystemPlatform1}||${SystemAddress1}||${AccountName1}||@Password|
+
+!|scenario        |Reset Sync Password|SyncPassName                                              |                                              |NewPassword                                              |
+|$res=            |RunBatchGetOutput  |GroovyJavaAPI\groovy_runner.bat;syncPassForceReset.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};SyncPassName=@SyncPassName;SyncPass=@NewPassword|
+|Verify_Contain_OR|$res;;code: 0 message: Individual out of sync subscribers have been scheduled for password resync.                                                                                     |
+
+!|scenario    |Create Account on System|SystemPlatform||SystemAddress||FunctAcct||FunctAccPwd||ManagedAccount||ManAccountPwd|
+|accountAction|@SystemPlatform;;create;;@SystemAddress;;@FunctAcct;;@FunctAccPwd;;@ManagedAccount;;@ManAccountPwd           |
+
+!|scenario    |Login Account to System|SystemPlatform||SystemAddress||ManagedAccount||ManPwd|
+|accountAction|@SystemPlatform;;login;;@SystemAddress;;@ManagedAccount;;@ManPwd             |
+
+!|scenario    |Delete Account on System|SystemPlatform||SystemAddress||FunctAcct||FunctAccPwd||ManagedAccount|
+|accountAction|@SystemPlatform;;delete;;@SystemAddress;;@FunctAcct;;@FunctAccPwd;;@ManagedAccount            |
+
+!| scenario              |Cleanup                                                                                   |
+|Delete Account on System|${SystemPlatform1}   ||${SystemAddress1}||${FunctAcct1}||${FunctAcctPwd1}||${AccountName1}|
+|Delete Account on System|${SystemPlatform2}   ||${SystemAddress2}||${FunctAcct2}||${FunctAcctPwd2}||${AccountName2}|
+|Drop Sync Pwd Subscriber|${prefix}SyncPassName||${SystemName1}   ||${AccountName1}                                 |
+|Drop Sync Pwd Subscriber|${prefix}SyncPassName||${SystemName2}   ||${AccountName2}                                 |
+|Delete Sync Password    |${prefix}SyncPassName                                                                     |
+|Remove System           |${SystemName1}                                                                            |
+|Remove System           |${SystemName2}                                                                            |
+
+!|scenario        |List Synchronized Passwords|result                                                                                                                   |
+|$res=            |RunBatchGetOutput          |GroovyJavaAPI\groovy_runner.bat;listSynchronizedPasswords.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost}|
+|Verify_Contain_OR|$res;;@result                                                                                                                                        |
+
+!|scenario        |List Sync Pwd Subscriber|SyncPassName                                                                                                                                    |
+|$res=            |RunBatchGetOutput       |GroovyJavaAPI\groovy_runner.bat;listSyncPwdSubscriber.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};SyncPassName=@SyncPassName|
+|Verify_Contain_OR|$res;;System: ${SystemName1}.*Account: ${AccountName1}.*System: ${SystemName2}.*Account: ${AccountName2}                                                                 |
+
+
+!|scenario        |Update Synchronized Password|SyncPassName                                          |                                          |options                                         |
+|$res=            |RunBatchGetOutput           |GroovyJavaAPI\groovy_runner.bat;updateSyncPass.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};SyncPassName=@SyncPassName;@options|
+|Verify_Contain_OR|$res;;Synchronized Password Updated successfully.                                                                                                                              |
+
+
+!3 Check reset account password
+
+!|scenario        |Check Password   |SystemName                          |                         |AccountName                         |                         |result                         |
+|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;checkPassword.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};SystemName=@SystemName;AccountName=@AccountName|
+|Verify_Contain_OR|$res;;@result                                                                                                                                                                  |
+
+!|scenario        |Reset Password   |SystemName                         |                         |AccountName                         |                        |result                        |
+|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;forceReset.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};SystemName=@SystemName;AccountName=@AccountName|
+|Verify_Contain_OR|$res;;@result                                                                                                                                                               |
+
+!|scenario     |ForceReset for manual managed account|AccountName|from        |SystemName|results in|result|
+|Reset Password|@SystemName                          |           |@AccountName|          |@result          |
+
+!|scenario|Force Reset manual password|accnt                                                |from                                                |system                                               |
+|$clires= |RunBatchGetOutput          |GroovyJavaAPI\groovy_runner.bat;ForceResetManual.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};SystemName=@system;AccountName=@accnt|
+|$pwdID=  |PowerShellScript           |getPwdId.ps1 "$clires"                                                                                                                                          |
+
+!|scenario        |Confirm Manual Password reset with status|status                                         |and result is                                        |result                                        |
+|$res=            |RunBatchGetOutput                        |GroovyJavaAPI\groovy_runner.bat;ManualPasswordReset.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};PasswordID=$pwdID;Status=@status|
+|Verify_Contain_OR|$res;;@result                                                                                                                                                                                 |
+
+!|scenario        |Test System      |SystemName                                     |                                     |result                                     |
+|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;testSystem.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};SystemName=@SystemName|
+|Verify_Contain_OR|$res;;@result                                                                                                                                      |
+
+!|scenario        |Try to Add Group |GroupName                                    |                                    |result                                    |
+|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;addGroup.groovy;GroupName=@GroupName;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost}|
+|Verify_Contain_OR|$res;;@result                                                                                                                                  |
+
+!|scenario        |Check user thumbprint|user                |               |thumb               |
+|$res =           |GroovyWebDriver      |getUserThumb;${TPAMHost};${TPAMAdmin};${DefaultPwd};@user|
+|Verify_Contain_OR|$res;;@thumb                                                                   |
+

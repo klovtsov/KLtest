@@ -1,0 +1,90 @@
+!|scenario            |Set Reason Codes settings to      |setting            |
+|clickOnLink          |link=Global Settings                                  |
+|waitForElementPresent|xpath=//td[contains(text(),'Reason Code for Request')]|
+|select;              |id=T59                            |label=@setting     |
+|pause                |500                                                   |
+|click                |id=SubmitChanges                                      |
+
+!|scenario        |Create Reason Code       |CodeName                                             |
+|$res=            |GroovyWebDriver          |manageReasonCodes;${TPAMHost};create;@CodeName       |
+|Verify_Contain_OR|$res;;Reason Code @CodeName was created.;;Reason Code @CodeName already exists.|
+
+!|scenario        |Delete Reason Code                             |CodeName                                                                  |
+|$res=            |GroovyWebDriver                                |manageReasonCodes;${TPAMHost};delete;@CodeName                            |
+|Verify_Contain_OR|$res;;Reason Code @CodeName was deleted.;;Reason Code @CodeName cannot be deleted.;;Reason Code @CodeName does not exists.|
+
+!|scenario        |Request Pwd without Reason Code|OperationResult                                                                                         |
+|$res=            |CLI                            |${CLIBatch} AddPwdRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --RequestNotes test|
+|Verify_Contain_OR|$res;;@OperationResult                                                                                                                  |
+|pause            |500                                                                                                                                     |
+|$RequestID=      |get_RequestID                  |$res                                                                                                    |
+
+!|scenario        |Check Pwd Request Contains Reason Code|RCName                                          |
+|$res=            |CLI                                   |${CLIBatch} GetPwdRequest --RequestID $RequestID|
+|Verify_Contain_OR|$res;;@RCName                                                                          |
+
+!|scenario|Cancel Pwd Request                                         |
+|$res=    |CLI|${CLIBatch} Cancel --RequestId $RequestID --Comment Aga|
+|pause    |1000                                                       |
+
+!|scenario        |Request Pwd with Reason Code|OperationResult                                                                                                                        |
+|$res=            |CLI                         |${CLIBatch} AddPwdRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --RequestNotes test --ReasonCode ${ReasonCodeName}|
+|Verify_Contain_OR|$res;;@OperationResult                                                                                                                                              |
+|pause            |1000                                                                                                                                                                |
+|$RequestID=      |get_RequestID               |$res                                                                                                                                   |
+
+!|scenario        |Set Permission|Policy                                         |for user                                         |username                                         |
+|$res=            |CLI           |${CLIBatch} SetAccessPolicy --AccessPolicyName @Policy --Action ADD --SystemName ${SystemName} --AccountName ${ManagedAccount} --UserName @username|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                  |
+
+!|scenario        |Revoke Permission|Policy                                          |for user                                         |username                                         |
+|$res=            |CLI              |${CLIBatch} SetAccessPolicy --AccessPolicyName @Policy --Action DROP --SystemName ${SystemName} --AccountName ${ManagedAccount} --UserName @username|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                      |
+
+!|scenario            |Set Reason Codes for ISA settings to     |value           |
+|clickOnLink          |link=Global Settings                                      |
+|waitForElementPresent|xpath=//td[contains(text(),'Reason Code for ISA Release')]|
+|select;              |id=T58                                   |label=@value    |
+|pause                |500                                                       |
+|click                |id=SubmitChanges                                          |
+
+!|scenario        |Retrieve Pwd without Reason Code|OperationResult                                                                |
+|$res=            |CLI                             |${CLIBatch} Retrieve --SystemName ${SystemName} --AccountName ${ManagedAccount}|
+|Verify_Contain_OR|$res;;@OperationResult                                                                                          |
+
+!|scenario        |Retrieve Pwd with Reason Code|OperationResult                                                                                               |
+|$res=            |CLI                          |${CLIBatch} Retrieve --SystemName ${SystemName} --AccountName ${ManagedAccount} --ReasonCode ${ReasonCodeName}|
+|Verify_Contain_OR|$res;;@OperationResult                                                                                                                      |
+
+!|scenario        |Request Session without Reason Code|OperationResult                                                                                                                        |
+|$res=            |CLI                                |${CLIBatch} AddSessionRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --RequestNotes test --ForUserName ${TPAMAdmin}|
+|Verify_Contain_OR|$res;;@OperationResult                                                                                                                                                     |
+|$RequestID=      |get_RequestID                      |$res                                                                                                                                   |
+
+!|scenario        |Request Session with Reason Code|OperationResult                                                                                                                                                       |
+|$res=            |CLI                             |${CLIBatch} AddSessionRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --RequestNotes test --ReasonCode ${ReasonCodeName} --ForUserName ${TPAMAdmin}|
+|Verify_Contain_OR|$res;;@OperationResult                                                                                                                                                                                 |
+|$RequestID=      |get_RequestID                   |$res                                                                                                                                                                  |
+
+!|scenario|Cancel Session Request                                                   |
+|$res=    |CLI|${CLIBatch} CancelSessionRequest --RequestId $RequestID --Comment Aga|
+|pause    |1000                                                                     |
+
+!|scenario        |Where is Reason Code with name|nameofCode                 |
+|$res=            |CLI                           |${CLIBatch} Listreasoncodes|
+|Verify_Contain_OR|$res;;@nameofCode                                         |
+
+!|scenario        |Enable Psm for account|account                                                                                                                                   |
+|$res=            |CLI                   |${CLIBatch} Updatepsmaccount --system ${SystemName} --Account @account --EnableFlag Y --ProxyType \"RDP - Automatic Login Using Password\"|
+|Verify_Contain_OR|$res;;PSM Details saved successfully                                                                                                                             |
+
+!|scenario        |Check Session Request Contains Reason Code|RCName                                              |
+|$res=            |CLI                                       |${CLIBatch} GetSessionRequest --RequestID $RequestID|
+|Verify_Contain_OR|$res;;@RCName                                                                                  |
+
+!|scenario|Cancel for Isa|
+|pause    |50            |
+
+!| scenario       |Add account|acc                     |with password                    |pwd                    |                    |testRes                    |
+|$res=            |CLI        |${CLIBatch} AddAccount --System ${SystemName} --AccountName @acc --Password \"@pwd\" --Description \"${ManagedAccountDescription}\"|
+|Verify_Contain_OR|$res;;@testRes                                                                                                                                 |

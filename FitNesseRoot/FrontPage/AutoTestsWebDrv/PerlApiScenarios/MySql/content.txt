@@ -1,0 +1,5 @@
+!include <AutoTestsWebDrv.PlatformsTesting.MySql
+!include -c <PerlApiScenarios.ScenarioLibrary
+!include -c <PerlApiScenarios.MySql.PlatformSpecific
+
+

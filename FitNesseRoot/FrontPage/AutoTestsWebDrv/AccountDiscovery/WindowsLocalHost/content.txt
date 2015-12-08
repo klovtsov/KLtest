@@ -1,0 +1,9 @@
+!define ProfileName {${SystemName}AccDiscProfile5}
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+
+!define HostName {yktpamw2k8r2sp1}
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary.WinScenarioLibrary
+
+!define TemplateName {${SystemName}Template}

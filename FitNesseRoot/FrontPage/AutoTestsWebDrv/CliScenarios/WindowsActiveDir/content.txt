@@ -1,0 +1,5 @@
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsActiveDir
+!include -c <CliScenarios.ScenarioLibrary
+!include -c <CliScenarios.WindowsActiveDir.PlatformSpecific
+#!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword
+

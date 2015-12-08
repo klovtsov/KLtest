@@ -1,0 +1,19 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ExecuteCommandBefore.TestSpecific
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ExecuteCommandsAfter.TestSpecific
+
+!define FileName {After}
+!define ResetPasswordFailed {SUCCESS: The password was changed successfully.* but other requested operation... failed}
+
+!|script                                                                                                                                                 |
+|Create bat file on system|${FileName}      |which pauses on|5                         |on      |${SystemAddress}                                        |
+|Check Checkbox           |successenabled   |for user       |DEFAULT                                                                                     |
+|Set After Command        |cmd.exe          |with parameters|/c c:\test\${FileName}.bat|cmd path|C:\windows\system32|for user|DEFAULT|on|${SystemAddress}|
+|Set Timeout              |4                |for user       |DEFAULT                   |on      |${SystemAddress}                                        |
+|Reset Password           |${ManagedAccount}|               |${ResetPasswordFailed}                                                                      |
+|Set Timeout              |7                |for user       |DEFAULT                   |on      |${SystemAddress}                                        |
+|Reset Password           |${ManagedAccount}|               |${ResetPasswordSuccessful}                                                                  |
+|Uncheck Checkbox         |successenabled   |for user       |DEFAULT                                                                                     |
+|Delete files on          |${SystemAddress}                                                                                                              |

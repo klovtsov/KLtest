@@ -1,0 +1,54 @@
+!* Test description
+Two groups have permissions for an account collections.
+Permissions should be merged.
+*!
+
+!define GroupName {${prefix}grp}
+!define GroupName2 {${prefix}grpTwo}
+!define CollectionName {${prefix}AccntColtn}
+!define CollectionName2 {${prefix}SecAccntColtn}
+
+
+!*> Include section
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.EmailScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.SystemSshKey.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+
+!*> Create Environment
+!|script                                                                                           |
+|Add Group                |${GroupName}                                                            |
+|Add Group                |${GroupName2}                                                           |
+|Add User To Group        |${CLI_user_2}    |             |${GroupName}                            |
+|Add User To Group        |${CLI_user_2}    |             |${GroupName2}                           |
+|Add system                                                                                        |
+|Add account              |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed}      |
+|Add Collection           |${CollectionName}                                                       |
+|Add Collection           |${CollectionName2}                                                      |
+|Add Account To Collection|${SystemName}    |             |${ManagedAccount}   ||${CollectionName} |
+|Add Account To Collection|${SystemName}    |             |${ManagedAccount}   ||${CollectionName2}|
+|Change User Type         |Basic            |for user     |${CLI_user_2}                           |
+*!
+
+!|script                                                                                        |
+|Set policy             |\"PPM Requestor\"|on account |${ManagedAccount}|for user |${CLI_user_1}|
+|Set policy             |\"PPM Requestor\"|on collection |${CollectionName}|for group|${GroupName} |
+|Set policy             |\"PPM Approver\" |on collection |${CollectionName2}|for group|${GroupName2}|
+|pause                  |${ApplyNewPoliciesInterval}                                            |
+|Request Pwd by         |${CLI_user_2}    |with result|submitted                                |
+|Cancel Pwd Request by  |${CLI_user_2}                                                          |
+|Request Pwd by         |${CLI_user_1}    |with result|submitted                                |
+|Approve Pwd request by |${CLI_user_2}    |with result|submitted                                |
+|Retrieve Pwd request by|${CLI_user_1}                                                          |
+
+!*> Clear Environment
+!|script                             |
+|Remove account   |${ManagedAccount} |
+|Remove system    |${SystemName}     |
+|Delete Group     |${GroupName}      |
+|Delete Group     |${GroupName2}     |
+|Delete Collection|${CollectionName} |
+|Delete Collection|${CollectionName2}|
+*!

@@ -1,0 +1,14 @@
+!contents
+
+
+
+!include -c .FrontPage.AutoTestsWebDrv.ExternalAuthentication.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.ExternalAuthentication.DefenderChallengeResponseToken.ScenarioLibrary
+
+
+
+
+!|script     |
+|Prepare Test|
+|Test Login |
+|Clear Test |

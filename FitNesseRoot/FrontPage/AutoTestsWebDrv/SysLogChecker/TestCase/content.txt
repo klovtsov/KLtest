@@ -1,0 +1,61 @@
+!*> Includes
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <AutoTestsWebDrv.ConfigInterfaceSmokeTest.ScenarioLibrary
+*!
+
+!*> Prepare
+TPAM CLI user
+
+!|script                                                                                                                                    |
+|Add User    |${CLIBatch}     ||--UserName ${prefix}FailLoggon --LastName test --FirstName Test --Password Password1         ||successfully |
+|Open        |${TPAMURL}      ||${prefix}FailLoggon                                                                          ||${DefaultPwd}|
+|stop                                                                                                                                       |
+|Open        |${TPAMURL}      ||NotUser                                                                                      ||${DefaultPwd}|
+|stop                                                                                                                                       |
+|Open        |${TPAMURL}      ||${TPAMAdmin}                                                                                 ||${DefaultPwd}|
+|Add CLI User|${SysLogUser}   ||Administrator                                                                                               |
+|Add System  |${CLISysLogUser}||--SystemName ${SystemName} --PlatformName ${SystemPlatform} --NetworkAddress ${SystemAddress}||successfully |
+|Add Account |${CLISysLogUser}||--SystemName ${SystemName} --AccountName ${ManagedAccount}                                   ||successfully |
+|Add Group   |${CLISysLogUser}||--GroupName ${GroupName}                                                                     ||successfully |
+|$Date=      |getEval         |var d = new Date();t=d.getUTCDate();return t;                                                                |
+
+
+Sys Admin user
+
+!|script                                                  |
+|AddSysAdminUser|${SysLogAdminUser}||${SysLogAdminUserPwd}|
+
+*!
+
+TPAM CLI user
+
+!|script                                                                                                                        |
+|SysLogChecker|${SysLogHost}||${SysLogHostUser}||${HostUserPwd}||$Date||${SysLogUser}||Add||System ||${SysLogUser}.*Add.*System |
+|SysLogChecker|${SysLogHost}||${SysLogHostUser}||${HostUserPwd}||$Date||${SysLogUser}||Add||Account||${SysLogUser}.*Add.*Account|
+|SysLogChecker|${SysLogHost}||${SysLogHostUser}||${HostUserPwd}||$Date||${SysLogUser}||Add||Group  ||${SysLogUser}.*Add.*Group  |
+
+
+Sys Admin user
+
+!|script                                                                                                                                                        |
+|SysLogChecker|${SysLogHost}||${SysLogHostUser}||${HostUserPwd}||$Date||ParMaster          ||Add    ||Sys-Admin     ||ParMaster.*Add.*Sys-Admin User            |
+|SysLogChecker|${SysLogHost}||${SysLogHostUser}||${HostUserPwd}||$Date||${SysLogAdminUser} ||Login  ||Authentication||${SysLogAdminUser}.*Login.*Authentication |
+|SysLogChecker|${SysLogHost}||${SysLogHostUser}||${HostUserPwd}||$Date||${SysLogAdminUser} ||Change ||Password      ||${SysLogAdminUser}.*Change.*Password      |
+|SysLogChecker|${SysLogHost}||${SysLogHostUser}||${HostUserPwd}||$Date||NotUser            ||BADUSER||Bad           ||NotUser.*BADUSER.*Bad UserID              |
+|SysLogChecker|${SysLogHost}||${SysLogHostUser}||${HostUserPwd}||$Date||${prefix}FailLoggon||BADPASS||Login         ||${prefix}FailLoggon.*BADPASS.*ogin failure|
+
+
+
+!*> Cleanup
+!|script                                                                 |
+|Delete System|${CLISysLogUser}||--SystemName ${SystemName}||successfully|
+|Drop Group   |${CLISysLogUser}||--GroupName ${GroupName}  ||successfully|
+|Remove user  |${SysLogUser}                                             |
+|Remove user  |${prefix}FailLoggon                                       |
+|Remove Keys  |${SysLogUser}*                                            |
+
+!|script                              |
+|DeleteSysAdminUser|${SysLogAdminUser}|
+
+*!

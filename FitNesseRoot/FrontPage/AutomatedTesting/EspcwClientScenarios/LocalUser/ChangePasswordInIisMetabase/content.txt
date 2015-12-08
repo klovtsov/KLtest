@@ -1,0 +1,19 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ChangePasswordInIisMetabase.PlatformSpecific
+
+!|script                                                                                                                                                         |
+|Set IIS Anonymous User           |${ManagedAccountDomain}\${ManagedAccount}|with password|${ManagedAccountPwdNew}                  |on         |${SystemAddress}|
+|Uncheck Checkbox                 |changemeta                               |for user     |DEFAULT                                                               |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                       |
+|Check Password                   |${ManagedAccount}                        |             |${CheckPasswordNotMatch}                                              |
+|pause                            |45000                                                                                                                         |
+|Check IIS metabase on            |${SystemAddress}                         |for user     |${ManagedAccountDomain}\${ManagedAccount}|with result|same            |
+|Check Checkbox                   |changemeta                               |for user     |DEFAULT                                                               |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                       |
+|Check Password                   |${ManagedAccount}                        |             |${CheckPasswordNotMatch}                                              |
+|pause                            |45000                                                                                                                         |
+|Check IIS metabase on            |${SystemAddress}                         |for user     |${ManagedAccountDomain}\${ManagedAccount}|with result|different       |
+|Uncheck Checkbox                 |changemeta                               |for user     |DEFAULT                                                               |
+#|Reset Anonymous User on          |${SystemAddress}                                                                                       |

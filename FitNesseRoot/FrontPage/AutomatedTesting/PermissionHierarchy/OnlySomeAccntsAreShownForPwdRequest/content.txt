@@ -1,0 +1,47 @@
+!*> Test description
+System has several managed accounts. They are members of collection. A user has PPM requestor permission for the collection and PPM Requesto-Approver
+permission for a managed account explicitly. All accounts should be shown as available for pwd request.
+*!
+
+!* Test description
+A user has permissions for a collection of accounts and for an account directly.
+Permission on account should have a precedence
+*!
+
+!define CollectionName {${prefix}AccntColtn}
+
+!*> Include section
+!include -c <AutomatedTesting.EmailScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+!*> Create Environment
+!|script                                                                                                 |
+|Add system                                                                                              |
+|Add Collection           |${CollectionName}                                                             |
+|Add account              |${ManagedAccount}One  |with password|${ManagedAccountPwd}  ||${NotFailed}     |
+|Add account              |${ManagedAccount}Two  |with password|${ManagedAccountPwd}  ||${NotFailed}     |
+|Add account              |${ManagedAccount}Three|with password|${ManagedAccountPwd}  ||${NotFailed}     |
+|Add account              |${ManagedAccount}Four |with password|${ManagedAccountPwd}  ||${NotFailed}     |
+|Add Account To Collection|${SystemName}         |             |${ManagedAccount}One  ||${CollectionName}|
+|Add Account To Collection|${SystemName}         |             |${ManagedAccount}Two  ||${CollectionName}|
+|Add Account To Collection|${SystemName}         |             |${ManagedAccount}Three||${CollectionName}|
+|Add Account To Collection|${SystemName}         |             |${ManagedAccount}Four ||${CollectionName}|
+*!
+
+!|script                                                                                                                                    |
+|Set policy                            |\"PPM Requestor\"         |on collection|${CollectionName}          |for user|${CLI_user_1}         |
+|Set policy                            |\"PPM Approver-Requestor\"|on account   |${ManagedAccount}Three     |for user|${CLI_user_1}         |
+|List Accounts for Password request for|${CLI_user_1}             |by filter    |--systemName ${SystemName}*|contains|${ManagedAccount}One  |
+|List Accounts for Password request for|${CLI_user_1}             |by filter    |--systemName ${SystemName}*|contains|${ManagedAccount}Two  |
+|List Accounts for Password request for|${CLI_user_1}             |by filter    |--systemName ${SystemName} |contains|${ManagedAccount}One  |
+|List Accounts for Password request for|${CLI_user_1}             |by filter    |--systemName ${SystemName} |contains|${ManagedAccount}Two  |
+|List Accounts for Password request for|${CLI_user_1}             |by filter    |--systemName ${SystemName}*|contains|${ManagedAccount}Three|
+|List Accounts for Password request for|${CLI_user_1}             |by filter    |--systemName ${SystemName} |contains|${ManagedAccount}Three|
+
+!*> Clear Environment
+!|script                               |
+|Remove account   |${ManagedAccount}One|
+|Remove system    |${SystemName}       |
+|Delete Collection|${CollectionName}   |
+*!

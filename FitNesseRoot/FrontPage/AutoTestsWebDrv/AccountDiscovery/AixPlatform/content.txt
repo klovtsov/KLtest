@@ -1,0 +1,9 @@
+!define ProfileName {${SystemName}AccDiscProfile5}
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.AixPlatform
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary.NixScenarioLibrary
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.AixPlatform.PlatformSpecific
+
+!define TemplateName {${SystemName}Template}

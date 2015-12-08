@@ -1,0 +1,18 @@
+!include -c <FrontPage.AutomatedTesting.SetUp
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.SessionAlertsScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.DataExtract.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+
+!|script                                   |
+|Delete User on Archive Server             |
+|Remove Archive Server                     |
+|Remove User             |${Requestor}     |
+|Delete Account on System|${ManagedAccount}|
+|Remove system           |${SystemName}    |
+
+
+!include -c TearDown

@@ -1,0 +1,186 @@
+
+<table border="1">
+  <thead>
+      <tr>
+         <td bgcolor="#C0C0C0" colspan="34" align="center">
+           <font size="5"><b>Listing of Users</b></font></td>
+      </tr>
+    <tr>
+      <td bgcolor="#C0C0C0" width="150"><b>User Name</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Last Name</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>First Name</b></td>
+      <td bgcolor="#C0C0C0" width="500"><b>Email ID</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Phone</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Mobile</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>UserType</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>UserInterface</b></td>
+      <td bgcolor="#C0C0C0" width="75"><b>Password</b></td>
+      <td bgcolor="#C0C0C0" width="75"><b>Disabled</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>SecAuthType</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>SecAuthID</b></td>
+      <td bgcolor="#C0C0C0" width="500"><b>Description</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>LastAccessDt</b></td>
+      <td bgcolor="#C0C0C0" width="100"><b>LogonHoursFl</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Hours</b></td>
+      <td bgcolor="#C0C0C0" width="250"><b>SecAuthSystem</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>PrimAuthType</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>PrimAuthID</b></td>
+      <td bgcolor="#C0C0C0" width="250"><b>PrimAuthSystem</b></td>
+      <td bgcolor="#C0C0C0" width="250"><b>Mobile Access Allowed</b></td>
+      <td bgcolor="#C0C0C0" width="250"><b>User Local Timezone</b></td>
+      <td bgcolor="#C0C0C0" width="250"><b>Daylight Saving Time Flag</b></td>
+      <td bgcolor="#C0C0C0" width="250"><b>User Current UTC Offset</b></td>
+      <td bgcolor="#C0C0C0" width="250"><b>Report UTC Offset</b></td>
+      <td bgcolor="#C0C0C0" width="75"><b>Days</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>PrimAuthExtra</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>UserCustom1</b></td>
+
+      <td bgcolor="#C0C0C0" width="200"><b>UserCustom2</b></td>
+
+      <td bgcolor="#C0C0C0" width="200"><b>UserCustom3</b></td>
+
+      <td bgcolor="#C0C0C0" width="200"><b>UserCustom4</b></td>
+
+      <td bgcolor="#C0C0C0" width="200"><b>UserCustom5</b></td>
+
+      <td bgcolor="#C0C0C0" width="200"><b>UserCustom6</b></td>
+
+      <td bgcolor="#C0C0C0" width="150"><b>Certificate Thumbprint</b></td>
+    </tr>
+  </thead>
+  <tbody>
+	
+		<tr>
+			<td>prefixListUser1</td>
+			<td>White</td>
+			<td>Mr</td>
+			<td>Email@mail.com</td>
+			<td></td>
+			<td></td>
+			<td>Basic</td>
+			<td>web;</td>
+			<td></td>
+			<td>N</td>
+			<td>None</td>
+			<td></td>
+			<td></td>
+         <td></td>
+         <td>N</td>
+         <td></td>
+         <td>None</td>
+         <td>Local</td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+         <td>(UTC) Coordinated Universal Time</td>
+         <td>N</td>
+         <td>+00:00</td>
+         <td>+00:00</td>
+         <td></td>
+         <td></td>
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+		</tr>
+	
+		<tr>
+			<td>prefixListUser2</td>
+			<td>Black</td>
+			<td>Mr</td>
+			<td>Email@mail.com</td>
+			<td></td>
+			<td></td>
+			<td>Basic</td>
+			<td>web;</td>
+			<td></td>
+			<td>N</td>
+			<td>None</td>
+			<td></td>
+			<td></td>
+         <td></td>
+         <td>N</td>
+         <td></td>
+         <td>None</td>
+         <td>Local</td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+         <td>(UTC) Coordinated Universal Time</td>
+         <td>N</td>
+         <td>+00:00</td>
+         <td>+00:00</td>
+         <td></td>
+         <td></td>
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+		</tr>
+	
+		<tr>
+			<td>prefixListUser3</td>
+			<td>Red</td>
+			<td>Mr</td>
+			<td>Email@mail.com</td>
+			<td></td>
+			<td></td>
+			<td>Basic</td>
+			<td>web;</td>
+			<td></td>
+			<td>N</td>
+			<td>None</td>
+			<td></td>
+			<td></td>
+         <td></td>
+         <td>N</td>
+         <td></td>
+         <td>None</td>
+         <td>Local</td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+         <td>(UTC) Coordinated Universal Time</td>
+         <td>N</td>
+         <td>+00:00</td>
+         <td>+00:00</td>
+         <td></td>
+         <td></td>
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+         <td></td>
+
+		</tr>
+	
+  </tbody>
+</table>

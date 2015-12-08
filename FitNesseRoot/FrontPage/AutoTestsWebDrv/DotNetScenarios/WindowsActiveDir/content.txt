@@ -1,0 +1,3 @@
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsActiveDir
+!include -c <DotNetScenarios.ScenarioLibrary
+!include -c <DotNetScenarios.WindowsActiveDir.PlatformSpecific

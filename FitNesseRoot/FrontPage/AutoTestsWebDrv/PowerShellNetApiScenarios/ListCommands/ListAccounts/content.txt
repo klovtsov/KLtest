@@ -1,0 +1,72 @@
+!define AnotherAccount {AlliBaba}
+!define NotExistingAccount {Invis}
+!define CheckProfileName {${prefix}_check}
+!define ChangeProfileName {${prefix}_change}
+!define ChangeTimeout {30}
+!define CheckTimeout {30}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PasswordProfiles.ScenarioLibrary
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!*> Prepare Environment (creating system, account)
+!|script                                                            |
+|Add System                                                         |
+|Add account|${ManagedAccount}|with password|${ManagedAccountPwdNew}|
+*!
+
+!3 List Accounts
+!|script                                                                                                                                    |
+|List Accounts by filter|-systemName ${SystemName}                   |contains     |${ManagedAccount}                                       |
+|Add account            |${AnotherAccount}                           |with password|${ManagedAccountPwdNew}                                 |
+|Try to Update Account  |${AnotherAccount}                           |             |-autoFlag M|by user|${API_user_1}|with result|successful|
+|List Accounts by filter|-systemName ${SystemName} -AccountAutoFlag M|contains     |${AnotherAccount}                                       |
+|List Accounts by filter|-systemName ${SystemName} -AccountAutoFlag N|contains     |${FunctAcct}                                                   |
+|Delete Account         |${ManagedAccount}                                                                                                  |
+!3 Check the parameters which were added in 2.5.215
+!*> Parameters added in 215
+  New parameters:  PasswordChangeProfile, PasswordCheckProfile, DisabledSchedules
+  New output: DisableChangeScheduleFl, DisableCheckScheduleFl
+*!
+
+!4 Create Profiles and assign it to account
+!|script                                                                                                                                                                        |
+|Open                          |${TPAMURL}           |         |${TPAMAdmin} |            |${DefaultPwd}                                                                        |
+|Create Password Change Profile|${ChangeProfileName} |         |Disable change schedule                                                                                         |
+|Create Password Check Profile |${CheckProfileName}  |         |Do Nothing   |            |Disable check schedule                                                               |
+|Try to Update Account         |${AnotherAccount}    |         |-autoFlag Y  |by user     |${API_user_1}                 |with result                |successful                |
+|Add account                   |${NotExistingAccount}|on system|${SystemName}|with options|-passwordChangeProfile ${ChangeProfileName} -passwordCheckProfile ${CheckProfileName}|
+|pause                         |60000                                                                                                                                           |
+|Check Change Log              |${NotExistingAccount}|         |Forced Reset Failed                                                                                             |
+
+!4 Filter by profiles
+!|script                                                                                                                             |
+|List Accounts by filter|-systemName ${SystemName} -PasswordChangeProfile ${ChangeProfileName}|contains        |${NotExistingAccount}|
+|List Accounts by filter|-systemName ${SystemName} -PasswordChangeProfile ${ChangeProfileName}|does not contain|${AnotherAccount}    |
+|List Accounts by filter|-systemName ${SystemName} -PasswordCheckProfile ${CheckProfileName}  |contains        |${NotExistingAccount}|
+|List Accounts by filter|-systemName ${SystemName} -PasswordCheckProfile ${CheckProfileName}  |does not contain|${AnotherAccount}    |
+
+!4 Filter by DisabledSchedules
+!|script                                                                                                                                                                                   |
+|Set password Check Profile|${CheckProfileName}                                                                                  |for account     |${AnotherAccount}                       |
+|Check Password for        |${AnotherAccount}                                                                                    |with            |${CheckPasswordFailed}                  |
+|List Accounts by filter   |-systemName ${SystemName} -propsToList accountName,disableCheckScheduleFlag,disableChangeScheduleFlag|contains        |${AnotherAccount}\s+Y\s+N               |
+|List Accounts by filter   |-systemName ${SystemName} -propsToList accountName,disableCheckScheduleFlag,disableChangeScheduleFlag|contains        |${NotExistingAccount}\s+N\s+Y           |
+|List Accounts by filter   |-systemName ${SystemName} -DisabledSchedules Check                                                   |contains        |${AnotherAccount}                       |
+|List Accounts by filter   |-systemName ${SystemName} -DisabledSchedules Change                                                  |contains        |${NotExistingAccount}                   |
+|List Accounts by filter   |-systemName ${SystemName} -DisabledSchedules Change                                                  |does not contain|${AnotherAccount}                       |
+|List Accounts by filter   |-systemName ${SystemName} -DisabledSchedules Either                                                  |contains        |${AnotherAccount}.*${NotExistingAccount}|
+|List Accounts by filter   |-systemName ${SystemName} -DisabledSchedules Both                                                    |does not contain|${AnotherAccount}                       |
+|List Accounts by filter   |-systemName ${SystemName} -DisabledSchedules None                                                    |does not contain|${NotExistingAccount}                   |
+|List Accounts by filter   |-systemName ${SystemName} -DisabledSchedules None                                                    |does not contain|${AnotherAccount}                       |
+
+
+!*> Clean Up
+!|script                         |
+|Set password Change Profile|${PpmChangeProfile}|for account|${NotExistingAccount}|
+|Set password Check Profile |${PpmCheckProfile} |for account|${NotExistingAccount}|
+|Set password Check Profile |${PpmCheckProfile} |for account|${AnotherAccount}    |
+|Delete System |${SystemName}    |
+|Delete Password Profile    |Change             |           |${ChangeProfileName} |
+|Delete Password Profile    |Check              |           |${CheckProfileName}  |
+|stop                                                                             |
+*!

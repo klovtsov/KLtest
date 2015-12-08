@@ -1,0 +1,24 @@
+!define pwdRegexp {!-^[a-zA-Z0-9]{40,128}$-!}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SynchronizedPasswords.ScenarioLibrary
+!include -c ScenarioLibrary
+!4 Set the password rule settings.
+!|script                                                   |
+|Login|${TPAMAdminURL}|        |${TPAMMaster}||${MasterPwd}|
+|Let Off                                                   |
+|Set  |MaxChars       |equal to|128                        |
+|Set  |MinChars       |equal to|40                         |
+|click|id=SubmitChangesButton                              |
+
+!4 Test the Rule
+!|script                                                                                                             |
+|Test password generator            |${pwdRegexp}       |should present    |Y                                        |
+|Generated account password contains|${pwdRegexp}                                                                    |
+|Check that Synchronized Password   |${SyncPasswordName}|with Password Rule|${PasswdRuleName}||contains||${pwdRegexp}|
+
+!|script                     |
+|Set  |MinChars |equal to |7 |
+|Set  |MaxChars |equal to |10|
+|click|id=SubmitChangesButton|

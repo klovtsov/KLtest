@@ -1,0 +1,16 @@
+!contents
+!|import    |
+|selenesse  |
+|TPAM       |
+|tpamjavaapi|
+|cacheserverremoteaccess|
+
+!|Library   |
+|tpam|${seleniumBrowser};;${seleniumPort}|
+|tpamjavaapi|
+|cacheserverremoteaccess|
+
+
+!|script                                                                                             |
+|start            |Slim Selenium Driver|${seleniumHost}|${seleniumPort}|${seleniumBrowser}|${baseURL}|
+|setTimeoutSeconds|${seleniumTimeout}                                                                |

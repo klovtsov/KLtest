@@ -1,0 +1,7 @@
+!define LPrefix {${prefix}GJA}
+!define authFile {${prefix}test_user1_api}
+!define apiUser {${API_user_1}}
+!define authFile2 {${prefix}test_user2_api}
+!define apiUser2 {${API_user_2}}
+
+!contents -f

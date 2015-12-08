@@ -1,0 +1,3 @@
+!|script                                                           |
+|runBatch|storesshkey;${SystemAddress};${FunctAcct};${FunctAcctPwd}|
+

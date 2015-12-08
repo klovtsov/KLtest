@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<platform>
+  <verboseOutput>1</verboseOutput>
+  <checkSystem>
+    <commandType>3270</commandType>
+    <connectionParms>
+      <sslOption>0</sslOption>
+      <deviceName>%PLATSPECIFICVALUE%</deviceName>
+    </connectionParms>
+    <dialog>
+      <step type="wait" value="InputField" />
+      <step type="conditional">
+        <testType>charLengthGreaterThan</testType>
+        <operand>%FUNCACCT%</operand>
+        <testValue>9</testValue>
+        <trueAction>
+          <step type="string" value="%FUNCACCT%" />
+          <step type="string" value="%FUNCACCTPWD%\n" />
+        </trueAction>
+        <falseAction>
+          <step type="string" value="%FUNCACCT%\t%FUNCACCTPWD%\n" />
+        </falseAction>
+      </step>
+      <step type="string" value="\n" />
+      <step type="string" value="\n" />
+      <step type="wait" value="InputField" />
+      <step type="string" value="signoff\n" />
+      <step type="wait" value="InputField" />
+      <step type="exit" />
+    </dialog>
+    <processResults>
+      <processType>parseOutput</processType>
+      <successPattern>SISTEMA:</successPattern>
+      <successPattern>===&gt;</successPattern>
+      <successPattern>select menu option</successPattern>
+      <successPattern>SYSTEM:</successPattern>
+      <successPattern>arrived on a message queue</successPattern>
+      <successPattern>type command</successPattern>
+      <successPattern>type option</successPattern>
+      <failPattern>password not correct for user profile</failPattern>
+    </processResults>
+  </checkSystem>
+  <checkPassword>
+    <method>
+      <accountList></accountList>
+      <commandType>3270</commandType>
+      <connectionParms>
+        <sslOption>0</sslOption>
+        <deviceName>%PLATSPECIFICVALUE%</deviceName>
+      </connectionParms>
+      <dialog>
+        <step type="wait" value="InputField" />
+        <step type="conditional">
+          <testType>charLengthGreaterThan</testType>
+          <operand>%ACCTNAME%</operand>
+          <testValue>9</testValue>
+          <trueAction>
+            <step type="string" value="%ACCTNAME%\n" />
+            <step type="string" value="%ACCTPWD%\n" />
+          </trueAction>
+          <falseAction>
+            <step type="string" value="%ACCTNAME%\t%ACCTPWD%\n" />
+          </falseAction>
+        </step>
+        <step type="string" value="\n" />
+        <step type="string" value="\n" />
+        <step type="wait" value="InputField" />
+        <step type="string" value="signoff\n" />
+        <step type="wait" value="InputField" />
+        <step type="exit" />
+      </dialog>
+      <processResults>
+        <processType>parseOutput</processType>
+        <successPattern>SISTEMA:</successPattern>
+        <successPattern>===&gt;</successPattern>
+        <successPattern>select menu option</successPattern>
+        <successPattern>SYSTEM:</successPattern>
+        <successPattern>arrived on a message queue</successPattern>
+        <successPattern>type command</successPattern>
+        <successPattern>type option</successPattern>
+        <mismatchPattern>password not correct for user profile</mismatchPattern>
+      </processResults>
+    </method>
+  </checkPassword>
+  <changePassword>
+    <method>
+      <accountList></accountList>
+      <commandType>3270</commandType>
+      <connectionParms>
+        <sslOption>0</sslOption>
+        <deviceName>%PLATSPECIFICVALUE%</deviceName>
+      </connectionParms>
+      <dialog>
+        <step type="wait" value="InputField" />
+        <step type="conditional">
+          <testType>charLengthGreaterThan</testType>
+          <operand>%FUNCACCT%</operand>
+          <testValue>9</testValue>
+          <trueAction>
+            <step type="string" value="%FUNCACCT%\n" />
+            <step type="string" value="%FUNCACCTPWD%\n" />
+          </trueAction>
+          <falseAction>
+            <step type="string" value="%FUNCACCT%\t%FUNCACCTPWD%\n" />
+          </falseAction>
+        </step>
+        <step type="string" value="\n" />
+        <step type="string" value="\n" />
+        <step type="wait" value="InputField" />
+        <step type="string" value="chgusrprf usrprf(%ACCTNAME%) password(%NEWACCTPWD%) status(*ENABLED)\n" />
+        <step type="wait" value="InputField" />
+        <step type="eraseInput" />
+        <step type="wait" value="InputField" />
+        <step type="string" value="signoff\n" />
+        <step type="wait" value="InputField" />
+        <step type="exit" />
+      </dialog>
+      <processResults>
+        <processType>parseOutput</processType>
+        <successPattern>USER PROFILE %ACCTNAME% CHANGE</successPattern>
+        <successPattern>cambiado el perfil de usuario %ACCTNAME%</successPattern>
+        <successPattern>PROFILE %ACCTNAME% CHANGED</successPattern>
+      </processResults>
+    </method>
+  </changePassword>
+</platform>

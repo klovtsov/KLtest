@@ -1,0 +1,13 @@
+!note Managed System settings
+#!define SystemName {${prefix}Truba}
+#!define SystemPlatform {Linux}
+#!define SystemAddress {10.30.46.172}
+#!define SystemTimeout {60}
+#!define SystemDescription {Test system for SSHKey command}
+#!define FunctAcct {root}
+#!define FunctAcctPwd {master}
+
+!include -c <AutomatedTesting.PlatformsTesting.MacOsxSix
+
+!define NotFailed {successfully} 
+!contents -g -p -f -h

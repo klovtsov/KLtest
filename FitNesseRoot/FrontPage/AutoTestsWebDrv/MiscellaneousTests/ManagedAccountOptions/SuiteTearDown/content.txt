@@ -1,0 +1,10 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <FrontPage.AutoTestsWebDrv.SetUp
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+
+!|script                                   |
+|Delete Account on System|${ManagedAccount}|
+|Remove account          |${ManagedAccount}|
+|Remove system           |${SystemName}    |
+
+!include -c <MiscellaneousTests.TearDown

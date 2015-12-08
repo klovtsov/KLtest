@@ -1,0 +1,9 @@
+!include -c >TestSpecific
+
+!|script                                            |
+|Open       |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|pause      |5000                                   |
+|clickOnLink|link=DPAs                              |
+|Select Local Server row                            |
+|click      |id=TestButton                          |
+|Check Results                                      |

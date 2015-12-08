@@ -1,0 +1,23 @@
+!2 THIS OPTION IS OBSOLETE AND WILL BE REMOVED IN A FUTURE RELEASE. The functionality of the option has been assumed by the Password Check Profile.
+!* Test description
+A propagation of values from three checkboxes is verified: Reset Password on Mismatch, Change Password after any release and
+Do not automatically change the password while a release is active
+*!
+!define specValue {N}
+!define newSystemAddress {10.30.45.65}
+#!define error6953 {Invalid combination of Release Change Flag = Y and Release Duration of 0}
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+
+!4 Create system, make template from system and create system from template
+!|script                                                                                                                                                                                                                                                          |
+|Add system          |${SystemName}   |with address   |${SystemAddress}                                                      |platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-ResetFlag ${specValue} -ReleaseChangeFlag ${specValue}|
+|Make System Template|${TemplateName} |from           |${SystemName}                                                         |with account|${FunctAcct}                                                                                                           |
+|Try to Add system   |${newSystemName}|with parameters|-systemAddress ${newSystemAddress} -templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully                                                                 |
+#|Try to Add system   |${newSystemName}|with parameters|-systemAddress ${newSystemAddress} -templateSystemName ${TemplateName} -ReleaseChangeFlag ${specValue}|with result |System changes for ${newSystemName} saved successfully                                                                 |
+
+!4 Check new system properties
+!|script                                                                                                                                          |
+|List Systems by|-systemName ${newSystemName}|output params|SystemName,resetFl,releaseChgFl|contain|${newSystemName}\s+${specValue}\s+${specValue}|

@@ -1,0 +1,40 @@
+!contents
+
+
+################################################################################################
+################################################################################################
+### OBSOLETE!!!! Sendmail on Linux must be configured to be able to send emails to tpam.spb.qsft email domain
+### (on this managed system autotest's SMTP server is configured as a SMART in sendmail.cf)
+################################################################################################
+################################################################################################
+!define OSType {Nix}
+!define ProxyType {SSH}
+!define PCMTestFile {kl${SEED}test.txt}
+!define CommandText {/bin/echo ${AccountNamePlaceholder} > ${PCMTestFile}; /bin/echo ${AccountPasswordPlaceholder} >> ${PCMTestFile}; /bin/echo ${UserNamePlaceholder} >> ${PCMTestFile}}
+#!define CommandText {/bin/echo '${NotificationEmailBody}' | /bin/mail -s '${NotificationEmailSubject}' ${NotificationEmail}}
+!define WorkingDir {/var/tmp}
+!define AccountNamePlaceholder {:accountname:}
+!define AccountPasswordPlaceholder {:accountpwd:}
+!define UserNamePlaceholder {:myaccount:}
+
+
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.LinuxRedHat
+
+!define FunctAcct {root}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {grain41R}
+
+!define SystemFQDN {KLapache.kllinux.spb.qsft}
+#!define FromMail {${ManagedAccount}@${SystemFQDN}}
+
+!include -c .FrontPage.AutoTestsWebDrv.PcmScenarios.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.PcmScenarios.LinuxRedHat.PlatformSpecific
+
+
+!|script      |
+|Prepare Test |
+|Run Command  |
+|Clear Objects|
+#|pause |900000|
+

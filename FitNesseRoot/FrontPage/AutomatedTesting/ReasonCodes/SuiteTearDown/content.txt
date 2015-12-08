@@ -1,0 +1,5 @@
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+
+!|script                         |
+|Remove account|${ManagedAccount}|
+|Remove system |${SystemName}    |

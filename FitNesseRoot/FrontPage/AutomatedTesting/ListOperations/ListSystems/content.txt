@@ -1,0 +1,58 @@
+!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+
+!define CSVEthalonFile {${ProjDir}\Scripts\Ethalons\ListOperations\Export\ExportSystems.csv}
+!define ASPEthalonFile {${ProjDir}\Scripts\Ethalons\ListOperations\Export\ExportSystems.xls}
+!define CSVResultFile {${ProjDir}\Scripts\Ethalons\ListOperations\ExportSystems.csv}
+!define ASPResultFile {${ProjDir}\Scripts\Ethalons\ListOperations\ExportSystems.xls}
+!define PathResultFile {${ProjDir}\Scripts\Ethalons\ListOperations\}
+
+!define SystemName {${prefix}ListSystem}
+!define SystemName1 {${SystemName}1}
+!define SystemName2 {${SystemName}12}
+!define SystemName3 {${SystemName}13}
+
+!define CollectionName {${prefix}ListCollection}
+!define CollectionName1 {${CollectionName}1}
+!define CollectionName2 {${CollectionName}2}
+
+!define UserName {${prefix}ListUser}
+!define UserName1 {${UserName}1}
+!define UserName2 {${UserName}2}
+!define UserName3 {${UserName}3}
+
+!define GroupName {${prefix}ListGroup}
+!define GroupName1 {${GroupName}1}
+
+!include -c <AutomatedTesting.ListOperations.ScenarioLibrary
+
+!|script                                                                                                                                        |
+|Add User             |${CLIBatch}||--UserName ${UserName1} --FirstName Mr --LastName White                                       ||successfully|
+|Add User             |${CLIBatch}||--UserName ${UserName2} --FirstName Mr --LastName Black                                       ||successfully|
+|Add User             |${CLIBatch}||--UserName ${UserName3} --FirstName Mr --LastName Red                                         ||successfully|
+|Add Group            |${CLIBatch}||--GroupName ${GroupName1}                                                                     ||successfully|
+|Add Grp member       |${CLIBatch}||--GroupName ${GroupName1} --UserName ${UserName2}                                             ||successfully|
+|Add System           |${CLIBatch}||--SystemName ${SystemName1} --Platform Windows --NetworkAddress 1.1.1.1                       ||successfully|
+|Add System           |${CLIBatch}||--SystemName ${SystemName2} --Platform AIX --NetworkAddress 1.2.2.2                           ||successfully|
+|Add System           |${CLIBatch}||--SystemName ${SystemName3} --Platform FreeBSD --NetworkAddress 1.3.3.3                       ||successfully|
+|Add Collection       |${CLIBatch}||--CollectionName ${CollectionName1}                                                           ||successfully|
+|Add Collection member|${CLIBatch}||--CollectionName ${CollectionName1} --SystemName ${SystemName1}                               ||successfully|
+|Add Collection member|${CLIBatch}||--CollectionName ${CollectionName1} --SystemName ${SystemName2}                               ||successfully|
+|Add Collection       |${CLIBatch}||--CollectionName ${CollectionName2}                                                           ||successfully|
+|Add Collection member|${CLIBatch}||--CollectionName ${CollectionName2} --SystemName ${SystemName1}                               ||successfully|
+|Set Access Policy    |${CLIBatch}||--SystemName ${SystemName1} --Action ADD --AccessPolicyNam Approver --UserName ${UserName1}   ||successfully|
+|Set Access Policy    |${CLIBatch}||--SystemName ${SystemName1} --Action ADD --AccessPolicyNam Requestor --GroupName ${GroupName1}||successfully|
+|Set Access Policy    |${CLIBatch}||--CollectionName ${CollectionName2} --Action ADD --AccessPolicyNam ISA --UserName ${UserName3}||successfully|
+|pause                |30000                                                                                                                    |
+|List Systems                                                                                                                                   |
+|Check Systems Export                                                                                                                           |
+|Delete System        |${CLIBatch}||--SystemName ${SystemName1}                                                                   ||successfully|
+|Delete System        |${CLIBatch}||--SystemName ${SystemName2}                                                                   ||successfully|
+|Delete System        |${CLIBatch}||--SystemName ${SystemName3}                                                                   ||successfully|
+|Drop Collection      |${CLIBatch}||--CollectionName ${CollectionName1}                                                           ||successfully|
+|Drop Collection      |${CLIBatch}||--CollectionName ${CollectionName2}                                                           ||successfully|
+|Delete User          |${CLIBatch}||--UserName ${UserName1}                                                                       ||successfully|
+|Delete User          |${CLIBatch}||--UserName ${UserName2}                                                                       ||successfully|
+|Delete User          |${CLIBatch}||--UserName ${UserName3}                                                                       ||successfully|
+|Drop Group           |${CLIBatch}||--GroupName ${GroupName1}                                                                     ||successfully|
+
+

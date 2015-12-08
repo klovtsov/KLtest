@@ -1,0 +1,8 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <EmailScenarios.ScenarioLibrary
+!include -c <FrontPage.AutomatedTesting.SetUp
+
+!|script           |
+|Create Environment|
+
+!include -c <EmailScenarios.TearDown

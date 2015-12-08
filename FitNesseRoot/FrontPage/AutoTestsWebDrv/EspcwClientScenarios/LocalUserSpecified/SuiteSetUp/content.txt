@@ -1,0 +1,13 @@
+!include -c <FrontPage.AutoTestsWebDrv.SetUp
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.EdmzSpcw2.PlatformSpecific
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ScenarioLibrary
+
+!|script                                                                                         |
+|Create Account on System                                                                        |
+|Add system                                                                                      |
+|Test System                  |${TestSystemSuccessful}                                           |
+|Add account                  |${ManagedAccount}|with password|${ManagedAccountPwd}||successfully|
+|Create SPCW configuration for|${ManagedAccount}                                                 |
+|Uncheck Checkbox             |useoldpass       |for user     |${ManagedAccount}                 |

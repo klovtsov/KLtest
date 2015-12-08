@@ -1,0 +1,57 @@
+!* Test description
+According to documentation: "Can only be selected if Approvals Required is greater than 1. If selected,
+you can require that approvals for requests come from two or more groups. At least 1 approval must come
+from each group."
+*!
+
+!define CLI_user_3 {${prefix}cliuser3}
+!define CLI_user_4 {${prefix}cliuser4}
+!define firstGroupName {${prefix}apprsOne}
+!define secondGroupName {${prefix}apprsTwo}
+!define psmProxyType {\"SSH - Automatic Login Using Password\"}
+
+!*> Including section
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <FrontPage.DeployProject.ApiCliUserCreation.ScenarioLibrary
+!include -c <AutomatedTesting.EmailScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.UserSshKey.ScenarioLibrary
+!include -c <AutomatedTesting.FileTransfer.ScenarioLibrary
+!include -c ScenarioLibrary
+#!include -c <AutomatedTesting.KnownIssues
+*!
+
+!*> Prepare Environment
+!|script                                                     |
+|Open                |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Create Users                                                |
+|Create Groups                                               |
+|Set Permissions for groups                                  |
+|Set User Permissions|${TPAMAdmin}                           |
+*!
+
+!3 Two groups are selected
+!|script                                                     |
+|Add User To Group         |${CLI_user_2}||${firstGroupName} |
+|Add User To Group         |${CLI_user_3}||${firstGroupName} |
+|Add User To Group         |${CLI_user_4}||${secondGroupName}|
+|Check Require Multi-Group checkbox and select groups for PSM|
+|Add Session Request                                         |
+|Approve Session by        |${CLI_user_2}                    |
+|Approve Session by        |${CLI_user_3}                    |
+|Get Session Request Status|Pending Approval                 |
+|Get Connect button status |Disabled                         |
+|Approve Session by        |${CLI_user_4}                    |
+|Get Session Request Status|Active/Approved                  |
+|Get Connect button status |Enabled                          |
+
+!*> Clean Up
+!|script                                                  |
+|Cancel Session Request                                   |
+|Uncheck Require Multi-Group checkbox for PSM             |
+|Revoke User Permissions|${TPAMAdmin}                     |
+|Remove User From Group |${CLI_user_2}||${firstGroupName} |
+|Remove User From Group |${CLI_user_3}||${firstGroupName} |
+|Remove User From Group |${CLI_user_4}||${secondGroupName}|
+|Remove Users                                             |
+*!

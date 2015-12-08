@@ -1,0 +1,25 @@
+!|scenario        |Create Share                                                                                             |
+|RunBatchGetOutput|FileTransferSolaris;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${shareFolder};${fileToDownload}|
+
+!|scenario        |Delete files on System                                                                 |
+|RunBatchGetOutput|FileTransferSolaris;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${shareFolder}|
+
+!|scenario        |Check file on system|fileToCheck                                                                                         |
+|$res=            |RunBatchGetOutput   |FileTransferSolaris;check;${SystemAddress};${FunctAcct};${FunctAccttPwd};${shareFolder};@fileToCheck|
+|Verify_Contain_OR|$res;;FileExists                                                                                                         |
+
+!|scenario                     |Prepare Enviroment                                                             |
+|Create Account on System                                                                                      |
+|Create Share                                                                                                  |
+|Open                          |${TPAMURL}       |               |${TPAMAdmin}        |         |${DefaultPwd} |
+|Add system                                                                                                    |
+|Add account                   |${ManagedAccount}|with password  |${ManagedAccountPwd}|         |successfully  |
+|Set psm settings for          |${ManagedAccount}                                                              |
+|Set File Transfer settings for|${ManagedAccount}|transfer method|${TransferMethod}   |sharepath|${shareFolder}|
+|Is download enable            |Y                                                                              |
+|Is upload enable              |Y                                                                              |
+|Set User Permissions          |${CLI_user_1}                                                                  |
+|Set User Permissions          |${TPAMAdmin}                                                                   |
+|Logout paradmin                                                                                               |
+|pause                         |${ApplyNewPoliciesInterval}                                                    |
+|Show Desktop                                                                                                  |

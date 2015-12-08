@@ -1,0 +1,3 @@
+klbatchsys28,klbatchacc,U,0,1380,Y,16:00,,PersPwdRule,N,N,3,,kltest@tpam.spb.qsft,N,N,N,7620,my description,,N,,N,N,N,,1,User,klbatchuser7,klescalate@tpam.spb.qsft,42,N,2,N,N,,,,,,,Y,,,,,,,PersPassCheckProfile_2,PersPassChangeProfile_2,,"cn=testldaps,ou=users,dc=kllinux,dc=spb,dc=qsft",
+klbatchsys49,klbatchacc,U,2,1020,Y,20:00,,PersPwdRule,,,4,,release@tpam.spb.qsft,N,N,Y,600,accdesc,,Y,PersTicketSystem,Y,N,Y,klticketnotify@tpam.spb.qsft,2,Auditor,,escalatereview@tpam.spb.qsft,4,N,3,N,N,,,,,,,Y,,,Y,klbatch_group1;klbatch_group2,,,PersPassCheckProfile_2,PersPassChangeProfile_2,,,Y
+klbatchsys62new,klbatchacc,U,2,,,,,,Y,,2,,,,,,,,,,,,,,,2,Group,Global PPM Approver Group,,,N,,,,,,,,,,,,,Y,klbatch_group1;klbatch_group2,,,,,N,,N

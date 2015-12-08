@@ -1,0 +1,5 @@
+!include <AutomatedTesting.PlatformsTesting.HpuxUntrusted
+!include -c <DotNetScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.HpuxShadow.PlatformSpecific
+
+

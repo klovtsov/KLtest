@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.SqlServer
+!include -c <CppScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword
+

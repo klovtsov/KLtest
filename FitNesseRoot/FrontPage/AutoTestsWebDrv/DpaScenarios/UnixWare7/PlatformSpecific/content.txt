@@ -1,0 +1,15 @@
+!| scenario                       |Managed System                           |
+|Create Account on System                                                   |
+|Create Password Rule For UnixWare|${UnixWareRuleName}                      |
+|Login                            |${TPAMURL}  ||${TPAMAdmin}||${DefaultPwd}|
+|Add system                                                                 |
+|Set Connection Tab                                                         |
+|Set Affinity                                                               |
+|Test System                      |${TestSystemSuccessful}                  |
+|Choose Account                   |${FunctAcct}                             |
+|Set password                     |${FunctAcct}||${FunctAcctWrongPwd}       |
+|Test System                      |${TestSystemFailed}                      |
+|Choose Account                   |${FunctAcct}                             |
+|Check Password                   |${CheckPasswordFailed}                   |
+
+

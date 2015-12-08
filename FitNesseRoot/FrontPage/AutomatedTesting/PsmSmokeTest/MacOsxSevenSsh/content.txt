@@ -1,0 +1,37 @@
+!define PolicyName {Approver-Requestor}
+!define psmProxyType {\"SSH - Automatic Login Using Password\"}
+!define ManagedAccountPwd {P@r0leAA}
+!define PlaceHolder {${ManagedAccount}}
+!define expectedImageOnScreen {psm_UsingName.png}
+
+!include <AutomatedTesting.PlatformsTesting.MacOsxSeven
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.SessionAlertsScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.PermissionHierarchy.ScenarioLibrary
+!include -c <AutomatedTesting.FileTransfer.ScenarioLibrary
+!include -c <AutomatedTesting.PsmSmokeTest.ScenarioLibrary
+
+!*> Prepare environment: Add system, create users and set permissions
+!|script                                                                                                                         |
+|Prepare Requestor|${Requestor}                                                                                                  |
+|Create Account on System                                                                                                        |
+|Add System                                                                                                                      |
+|Add account      |${ManagedAccount}|with password|${ManagedAccountPwd}|        |Changes saved successfully for ${ManagedAccount}|
+|Set policy       |${PolicyName}    |on system    |${SystemName}       |for user|${Requestor}                                    |
+*!
+
+!|script                                 |
+|Set psm settings for  |${ManagedAccount}|
+|Set required approvers|0                |
+|Request Session                         |
+|Open automatic ssh session              |
+|Cancel psm request                      |
+
+!*> Remove system and users
+!|script                                   |
+|Remove system           |${SystemName}    |
+|Delete Account on System|${ManagedAccount}|
+|Remove User             |${Requestor}     |
+*!

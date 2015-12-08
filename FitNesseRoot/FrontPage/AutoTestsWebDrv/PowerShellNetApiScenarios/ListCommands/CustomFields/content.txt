@@ -1,0 +1,3 @@
+!define SysAdminUser {${prefix}ccSysAdminUser}
+!define SysAdminUserPwd {Password2}
+!contents -R2 -g -p -f -h

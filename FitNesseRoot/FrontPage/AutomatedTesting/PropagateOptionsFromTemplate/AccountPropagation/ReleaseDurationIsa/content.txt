@@ -1,0 +1,20 @@
+!* Test description
+Propagation of following options is verified:
+Default duration for ISA releases of password.
+Allow ISA to enter duration on Release.
+*!
+!define ManagedAccount {DuraIsa}
+!define defValue {N}
+!define specValue {Y}
+!define defValueTime {120}
+!define specValueTime {75}
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                                                                                  |
+|Add account            |${ManagedAccount}                                                                                                         |on system      |${TemplateName}                    |with options|-description "${accDescription}" -AllowISADurationFlag ${specValue} -ReleaseDuration ${specValueTime}|
+|Add account            |${ManagedAccount}2                                                                                                        |on system      |${TemplateName}                    |with options|-description "${accDescription}"                                                                     |
+|Try to Add system      |${newSystemName}                                                                                                          |with parameters|-templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully                                               |
+|List Systems by        |-systemName ${newSystemName}                                                                                              |output params  |SystemName                         |contain     |${newSystemName}                                                                                     |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount} -propsToList accountname,allowISADurationFlag,releaseDuration |contains       |${ManagedAccount}\s+${specValue}\s+${specValueTime}                                                                                                   |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount}2 -propsToList accountname,allowISADurationFlag,releaseDuration|contains       |${ManagedAccount}2\s+${defValue}\s+${defValueTime}                                                                                                    |
+|Delete System          |${newSystemName}                                                                                                                                                                                                                                                                                 |

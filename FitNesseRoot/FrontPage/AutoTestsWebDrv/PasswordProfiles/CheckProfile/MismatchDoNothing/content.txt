@@ -1,0 +1,24 @@
+!*> Includes
+''System''
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+''Libraries''
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <PasswordProfiles.ScenarioLibrary
+*!
+
+''Mismatch - Do nothing''
+!|script                                                                                                                                                                                                                                                                      |
+|Open                     |${TPAMURL}       ||${TPAMAdmin}                                                                                                                             ||${DefaultPwd}                                                                        |
+|Add Account              |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password "WrongPWD" --PasswordCheckProfile ${CheckProfile1NismatchDonothing}||successfully                                                                         |
+|pause                    |${defaultPause}                                                                                                                                                                                                                                    |
+|Check Test Log           |${ManagedAccount}||Failed - Password Mismatch                                                                                                                                                                                                      |
+|Check Mismatch Mail      |${MailServer}    ||${SystemEMail}                                                                                                                           ||${SystemEMailPwd}||${FromMail}||${MailSubjectCheckMismatch}||${MailBodyCheckMismatch}|
+|Check Change Log         |${ManagedAccount}||New Account Success                                                                                                                                                                                                             |
+|Check Account Lock Status|${ManagedAccount}||false                                                                                                                                                                                                                           |
+|Change schedule disabled |${ManagedAccount}||false                                                                                                                                                                                                                           |
+|Management tab           |${ManagedAccount}                                                                                                                                                                                                                                  |
+|Check Schedule           |${DaylySchedule1}                                                                                                                                                                                                                                  |
+|Check Mismatch Action    |${MismatchDoNothing}                                                                                                                                                                                                                               |
+|Update Account           |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --PasswordCheckProfile "!NULL" --AutoFlag N                                   ||successfully                                                                         |
+|Delete Account           |${CLIBatch}      ||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                              ||successfully                                                                         |
+|Delete Mails             |${SystemEMail}                                                                                                                                                                                                                                     |

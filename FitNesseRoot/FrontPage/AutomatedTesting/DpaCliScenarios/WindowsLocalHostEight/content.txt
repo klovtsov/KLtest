@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.WindowsLocalHostEight
+!include -c ScenarioLibrary

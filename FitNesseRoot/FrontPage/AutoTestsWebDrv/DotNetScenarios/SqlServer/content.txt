@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.SqlServer
+!define ManAccntCheckPassword {Success}
+!include -c <DotNetScenarios.ScenarioLibrary
+

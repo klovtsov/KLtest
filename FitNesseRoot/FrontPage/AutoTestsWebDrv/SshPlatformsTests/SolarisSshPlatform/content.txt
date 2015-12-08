@@ -1,0 +1,15 @@
+!contents
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.SolarisNine
+
+!define SystemName {${prefix}_Sol10}
+!define SystemAddress {10.30.44.202}
+!define FunctAcct {root}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {frujiE13}
+
+!define AuthorizedKeysFile {authorized_keys}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SshPlatformsTests.AixSshPlatform.PlatformSpecific
+!include -c <AutoTestsWebDrv.SshPlatformsTests.SolarisSshPlatform.PlatformSpecific

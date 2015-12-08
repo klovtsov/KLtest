@@ -1,0 +1,11 @@
+!define SystemName {${prefix}_ora10}
+!define SystemPlatform {Oracle}
+!define SystemAddress {192.168.159.171}
+!define FunctAcct {System}
+!define FunctAcctPwd {master}
+!define ManagedAccountPwd {master}
+!define Port {1521}
+!define SID {orcl10}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.OraclePlatform.PlatformSpecific
+

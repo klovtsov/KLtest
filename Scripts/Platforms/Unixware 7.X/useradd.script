@@ -1,0 +1,9 @@
+useradd -m %1
+#
+passwd %1
+password:
+%2
+password:
+%2
+#
+exit

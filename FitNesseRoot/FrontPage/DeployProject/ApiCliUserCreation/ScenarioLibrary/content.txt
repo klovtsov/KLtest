@@ -1,0 +1,125 @@
+!|scenario            |Add API User              |UserName                        |
+|clickAndWait         |link=Add UserID                                            |
+|pause                |5000                                                       |
+|waitForElementPresent|id=UserName                                                |
+|type;                |id=UserName               |@UserName                       |
+|type;                |id=FirstName              |Shlomo1                         |
+|type;                |id=LastName               |Gardner1                        |
+|select;              |id=UType                  |label=Administrator             |
+|click                |id=cb_WebAccess                                            |
+|click                |id=KeyBased                                                |
+|click                |id=cb_ApiAccess                                            |
+|click                |id=SubmitChanges                                           |
+|waitForTextPresent   |*User added successfully*                                  |
+|Choose User          |@UserName                                                  |
+|click                |id=KeyBased                                                |
+|click                |id=GetApiKey                                               |
+|pause                |5000                                                       |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}@UserName|
+
+
+
+!|scenario            |Add CLI User                |UserName                          |
+|clickAndWait         |link=Add UserID                                                |
+|pause                |5000                                                           |
+|waitForElementPresent|id=UserName                                                    |
+|type;                |id=UserName                 |@UserName                         |
+|type;                |id=FirstName                |Shlomo1                           |
+|type;                |id=LastName                 |Gardner1                          |
+|select;              |id=UType                    |label=Administrator               |
+|click                |id=cb_WebAccess                                                |
+|click                |id=KeyBased                                                    |
+|click                |id=cb_CliAccess                                                |
+|click                |id=SubmitChanges                                               |
+|waitForTextPresent   |*User added successfully*                                      |
+|Choose User          |@UserName                                                      |
+|click                |id=KeyBased                                                    |
+|click                |id=GetCliKey                                                   |
+|pause                |5000                                                           |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}@UserName.ppk|
+
+
+
+!|scenario            |Add API User 000               |UserName                         |
+|clickAndWait         |link=Add UserID                                                  |
+|pause                |5000                                                             |
+|waitForElementPresent|id=UserName                                                      |
+|type;                |id=UserName                    |@UserName                        |
+|type;                |id=FirstName                   |Shlomo                           |
+|type;                |id=LastName                    |Gardner                          |
+|select;              |id=UType                       |label=Administrator              |
+|click                |id=cb_WebAccess                                                  |
+|click                |id=KeyBased                                                      |
+|click                |id=cb_ApiAccess                                                  |
+|click                |id=SubmitChanges                                                 |
+|waitForTextPresent   |*User added successfully*                                        |
+|Choose User          |@UserName                                                        |
+|click                |id=KeyBased                                                      |
+|click                |id=GetApiKey                                                     |
+|pause                |10000                                                            |
+|selectWindow         |Opening id_dsa                                                   |
+|pause                |10000                                                            |
+|windowFocus                                                                            |
+|pause                |10000                                                            |
+|keytype              |\n                                                               |
+|pause                |10000                                                            |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}${API_user_key}|
+
+
+!|scenario            |Add API User  111              |UserName                         |
+|clickAndWait         |link=Add UserID                                                  |
+|pause                |5000                                                             |
+|waitForElementPresent|id=UserName                                                      |
+|type;                |id=UserName                    |@UserName                        |
+|type;                |id=FirstName                   |Shlomo                           |
+|type;                |id=LastName                    |Gardner                          |
+|select;              |id=UType                       |label=Administrator              |
+|click                |id=cb_WebAccess                                                  |
+|click                |id=KeyBased                                                      |
+|click                |id=cb_ApiAccess                                                  |
+|click                |id=SubmitChanges                                                 |
+|waitForTextPresent   |*User added successfully*                                        |
+|Choose User          |@UserName                                                        |
+|click                |id=KeyBased                                                      |
+|click                |id=GetApiKey                                                     |
+|pause                |10000                                                            |
+|selectWindow         |Opening id_dsa                                                   |
+|windowFocus                                                                            |
+|pause                |10000                                                            |
+|SWait                |ok_dsa.png                                                       |
+|SClick               |ok_dsa.png                                                       |
+|pause                |10000                                                            |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}${API_user_key}|
+
+
+#|selectWindow         |Quest Software TPAM                                              |
+
+
+#!|scenario        |Delete User|UserName                                         |
+#|$res=            |CLI         |${CLIBatch} DeleteUser @UserName|
+#|Verify_Contain_OR|$res;;successful                                               |
+
+!|scenario|Generate Plink Key    |KeyName    |
+|runBatch |puttygen.bat;puttygen.exe;@KeyName|
+|pause    |10000                             |
+|SWait    |ok_selected.png                   |
+|SClick   |ok_selected.png                   |
+|pause    |5000                              |
+|SWait    |SavePrivKey.png                   |
+|SClick   |SavePrivKey.png                   |
+|pause    |5000                              |
+|SWait    |yes.png                           |
+|SClick   |yes.png                           |
+|pause    |5000                              |
+|SType    |${PathToKeys}@KeyName             |
+|pause    |5000                              |
+|SWait    |Save.png                          |
+|SClick   |Save.png                          |
+|pause    |5000                              |
+|SWait    |Yes.png                           |
+|SClick   |Yes.png                           |
+|pause    |5000                              |
+|keytype  |\4                                |
+
+
+

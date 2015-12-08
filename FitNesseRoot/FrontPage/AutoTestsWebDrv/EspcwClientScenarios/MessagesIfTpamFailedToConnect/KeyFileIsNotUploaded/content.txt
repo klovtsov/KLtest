@@ -1,0 +1,10 @@
+!define TestSystemFailed {Error opening key file for ${ParFunctAcct}}
+
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                            |
+|Remove the key file                |
+|Test System|${TestSystemFailed}    |
+|Restore the client config          |
+|Test System|${TestSystemSuccessful}|

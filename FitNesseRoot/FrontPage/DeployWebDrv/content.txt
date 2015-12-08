@@ -1,0 +1,6 @@
+!define seleniumPort {4444}
+!define seleniumTimeout {20}
+!define TPAMURL {${baseURL}/tpam/main.asp}
+!define TPAMAdminURL {${baseURL}/admin/main.asp}
+
+!contents -p

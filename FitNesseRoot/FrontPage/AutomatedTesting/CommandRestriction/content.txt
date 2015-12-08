@@ -1,0 +1,16 @@
+!contents
+!define ProfileName {${prefix}_restriction_1}
+!define AccessPolicyRestriction {${prefix}_restriction_policy_1}
+
+!define CommRestUserName {${Approver}}
+!define CommRestUserPasswd {${DefaultPwd}}
+!define CommRestUserPasswdNew {${ManagedAccountPwdNew}}
+!define CommRestUserEMail {${ApproverEMail}}
+
+#!define PsmWindowName {Quest Software PSM Session (${SystemName}/${ManagedAccount}/${RequestID})}
+
+#!define CLI_user {autotest_user_cli}
+#!define CLIBatch {-i ${CLI_user}.ppk -C ${CLI_user}@${TPAMHost}}
+#!define CacheAppInterfaceIP {10.30.44.70}
+
+

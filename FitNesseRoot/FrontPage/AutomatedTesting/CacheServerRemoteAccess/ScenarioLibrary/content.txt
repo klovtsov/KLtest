@@ -1,0 +1,403 @@
+!|scenario  |Get New Password From Cache |
+|Change Password                         |
+|Change Account Password on Cached System|
+|pause      |20000                       |
+|Get Password From Cache Via CSharp      |
+
+
+#!|scenario|Get Password From Cache Via Java|CacheParameterString |
+#|$res=    |CacheServerRemoteAccessJava     |@CacheParameterString|
+
+!|scenario|Get Password From Cache Via Java                                                                                                                                           |
+|pause    |20000                                                                                                                                                                      |
+|$res=    |CacheServerRemoteAccessJava|${WsdlFile};${CacheUserCertificate};${CacheUserPassword};${CacheTrustStore};${CacheTrustStorePassword};${CachedSystemName};${CachedAccountName}|
+|Check Cached Password                                                                                                                                                                |
+
+!|scenario|Get Password From Cache Via Perl                                                                                                                                                                                   |
+|$res=    |RunBatchGetOutput|cacheperl.bat;${RemoteLinuxMachine};${RemoteLinuxMachineUser};${RemoteLinuxMachineUserPassword};${WsdlFile};${CacheUserCertificate};${CacheUserPassword};${CachedSystemName};${CachedAccountName}|
+|Check Cached Password                                                                                                                                                                                                        |
+
+!|scenario|Get Password From Cache Via CSharp                                                                                                               |
+|$res=    |RunBatchGetOutput|cachegetpassword.bat;${CacheAppInterface};${CacheUserCertificate};${CacheUserPassword};${CachedSystemName};${CachedAccountName}|
+|Check Cached Password                                                                                                                                      |
+
+
+!|scenario|Get Password From Cache Teammate Via CSharp                                                                                                              |
+|$res=    |RunBatchGetOutput|cachegetpassword.bat;${CacheTeammateAppInterface};${CacheUserCertificate};${CacheUserPassword};${CachedSystemName};${CachedAccountName}|
+|Check Cached Password                                                                                                                                              |
+
+
+
+!|scenario            |Check Cached Password Old                                                                |
+|$res111=             |RunBatchGetOutput|cachecheckpassword.bat;${CachedSystemAddress};${CachedAccountName};$res|
+|Verify_Contain_OR_exp|$res111;;Return Code 0                                                                   |
+
+
+!|scenario        |Check Cached Password                                                                        |
+|$res111=         |RunBatchGetOutputFull|cachecheckpassword.bat;${CachedSystemAddress};${CachedAccountName};$res|
+|Verify_Contain_OR|$res111;;Return Code 0                                                                       |
+
+
+
+!|scenario        |Add Client Host|ClientHost                                 |
+|$res=            |GroovyWebDriver|cacheclienthost;${TPAMHost};add;@ClientHost|
+|Verify_Contain_OR|$res;;finished                                             |
+
+
+
+!|scenario            |Add Client Host 1         |ClientHost         |
+|clickAndWait         |link=Manage Client Hosts                      |
+|waitForElementPresent|id=NewHostButton                              |
+|click                |id=NewHostButton                              |
+|pause                |2000                                          |
+|keytype              |\b\b\b\b\b\b\b\b@ClientHost                   |
+|pause                |2000                                          |
+|type;                |id=Description            |AutoTest           |
+|pause                |2000                                          |
+|waitForElementPresent|id=SubmitChangesButton                        |
+|click                |id=SubmitChangesButton                        |
+|waitForTextPresent   |Cache Server Client Hosts Successfully Updated|
+
+
+!|scenario            |Add Client Host 2         |ClientHost         |
+|clickAndWait         |link=Manage Client Hosts                      |
+|waitForElementPresent|id=NewHostButton                              |
+|click                |id=NewHostButton                              |
+|pause                |2000                                          |
+|type;                |id=NetworkAddress         |@ClientHost        |
+|pause                |2000                                          |
+|type;                |id=Description            |AutoTest           |
+|pause                |2000                                          |
+|waitForElementPresent|id=SubmitChangesButton                        |
+|click                |id=SubmitChangesButton                        |
+|waitForTextPresent   |Cache Server Client Hosts Successfully Updated|
+
+
+
+!|scenario            |Delete Client Host      |ClientHost             |
+|clickAndWait         |link=Manage Client Hosts                        |
+|waitForElementPresent|id=CSClientHostID                               |
+|pause                |2000                                            |
+|select;              |id=CSClientHostID       |label=@ClientHost      |
+|click                |//select/option[contains(text(), "@ClientHost")]|
+|pause                |2000                                            |
+|waitForElementPresent|id=DeleteHostButton                             |
+|click                |id=DeleteHostButton                             |
+|getConfirmation                                                       |
+|pause                |2000                                            |
+|waitForElementPresent|id=SubmitChangesButton                          |
+|click                |id=SubmitChangesButton                          |
+|waitForTextPresent   |Cache Server Client Hosts Successfully Updated  |
+
+
+!|scenario         |Switch Client Host Assignment To Cache Server                    |ClientHost                    |
+|clickAndWait      |link=Manage Cache Servers                                                                       |
+|click             |id=Listing                                                                                      |
+|pause             |2000                                                                                            |
+|mouseDown         |//td[contains(text(),'${CacheServerName}')]                                                     |
+|pause             |2000                                                                                            |
+|click             |id=Hosts                                                                                        |
+|pause             |2000                                                                                            |
+|click             |//table[@id='CSHostsTable']//td[contains(text(),'@ClientHost')]/../td[3]/input[@type='checkbox']|
+|pause             |2000                                                                                            |
+|click             |id=bt_Save                                                                                      |
+|waitForTextPresent|Cache Server successfully updated                                                               |
+
+
+!|scenario         |Add Cache Server Permissions|ClientHost                                     |
+|clickAndWait      |link=Manage CS Permissions                                                  |
+|select;           |id=CSID                     |label=Cache*                                   |
+|pause             |3000                                                                        |
+|addSelection      |id=AccountList              ||label=${CachedSystemName}/${CachedAccountName}|
+|pause             |1000                                                                        |
+|click             |id=UserList                                                                 |
+|addSelection      |id=UserList                 ||label=*${CacheUserName}*                      |
+|pause             |1000                                                                        |
+|removeSelection   |id=CSHostList               ||label=Any Host                                |
+|pause             |1000                                                                        |
+|addSelection      |id=CSHostList               ||label=@ClientHost                             |
+|pause             |2100                                                                        |
+|click             |id=btnAddPermissions                                                        |
+|pause             |2100                                                                        |
+|click             |id=btnSave                                                                  |
+|waitForTextPresent|successfully updated                                                        |
+
+
+
+!|scenario         |Remove Cache Server Permissions                      |ClientHost                       |
+|clickAndWait      |link=Manage CS Permissions                                                             |
+|select;           |id=CSID                                              |label=Cache*                     |
+|pause             |3000                                                                                   |
+|click             |//table[@id='permissionsTable']/tbody/tr/td[contains(text(),'@ClientHost')]/../td/input|
+|pause             |3000                                                                                   |
+|click             |id=btnRemovePermissions                                                                |
+|pause             |1000                                                                                   |
+|click             |id=btnSave                                                                             |
+|waitForTextPresent|rows removed                                                                           |
+#|click             |//td/input/../../td[contains(text(),'@ClientHost')]|
+
+
+!|scenario            |Switch Account Assignment To Cache Server    |
+|clickAndWait         |link=Manage Cache Servers                    |
+|click                |id=Listing                                   |
+|pause                |1000                                         |
+|mouseDown            |//td[contains(text(),'${CacheServerName}')]  |
+|pause                |1000                                         |
+|click                |id=Accounts                                  |
+|waitForElementPresent|id=SystemNm                                  |
+|type;                |id=SystemNm       |${CachedSystemName}       |
+|type;                |id=AccountNm      |${CachedAccountName}      |
+|click                |//div[@id='accountsTabs']/ul/li[2]/a         |
+|pause                |2000                                         |
+|click                |//table[@id='acctTable']/tbody/tr/td[5]/input|
+|pause                |3000                                         |
+|click                |//table[@id='acctTable']/tbody/tr/td[6]/input|
+|pause                |1000                                         |
+|click                |id=bt_Save                                   |
+|waitForTextPresent   |Cache Server successfully updated            |
+|pause                |10000                                        |
+
+
+!|scenario        |Add system                                                                                                                                                                                                                                                           |
+|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${CachedSystemName} --NetworkAddress ${CachedSystemAddress} --PlatformName \"${CachedSystemPlatform}\" --FunctionalAccount ${CachedFuncAccountName} --FuncAcctCred \"${CachedFuncAccountPassword}\" --Timeout ${SystemTimeout}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                     |
+
+
+!|scenario        |Add account                                                                                                                                                                                                            |
+|$Months=         |getEval|var d = new Date();d.setMinutes(d.getMinutes()+1); d.setDate(d.getDate()+1);var s = d.getMonth()+1;if ((s + "").length == 1) s = "0" + s;else d.getMonth()+1;                                                  |
+|$Days=           |getEval|var d = new Date();d.setMinutes(d.getMinutes()+1); d.setDate(d.getDate()+1);var s = d.getDate(); if ((s + "").length == 1) s = "0" + s;else d.getDate();                                                       |
+|$Years=          |getEval|var d = new Date();d.setMinutes(d.getMinutes()+1); d.setDate(d.getDate()+1); d.getFullYear();                                                                                                                  |
+|$res=            |CLI    |${CLIBatch} AddAccount --System ${CachedSystemName} --AccountName ${CachedAccountName} --Password ${CachedAccountInitialPassword} --Description \"Cached System Account\" --NextChangeDate $Months/$Days/$Years|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                       |
+
+
+!|scenario        |Remove system                                   |
+|$res=            |CLI|${CLIBatch} DeleteSystem ${CachedSystemName}|
+|Verify_Contain_OR|$res;;successful                                |
+
+!| scenario       |Remove account                                                        |
+|$res=            |CLI|${CLIBatch} DeleteAccount ${CachedSystemName},${CachedAccountName}|
+|Verify_Contain_OR|$res;;successful                                                      |
+
+
+!|scenario|Open Browser and Login to TPAM         |
+|Open     |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+
+
+!|scenario|Close Browser|
+|stop                   |
+|pause    |5000         |
+
+!|scenario        |Reopen Browser and Login to TPAM                                                           |
+|pause            |5000                                                                                       |
+|start            |Slim Selenium Driver|${seleniumHost}|${seleniumPort}|${seleniumBrowser}|https://${TPAMHost}|
+|setTimeoutSeconds|${seleniumTimeout}                                                                         |
+|pause            |5000                                                                                       |
+|Open             |${TPAMURL}          |               |${TPAMAdmin}   |                  |${DefaultPwd}      |
+
+
+
+!|scenario        |Change Password                                                                                                                     |
+|$res=            |CLI|${CLIBatch} UpdateAccount --System ${CachedSystemName} --AccountName ${CachedAccountName} --AutoFlag M                          |
+|$res=            |CLI|${CLIBatch} UpdateAccount --System ${CachedSystemName} --AccountName ${CachedAccountName} --Password ${CachedAccountPasswordNew}|
+|Verify_Contain_OR|$res;;successful                                                                                                                    |
+
+
+!|scenario        |Get Password From Cache Via Perl With No Permissions                                                                                                                                                               |
+|pause            |300000                                                                                                                                                                                                             |
+|$res=            |RunBatchGetOutput|cacheperl.bat;${RemoteLinuxMachine};${RemoteLinuxMachineUser};${RemoteLinuxMachineUserPassword};${WsdlFile};${CacheUserCertificate};${CacheUserPassword};${CachedSystemName};${CachedAccountName}|
+|Verify_Contain_OR|$res;;No permission exists                                                                                                                                                                                         |
+
+
+!|scenario        |Get Password From Cache Teammate Via CSharp With No Permissions                                                                                          |
+|pause            |120000                                                                                                                                                   |
+|$res=            |RunBatchGetOutput|cachegetpassword.bat;${CacheTeammateAppInterface};${CacheUserCertificate};${CacheUserPassword};${CachedSystemName};${CachedAccountName}|
+|Verify_Contain_OR|$res;;No permission exists                                                                                                                               |
+
+
+
+!|scenario                   |Adding Cache Server Permissions|
+|Add Cache Server Permissions|${RemoteLinuxMachine}          |
+|Add Cache Server Permissions|${DispatcherAddress}           |
+|pause                       |30000                          |
+
+!|scenario    |Create Account on Cached System                                                                                                                                       |
+|accountAction|${CachedSystemPlatform};;create;;${CachedSystemAddress};;${CachedFuncAccountName};;${CachedFuncAccountPassword};;${CachedAccountName};;${CachedAccountInitialPassword}|
+
+!|scenario    |Delete Account on Cached System                                                                                                      |
+|accountAction|${CachedSystemPlatform};;delete;;${CachedSystemAddress};;${CachedFuncAccountName};;${CachedFuncAccountPassword};;${CachedAccountName}|
+
+!|scenario    |Change Account Password on Cached System                                                                                                                            |
+|accountAction|${CachedSystemPlatform};;password;;${CachedSystemAddress};;${CachedFuncAccountName};;${CachedFuncAccountPassword};;${CachedAccountName};;${CachedAccountPasswordNew}|
+
+
+!|scenario            |Add Cache User                             |
+|clickAndWait         |link=Add UserID                            |
+|waitForElementPresent|id=UserName                                |
+|pause                |5000                                       |
+|type;                |id=UserName           |${CacheUserName}    |
+|type;                |id=FirstName          |Yuri                |
+|type;                |id=LastName           |Kuniver             |
+|select;              |id=UType              |label=Cache User    |
+|click;               |id=rbCertPar                               |
+|type;                |id=certPassword       |${CacheUserPassword}|
+|type;                |id=certPasswordConfirm|${CacheUserPassword}|
+|pause                |5000                                       |
+|click                |id=SubmitChanges                           |
+|waitForTextPresent   |*User added successfully*                  |
+|click                |id=btnDownloadUserCert                     |
+|pause                |10000                                      |
+|click                |id=btnDownloadParCert                      |
+|pause                |10000                                      |
+#|runBatch             |movekey;${BrowserDownloadDir}\parrootca.crt;${PathToKeys}\parrootca.crt                    |
+#|runBatch             |movekey;${BrowserDownloadDir}\${CacheUserCertificate};${PathToKeys}\${CacheUserCertificate}|
+
+!|scenario        |Delete Cache User                          |
+|$res=            |CLI|${CLIBatch} DeleteUser ${CacheUserName}|
+|Verify_Contain_OR|$res;;successful                           |
+
+!|scenario   |Get Cache Server WSDL File                          |
+|clickAndWait|link=Manage Cache Servers                           |
+|click       |id=Listing                                          |
+|pause       |1000                                                |
+|mouseDown   |//td[contains(text(),'Y')]                          |
+|pause       |1000                                                |
+|click       |id=WSDL                                             |
+|pause       |1000                                                |
+|$WSDL=      |getText          |//textarea[@id='wsdlText']        |
+|$res=       |FitnesseVarToFile|$WSDL;;;;;Scripts\keys\${WsdlFile}|
+#|$res=    |RunBatchGetOutput|var2file.bat;$WSDL;${PathToKeys}\cache_new.wsdl|
+#|runBatch             |var2file;"$WSDL2";${PathToKeys}\cache_new.wsdl|
+#|$WSDL=              |getText   |//div[@id='wsdlTab']/div           |
+#|$WSDL2=          |getEval         |var i0 = "$WSDL"; i0.replace(/f/g,"QQQQ");|
+
+!|scenario|Tune Cache Server WSDL File                                        |
+|$res=    |RunBatchGetOutput|cachewsdl.bat;${CacheAppInterfaceIP};${WsdlFile};|
+
+
+!|scenario    |Tune Cache Server WSDL File Old                          |
+|clickAndWait |link=Manage Cache Servers                                |
+|click        |id=Listing                                               |
+|pause        |2000                                                     |
+|mouseDown    |//td[contains(text(),'Y')]                               |
+|pause        |2000                                                     |
+|click        |id=Details                                               |
+|pause        |2000                                                     |
+|$CacheAppInt=|getText          |//tr[2]/td[2]/input                    |
+|$res=        |RunBatchGetOutput|cachewsdl.bat;$CacheAppInt;${WsdlFile};|
+#|$CacheAppInt=              |getText   |//table/tbody/tr[2]/td[2]/input[@id='AINetworkAddress']           |
+#|$CacheAppInt=              |getText   ||
+
+
+!|scenario         |Switch Cache User Assignment To Cache Server                                                         |
+|clickAndWait      |link=Manage Cache Servers                                                                            |
+|click             |id=Listing                                                                                           |
+|pause             |1000                                                                                                 |
+|mouseDown         |//td[contains(text(),'${CacheServerName}')]                                                          |
+|pause             |1000                                                                                                 |
+|click             |id=Users                                                                                             |
+|pause             |1000                                                                                                 |
+|click             |//table[@id='CSUsersTable']//td[contains(text(),'${CacheUserName}')]/../td[4]/input[@type='checkbox']|
+|pause             |2000                                                                                                 |
+|click             |id=bt_Save                                                                                           |
+|waitForTextPresent|Cache Server successfully updated                                                                    |
+
+!|scenario|Prepare Truststore For Java Client To Cache Server                                                              |
+|$res=    |RunBatchGetOutput|cachetruststore.bat;${PathToKeys}\parrootca.crt;${CacheTrustStore};${CacheTrustStorePassword};|
+|runBatch |movekey;${CacheTrustStore};${PathToKeys}\${CacheTrustStore}                                                     |
+
+
+
+!|scenario         |Batch Update Cache Server Permissions|filename                          |                          |result                          |
+|$res =            |GroovyWebDriver                      |CachePermissionsByBatch;${TPAMHost};${TPAMAdmin};${DefaultPwd};${PathToBatch}@filename;@result|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                          |
+|Verify_Contain_OR |$res;;@result                                                                                                                       |
+
+
+!|scenario         |Export Cache Server Permissions                                                                                                |
+|$res =            |GroovyWebDriver  |CacheExportPermissions;${TPAMHost};${TPAMAdmin};${DefaultPwd};Csv                                            |
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                     |
+|Verify_Contain_OR |$res;;Csv button found and pressed                                                                                             |
+|pause             |5000                                                                                                                           |
+|$res=             |RunBatchGetOutput|checkexportcachepermissions;${BrowserDownloadDir};ExportCSPermissions.csv;${CacheServerName};${CacheTeammate}|
+|Verify_Contain_OR |$res;;${CacheServerName}                                                                                                       |
+|Verify_Contain_OR |$res;;${CacheTeammate}                                                                                                         |
+|runBatch          |DeleteFileByMask;${BrowserDownloadDir}ExportCSPermissions.csv;fake                                                             |
+|$res =            |GroovyWebDriver  |CacheExportPermissions;${TPAMHost};${TPAMAdmin};${DefaultPwd};Excel                                          |
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                     |
+|Verify_Contain_OR |$res;;Excel button found and pressed                                                                                           |
+|pause             |5000                                                                                                                           |
+|$res=             |RunBatchGetOutput|checkexportcachepermissions;${BrowserDownloadDir};ExportCSPermissions.xls;${CacheServerName};${CacheTeammate}|
+|Verify_Contain_OR |$res;;${CacheServerName}                                                                                                       |
+|Verify_Contain_OR |$res;;${CacheTeammate}                                                                                                         |
+|runBatch          |DeleteFileByMask;${BrowserDownloadDir}ExportCSPermissions.xls;fake                                                             |
+
+
+
+
+#### Old and tied #########
+
+!|scenario         |Add Cache Server Permissions Old|ClientHost                                     |
+|clickAndWait      |link=Manage Cache Servers                                                       |
+|click             |id=Listing                                                                      |
+|pause             |1000                                                                            |
+|mouseDown         |//td[contains(text(),'Y')]                                                      |
+|pause             |1000                                                                            |
+|click             |id=Permissions                                                                  |
+|pause             |1000                                                                            |
+|addSelection      |id=usersAcctList                ||label=${CachedSystemName}/${CachedAccountName}|
+|pause             |1000                                                                            |
+|addSelection      |id=usersUserList                ||label=${CacheUserName}*                       |
+|pause             |1000                                                                            |
+|click             |id=usersUserList                                                                |
+|pause             |1000                                                                            |
+|mouseDown         |//select[@id='usersUserList']/option                                            |
+|pause             |1000                                                                            |
+|removeSelection   |id=usersHostList                ||label=Any Host                                |
+|pause             |1000                                                                            |
+|addSelection      |id=usersHostList                ||label=@ClientHost                             |
+|pause             |1000                                                                            |
+|pause             |2100                                                                            |
+|click             |id=btn_AddToList                                                                |
+|waitForTextPresent|1 added                                                                         |
+|click             |id=bt_Save                                                                      |
+|waitForTextPresent|Cache Server successfully updated                                               |
+
+
+!|scenario         |Remove Cache Server Permissions Old                     |ClientHost                    |
+|clickAndWait      |link=Manage Cache Servers                                                              |
+|click             |id=Listing                                                                             |
+|pause             |1000                                                                                   |
+|mouseDown         |//td[contains(text(),'Y')]                                                             |
+|pause             |1000                                                                                   |
+|click             |id=Permissions                                                                         |
+|pause             |1000                                                                                   |
+|click             |//table[@id='permissionsTable']/tbody/tr/td[contains(text(),'@ClientHost')]/../td/input|
+|pause             |1000                                                                                   |
+|click             |id=btn_RemoveUsers                                                                     |
+|waitForTextPresent|1 removed                                                                              |
+|click             |id=bt_Save                                                                             |
+|waitForTextPresent|Cache Server successfully updated                                                      |
+
+!|scenario            |Batch Update Cache Server Permissions Old|filename     |     |result     |
+|clickAndWait         |link=Update Cache Server Permissions     |                               |
+|pause                |5000                                                                     |
+|click                |id=PAMUploadBtnSelect                                                    |
+|SWait                |browse.PNG                                                               |
+|SClick               |browse.PNG                                                               |
+|pause                |7000                                                                     |
+|SType                |${PathToBatch}@filename                                                  |
+|pause                |15000                                                                    |
+|SWaitMultiple        |open.PNG;open2.png                                                       |
+|SClickMultiple       |open.PNG;open2.png                                                       |
+|pause                |15000                                                                    |
+|SWait                |upload_small.PNG                                                         |
+|SClick               |upload_small.PNG                                                         |
+|pause                |5000                                                                     |
+|type;                |id=Comment2                              |update Cache Server Permissions|
+|click                |id=btnProcessFile                        |                               |
+|pause                |5000                                                                     |
+|waitForElementPresent|//tr[@id='6']                                                            |
+|pause                |30000                                                                    |
+|verifyText           |//div[@id='divBatchResults']/table       |             |@result          |
+|pause                |180000                                                                   |

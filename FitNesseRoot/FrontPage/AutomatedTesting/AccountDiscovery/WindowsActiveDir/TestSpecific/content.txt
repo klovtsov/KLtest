@@ -1,0 +1,100 @@
+#!|scenario    |Create Group w Account on System                                 |Account                                |                                |Group                                |
+#|accountAction|${SystemPlatform};;group;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;@Account;;${ManagedAccountPwd};;@Group;;${AutoDiscoveryAccount4};;${AutoDiscoveryGroup4};;${DomainDN}|
+
+#!|scenario    |Delete Group w Account on System                         |Account                         |                        |Group                        |
+#|accountAction|${SystemPlatform};;deletegrp;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;@Account;;@Group;;${AutoDiscoveryAccount4};;${AutoDiscoveryGroup4}|
+
+!|scenario        |Create Account on AD System|Account                              |with password                              |Password                              |
+|$res=            |PowerShellScript           |manageADusers.ps1 create ${SystemAddress} ${NETBIOSDomainName}\${FunctAcct} ${FunctAcctPwd} @Account @Password          |
+|Verify_Contain_OR|$res;;successful                                                                                                                                    |
+|$res=            |PowerShellScript           |manageADgroups.ps1 addmember ${SystemAddress} ${NETBIOSDomainName}\${FunctAcct} ${FunctAcctPwd} "Domain Admins" @Account|
+|Verify_Contain_OR|$res;;successful                                                                                                                                    |
+
+!|scenario                  |Delete Groups and Accounts on System|Account1||GroupName1||Account2||GroupName2|
+|Delete Account on AD System|@Account1                                                                      |
+|Delete Account on AD System|@Account2                                                                      |
+|Delete Groups on AD System |@GroupName1                         |        |@GroupName2                      |
+
+
+!|scenario        |Delete Groups on AD System|GroupName1                         |                         |GroupName2                         |
+|$res=            |PowerShellScript          |manageADgroups.ps1 delete ${dcName} ${NETBIOSDomainName}\${FunctAcct} ${FunctAcctPwd} @GroupName1|
+|Verify_Contain_OR|$res;;successful                                                                                                            |
+|$res=            |PowerShellScript          |manageADgroups.ps1 delete ${dcName} ${NETBIOSDomainName}\${FunctAcct} ${FunctAcctPwd} @GroupName2|
+|Verify_Contain_OR|$res;;successful                                                                                                            |
+
+
+!|scenario                  |Create Groups with Accounts on System|Account1     |           |GroupName1|         |Account2||GroupName2|
+|Create Account on AD System|@Account1                            |with password|acntpwd                                              |
+|Create Account on AD System|@Account2                            |with password|acntpwd                                              |
+|Manage Groups on AD System |@Account1                            |             |@GroupName1|          |@Account2|        |@GroupName2|
+
+
+!|scenario        |Manage Groups on AD System|accntName1          |          |GroupName1          |         |accntName2         |         |GroupName2         |
+|$res=            |PowerShellScript          |manageADgroups.ps1 create ${dcName} ${NETBIOSDomainName}\${FunctAcct} ${FunctAcctPwd} @GroupName1               |
+|Verify_Contain_OR|$res;;successful                                                                                                                           |
+|$res=            |PowerShellScript          |manageADgroups.ps1 addmember ${dcName} ${NETBIOSDomainName}\${FunctAcct} ${FunctAcctPwd} @GroupName1 @accntName1|
+|Verify_Contain_OR|$res;;successful                                                                                                                           |
+|$res=            |PowerShellScript          |manageADgroups.ps1 create ${dcName} ${NETBIOSDomainName}\${FunctAcct} ${FunctAcctPwd} @GroupName2               |
+|Verify_Contain_OR|$res;;successful                                                                                                                           |
+|$res=            |PowerShellScript          |manageADgroups.ps1 addmember ${dcName} ${NETBIOSDomainName}\${FunctAcct} ${FunctAcctPwd} @GroupName2 @accntName2|
+|Verify_Contain_OR|$res;;successful                                                                                                                           |
+|$res=            |PowerShellScript          |manageADgroups.ps1 addmember ${dcName} ${NETBIOSDomainName}\${FunctAcct} ${FunctAcctPwd} @GroupName1 @GroupName2|
+|Verify_Contain_OR|$res;;successful                                                                                                                           |
+
+
+
+!|scenario                         |New Account Action                                                                                  |
+|Remove account                    |${AutoDiscoveryAccount1}                                                                            |
+|Set AccDiscovery profile to System|${ProfileName}          ||${SystemName}                                                             |
+|Run AccDiscovery                                                                                                                       |
+|Check results                     |${AutoDiscoveryAccount1}||${SystemName}                                                             |
+|Check results                     |${AutoDiscoveryAccount2}||${SystemName}                                                             |
+|Check results                     |${ServiceAccount}       ||${SystemName}                                                             |
+|Check results                     |${TaskAccount}          ||${SystemName}                                                             |
+|Check results                     |${AutoDiscoveryAccount3}||${SystemName}                                                             |
+|Check results                     |${AutoDiscoveryAccount4}||${SystemName}                                                             |
+|Logout                                                                                                                                 |
+|pause                             |60000                                                                                               |
+|Check Mail                        |${MailServer}           ||${NewAccountDiscoveryEmail1}||password||${FromMail}||${AADNAN}||${AADNANb}|
+|Check Mail                        |${MailServer}           ||${SystemEMail}              ||password||${FromMail}||${AADNAN}||${AADNANb}|
+|Check Mail                        |${MailServer}           ||${FuncAccEMail}             ||password||${FromMail}||${AADNAN}||${AADNANb}|
+|Login                             |${TPAMURL}              ||${TPAMAdmin}                ||${DefaultPwd}                               |
+
+
+!|scenario                            |Create Environment                                                                                                                                               |
+|Create Account on AD System          |${AutoDiscoveryAccount3}       |with password            |"${ManagedAccountPwd}"                                                                                 |
+|pause                                |20000                                                                                                                                                            |
+|$uid=                                |RunBatchGetOutput              |getuid.bat;${AutoDiscoveryAccount3};${SystemAddress};${FunctAcct};${FunctAcctPwd};win                                            |
+|Create Account on AD System          |${ServiceAccount}              |with password            |"${ManagedAccountPwd}"                                                                                 |
+|Create Account on AD System          |${TaskAccount}                 |with password            |"${ManagedAccountPwd}"                                                                                 |
+|Create Service which is run by       |.\${ServiceAccount}            |and run under password is|${ManagedAccountPwd}      |on                       |${SystemAddress}                                  |
+|Create Scheduled Task                |${TaskName}                    |which is run under       |${HostName}\${TaskAccount}|and run under password is|${ManagedAccountPwd}    |on|${SystemAddress}      |
+|Create Account on AD System          |${ManagedAccount1}             |with password            |"${ManagedAccountPwd}"                                                                                 |
+|Create Groups with Accounts on System|${AutoDiscoveryAccount2}       |                         |${AutoDiscoveryGroup2}    |                         |${AutoDiscoveryAccount4}|  |${AutoDiscoveryGroup4}|
+|Create Mailbox                       |${NewAccountDiscoveryEmail1}   |                         |password                                                                                               |
+|Create Mailbox                       |${DeleteAccountDiscoveryEmail1}|                         |password                                                                                               |
+|Create Mailbox                       |${SystemEMail}                 |                         |password                                                                                               |
+|Create Mailbox                       |${FuncAccEMail}                |                         |password                                                                                               |
+|Create Template                                                                                                                                                                                        |
+|Create Account Discovery Profile                                                                                                                                                                       |
+
+
+!|scenario                           |Delete Environment                                                                                               |
+|Delete Mails                                                                                                                                          |
+|Delete Mailbox                      |${NewAccountDiscoveryEmail1}                                                                                     |
+|Delete Mailbox                      |${DeleteAccountDiscoveryEmail1}                                                                                  |
+|Delete Mailbox                      |${SystemEMail}                                                                                                   |
+|Delete Mailbox                      |${FuncAccEMail}                                                                                                  |
+|Set AccDiscovery profile to System  |No Account Discovery Profile selected|  |${SystemName}                                                           |
+|Remove system                       |${SystemName}                                                                                                    |
+|Delete Account Discovery Profile    |${ProfileName}                                                                                                   |
+|Remove system                       |${TemplateName}                                                                                                  |
+|Delete Groups and Accounts on System|${AutoDiscoveryAccount2}             |  |${AutoDiscoveryGroup2}||${AutoDiscoveryAccount4}||${AutoDiscoveryGroup4}|
+|Delete Scheduled Task               |${TaskName}                          |on|${SystemAddress}                                                        |
+|pause                               |60000                                                                                                            |
+|Delete Account on AD System         |${TaskAccount}                                                                                                   |
+|Delete Account on AD System         |${AutoDiscoveryAccount3}                                                                                         |
+|Delete Service on                   |${SystemAddress}                                                                                                 |
+|pause                               |60000                                                                                                            |
+|Delete Account on AD System         |${ServiceAccount}                                                                                                |
+|RunBatchGetOutput                   |CleanupSession;${SystemAddress};${FunctAcct};${FunctAcctPwd};${TaskAccount}                                      |

@@ -1,0 +1,51 @@
+!contents
+
+
+!|scenario            |Create Command|commandName||commandText||workingDir|
+|waitForElementPresent|link=Command Management                            |
+|clickAndWait         |link=Command Management                            |
+|waitForElementPresent|id=NewCmdButton                                    |
+|click                |id=NewCmdButton                                    |
+|pause                |1000                                               |
+|type;                |id=CmdName    |@commandName                        |
+|type;                |id=CmdText    |@commandText                        |
+|type;                |id=WorkingDir |@workingDir                         |
+|type;                |id=CmdDesc    |@commandName description            |
+|click                |id=SaveChangesButton                               |
+|waitForTextPresent   |saved successfully                                 |
+|click                |id=ProxyTypes                                      |
+|waitForElementPresent|id=cb_PT_1                                         |
+|click                |id=cb_PT_1                                         |
+|pause                |1000                                               |
+|click                |id=SaveChangesButton                               |
+|waitForTextPresent   |saved successfully                                 |
+
+
+!|Scenario         |Run Command                                                  |
+|Open Session      |${Requestor}               ||${SystemName}||${ManagedAccount}|
+|Check Notification|${NotificationEmailSubject}||${NotificationEmailBody}        |
+
+
+
+!|scenario            |Open Session         |requestorName                                |                                             |systemName                               |                               |accountName                               |
+|pause                |${ApplyNewPoliciesInterval}                                                                                                                                                                                                           |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --AccessPolicyName \"${PCMRequestorPolicyName}\" --CommandName ${CommandName} --RequestNotes test|
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                                                                                                       |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                                                                                                            |
+|$res=                |CLI                  |${CLIBatch2} ApproveSessionRequest --RequestID $RequestID --Comment test                                                                                                                                        |
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                                                                                                       |
+|Login                |${TPAMURL}           |                                             |@requestorName                               |                                         |${UserPwd}                                                                |
+|pause                |5000                                                                                                                                                                                                                                  |
+|click                |id=CurrentRequests                                                                                                                                                                                                                    |
+|waitForElementPresent|link=$RequestID                                                                                                                                                                                                                       |
+|clickAndWait         |link=$RequestID                                                                                                                                                                                                                       |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                                                                                                 |
+|click                |id=StartSessionButton                                                                                                                                                                                                                 |
+|pause                |60000                                                                                                                                                                                                                                 |
+|type;                |id=ResponseComment   |cancel                                                                                                                                                                                                          |
+|typeKeys;            |id=ResponseComment   |request                                                                                                                                                                                                         |
+|click                |id=SubmitChanges                                                                                                                                                                                                                      |
+|pause                |15000                                                                                                                                                                                                                                 |
+#|waitForTextPresent   |*The response * was submitted successfully*|
+#|Request Session      |@systemName          |                             |@accountName                 |                         |@requestorName                              |
+#|$RequestID=          |get_session_RequestID|$res                                                                                                                              |

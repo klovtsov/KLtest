@@ -1,0 +1,43 @@
+!include -c <AutoTestsWebDrv.ReviewScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+!3 Preparing stage
+!*> Create systems, accounts and set permissions
+!|script                                                                                                                                                                                                                  |
+|Add system     |${FirstSystemName} |with address|${FirstSystemAddress}|platform    |Linux         |managed by         |${FirstFunctAcct}        |additional parameters        |-functAcctPwd ${FirstFunctAcctPwd}        |
+|Add system     |${SecSystemName}   |with address|${SecSystemAddress}  |platform    |Linux         |managed by         |${SecFunctAcct}          |additional parameters        |-functAcctPwd ${SecFunctAcctPwd}          |
+|Add account    |${FirstManagedAcct}|on system   |${FirstSystemName}   |with options|-MinimumApprovers 1 -ReleaseDuration 30 -ReviewerType Any -ReviewCount 1 -Password ${FirstManagedAcctPwd}                            |
+|Add Account    |${SecManagedAcct}  |on system   |${SecSystemName}     |with options|-MinimumApprovers 1 -ReleaseDuration 30 -ReviewerType Any -ReviewCount 1 -Password ${SecManagedAcctPwd}                              |
+|Enable PSM for |${FirstManagedAcct}|on system   |${FirstSystemName}   |with options|-proxyType "SSH - Automatic Login Using Password" -minApprovers 1 -reviewCount 1 -DefaultSessionDuration 120 -recordingRequiredFlag N|
+|Enable PSM for |${SecManagedAcct}  |on system   |${SecSystemName}     |with options|-proxyType "SSH - Automatic Login Using Password" -minApprovers 1 -reviewCount 1 -DefaultSessionDuration 120 -recordingRequiredFlag N|
+|Set Permissions|"PSM Requestor"    |on system   |${FirstSystemName}   |for user    |${Requestor}                                                                                                                         |
+|Set Permissions|"PSM Requestor"    |on system   |${SecSystemName}     |for user    |${Requestor}                                                                                                                         |
+|Set Permissions|"PSM Approver"     |on system   |${FirstSystemName}   |for user    |${Approver}                                                                                                                          |
+|Set Permissions|"PSM Approver"     |on system   |${SecSystemName}     |for user    |${Approver}                                                                                                                          |
+|Set Permissions|"PSM Reviewer"     |on system   |${FirstSystemName}   |for user    |${Reviewer}                                                                                                                          |
+|Set Permissions|"PSM Reviewer"     |on system   |${SecSystemName}     |for user    |${Reviewer}                                                                                                                          |
+*!
+!* Create, approve and release  multi-account session request
+!|script                                                                                      |
+|Create session request by       |${Requestor}|for accounts|${prefix}*|from systems|${prefix}*|
+|Get Next Request ID                                                                          |
+|Approve session multi-request by|${Approver}                                                 |
+|Open session with RequestID     |$RequestID                                                  |
+|Open session with RequestID     |$FollowingReq                                               |
+|Cancel multi session request by |${Requestor}                                                |
+
+
+*!
+!3 Review requests
+!|script                                                                       |
+|Check Session Review Status              |${Reviewer}||$RequestID   ||Overdue |
+|Submit Comment for session multi request |${Reviewer}||$RequestID             |
+|Check Session Review Status              |${Reviewer}||$FollowingReq||Overdue |
+|Complete Review for session multi request|${Reviewer}||$RequestID             |
+|Check Session Review Status              |${Reviewer}||$RequestID   ||Complete|
+
+
+!3 Remove All
+!|script                         |
+|Delete System|${FirstSystemName}|
+|Delete System|${SecSystemName}  |

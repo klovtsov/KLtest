@@ -1,0 +1,32 @@
+!define ManagedAccount {abaldin}
+!define testUser {${prefix}Apprvr}
+!define firstGroupName {${prefix}Apprvrs}
+!define groupDescription {Test}
+!define userPolicy {"PPM Requestor"}
+!define groupPolicy {PPM Approver}
+
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+
+!*> Prepare
+!|script                    |
+|Add User |${testUser}      |
+|Add Group|${firstGroupName}|
+*!
+
+!|script                                                                                                                                                                                                          |
+|Add account            |${ManagedAccount}                                                |on system      |${TemplateName}                    |with options|-MinimumApprovers 2                                   |
+|Set Permissions        |${userPolicy}                                                    |on  account    |${ManagedAccount}                  |from        |${TemplateName}    |for user     |${testUser}         |
+|Set Permissions        |"${groupPolicy}"                                                 |on  account    |${ManagedAccount}                  |from        |${TemplateName}    |for group    |${firstGroupName}   |
+|pause                  |${ApplyNewPoliciesInterval}                                                                                                                                                              |
+|Try to Add system      |${newSystemName}                                                 |with parameters|-templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully|
+|List Policies by filter|-AccessPolicyName ${userPolicy} -propsToList username,accountName|contains       |${testUser}.*${ManagedAccount}                                                                         |
+|List Policies by filter|-accountName ${ManagedAccount} -groupName ${firstGroupName}      |contains       |${firstGroupName}\s+${groupPolicy}                                                                     |
+|Delete System          |${newSystemName}                                                                                                                                                                         |
+
+!*> Clean user and groups
+!|script                                                           |
+|Delete User           |${testUser}                                |
+|Delete Group          |${firstGroupName}                          |
+|Delete managed account|${ManagedAccount}|on system|${TemplateName}|
+*!

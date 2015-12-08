@@ -1,0 +1,8 @@
+!include <AutoTestsWebDrv.PlatformsTesting.HpuxTrusted
+!define PpmScheduleTimeWindow {150000}
+!include -c <DotNetScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.HpuxShadow.PlatformSpecific
+!include -c <AutoTestsWebDrv.PlatformsTesting.PlatformSpecific.PasswordRuleNoMoreThanEightCharacters
+!include -c >PlatformSpecific
+
+

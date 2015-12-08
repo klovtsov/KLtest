@@ -1,0 +1,5 @@
+!define content {${ATPath}\PlatformsTesting\OracleEleven\content.txt}
+
+
+!include -c <AutomatedTesting.PlatformsTesting.OracleEleven 
+!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

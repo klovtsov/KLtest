@@ -1,0 +1,692 @@
+!contents
+
+
+
+#!| scenario                |Test UserSSHKey                |
+#|Retreive Initial Keys                                     |
+#|Retreive Initial Keys for Web-enabled Users               |
+#|CLI Users Can Retrieve Their Own Keys                     |
+#|CLI Admin Users Only Can Retrieve Other Users Keys        |
+#|CLI Admins Can Regenerate Keys for Web-disabled Users Only|
+#|CLI Web-enabled Users Only Can Regenerate Their Own Keys  |
+#|Check CLIA Functionality                                  |
+
+
+
+
+!| scenario                |Test UserSSHKey                |
+|Retreive Initial Keys                                     |
+|Retreive Initial Keys for Web-enabled Users               |
+|CLI Users Can Retrieve Their Own Keys                     |
+|API Users Can Retrieve Their Own Keys                     |
+|CLI Admin Users Only Can Retrieve Other Users Keys        |
+|API Admin Users Only Can Retrieve Other Users Keys        |
+|CLI Admins Can Regenerate Keys for Web-disabled Users Only|
+|API Admins Can Regenerate Keys for Web-disabled Users Only|
+|CLI Web-enabled Users Only Can Regenerate Their Own Keys  |
+|API Web-enabled Users Only Can Regenerate Their Own Keys  |
+|CLI Users Can Retrieve Their Own Keys                     |
+|API Users Can Retrieve Their Own Keys                     |
+|Check CLIA Functionality                                  |
+
+
+
+!| scenario  |Prepare Environment  |
+|Create Sys-Admin Users            |
+|Create Users                      |
+|Change Web-enabled Users Passwords|
+#|Create Users List                                         |
+#|Login             |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+#|pause             |15000                                  |
+#|Batch Import Users|SSH_Users_List.txt                     |
+
+
+!| scenario|Clear Environment|
+|Remove Sys-Admin Users      |
+|Delete Users                |
+|Remove Keys                 |
+#|Login             |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+#|pause             |15000                                  |
+#|Batch Delete Users|SSH_Users_List.txt                     |
+
+
+!| scenario       |Get Error Attempting Retrieve CLI Key by CLI|byUser          |         |forUser         |         |doRegenerate         |         |expectedResult         |
+|$res=            |CLI                                         |-i @byUser.ppk -C @byUser@${TPAMHost} UserSSHKey --UserName @forUser --KeyType CLI --Regenerate @doRegenerate|
+|Verify_Contain_OR|$res;;@expectedResult                                                                                                                                     |
+
+
+!| scenario       |Get Error Attempting Retrieve API Key by CLI|byUser          |         |forUser         |         |doRegenerate         |         |expectedResult         |
+|$res=            |CLI                                         |-i @byUser.ppk -C @byUser@${TPAMHost} UserSSHKey --UserName @forUser --KeyType API --Regenerate @doRegenerate|
+|Verify_Contain_OR|$res;;@expectedResult                                                                                                                                     |
+
+
+!| scenario       |Get Error Attempting Retrieve CLIA Key by CLIA|byUser          |          |forUser         |         |doRegenerate         |         |expectedResult         |
+|$res=            |CLI                                           |-i @byUser.ppk -C @byUser@${TPAMHost} UserSSHKey --UserName @forUser --KeyType CLIA --Regenerate @doRegenerate|
+|Verify_Contain_OR|$res;;@expectedResult                                                                                                                                        |
+
+
+
+!| scenario         |Get User CLI Key by CLI     |byUser     |     |forUser     |     |doRegenerate     |     |expectedResult     |
+|CLItoFile          |-i @byUser.ppk -C @byUser@${TPAMHost} UserSSHKey --UserName @forUser --KeyType CLI --Regenerate @doRegenerate|
+|runBatch           |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp                                                      |
+|$res=              |RunBatchGetOutput           |EchoFileSize.bat;${ProjDir}\cliout.tmp;fake                                     |
+|Check Key File Size|${ProjDir}\cliout.tmp                                                                                        |
+|runBatch           |movekey;${ProjDir}\cliout.tmp;${PathToKeys}@forUser.ppk                                                      |
+|Generate Plink Key |@forUser                                                                                                     |
+
+!| scenario         |Get User API Key by CLI     |byUser     |     |forUser     |     |doRegenerate     |     |expectedResult     |
+|CLItoFile          |-i @byUser.ppk -C @byUser@${TPAMHost} UserSSHKey --UserName @forUser --KeyType API --Regenerate @doRegenerate|
+|runBatch           |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp                                                      |
+|$res=              |RunBatchGetOutput           |EchoFileSize.bat;${ProjDir}\cliout.tmp;fake                                     |
+|Check Key File Size|${ProjDir}\cliout.tmp                                                                                        |
+|runBatch           |movekey;${ProjDir}\cliout.tmp;${PathToKeys}@forUser                                                          |
+
+
+!| scenario         |Get User CLIA Key by CLIA     |byUser     |     |forUser     |     |doRegenerate     |     |expectedResult    |
+|CLItoFile          |-i @byUser.ppk -C @byUser@${TPAMHost} UserSSHKey --UserName @forUser --KeyType CLIA --Regenerate @doRegenerate|
+|runBatch           |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp                                                       |
+|$res=              |RunBatchGetOutput             |EchoFileSize.bat;${ProjDir}\cliout.tmp;fake                                    |
+|Check Key File Size|${ProjDir}\cliout.tmp                                                                                         |
+|runBatch           |movekey;${ProjDir}\cliout.tmp;${PathToKeys}@forUser.ppk                                                       |
+|Generate Plink Key |@forUser                                                                                                      |
+
+!| scenario|Get Error Attempting Retrieve CLI Key by API|byUser||forUser||doRegenerate||expectedResult|
+|runBatch  |PerlAPIUserSSHKey;@byUser;@byUser;${TPAMHost};userSSHKey;@forUser;CLI;@doRegenerate       |
+|runBatch  |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp                                   |
+
+
+#!| scenario|Get Error Attempting Retrieve CLI Key by API|byUser||forUser||doRegenerate||expectedResult|
+#|runBatch  |NETAPIUserSSHKey;${TPAMHost};@byUser;@byUser;@forUser;CLI;@doRegenerate                               |
+#|runBatch  |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp                                   |
+
+
+!| scenario|Get Error Attempting Retrieve API Key by API|byUser||forUser||doRegenerate||expectedResult|
+|runBatch  |PerlAPIUserSSHKey;@byUser;@byUser;${TPAMHost};userSSHKey;@forUser;API;@doRegenerate       |
+|runBatch  |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp                                   |
+
+
+#!| scenario|Get Error Attempting Retrieve API Key by API|byUser||forUser||doRegenerate||expectedResult|
+#|runBatch  |NETAPIUserSSHKey;${TPAMHost};@byUser;@byUser;@forUser;API;@doRegenerate                               |
+#|runBatch  |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp                                   |
+
+
+!| scenario         |Test API            |byUser   |   |forUser   |  |doRegenerate  |  |expectedResult  |
+|runBatch           |PerlAPIUserSSHKey;@byUser;@byUser;${TPAMHost};userSSHKey;@forUser;API;@doRegenerate|
+|runBatch           |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp                            |
+|$res=              |RunBatchGetOutput   |EchoFileSize.bat;${ProjDir}\cliout.tmp;fake                   |
+|Check Key File Size|${ProjDir}\cliout.tmp                                                              |
+|runBatch           |movekey;${ProjDir}\cliout.tmp;${PathToKeys}@forUser                                |
+
+#!| scenario|Test API |byUser | |forUser | |doRegenerate||expectedResult|
+#|runBatch  |NETAPIUserSSHKey;${TPAMHost};@byUser;@byUser;@forUser;API;@doRegenerate|
+#|runBatch  |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp    |
+
+
+
+!| scenario         |Get User CLI Key by API  |byUser  |  |forUser  |  |doRegenerate  | |expectedResult |
+|runBatch           |PerlAPIUserSSHKey;@byUser;@byUser;${TPAMHost};userSSHKey;@forUser;CLI;@doRegenerate|
+|runBatch           |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp                            |
+|$res=              |RunBatchGetOutput        |EchoFileSize.bat;${ProjDir}\cliout.tmp;fake              |
+|Check Key File Size|${ProjDir}\cliout.tmp                                                              |
+|runBatch           |movekey;${ProjDir}\cliout.tmp;${PathToKeys}@forUser.ppk                            |
+|Generate Plink Key |@forUser                                                                           |
+
+
+#!| scenario        |Get User CLI Key by API|byUser||forUser||doRegenerate||expectedResult|
+#|runBatch          |NETAPIUserSSHKey;${TPAMHost};@byUser;@byUser;@forUser;CLI;@doRegenerate          |
+#|runBatch          |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp              |
+#|runBatch          |movekey;${ProjDir}\cliout.tmp;${PathToKeys}@forUser.ppk              |
+#|Generate Plink Key|@forUser                                                             |
+
+
+!| scenario         |Get User API Key by API  |byUser  |  |forUser  |  |doRegenerate  | |expectedResult |
+|runBatch           |PerlAPIUserSSHKey;@byUser;@byUser;${TPAMHost};userSSHKey;@forUser;API;@doRegenerate|
+|runBatch           |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp                            |
+|$res=              |RunBatchGetOutput        |EchoFileSize.bat;${ProjDir}\cliout.tmp;fake              |
+|Check Key File Size|${ProjDir}\cliout.tmp                                                              |
+|runBatch           |movekey;${ProjDir}\cliout.tmp;${PathToKeys}@forUser                                |
+
+
+#!| scenario|Get User API Key by API|byUser||forUser||doRegenerate||expectedResult|
+#|runBatch  |NETAPIUserSSHKey;${TPAMHost};@byUser;@byUser;@forUser;API;@doRegenerate          |
+#|runBatch  |CheckOutputFile;"@expectedResult";${ProjDir}\cliout.tmp              |
+#|runBatch  |movekey;${ProjDir}\cliout.tmp;${PathToKeys}@forUser                  |
+
+
+!| scenario           |Get Web-enabled Users CLI Keys|userName                                         |
+|Login                |${TPAMURL}                    |       |@userName       |       |${UserPwd}      |
+|pause                |5000                                                                            |
+|clickAndWait         |link=User Details                                                               |
+|waitForElementPresent|id=ResetCliKey                                                                  |
+|click                |id=ResetCliKey                                                                  |
+|pause                |30000                                                                           |
+|click                |id=GetCliKey                                                                    |
+|pause                |8000                                                                            |
+|$res=                |RunBatchGetOutput             |EchoFileSize.bat;${BrowserDownloadDir}id_dsa;fake|
+|Check Key File Size  |${BrowserDownloadDir}id_dsa                                                     |
+|runBatch             |movekey;${BrowserDownloadDir}id_dsa;${PathToKeys}@userName.ppk                  |
+|Show Desktop    |
+|Generate Plink Key   |@userName                                                                       |
+
+
+
+!| scenario           |Get Web-enabled Users API Keys|userName                                         |
+|Login                |${TPAMURL}                    |       |@userName       |       |${UserPwd}      |
+|pause                |5000                                                                            |
+|clickAndWait         |link=User Details                                                               |
+|waitForElementPresent|id=ResetApiKey                                                                  |
+|click                |id=ResetApiKey                                                                  |
+|pause                |30000                                                                           |
+|click                |id=GetApiKey                                                                    |
+|pause                |8000                                                                            |
+|$res=                |RunBatchGetOutput             |EchoFileSize.bat;${BrowserDownloadDir}id_dsa;fake|
+|Check Key File Size  |${BrowserDownloadDir}id_dsa                                                     |
+|runBatch             |movekey;${BrowserDownloadDir}id_dsa;${PathToKeys}@userName                      |
+
+
+
+
+
+
+!| scenario                                  |Retreive Initial Keys                                                              |
+|Get User API Key by CLI                     |${InitialAdmin}||${ApiAdmin}        ||N||BEGIN DSA PRIVATE KEY                     |
+|Get User API Key by CLI                     |${InitialAdmin}||${ApiAuditor}      ||N||BEGIN DSA PRIVATE KEY                     |
+|Get Error Attempting Retrieve API Key by CLI|${InitialAdmin}||${ApiBasicWeb}     ||N||has web access and must retrieve their own|
+|Get Error Attempting Retrieve CLI Key by CLI|${InitialAdmin}||${CliAdminWeb}     ||N||has web access and must retrieve their own|
+|Get User CLI Key by CLI                     |${InitialAdmin}||${CliApiAdmin}     ||N||BEGIN DSA PRIVATE KEY                     |
+|Get User API Key by CLI                     |${InitialAdmin}||${CliApiAdmin}     ||N||BEGIN DSA PRIVATE KEY                     |
+|Get Error Attempting Retrieve API Key by CLI|${InitialAdmin}||${CliApiAuditorWeb}||N||has web access and must retrieve their own|
+|Get User CLI Key by CLI                     |${InitialAdmin}||${CliApiUserAdm}   ||N||BEGIN DSA PRIVATE KEY                     |
+|Get User API Key by CLI                     |${InitialAdmin}||${CliApiUserAdm}   ||N||BEGIN DSA PRIVATE KEY                     |
+|Get User CLI Key by CLI                     |${InitialAdmin}||${CliBasic}        ||N||BEGIN DSA PRIVATE KEY                     |
+|Get Error Attempting Retrieve CLI Key by CLI|${InitialAdmin}||${CliUserAdmWeb}   ||N||has web access and must retrieve their own|
+
+
+
+!| scenario                        |Retreive Initial Keys for Web-enabled Users|
+|Get Web-enabled Users CLI Keys    |${CliAdminWeb}                             |
+|Get Web-enabled Users CLI Keys    |${CliApiAuditorWeb}                        |
+|Get Web-enabled Users CLI Keys    |${CliUserAdmWeb}                           |
+|Get Web-enabled Users API Keys    |${ApiBasicWeb}                             |
+|Get Web-enabled Users API Keys    |${CliApiAuditorWeb}                        |
+|Get Web-enabled Sys-Admin CLI Keys|${CliSysAdmWeb}                            |
+
+
+
+!| scenario             |CLI Users Can Retrieve Their Own Keys                             |
+|Get User CLI Key by CLI|${CliAdminWeb}     ||${CliAdminWeb}     ||N||BEGIN DSA PRIVATE KEY|
+|Get User CLI Key by CLI|${CliApiAdmin}     ||${CliApiAdmin}     ||N||BEGIN DSA PRIVATE KEY|
+|Get User CLI Key by CLI|${CliApiAuditorWeb}||${CliApiAuditorWeb}||N||BEGIN DSA PRIVATE KEY|
+|Get User API Key by CLI|${CliApiUserAdm}   ||${CliApiUserAdm}   ||N||BEGIN DSA PRIVATE KEY|
+|Get User CLI Key by CLI|${CliBasic}        ||${CliBasic}        ||N||BEGIN DSA PRIVATE KEY|
+|Get User CLI Key by CLI|${CliUserAdmWeb}   ||${CliUserAdmWeb}   ||N||BEGIN DSA PRIVATE KEY|
+
+
+!| scenario             |API Users Can Retrieve Their Own Keys                             |
+|Get User API Key by API|${ApiAdmin}        ||${ApiAdmin}        ||N||BEGIN DSA PRIVATE KEY|
+|Get User API Key by API|${ApiAuditor}      ||${ApiAuditor}      ||N||BEGIN DSA PRIVATE KEY|
+|Get User API Key by API|${ApiBasicWeb}     ||${ApiBasicWeb}     ||N||BEGIN DSA PRIVATE KEY|
+|Get User API Key by API|${CliApiAdmin}     ||${CliApiAdmin}     ||N||BEGIN DSA PRIVATE KEY|
+|Get User API Key by API|${CliApiAuditorWeb}||${CliApiAuditorWeb}||N||BEGIN DSA PRIVATE KEY|
+|Get User CLI Key by API|${CliApiUserAdm}   ||${CliApiUserAdm}   ||N||BEGIN DSA PRIVATE KEY|
+
+
+
+!| scenario                                  |CLI Admin Users Only Can Retrieve Other Users Keys                 |
+|Get User CLI Key by CLI                     |${CliAdminWeb}     ||${CliBasic}||N||BEGIN DSA PRIVATE KEY         |
+|Get User CLI Key by CLI                     |${CliApiAdmin}     ||${CliBasic}||N||BEGIN DSA PRIVATE KEY         |
+|Get Error Attempting Retrieve CLI Key by CLI|${CliApiAuditorWeb}||${CliBasic}||N||You may only retrieve your own|
+|Get Error Attempting Retrieve CLI Key by CLI|${CliApiUserAdm}   ||${CliBasic}||N||You may only retrieve your own|
+|Get User CLI Key by CLI                     |${CliBasic}        ||${CliBasic}||N||BEGIN DSA PRIVATE KEY         |
+|Get Error Attempting Retrieve CLI Key by CLI|${CliUserAdmWeb}   ||${CliBasic}||N||You may only retrieve your own|
+
+
+!| scenario                                  |API Admin Users Only Can Retrieve Other Users Keys                      |
+|Get User API Key by API                     |${ApiAdmin}        ||${CliApiUserAdm}||N||BEGIN DSA PRIVATE KEY         |
+|Get Error Attempting Retrieve API Key by API|${ApiAuditor}      ||${CliApiUserAdm}||N||You may only retrieve your own|
+|Get Error Attempting Retrieve API Key by API|${ApiBasicWeb}     ||${CliApiUserAdm}||N||You may only retrieve your own|
+|Get User API Key by API                     |${CliApiAdmin}     ||${CliApiUserAdm}||N||BEGIN DSA PRIVATE KEY         |
+|Get Error Attempting Retrieve API Key by API|${CliApiAuditorWeb}||${CliApiUserAdm}||N||You may only retrieve your own|
+|Get Error Attempting Retrieve API Key by API|${CliApiUserAdm}   ||${ApiAuditor}   ||N||You may only retrieve your own|
+
+
+
+!| scenario                                  |CLI Admins Can Regenerate Keys for Web-disabled Users Only                                       |
+|Get User CLI Key by CLI                     |${CliAdminWeb}||${CliBasic}        ||Y||BEGIN DSA PRIVATE KEY                                    |
+|Get User API Key by CLI                     |${CliApiAdmin}||${ApiAuditor}      ||Y||BEGIN DSA PRIVATE KEY                                    |
+|Get Error Attempting Retrieve API Key by CLI|${CliAdminWeb}||${ApiBasicWeb}     ||Y||has web access and must regenerate and retrieve their own|
+|Get User CLI Key by CLI                     |${CliApiAdmin}||${CliBasic}        ||Y||BEGIN DSA PRIVATE KEY                                    |
+|Get Error Attempting Retrieve API Key by CLI|${CliAdminWeb}||${CliApiAuditorWeb}||Y||has web access and must regenerate and retrieve their own|
+|Get Error Attempting Retrieve CLI Key by CLI|${CliApiAdmin}||${CliUserAdmWeb}   ||Y||has web access and must regenerate and retrieve their own|
+
+
+
+
+!| scenario                                  |API Admins Can Regenerate Keys for Web-disabled Users Only                                       |
+|Get Error Attempting Retrieve API Key by API|${ApiAdmin}   ||${ApiBasicWeb}     ||Y||has web access and must regenerate and retrieve their own|
+|Get User API Key by API                     |${CliApiAdmin}||${ApiAuditor}      ||Y||BEGIN DSA PRIVATE KEY                                    |
+|Get Error Attempting Retrieve API Key by API|${ApiAdmin}   ||${CliApiAuditorWeb}||Y||has web access and must regenerate and retrieve their own|
+|Get User API Key by API                     |${CliApiAdmin}||${ApiAdmin}        ||Y||BEGIN DSA PRIVATE KEY                                    |
+|Get Error Attempting Retrieve CLI Key by API|${ApiAdmin}   ||${CliAdminWeb}     ||Y||has web access and must regenerate and retrieve their own|
+|Get User CLI Key by API                     |${CliApiAdmin}||${CliBasic}        ||Y||BEGIN DSA PRIVATE KEY                                    |
+
+
+
+!| scenario                                  |CLI Web-enabled Users Only Can Regenerate Their Own Keys                                                 |
+|Get Error Attempting Retrieve CLI Key by CLI|${CliApiAdmin}     ||${CliApiAdmin}     ||Y||You must also have Web access in order to regnerate your own|
+|Get User CLI Key by CLI                     |${CliAdminWeb}     ||${CliAdminWeb}     ||Y||BEGIN DSA PRIVATE KEY                                       |
+|Get Error Attempting Retrieve API Key by CLI|${CliApiUserAdm}   ||${CliApiUserAdm}   ||Y||You must also have Web access in order to regnerate your own|
+|Get User CLI Key by CLI                     |${CliApiAuditorWeb}||${CliApiAuditorWeb}||Y||BEGIN DSA PRIVATE KEY                                       |
+|Get Error Attempting Retrieve CLI Key by CLI|${CliBasic}        ||${CliBasic}        ||Y||You must also have Web access in order to regnerate your own|
+|Get User CLI Key by CLI                     |${CliUserAdmWeb}   ||${CliUserAdmWeb}   ||Y||BEGIN DSA PRIVATE KEY                                       |
+
+
+
+!| scenario                                  |API Web-enabled Users Only Can Regenerate Their Own Keys                                                 |
+|Get Error Attempting Retrieve API Key by API|${ApiAdmin}        ||${ApiAdmin}        ||Y||You must also have Web access in order to regnerate your own|
+|Get Error Attempting Retrieve API Key by API|${ApiAuditor}      ||${ApiAuditor}      ||Y||You must also have Web access in order to regnerate your own|
+|Get User API Key by API                     |${ApiBasicWeb}     ||${ApiBasicWeb}     ||Y||BEGIN DSA PRIVATE KEY                                       |
+|Get Error Attempting Retrieve CLI Key by API|${CliApiAdmin}     ||${CliApiAdmin}     ||Y||You must also have Web access in order to regnerate your own|
+|Get User CLI Key by API                     |${CliApiAuditorWeb}||${CliApiAuditorWeb}||Y||BEGIN DSA PRIVATE KEY                                       |
+|Get Error Attempting Retrieve CLI Key by API|${CliApiUserAdm}   ||${CliApiUserAdm}   ||Y||You must also have Web access in order to regnerate your own|
+
+
+!| scenario                                    |Check CLIA Functionality                                                                         |
+|Get User CLIA Key by CLIA                     |${CliSysAdmWeb}||${CliSysAdmWeb}||N||BEGIN DSA PRIVATE KEY                                       |
+|Get User CLIA Key by CLIA                     |${CliSysAdm}   ||${CliSysAdm}   ||N||BEGIN DSA PRIVATE KEY                                       |
+|Get User CLIA Key by CLIA                     |${CliSysAdmWeb}||${CliSysAdm}   ||N||BEGIN DSA PRIVATE KEY                                       |
+|Get Error Attempting Retrieve CLIA Key by CLIA|${CliSysAdm}   ||${CliSysAdmWeb}||N||has web access and must retrieve their own                  |
+|Get User CLIA Key by CLIA                     |${CliSysAdmWeb}||${CliSysAdm}   ||Y||BEGIN DSA PRIVATE KEY                                       |
+|Get Error Attempting Retrieve CLIA Key by CLIA|${CliSysAdm}   ||${CliSysAdmWeb}||Y||has web access and must regenerate and retrieve their own   |
+|Get Error Attempting Retrieve CLIA Key by CLIA|${CliSysAdm}   ||${CliSysAdm}   ||Y||You must also have Web access in order to regnerate your own|
+|Get User CLIA Key by CLIA                     |${CliSysAdmWeb}||${CliSysAdmWeb}||Y||BEGIN DSA PRIVATE KEY                                       |
+
+
+
+
+!| scenario          |Change Web-enabled Users Passwords            |
+|Change Pwd          |${ApiBasicWeb}     ||${DefaultPwd}||${UserPwd}|
+|Change Pwd          |${CliAdminWeb}     ||${DefaultPwd}||${UserPwd}|
+|Change Pwd          |${CliApiAuditorWeb}||${DefaultPwd}||${UserPwd}|
+|Change Pwd          |${CliUserAdmWeb}   ||${DefaultPwd}||${UserPwd}|
+|Change Sys-Admin Pwd|${CliSysAdmWeb}    ||${DefaultPwd}||${UserPwd}|
+
+
+
+!| scenario|Create Users List                                           |
+|runBatch  |CreateSSHUsersList;${PathToBatch};${UsersFileName};${prefix}|
+
+
+!|scenario         |Add Web-enabled Sys-Admin User|userName                    |
+|Login             |${TPAMAdminURL}               ||${TPAMMaster}||${MasterPwd}|
+|pause             |5000                                                       |
+|clickAndWait      |link=Add Sys-Admin UserID                                  |
+|pause             |5000                                                       |
+|type;             |id=UserName                   |@userName                   |
+|pause             |1000                                                       |
+|type;             |id=LastName                   |L                           |
+|pause             |1000                                                       |
+|type;             |id=FirstName                  |K                           |
+|pause             |1000                                                       |
+|type;             |id=sPassword                  |${DefaultPwd}               |
+|pause             |1000                                                       |
+|type;             |id=Confirm                    |${DefaultPwd}               |
+|pause             |1000                                                       |
+|click             |id=KeyBased                                                |
+|pause             |1000                                                       |
+|click             |id=cb_CliAccess                                            |
+|pause             |1000                                                       |
+|click             |id=SubmitChanges                                           |
+|waitForTextPresent|User added successfully                                    |
+
+
+
+!|scenario          |Add Web-disabled Sys-Admin User|userName                                         |
+|Login              |${TPAMAdminURL}                |      |${TPAMMaster}     |     |${MasterPwd}     |
+|pause              |5000                                                                             |
+|clickAndWait       |link=Add Sys-Admin UserID                                                        |
+|pause              |5000                                                                             |
+|type;              |id=UserName                    |@userName                                        |
+|pause              |1000                                                                             |
+|type;              |id=LastName                    |L                                                |
+|pause              |1000                                                                             |
+|type;              |id=FirstName                   |K                                                |
+|pause              |1000                                                                             |
+|click              |id=cb_WebAccess                                                                  |
+|pause              |1000                                                                             |
+|click              |id=KeyBased                                                                      |
+|pause              |1000                                                                             |
+|pause              |1000                                                                             |
+|click              |id=cb_CliAccess                                                                  |
+|pause              |1000                                                                             |
+|click              |id=SubmitChanges                                                                 |
+|waitForTextPresent |User added successfully                                                          |
+|pause              |1000                                                                             |
+|click              |id=GetCliaKey                                                                    |
+|pause              |5000                                                                             |
+|$res=              |RunBatchGetOutput              |EchoFileSize.bat;${BrowserDownloadDir}id_dsa;fake|
+|Check Key File Size|${BrowserDownloadDir}id_dsa                                                      |
+|runBatch           |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}@userName.ppk                  |
+|Show Desktop    |
+|Generate Plink Key |@userName                                                                        |
+
+!|scenario            |Delete Sys-Admin User|userName                    |
+|Login                |${TPAMAdminURL}      ||${TPAMMaster}||${MasterPwd}|
+|pause                |10000                                             |
+|clickAndWait         |link=Manage Sys-Admin UserIDs                     |
+|pause                |10000                                             |
+|waitForElementPresent|id=UsrNm                                          |
+|type;                |id=UsrNm             |@userName                   |
+|pause                |3000                                              |
+|click                |id=Listing                                        |
+|pause                |3000                                              |
+|waitForElementPresent|//td[contains(text(),'@userName')]                |
+|mouseDown            |//td[contains(text(),'@userName')]                |
+|click                |//td[contains(text(),'@userName')]                |
+|click                |id=Delete                                         |
+|getConfirmation                                                         |
+|waitForTextPresent   |has been successfully deleted                     |
+
+
+!|scenario                      |Create Sys-Admin Users|
+|Add Web-enabled Sys-Admin User |${CliSysAdmWeb}       |
+|Add Web-disabled Sys-Admin User|${CliSysAdm}          |
+
+!|scenario            |Remove Sys-Admin Users|
+|Delete Sys-Admin User|${CliSysAdm}          |
+|Delete Sys-Admin User|${CliSysAdmWeb}       |
+
+
+!| scenario        |Change Sys-Admin Pwd|userName|         |currenPwd|  |newPwd |
+|Login             |${TPAMAdminURL}     |        |@userName|         |@currenPwd|
+|pause             |8000                                                        |
+|type;             |id=sOldPwd          |@currenPwd                             |
+|type;             |id=sPassword        |@newPwd                                |
+|type;             |id=sConfirm         |@newPwd                                |
+|click             |id=save                                                     |
+|click             |id=save                                                     |
+|waitForTextPresent|Your password has been successfully changed                 |
+
+!| scenario        |Change Pwd  |userName|         |currenPwd|  |newPwd |
+|Login             |${TPAMURL}  |        |@userName|         |@currenPwd|
+|pause             |8000                                                |
+|type;             |id=sOldPwd  |@currenPwd                             |
+|type;             |id=sPassword|@newPwd                                |
+|type;             |id=sConfirm |@newPwd                                |
+|pause             |1000                                                |
+|click             |id=save                                             |
+|click             |id=save                                             |
+|waitForTextPresent|Your password has been successfully changed         |
+
+
+!| scenario           |Get Web-enabled Sys-Admin CLI Keys|userName                                         |
+|Login                |${TPAMAdminURL}                   |       |@userName       |       |${UserPwd}      |
+|pause                |5000                                                                                |
+|clickAndWait         |link=User Details                                                                   |
+|waitForElementPresent|id=ResetCliAKey                                                                     |
+|click                |id=ResetCliAKey                                                                     |
+|pause                |30000                                                                               |
+|click                |id=GetCliAKey                                                                       |
+|pause                |5000                                                                                |
+|$res=                |RunBatchGetOutput                 |EchoFileSize.bat;${BrowserDownloadDir}id_dsa;fake|
+|Check Key File Size  |${BrowserDownloadDir}id_dsa                                                         |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}@userName.ppk                     |
+|Show Desktop     |
+|Generate Plink Key   |@userName                                                                           |
+
+
+
+
+
+!|scenario|Deprecated Generate Plink Key |keyName|
+|runBatch |puttygen.bat;puttygen.exe;@keyName.ppk|
+|pause    |2000                                  |
+|SWait    |ok_big.png                            |
+|SClick   |ok_big.png                            |
+|pause    |2000                                  |
+|pause    |1000                                  |
+|SWait    |SavePrivKey.png                       |
+|SClick   |SavePrivKey.png                       |
+|pause    |1000                                  |
+|SWait    |yes.png                               |
+|SClick   |yes.png                               |
+|pause    |2000                                  |
+|SType    |${PathToKeys}@keyName.ppk             |
+|pause    |1000                                  |
+|SWait    |Save.png                              |
+|SClick   |Save.png                              |
+|pause    |1000                                  |
+|SWait    |Yes.png                               |
+|SClick   |Yes.png                               |
+|pause    |1000                                  |
+|keytype  |\4                                    |
+
+
+!|scenario|Generate Plink Key                                           |keyName                                          |
+|runBatch |AutoIt3.exe;${ProjDir}\Scripts\generate_putty_key.au3;${ProjDir}\Scripts\puttygen.exe;${PathToKeys}@keyName.ppk|
+
+
+!|scenario|Remove Keys                                   |
+|runBatch |DeleteFileByMask;${PathToKeys}${prefix}a*;fake|
+|runBatch |DeleteFileByMask;${PathToKeys}${prefix}c*;fake|
+
+
+
+
+!|scenario            |Batch Import Users                |filename                      |
+|clickAndWait         |link=Import UserIDs               |                              |
+|pause                |2000                                                             |
+|click                |id=PAMUploadBtnSelect                                            |
+|SWait                |browse.PNG                                                       |
+|SClick               |browse.PNG                                                       |
+|pause                |1500                                                             |
+|SType                |${PathToBatch}@filename                                          |
+|pause                |1500                                                             |
+|SWait                |open.PNG                                                         |
+|SClick               |open.PNG                                                         |
+|pause                |2000                                                             |
+|SWait                |upload_small.PNG                                                 |
+|SClick               |upload_small.PNG                                                 |
+|pause                |2000                                                             |
+|type;                |id=Comment2                       |import users                  |
+|click                |id=btnProcessFile                 |                              |
+|pause                |1500                                                             |
+|waitForElementPresent|//tr[@id='10']                                                   |
+|pause                |80000                                                            |
+|verifyText           |//div[@id='divBatchResults']/table||Users were successfully added|
+#|windowMaximize                                                                                                                                                                |
+
+
+!|scenario            |Batch Delete Users                |filename                     |
+|clickAndWait         |link=Update UserIDs               |                             |
+|pause                |2000                                                            |
+|click                |id=PAMUploadBtnSelect                                           |
+|SWait                |browse.PNG                                                      |
+|SClick               |browse.PNG                                                      |
+|pause                |1500                                                            |
+|SType                |${PathToBatch}@filename                                         |
+|pause                |1500                                                            |
+|SWait                |open.PNG                                                        |
+|SClick               |open.PNG                                                        |
+|pause                |2000                                                            |
+|SWait                |upload_small.PNG                                                |
+|SClick               |upload_small.PNG                                                |
+|pause                |2000                                                            |
+|click                |id=Radio1                         |                             |
+|type;                |id=Comment2                       |delete users                 |
+|click                |id=btnProcessFile                 |                             |
+|pause                |1500                                                            |
+|waitForElementPresent|//tr[@id='15']                                                  |
+|pause                |80000                                                           |
+|verifyText           |//div[@id='divBatchResults']/table||Deleting the following Users|
+
+!|scenario         |Set Allow Use of 1024-bit Keys to Yes       |
+|Login             |${TPAMAdminURL}||${TPAMMaster}||${MasterPwd}|
+|pause             |10000                                       |
+|clickAndWait      |link=Global Settings                        |
+|pause             |2000                                        |
+|click             |id=R110_1                                   |
+|pause             |1000                                        |
+|click             |id=SubmitChanges                            |
+|waitForTextPresent|Global Settings changes saved successfully  |
+
+!|scenario         |Set Allow Use of 1024-bit Keys to No        |
+|Login             |${TPAMAdminURL}||${TPAMMaster}||${MasterPwd}|
+|pause             |10000                                       |
+|clickAndWait      |link=Global Settings                        |
+|pause             |2000                                        |
+|click             |id=R110_2                                   |
+|pause             |1000                                        |
+|click             |id=SubmitChanges                            |
+|waitForTextPresent|Global Settings changes saved successfully  |
+
+
+!|scenario        |Check Key File Size|file                           |
+|$res=            |RunBatchGetOutput  |CheckKeyFileSize.bat;@file;fake|
+|Verify_Contain_OR|$res;;Looks like this is ${Bits}-bit key           |
+
+!| scenario       |Remove User|userName                        |
+|$res=            |CLI        |${CLIBatch} DeleteUser @userName|
+|Verify_Contain_OR|$res;;successful                            |
+
+
+
+!|scenario            |UI Add API User|UserName||Passwd||Type|
+|pause                |5000                                  |
+|clickAndWait         |link=Add UserID                       |
+|pause                |5000                                  |
+|waitForElementPresent|id=UserName                           |
+|type;                |id=UserName    |@UserName             |
+|type;                |id=FirstName   |Vasily                |
+|type;                |id=LastName    |Pupkin                |
+|type;                |id=sPassword   |@Passwd               |
+|type;                |id=Confirm     |@Passwd               |
+|select;              |id=UType       |label=@Type           |
+|click                |id=cb_WebAccess                       |
+|click                |id=KeyBased                           |
+|pause                |1000                                  |
+|click                |id=cb_ApiAccess                       |
+|pause                |1000                                  |
+|click                |id=SubmitChanges                      |
+|waitForTextPresent   |*User added successfully*             |
+
+!|scenario            |UI Add CLI User|UserName||Passwd||Type|
+|pause                |5000                                  |
+|clickAndWait         |link=Add UserID                       |
+|pause                |5000                                  |
+|waitForElementPresent|id=UserName                           |
+|type;                |id=UserName    |@UserName             |
+|type;                |id=FirstName   |Vasily                |
+|type;                |id=LastName    |Pupkin                |
+|type;                |id=sPassword   |@Passwd               |
+|type;                |id=Confirm     |@Passwd               |
+|select;              |id=UType       |label=@Type           |
+|click                |id=cb_WebAccess                       |
+|click                |id=KeyBased                           |
+|pause                |1000                                  |
+|click                |id=cb_CliAccess                       |
+|pause                |1000                                  |
+|click                |id=SubmitChanges                      |
+|waitForTextPresent   |*User added successfully*             |
+
+!|scenario            |UI Add API Web User|UserName||Passwd||Type|
+|pause                |5000                                      |
+|clickAndWait         |link=Add UserID                           |
+|pause                |5000                                      |
+|waitForElementPresent|id=UserName                               |
+|type;                |id=UserName        |@UserName             |
+|type;                |id=FirstName       |Vasily                |
+|type;                |id=LastName        |Pupkin                |
+|type;                |id=sPassword       |@Passwd               |
+|type;                |id=Confirm         |@Passwd               |
+|select;              |id=UType           |label=@Type           |
+|click                |id=KeyBased                               |
+|pause                |1000                                      |
+|click                |id=cb_ApiAccess                           |
+|pause                |1000                                      |
+|click                |id=SubmitChanges                          |
+|waitForTextPresent   |*User added successfully*                 |
+
+!|scenario            |UI Add CLI Web User|UserName||Passwd||Type|
+|pause                |5000                                      |
+|clickAndWait         |link=Add UserID                           |
+|pause                |5000                                      |
+|waitForElementPresent|id=UserName                               |
+|type;                |id=UserName        |@UserName             |
+|type;                |id=FirstName       |Vasily                |
+|type;                |id=LastName        |Pupkin                |
+|type;                |id=sPassword       |@Passwd               |
+|type;                |id=Confirm         |@Passwd               |
+|select;              |id=UType           |label=@Type           |
+|click                |id=KeyBased                               |
+|pause                |1000                                      |
+|click                |id=cb_CliAccess                           |
+|pause                |1000                                      |
+|click                |id=SubmitChanges                          |
+|waitForTextPresent   |*User added successfully*                 |
+
+!|scenario            |UI Add API CLI User|UserName||Passwd||Type|
+|pause                |5000                                      |
+|clickAndWait         |link=Add UserID                           |
+|pause                |5000                                      |
+|waitForElementPresent|id=UserName                               |
+|type;                |id=UserName        |@UserName             |
+|type;                |id=FirstName       |Vasily                |
+|type;                |id=LastName        |Pupkin                |
+|type;                |id=sPassword       |@Passwd               |
+|type;                |id=Confirm         |@Passwd               |
+|select;              |id=UType           |label=@Type           |
+|click                |id=cb_WebAccess                           |
+|click                |id=KeyBased                               |
+|pause                |1000                                      |
+|click                |id=cb_ApiAccess                           |
+|click                |id=cb_CliAccess                           |
+|pause                |1000                                      |
+|click                |id=SubmitChanges                          |
+|waitForTextPresent   |*User added successfully*                 |
+
+!|scenario            |UI Add API CLI Web User|UserName||Passwd||Type|
+|pause                |5000                                          |
+|clickAndWait         |link=Add UserID                               |
+|pause                |5000                                          |
+|waitForElementPresent|id=UserName                                   |
+|type;                |id=UserName            |@UserName             |
+|type;                |id=FirstName           |Vasily                |
+|type;                |id=LastName            |Pupkin                |
+|type;                |id=sPassword           |@Passwd               |
+|type;                |id=Confirm             |@Passwd               |
+|select;              |id=UType               |label=@Type           |
+|click                |id=KeyBased                                   |
+|pause                |1000                                          |
+|click                |id=cb_ApiAccess                               |
+|click                |id=cb_CliAccess                               |
+|pause                |1000                                          |
+|click                |id=SubmitChanges                              |
+|waitForTextPresent   |*User added successfully*                     |
+
+
+!|scenario              |Create Users                                          |
+|Login                  |${TPAMURL}         ||${TPAMAdmin} ||${DefaultPwd}     |
+|UI Add API User        |${ApiAdmin}        ||${DefaultPwd}||Administrator     |
+|UI Add API User        |${ApiAuditor}      ||${DefaultPwd}||Auditor           |
+|UI Add API Web User    |${ApiBasicWeb}     ||${DefaultPwd}||Basic             |
+|UI Add CLI Web User    |${CliAdminWeb}     ||${DefaultPwd}||Administrator     |
+|UI Add API CLI User    |${CliApiAdmin}     ||${DefaultPwd}||Administrator     |
+|UI Add API CLI Web User|${CliApiAuditorWeb}||${DefaultPwd}||Auditor           |
+|UI Add API CLI User    |${CliApiUserAdm}   ||${DefaultPwd}||User Administrator|
+|UI Add CLI User        |${CliBasic}        ||${DefaultPwd}||Basic             |
+|UI Add CLI Web User    |${CliUserAdmWeb}   ||${DefaultPwd}||User Administrator|
+
+
+!|scenario  |Delete Users       |
+|Remove User|${ApiAdmin}        |
+|Remove User|${ApiAuditor}      |
+|Remove User|${ApiBasicWeb}     |
+|Remove User|${CliAdminWeb}     |
+|Remove User|${CliApiAdmin}     |
+|Remove User|${CliApiAuditorWeb}|
+|Remove User|${CliApiUserAdm}   |
+|Remove User|${CliBasic}        |
+|Remove User|${CliUserAdmWeb}   |
+
+

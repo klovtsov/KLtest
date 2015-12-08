@@ -1,0 +1,24 @@
+!define CollectionName {${prefix}PerlCollection1}
+!include -c <AutoTestsWebDrv.FailoverScenarios.ScenarioLibrary
+
+!|script                                                                                                  |
+|Add Collection|${PerlAPIparams}||--CollectionName=${CollectionName};--Description=collection||successfull|
+
+!|script                                                                                                                             |
+|List Collections|${PerlAPIparams}||--CollectionName=${CollectionName}||collectionName: ${CollectionName}.*collectionDesc: collection|
+
+!|script                                                                                                     |
+|Add Collection|${PerlAPIparams}||--CollectionName=${CollectionName};--Description=collection||already exists|
+
+!|script                                                                                                                                                           |
+|Add Collection|${PerlAPIparams}||--CollectionName=${CollectionName}123456789123456789123456789;--Description=collection||CollectionName can't exceed 30 characters|
+
+!|script                                                                                                                           |
+|Get DPA Name and IP Address                                                                                                       |
+|Update Collection|${PerlAPIparams}||--CollectionName=${CollectionName};--psmDpaAffinity=$TPAMDPA/30;--Description=Hmm||successfull|
+
+!|script                                                                                                                                                   |
+|List Collections|${PerlAPIparams}||--CollectionName=${CollectionName}||collectionName: ${CollectionName}.*collectionDesc: Hmm.*psmDpaAffinity: $TPAMDPA/30|
+
+!|script                                                                            |
+|Delete Collection|${PerlAPIparams}||--CollectionName=${CollectionName}||successfull|

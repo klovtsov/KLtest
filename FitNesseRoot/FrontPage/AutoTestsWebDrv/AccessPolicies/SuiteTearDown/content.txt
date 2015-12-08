@@ -1,0 +1,8 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AccessPolicies.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.SetUp
+
+!|script           |
+|Remove Environment|
+
+!include -c <AccessPolicies.TearDown

@@ -1,0 +1,23 @@
+!*> Includes
+''System''
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+''Libraries''
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <PasswordProfiles.ScenarioLibrary
+*!
+
+!define CheckTimeout {20}
+!define CheckTimeoutMessage {Check Timeout: ${CheckTimeout} seconds}
+
+''Check Every X days schedule message only ''
+
+!|script                                                                                                                                                                                            |
+|Open                            |${TPAMURL} ||${TPAMAdmin}                                                                                                                          ||${DefaultPwd}|
+|Add Account                     |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordCheckProfile ${EverySchedule}||successfully |
+|Management tab                  |${ManagedAccount}                                                                                                                                                 |
+|Check Schedule                  |${EverySchedule1}                                                                                                                                                 |
+|Verify Next Scheduled Check Info|${EverySchedule1NextScheduledCheckWindow}                                                                                                                         |
+|Check Timeout                   |${CheckTimeoutMessage}                                                                                                                                            |
+|Check Retry Time                |${CheckRetryTimeMessage}                                                                                                                                          |
+|Update Account                  |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --PasswordCheckProfile "!NULL" --AutoFlag N                                ||successfully |
+|Delete Account                  |${CLIBatch}||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                           ||successfully |

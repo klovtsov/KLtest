@@ -1,0 +1,3 @@
+!include <AutomatedTesting.PlatformsTesting.ScoOpenServer
+!include -c <PerlApiScenarios.ScenarioLibrary
+

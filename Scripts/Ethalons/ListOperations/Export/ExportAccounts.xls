@@ -1,0 +1,173 @@
+
+<table border="1" width="8200px">
+  <thead>
+      <tr>
+        <td bgcolor="#C0C0C0" colspan="51" align="center">
+        <font size="5"><b>Listing of Managed Accounts</b></font></td>
+      </tr>
+    <tr>
+      <td bgcolor="#C0C0C0" width="150px"><b>System Name</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Account Name</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Password</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Release Duration</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Auto Change?</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Next Change Date</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Password Rule</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Change Windows Services</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Restart Windows Services</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Change Scheduled Tasks</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Use Current Password</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Required Approvers</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Domain Account Name</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Release Notify Email</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Check Password</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Reset Password</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Change After Release</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Max Release Duration</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Account Description</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Ticket System</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Ticket for Request</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Ticket for ISA Retrieve</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Ticket for CLI Retrieve</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Ticket for API Retrieve</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Ticket Notification Email</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Reviews Required</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Reviewer Type</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Reviewer</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Escalation Email</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Escalation Time (hours)</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Locked</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Simultaneous Privileged Access Releases</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Block Auto Password Change</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>AccountCustom1</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>AccountCustom2</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>AccountCustom3</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>AccountCustom4</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>AccountCustom5</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>AccountCustom6</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Allow ISA Duration</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Override Accountability</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Multi-Group Approval</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Multi-Group Approver Names</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Ignore System Policies</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Enable Before Release</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Password Change Profile</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Password Change Sched Disabled</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Password Check Profile</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Password Check Sched Disabled</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Funct Acct DN</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Ticket for PSM Request</b></td>
+    </tr>
+  </thead>
+  <tbody>
+	
+		<tr>
+			<td>prefixListSystem1</td>
+			<td>prefixListAccount1</td>
+			<td></td>
+			<td>120</td> 
+			<td>Y</td>
+			<td></td> 
+			<td>Default Password Rule</td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td>1</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td>
+			<td>10080</td>
+			<td></td> 
+     		<td></td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td></td>
+			<td></td> 
+			<td>Any</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td>N</td> 
+			<td>1</td> 
+			<td></td> 
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td></td>
+         <td>N</td>
+         <td>N</td>
+         <td>PersPassChangeProfile_1</td>
+         <td>N</td>
+         <td>PersPassCheckProfile_1</td>
+         <td>N</td>
+         <td></td>
+         <td>N</td>
+		</tr>
+	
+		<tr>
+			<td>prefixListSystem1</td>
+			<td>prefixListAccount12</td>
+			<td></td>
+			<td>120</td> 
+			<td>Y</td>
+			<td></td> 
+			<td>Default Password Rule</td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td>1</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td>
+			<td>10080</td>
+			<td></td> 
+     		<td></td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td></td>
+			<td></td> 
+			<td>Any</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td>N</td> 
+			<td>1</td> 
+			<td></td> 
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td></td>
+         <td>N</td>
+         <td>N</td>
+         <td>PersPassChangeProfile_2</td>
+         <td>N</td>
+         <td>PersPassCheckProfile_2</td>
+         <td>N</td>
+         <td></td>
+         <td>N</td>
+		</tr>
+	
+  </tbody>
+</table>

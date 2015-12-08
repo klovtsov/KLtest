@@ -1,0 +1,32 @@
+!define SystemName {Listsystemname1}
+!define CollectionName {Listcollectionname1}
+!define CollectionName2 {ListCollectionName2}
+
+!define UserName {Listusername}
+!define UserName2 {Listusername2}
+!define emailaddress {mail@mail.mail}
+!define GroupName {Listgroupname}
+!define GroupName2 {Listgroupname2}
+
+!define AdSystemName {depadsys}
+!define AdSystemPlatform {Windows Active Dir}
+!define AdSystemAddress {11.22.33.44}
+!define DomainName {ampstation.local}
+!define NETBIOSDomainName {ampstation}
+!define AdFunctAcct {xyasek}
+!define AdFunctAcctPwd {parol}
+!define SystemPlatform {Windows}
+!define SystemAddress {4.4.4.4}
+!define FunctAcct {root4}
+!define FunctAcctPwd {A\)&(de;fjkl1$}
+!define ManagedAccount {Listmaccount1}
+!define ManagedAccountPwd {A\)&(de;fjkl1$}
+
+!define FilePath {c:\}
+!define FileName {${UserPrefix}File89}
+!define FileDesc {${UserPrefix}FileDesc}
+!define FileEmailAddr {${UserPrefix}mail@mail}
+
+
+
+!contents -p -g

@@ -1,0 +1,17 @@
+%Host% 23
+
+WAIT "login"
+SEND "%RunningUser%\m"
+WAIT "assword"
+SEND "%RunningUserPassword%\m"
+WAIT "#"
+SEND "passwd -r nisplus %NewUser%\m"
+WAIT "assword"
+SEND "%RunningUserPassword%\m"
+WAIT "assword"
+SEND "%NewUserPassword%\m"
+WAIT "assword"
+SEND "%NewUserPassword%\m"
+WAIT "#"
+SEND "exit\m"
+WAIT "#"

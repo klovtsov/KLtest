@@ -1,0 +1,18 @@
+!contents
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CacheServerRemoteAccess.ScenarioLibrary
+
+!|script                                                                                                             |
+|Get Password From Cache Via Perl With No Permissions                                                                |
+|Batch Update Cache Server Permissions|cachepermissions_add_headers.csv      ||2 Cache Server Permission             |
+|Export Cache Server Permissions                                                                                     |
+|Get Password From Cache Via CSharp                                                                                  |
+|Batch Update Cache Server Permissions|cachepermissions_delete_no_headers.txt||2 Cache Server Permission rows removed|
+|Get Password From Cache Teammate Via CSharp With No Permissions                                                     |
+|Reopen Browser and Login to TPAM                                                                                    |
+|Adding Cache Server Permissions                                                                                     |
+|Get Password From Cache Via Perl                                                                                    |
+|Get Password From Cache Via Java                                                                                    |
+|Get Password From Cache Via CSharp                                                                                  |
+|Get Password From Cache Teammate Via CSharp                                                                         |
+|Get New Password From Cache                                                                                         |

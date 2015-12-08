@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.SybasePlatform
+!include -c <CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword
+

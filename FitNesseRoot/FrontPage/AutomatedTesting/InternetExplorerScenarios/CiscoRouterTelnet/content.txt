@@ -1,0 +1,6 @@
+!include <AutomatedTesting.PlatformsTesting.CiscoRouterTelnet
+
+
+
+
+

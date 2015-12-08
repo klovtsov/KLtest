@@ -1,0 +1,89 @@
+!contents
+
+!|scenario         |Create Command Restriction Profile                                 |profileName|with action|actionName|
+|pause             |5000                                                                                                  |
+|clickOnLink       |link=Profile Management                                                                               |
+|pause             |1000                                                                                                  |
+|select;           |id=ProfileType                                                     |label=Restricted Command          |
+|click             |id=NewButton                                                                                          |
+|pause             |1000                                                                                                  |
+|type;             |id=ProfileName                                                     |@profileName                      |
+|click             |id=SNMPNotificationFl                                                                                 |
+|click             |id=EmailNotificationFl                                                                                |
+|type;             |id=NotificationEmail                                               |${NotifyRestrictedEmail}          |
+|click             |id=btnAddRow                                                                                          |
+|click             |xpath=//table[@id='tblCmdRestr']/tbody/tr[@id='dtl_0']/td[1]/input                                    |
+|click             |xpath=//table[@id='tblCmdRestr']/tbody/tr[@id='dtl_0']/td[4]/input                                    |
+|type;             |xpath=//table[@id='tblCmdRestr']/tbody/tr[@id='dtl_0']/td[3]/input |top                               |
+|select;           |xpath=//table[@id='tblCmdRestr']/tbody/tr[@id='dtl_0']/td[5]/select|label=@actionName                 |
+|click             |id=SaveButton                                                                                         |
+|waitForTextPresent|The profile saved successfully                                                                        |
+
+
+!|scenario            |Open Session         |requestorName         |                       |systemName         |         |accountName         |         |responceAction        |
+|pause                |${ApplyNewPoliciesInterval}                                                                                                                             |
+|runBatch             |RunSNMPTrap;hide;fake                                                                                                                                   |
+|$res=                |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                         |
+|$RequestID=          |get_session_RequestID|$res                                                                                                                              |
+|Approve Session      |${Approver1}                                                                                                                                            |
+|Login                |${TPAMURL}           |                      |@requestorName         |                   |${UserPwd}                                                     |
+|pause                |5000                                                                                                                                                    |
+|click                |id=CurrentRequests                                                                                                                                      |
+|waitForElementPresent|link=$RequestID                                                                                                                                         |
+|clickOnLink          |link=$RequestID                                                                                                                                         |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                   |
+|click                |id=StartSessionButton                                                                                                                                   |
+|pause                |20000                                                                                                                                                   |
+|selectWindow         |Quest Software PSM Session (${SystemName}/${ManagedAccount}/$RequestID)                                                                                 |
+|pause                |5000                                                                                                                                                    |
+|SWait                |Accept.png                                                                                                                                              |
+|SClick               |Accept.png                                                                                                                                              |
+|pause                |2000                                                                                                                                                    |
+|SWait                |psm_session_square.png                                                                                                                                  |
+|SClick               |psm_session_square.png                                                                                                                                  |
+|pause                |2000                                                                                                                                                    |
+|SType                |top                                                                                                                                                     |
+|keytype              |\n                                                                                                                                                      |
+|SWait                |@responceAction.png                                                                                                                                     |
+|SWait                |psm_ok.png                                                                                                                                              |
+|SClick               |psm_ok.png                                                                                                                                              |
+|pause                |150000                                                                                                                                                  |
+|stop                                                                                                                                                                          |
+|selectWindow         |Quest Software TPAM                                                                                                                                     |
+|stop                                                                                                                                                                          |
+|Cancel Session Request                                                                                                                                                        |
+
+
+
+!|scenario            |Open Session Do Nothing|requestorName         |                       |systemName         |         |accountName         |         |responceAction        |
+|pause                |${ApplyNewPoliciesInterval}                                                                                                                               |
+|runBatch             |RunSNMPTrap;hide;fake                                                                                                                                     |
+|$res=                |CLI                    |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                           |
+|$RequestID=          |get_session_RequestID  |$res                                                                                                                              |
+|Approve Session      |${Approver1}                                                                                                                                              |
+|Login                |${TPAMURL}             |                      |@requestorName         |                   |${UserPwd}                                                     |
+|pause                |5000                                                                                                                                                      |
+|click                |id=CurrentRequests                                                                                                                                        |
+|waitForElementPresent|link=$RequestID                                                                                                                                           |
+|clickOnLink          |link=$RequestID                                                                                                                                           |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                     |
+|click                |id=StartSessionButton                                                                                                                                     |
+|pause                |20000                                                                                                                                                     |
+|selectWindow         |Quest Software PSM Session (${SystemName}/${ManagedAccount}/$RequestID)                                                                                   |
+|pause                |5000                                                                                                                                                      |
+|SWait                |Accept.png                                                                                                                                                |
+|SClick               |Accept.png                                                                                                                                                |
+|pause                |2000                                                                                                                                                      |
+|SWait                |psm_session_square.png                                                                                                                                    |
+|SClick               |psm_session_square.png                                                                                                                                    |
+|pause                |2000                                                                                                                                                      |
+|SType                |top                                                                                                                                                       |
+|keytype              |\n                                                                                                                                                        |
+|pause                |150000                                                                                                                                                    |
+|stop                                                                                                                                                                            |
+|selectWindow         |Quest Software TPAM                                                                                                                                       |
+|stop                                                                                                                                                                            |
+|Cancel Session Request                                                                                                                                                          |
+

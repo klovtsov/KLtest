@@ -1,0 +1,61 @@
+!define ChangeProfile1FailureDoNothing {${prefix}ChangeProfile1FailureDoNothing2}
+!define ChangeProfile2FailureDisable {${prefix}ChangeProfile2FailureDisable}
+!define ChangeProfile3FailureLock {${prefix}ChangeProfile3FailureLock}
+
+!define CheckProfile1NismatchDonothing {${prefix}CheckProfile1NismatchDonothing2}
+!define CheckProfile2NismatchReset {${prefix}CheckProfile2NismatchReset}
+!define CheckProfile3NismatchDisable {${prefix}CheckProfile3NismatchDisable}
+
+!define SyncPassName1 {${prefix}TestProfileSyncPass1}
+
+!define ChangeTimeout {30}
+!define CheckTimeout {30}
+
+''System''
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+''Libraries''
+!include -c <AutoTestsWebDrv.SynchronizedPasswords.ScenarioLibrary
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <PasswordProfiles.ScenarioLibrary
+
+
+!*> Prepare
+!|script                                                                                                                                                                                                                                                                                                                                                              |
+|Open                          |${TPAMURL}                       ||${TPAMAdmin}                                                                                                                                                                                                                                                                        ||${DefaultPwd}|
+|Create Password Check Profile |${CheckProfile1NismatchDonothing}||Do Nothing                                                                                                                                                                                                                                                                          ||Do Nothing   |
+|Create Password Check Profile |${CheckProfile2NismatchReset}    ||Reset password                                                                                                                                                                                                                                                                      ||Do Nothing   |
+|Create Password Check Profile |${CheckProfile3NismatchDisable}  ||Disable check schedule                                                                                                                                                                                                                                                              ||Do Nothing   |
+|Create Password Change Profile|${ChangeProfile1FailureDoNothing}||Do Nothing                                                                                                                                                                                                                                                                                         |
+|Create Password Change Profile|${ChangeProfile2FailureDisable}  ||Disable change schedule                                                                                                                                                                                                                                                                            |
+|Create Password Change Profile|${ChangeProfile3FailureLock}     ||Lock                                                                                                                                                                                                                                                                                               |
+|Add System                    |${CLIBatch}                      ||--SystemName ${SystemName} --PlatformName ${SystemPlatform} --NetworkAddress ${SystemAddress} --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --PasswordCheckProfile ${CheckProfile1NismatchDonothing} --PasswordChangeProfile ${ChangeProfile1FailureDoNothing}||successfully |
+|Add Account                   |${CLIBatch}                      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordCheckProfile ${CheckProfile2NismatchReset}  --PasswordChangeProfile ${ChangeProfile2FailureDisable}                                                                        ||successfully |
+|Add SyncPass                  |${CLIBatch}                      ||--Sync ${SyncPassName1} --PasswordChangeProfile ${ChangeProfile3FailureLock}  --PasswordCheckProfile ${CheckProfile3NismatchDisable}                                                                                                                                                ||successfully |
+*!
+
+''Profile Can Not Be Deleted When Assigned On System, Account or Synchronized Password ''
+
+!|script                                                                 |
+|Try to Delete Password Profile|Check ||${CheckProfile1NismatchDonothing}|
+|Try to Delete Password Profile|Change||${ChangeProfile1FailureDoNothing}|
+|Try to Delete Password Profile|Check ||${CheckProfile2NismatchReset}    |
+|Try to Delete Password Profile|Change||${ChangeProfile2FailureDisable}  |
+|Try to Delete Password Profile|Check ||${CheckProfile3NismatchDisable}  |
+|Try to Delete Password Profile|Change||${ChangeProfile3FailureLock}     |
+
+
+!*> Cleanup
+!|script                                                                                                                                                                                            |
+|Update Account         |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --AutoFlag N --PasswordCheckProfile "!NULL" --PasswordChangeProfile "!NULL"          ||successfully|
+|Update System          |${CLIBatch}||--SystemName ${SystemName} --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}||successfully|
+|Update SyncPass        |${CLIBatch}||--Sync ${SyncPassName1} --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}   ||successfully|
+|Delete System          |${CLIBatch}||--SystemName ${SystemName}                                                                                                                      ||successfully|
+|Delete Sync Password   |${SyncPassName1}                                                                                                                                                           |
+|Delete Password Profile|Change     ||${ChangeProfile1FailureDoNothing}                                                                                                                             |
+|Delete Password Profile|Change     ||${ChangeProfile2FailureDisable}                                                                                                                               |
+|Delete Password Profile|Change     ||${ChangeProfile3FailureLock}                                                                                                                                  |
+|Delete Password Profile|Check      ||${CheckProfile1NismatchDonothing}                                                                                                                             |
+|Delete Password Profile|Check      ||${CheckProfile2NismatchReset}                                                                                                                                 |
+|Delete Password Profile|Check      ||${CheckProfile3NismatchDisable}                                                                                                                               |
+|stop                                                                                                                                                                                               |
+*!

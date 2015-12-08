@@ -1,0 +1,21 @@
+#!include -c <AutoTestsWebDrv.PsmSmokeTest.OracleEleven.PlatformSpecific
+
+!define OSType {Ora}
+!define ProxyType {SQL Window}
+
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios
+!include -c <AutoTestsWebDrv.PlatformsTesting.SqlServer
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios.WindowsEight.PlatformSpecific
+!include -c <AutoTestsWebDrv.PsmSmokeTest.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PsmSmokeTest.SqlServer.PlatformSpecific
+
+
+
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|
+

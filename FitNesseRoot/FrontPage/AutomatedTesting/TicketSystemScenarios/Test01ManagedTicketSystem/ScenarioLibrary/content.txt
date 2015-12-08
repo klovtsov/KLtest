@@ -1,0 +1,155 @@
+!contents
+
+################ Managed Tycket System Scenarios ###############
+
+#!|scenario                   |Managed Ticket System           |
+#|Prepare Managed System                                       |
+#|Create Ticket Database                                       |
+#|Create Managed Ticket System|${TicketSystemName}             |
+#|Delete Ticket System        |${TicketSystemName}             |
+#|Remove System               |${ManagedTicketSystemSystemName}|
+#|Delete Ticket Database                                       |
+
+
+!|scenario                       |Managed Ticket System                                                 |
+|Prepare Managed System                                                                                 |
+|Create Ticket Database                                                                                 |
+|Create Managed Ticket System    |${TicketSystemNameForDuplicating}                                     |
+|Duplicate Managed Ticket System |${TicketSystemNameForDuplicating}||${TicketSystemName}                |
+|Request File with Invalid Ticket Failed                                                                |
+|Request File for Invalid System Failed                                                                 |
+|Request File with Valid Ticket Successful                                                              |
+|Request Password without Any Ticket Failed                                                             |
+|Request Password with Invalid Ticket Failed                                                            |
+|Request Password for Invalid System Failed                                                             |
+|Request Password with Valid Ticket Successful                                                          |
+|Request Password with Provisional Validation                                                           |
+|Ticket Required for CLI Password Release                                                               |
+|Ticket Required for ISA Password Release                                                               |
+|Request Session without Any Ticket Failed                                                              |
+|Request Session with Invalid Ticket Failed                                                             |
+|Request Session for Invalid System Failed                                                              |
+|Request Session with Valid Ticket Successful                                                           |
+|Enable Account Ticket Validation|${ManagedAccount}                ||!Any||${TicketNotifyEmail}||N||N||N|
+|Delete Ticket System            |${TicketSystemNameForDuplicating}                                     |
+|Delete Ticket System            |${TicketSystemName}                                                   |
+|Remove System                   |${ManagedTicketSystemSystemName}                                      |
+|Delete Ticket Database                                                                                 |
+#|Ticket Required for ISA Password Release                                                |
+#|Ticket Required for API Password Release                                                |
+#|Enable Account Ticket Validation|${ManagedAccount} ||!Any||${TicketNotifyEmail}||N||N||N|
+#|Enable Account Ticket Validation|${ManagedAccount2}||!Any||${TicketNotifyEmail}||N||N||N|
+
+
+############ Disabled because of BFER 5371
+#|Request Password with Provisional Validation                                                       |
+
+
+!|scenario        |Create Managed Ticket System|systemName                                                                                                                                                                         |
+|$res=            |GroovyWebDriver             |CreateManagedTicketSystem;${TPAMHost};@systemName;${ManagedTicketSystemSystemName};${ManagedTicketSystemSystemFunctAcct};${TicketSQLStatement};${ValidTicketNumber1};${NewRuleName}|
+|Verify_Contain_OR|$res;;System tested.*System saved.*Rule saved                                                                                                                                                                   |
+
+
+
+#!|scenario            |Create Managed Ticket System|systemName                           |
+#|Login                |${TPAMAdminURL}             |   |${TPAMMaster}  |  |${MasterPwd}  |
+#|pause                |15000                                                             |
+#|clickAndWait         |link=Ticket Systems         |                                     |
+#|click                |id=AddTicketSystem          |                                     |
+#|waitForElementPresent|id=TSName                                                         |
+#|type;                |id=TSName                   |@systemName                          |
+#|type;                |id=TSDescription            |@systemName description              |
+#|click                |id=EnableFL                                                       |
+#|click                |id=AllowDisabledValidationFL                                      |
+#|waitForElementPresent|id=rbPar                                                          |
+#|click                |id=rbPar                                                          |
+#|waitForElementPresent|id=PARSystemName                                                  |
+#|type;                |id=PARSystemName            |${ManagedTicketSystemSystemName}     |
+#|type;                |id=PARAccountName           |${ManagedTicketSystemSystemFunctAcct}|
+#|pause                |2000                                                              |
+#|click                |id=SubmitChanges                                                  |
+#|pause                |20000                                                             |
+#|click                |id=Data                                                           |
+#|pause                |5000                                                              |
+#|waitForElementPresent|id=SQLStatement                                                   |
+#|type;                |id=SQLStatement             |${TicketSQLStatement}                |
+#|pause                |2000                                                              |
+#|type;                |id=subTicketNumber          |${ValidTicketNumber1}                |
+#|pause                |2000                                                              |
+#|click                |id=btnGenerateList                                                |
+#|getConfirmation                                                                         |
+#|pause                |2000                                                              |
+#|waitForTextPresent   |Ticket System tested successfully                                 |
+#|pause                |2000                                                              |
+#|click                |id=SubmitChanges                                                  |
+#|pause                |2000                                                              |
+#|waitForTextPresent   |Ticket System saved successfully                                  |
+#|pause                |5000                                             |
+#|clickAndWait         |link=Ticket Systems                            |
+#|pause                |5000                                             |
+#|waitForElementPresent|//td[contains(text(),'@systemName')]             |
+#|mouseDown            |//td[contains(text(),'@systemName')]             |
+#|click                |//td[contains(text(),'@systemName')]             |
+#|pause                |5000                                                              |
+#|click                |id=Rules                                                          |
+#|pause                |2000                                                              |
+#|click                |id=AddRule                                                        |
+#|pause                |10000                                                              |
+#|waitForElementPresent|id=RuleName                                                       |
+#|type;                |id=RuleName                 |${NewRuleName}                       |
+#|pause                |2000                                                              |
+#|click                |id=RuleEnableFL                                                   |
+#|pause                |2000                                                              |
+#|click                |name=LHV                                                          |
+#|pause                |2000                                                              |
+#|select;              |name=LHV                    |label=:SystemName:                   |
+#|pause                |2000                                                              |
+#|click                |css=option[value=":SystemName:"]                                  |
+#|pause                |2000                                                              |
+#|click                |name=RHV1                                                         |
+#|select;              |name=RHV1                   |label=[Computer]                     |
+#|pause                |2000                                                              |
+#|click                |css=select[name="RHV1"] > option[value="[Computer]"]              |
+#|pause                |2000                                                              |
+#|click                |id=btnValidate                                                    |
+#|pause                |5000                                                              |
+#|click                |id=SubmitChanges                                                  |
+#|waitForTextPresent   |Ticket System Rules saved successfully                            |
+
+
+
+!|scenario        |Prepare Managed System                                                                                                                                                                                                                                                                                    |
+|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${ManagedTicketSystemSystemName} --NetworkAddress ${ManagedTicketSystemSystemAddress} --PlatformName \"${ManagedTicketSystemSystemPlatform}\" --FunctionalAccount ${ManagedTicketSystemSystemFunctAcct} --FuncAcctCred \"${ManagedTicketSystemSystemFunctAcctPwd}\"|
+|Verify_Contain_OR|$res;;successfully                                                                                                                                                                                                                                                                                        |
+
+
+
+!|scenario          |Create Ticket Database                                                                                        |
+|Create Database                                                                                                                   |
+|Create Table                                                                                                                      |
+|Insert Tickets Data|1001||${ValidTicketNumber1}||Nado      ||${CLI_user_1}||Ivan   ||Ivanov||${FakeSystemName}||${ManagedAccount2}|
+|Insert Tickets Data|1002||${ValidTicketNumber2}||Prosto_Tak||${CLI_user_1}||John   ||Smith ||${SystemName}    ||${ManagedAccount} |
+|Insert Tickets Data|1003||${ValidTicketNumber3}||Ne_Nado   ||${WebUser}   ||Tongwei||Liu   ||${SystemName}    ||${ManagedAccount} |
+
+
+
+!|scenario|Create Database                                                                                                                                      |
+|runBatch |MSSQLTickets;createdb;${ManagedTicketSystemSystemAddress};${ManagedTicketSystemSystemFunctAcct};${ManagedTicketSystemSystemFunctAcctPwd};${TicketsDB}|
+
+
+!|scenario|Create Table                                                                                                                                                            |
+|runBatch |MSSQLTickets;createtable;${ManagedTicketSystemSystemAddress};${ManagedTicketSystemSystemFunctAcct};${ManagedTicketSystemSystemFunctAcctPwd};${TicketsDB};${TicketsTable}|
+
+
+!|scenario|Insert Tickets Data          |ticketID          |          |ticketNumber          |          |requestReason          |          |requestorName         |         |firstName         |         |lastName         |         |computer         |         |account         |
+|runBatch |MSSQLTickets;insertticket;${ManagedTicketSystemSystemAddress};${ManagedTicketSystemSystemFunctAcct};${ManagedTicketSystemSystemFunctAcctPwd};${TicketsDB};${TicketsTable};@ticketID;@ticketNumber;@requestReason;@requestorName;@firstName;@lastName;@computer;@account|
+
+
+
+!|scenario|Drop Database                                                                                                                                      |
+|runBatch |MSSQLTickets;dropdb;${ManagedTicketSystemSystemAddress};${ManagedTicketSystemSystemFunctAcct};${ManagedTicketSystemSystemFunctAcctPwd};${TicketsDB}|
+
+
+
+
+

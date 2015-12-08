@@ -1,0 +1,6 @@
+!include <AutoTestsWebDrv.PlatformsTesting.CiscoRouterTelnet
+!include -c <JavaApiScenarios.ScenarioLibrary
+
+
+
+

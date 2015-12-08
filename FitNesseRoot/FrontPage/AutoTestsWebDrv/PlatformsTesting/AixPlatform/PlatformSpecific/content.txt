@@ -1,0 +1,3 @@
+!|scenario|Create Account on System                               |
+|SSH      |useradd.script;;${ManagedAccount};;${ManagedAccountPwd}|
+

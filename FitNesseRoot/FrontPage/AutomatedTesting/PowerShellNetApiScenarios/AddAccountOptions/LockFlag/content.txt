@@ -1,0 +1,17 @@
+!* Test Description
+Passwords for locked accounts cannot be retrieved, released, or changed
+*!
+!define ManagedAccount {${prefix}psAcnt}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                      |
+|Create Account on System                                                     |
+|Add System                                                                   |
+|Test System             |${TestSystemSuccessful}                             |
+|Add account            |${ManagedAccount} |on system   |${SystemName}   |with options|-Password ${ManagedAccountPwd} -LockFlag Y |                                                                                       |
+|Reset Password          |${ResetPasswordFailed}                              |
+|Try to Update Account|${ManagedAccount}          |            |-LockFlag N            |by user            |${API_user_1}            |with result           |successful           |
+|Reset Password          |${ResetPasswordSuccessful}                              |
+|Delete Account on System|${ManagedAccount}                                   |
+|Delete System           |${SystemName}                                       |

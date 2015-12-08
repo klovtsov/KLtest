@@ -1,0 +1,15 @@
+!* Test description
+Management tab
+*!
+!define ManagedAccount {DonChecke}
+!define defValue {Y}
+!define specValue {N}
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                          |
+|Add account            |${ManagedAccount}                                                                              |on system      |${TemplateName}                    |with options|-description "${accDescription}" -CheckFlag ${specValue}|
+|Add account            |${ManagedAccount}Two                                                                           |on system      |${TemplateName}                    |with options|-description "${accDescription}"                        |
+|Try to Add system      |${newSystemName}                                                                               |with parameters|-templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully  |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount} -propsToList accountname,checkFl   |contains       |${ManagedAccount}\s+${specValue}                                                                         |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount}Two -propsToList accountname,checkFl|contains       |${ManagedAccount}Two\s+${defValue}                                                                       |
+|Delete System          |${newSystemName}                                                                                                                                                                                                         |

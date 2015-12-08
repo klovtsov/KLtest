@@ -1,0 +1,128 @@
+
+<table border="1" width="2600">
+  <thead>
+      <tr>
+        <td bgcolor="#C0C0C0" colspan="36" align="center">
+        <font size="5"><b>Listing of PSM Accounts</b></font></td>
+      </tr>
+    <tr>
+      <td bgcolor="#C0C0C0" width="150"><b>System Name</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Account Name</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Password Method</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>TPAM CLI User</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Min Approvers</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Locked?</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Default Session Duration</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Max Session Count</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Notify Threshold</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Notify Frequency</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Proxy Type</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Enabled?</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Color Depth</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Windows Domain Account</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>DSS Key Type</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>File Transfer Path</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>File Transfer Type</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>File Transfer Authentication Method</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Reviews Required</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Reviewer Type</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Reviewer</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Session Start Notify Email</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Escalation Email</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Escalation Time (hours)</b></td>
+      <td bgcolor="#C0C0C0" width="50"><b>ClipboardFl</b></td>
+      <td bgcolor="#C0C0C0" width="50"><b>ConsoleFl</b></td>
+      <td bgcolor="#C0C0C0" width="50"><b>RecordingRequiredFl</b></td>
+      <td bgcolor="#C0C0C0" width="50"><b>UploadsFl</b></td>
+      <td bgcolor="#C0C0C0" width="50"><b>DownloadsFl</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>CLI System Name</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>CLI Account Name</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>CLI Domain Name</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Connection Profile</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Post Session Profile</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Require Multi-Group Approval</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Multi-Group Approver Names</b></td>
+    </tr>
+  </thead>
+  <tbody>
+	
+		<tr>
+			<td>prefixListSystem1</td>
+			<td>prefixListAccount1</td>
+			<td>Local TPAM</td>
+			<td></td> 
+			<td>1</td> 
+			<td>N</td> 
+			<td>120</td>
+			<td>1</td> 
+			<td>0</td> 
+			<td>0</td> 
+			<td>RDP - Automatic Login Using Password</td> 
+			<td>Y</td> 
+			<td>8</td> 
+			<td></td> 
+		 <td></td> 
+			<td></td> 
+			<td>File Transfer Disabled</td> 
+			<td>Same</td> 
+			<td>0</td> 
+			<td>None</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td>0</td> 
+			<td>Y</td> 
+			<td>N</td> 
+			<td>Y</td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+         <td>N</td>
+         <td></td>
+		</tr>
+	
+		<tr>
+			<td>prefixListSystem1</td>
+			<td>prefixListAccount12</td>
+			<td>Local TPAM</td>
+			<td></td> 
+			<td>1</td> 
+			<td>N</td> 
+			<td>120</td>
+			<td>1</td> 
+			<td>0</td> 
+			<td>0</td> 
+			<td>SSH - Automatic Login Using Password</td> 
+			<td>N</td> 
+			<td></td> 
+			<td></td> 
+		 <td></td> 
+			<td></td> 
+			<td>File Transfer Disabled</td> 
+			<td>Same</td> 
+			<td>0</td> 
+			<td>None</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td>0</td> 
+			<td>Y</td> 
+			<td>N</td> 
+			<td>Y</td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+         <td>N</td>
+         <td></td>
+		</tr>
+	
+  </tbody>
+</table>

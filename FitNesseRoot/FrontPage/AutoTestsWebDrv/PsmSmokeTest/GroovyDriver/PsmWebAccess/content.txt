@@ -1,0 +1,27 @@
+!define Image1 {TPAMlogo.jpg}
+!define Image2 {ALLOWNAV.png}
+!define NewUrl {http://10.30.38.91/psmwebaccess/allownav.html}
+
+!define SystemName {${prefix}_PsmWebAccess}
+!define SystemPlatform {PSM Web Access}
+!define ManagedAccount {WebAccessAccount}
+!define RestrictedURL {ALLOWNAV;http://10.30.38.91/psmwebaccess/index.html}
+
+
+
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios
+
+
+!*> Includes
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PsmSmokeTest.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PsmSmokeTest.PsmWebAccess.PlatformSpecific 
+!include -c <AutoTestsWebDrv.PsmSmokeTest.GroovyDriver.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PsmSmokeTest.GroovyDriver.PsmWebAccess.PlatformSpecific 
+*!
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|

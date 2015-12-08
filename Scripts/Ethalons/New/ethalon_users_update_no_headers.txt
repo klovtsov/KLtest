@@ -1,0 +1,12 @@
+UserName	LastName	FirstName	EmailAddress	Phone	Mobile	UserType	UserInterface	Password	DisabledFl	SecAuthType	SecAuthID	Description	LogonHoursFl	Hours	SecAuthSystem	PrimAuthType	PrimAuthID	PrimAuthSystem	Timezone	DstFl	LogonDays	MobileAllowed	PrimAuthExtra	UserCustom1	UserCustom2	UserCustom3	UserCustom4	UserCustom5	UserCustom6	CertificateThumbprint
+klbatchuser1	Doe	John	newklbatchuser@tpam.spb.qsft	111	222	Basic	web;		N	None		desc	A	09:00-18:00	None	Local			Server	n/a	SMTWTFS	N								
+klbatchuser10	Doe	Jane	klbatchuser@tpam.spb.qsft	111	222	User Admin	web;		N	None		new desc	A	09:00-18:01	None	Local			Server	n/a	SMTWTFS	N								
+klbatchuser11	Doe	John	klbatchuser@tpam.spb.qsft	111	222	User Admin	cli;		N/A	None		desc	N		None	Local			Server	n/a		N								
+klbatchuser12	Doe	Jane	newklbatchuser@tpam.spb.qsft	7777777777777777	8888888888888	User Admin	api;		N/A	None		desc	N		None	Local			Server	n/a		N								
+klbatchuser2	Doe	John	klbatchuser@tpam.spb.qsft	111	222	Basic	cli;		N/A	None		desc	N		None	Local			Server	n/a		N								
+klbatchuser3	Ivanov	Ivan	klbatchuser@tpam.spb.qsft	111	222	Basic	api;		N/A	None		desc	N		None	Local			Server	n/a		N								
+klbatchuser5	Doe	Jane	klbatchuser@tpam.spb.qsft	3333333333333333	444444444444444	Administrator	cli;		N/A	None		desc	N		None	Local			Server	n/a		N								
+klbatchuser6	Doe	John	klbatchuser@tpam.spb.qsft	111	222	Administrator	api;		N/A	None		desc	N		None	Local			Server	n/a		N								
+klbatchuser7	Doe	Jane	klbatchuser@tpam.spb.qsft	111	222	Auditor	web;		N	None		new desc	N		None	Local			Server	n/a		N								
+klbatchusercache	Doe	John	newklbatchuser@tpam.spb.qsft	1113333		Cache			N/A	None		desc	N		None	Local			(UTC) Coordinated Universal Time	N		N								
+klbatchuserwithveryverybigname	Doe	John	klbatchuser@tpam.spb.qsft	111	222	Basic	web;		N	None		desc	A	00:00-23:59	None	Local			(UTC-07:00) Arizona	N	SM-----	Y								

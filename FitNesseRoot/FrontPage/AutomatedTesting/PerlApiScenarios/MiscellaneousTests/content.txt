@@ -1,0 +1,4 @@
+!define authFile {${PathToKeys}${API_user_1}}
+!define PerlAPIparams {--keyFileName=${authFile};--apiuserName=${API_user_1};--host=${TPAMHost}}
+
+!contents -R2 -g -p -h -f

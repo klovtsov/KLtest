@@ -1,0 +1,8 @@
+!define seleniumTimeout {20}
+!include -c <DeployProject.ScenarioLibrary
+!include -c <FrontPage.AutomatedTesting.ScenarioLibrary
+|script                |
+|Update Firefox Profile|
+
+
+

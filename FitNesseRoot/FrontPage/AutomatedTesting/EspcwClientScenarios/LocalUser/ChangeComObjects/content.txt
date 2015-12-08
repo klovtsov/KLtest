@@ -1,0 +1,20 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ChangeComObjects.TestSpecific
+
+!define SuccessAppStartResult {EXIT 0}
+!define FailAppStartResult {EXIT -2147467238}
+
+!|script                                                                                                                              |
+|Change Account Password on System     |${ManagedAccountPwdNew}                                                                       |
+|Create Com Application which is run by|${ManagedAccount}       |and run under password is|${ManagedAccountPwdNew}|on|${SystemAddress}|
+|Check Checkbox                        |changecomplus           |for user                 |DEFAULT                                    |
+|Reset Password                        |${ManagedAccount}       |                         |${ResetPasswordSuccessful}                 |
+|Start Com Application                 |${SuccessAppStartResult}|on                       |${SystemAddress}                           |
+|Stop Com Application on               |${SystemAddress}                                                                              |
+|Uncheck Checkbox                      |changecomplus           |for user                 |DEFAULT                                    |
+|Reset Password                        |${ManagedAccount}       |                         |${ResetPasswordSuccessful}                 |
+|Start Com Application                 |${FailAppStartResult}   |on                       |${SystemAddress}                           |
+|Delete Com Application on             |${SystemAddress}                                                                              |
+

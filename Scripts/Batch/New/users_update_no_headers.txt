@@ -1,0 +1,13 @@
+klbatchuser1	U	Doe	John	newklbatchuser@tpam.spb.qsft	111	222	Basic		N			desc	A	09:00-18:00		Local		Local	N	Server										
+klbatchuser10	U	Doe	Jane	klbatchuser@tpam.spb.qsft	111	222	User Admin		N			new desc	A	09:00-18:01		Local		Local	N	Server										
+klbatchuser11	U	Doe	John	klbatchuser@tpam.spb.qsft	111	222	User Admin		N/A			desc	A	09:00-18:02		Local		Local	N	Server										
+klbatchuser12	U	Doe	Jane	newklbatchuser@tpam.spb.qsft	7777777777777777	8888888888888	User Admin		N/A			desc	A	09:00-18:03		Local		Local	N	Server										
+klbatchuser2	U	Doe	John	klbatchuser@tpam.spb.qsft	111	222	Basic		N/A			desc	A	09:00-18:04		Local		Local	N	Server										
+klbatchuser3	U	Ivanov	Ivan	klbatchuser@tpam.spb.qsft	111	222	Basic		N/A			desc	A	09:00-18:05		Local		Local	N	Server										
+klbatchuserwithveryverybigname	U	Doe	John	klbatchuser@tpam.spb.qsft	111	222	Basic		N			desc	A	00:00-23:59		Local		Local	Y	(UTC-07:00) Arizona	N	XX-----								
+klbatchuser5	U	Doe	Jane	klbatchuser@tpam.spb.qsft	3333333333333333	444444444444444	Administrator		N/A			desc	N			Local		Local	N	Server										
+klbatchuser6	U	Doe	John	klbatchuser@tpam.spb.qsft	111	222	Administrator		N/A			desc	N			Local		Local	N	Server										
+klbatchuser7	U	Doe	Jane	klbatchuser@tpam.spb.qsft	111	222	Auditor		N			new desc	N			Local		Local	N	Server										
+klbatchuser8	D	Doe	John	klbatchuser@tpam.spb.qsft	111	222	Auditor		N/A			new desc	N			Local		Local	N	Server										
+klbatchuser9	D	Doe	Jane	klbatchuser@tpam.spb.qsft	111	222	Auditor		N/A			desc	N			Local		Local	N	Server										
+klbatchusercache	U	Doe	John	newklbatchuser@tpam.spb.qsft	1113333		Cache					desc																		

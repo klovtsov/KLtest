@@ -1,0 +1,3 @@
+!include <AutoTestsWebDrv.PlatformsTesting.MacOsxSix
+!include -c <CliScenarios.ScenarioLibrary
+

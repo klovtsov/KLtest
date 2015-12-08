@@ -1,0 +1,8 @@
+!define ProfileName {${prefix}PNAccDiscProfile5}
+!define browser {firefox}
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ProfileNotify.TestSpecific
+

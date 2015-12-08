@@ -1,0 +1,16 @@
+!* Test description
+
+*!
+!define ManagedAccount {CheckDate}
+!define NextChangeDateYear {2017}
+!define NextChangeDateMonth {11}
+!define NextChangeDateDay {30}
+!define NextChangeDate {"${NextChangeDateYear},${NextChangeDateMonth},${NextChangeDateDay}"}
+
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                      |
+|Add account            |${ManagedAccount}                                                                                |on system      |${TemplateName}                    |with options|-description "${accDescription}" -nextChangeDate ${NextChangeDate}|
+|Try to Add system      |${newSystemName}                                                                                 |with parameters|-templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully            |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount} -propsToList accountname,nextChangeDt|contains       |${ManagedAccount}\s+${NextChangeDateYear}-${NextChangeDateMonth}-${NextChangeDateDay}                              |
+|Delete System          |${newSystemName}                                                                                                                                                                                                                     |

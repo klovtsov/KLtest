@@ -1,0 +1,48 @@
+!* Test description
+A Denied access policy assignment at any level overrides all other permissions at that level.
+*!
+
+!define GroupName2 {${prefix}grp2}
+!define CollectionName {${prefix}AccntColtn}
+
+!*> Include section
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+
+!*> Create environment
+!|script                                                                                    |
+|Add Group               |${GroupName}                                                      |
+|Add User To Group       |${CLI_user_2}    |             |${GroupName}                      |
+|Add Group               |${GroupName2}                                                     |
+|Add User To Group       |${CLI_user_2}    |             |${GroupName2}                     |
+|Add system                                                                                 |
+|Add account             |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed}|
+|Add Collection          |${CollectionName}                                                 |
+|Add System To Collection|${SystemName}    |             |${CollectionName}                 |
+*!
+
+!3 Test 
+!|script                                                                                        |
+|Set policy           |\"PPM Requestor\"|on system    |${SystemName}    |for group|${GroupName} |
+|Set policy           |Approver         |on system    |${SystemName}    |for user |${CLI_user_1}|
+|Request Pwd by       |${CLI_user_2}    |with result  |submitted                                |
+|Cancel Pwd Request by|${CLI_user_2}                                                            |
+|Set policy           |Denied           |on collection|${CollectionName}|for group|${GroupName2}|
+|pause                |${ApplyNewPoliciesInterval}                                              |
+|Request Pwd by       |${CLI_user_2}    |with result  |submitted                                |
+|Cancel Pwd Request by|${CLI_user_2}                                                            |
+|Revoke policy        |Denied           |on collection|${CollectionName}|for group|${GroupName2}|
+|Request Pwd by       |${CLI_user_2}    |with result  |submitted                                |
+|Cancel Pwd Request by|${CLI_user_2}                                                            |
+
+!*> Clean Up section
+!|script                            |
+|Remove account   |${ManagedAccount}|
+|Remove system    |${SystemName}    |
+|Delete Group     |${GroupName}     |
+|Delete Group     |${GroupName2}    |
+|Delete Collection|${CollectionName}|
+*!

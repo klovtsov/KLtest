@@ -1,0 +1,15 @@
+!define SystemName {${prefix}_ora11}
+!define SystemPlatform {Oracle}
+!define SystemAddress {10.30.38.126}
+!define FunctAcct2 {System1}
+!define FunctAcctPwd2 {A\)&(d|e;f<j>k$l1}
+!define FunctAcct {Sys}
+!define FunctAcctPwd {qwerty}
+!define ManagedAccountPwd {A\)&(d|e;f<j>k$l1}
+!define Port {1521}
+!define SID {orcl}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.OraclePlatform.PlatformSpecific
+!include -c <AutomatedTesting.PlatformsTesting.OracleElevenSys.PlatformSpecific
+
+

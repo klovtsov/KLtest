@@ -1,0 +1,4 @@
+!define TestUserName {${prefix}tstUser}
+!define TestUserFirstName {Jimmy}
+!define TestUserLastName {Hocking}
+!contents

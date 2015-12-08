@@ -1,0 +1,10 @@
+!define UserEmail {${TestUserName}@something.org}
+!define UserPhone {3332233}
+!define UserMobile {78123320300}
+
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                  |
+|Add User       |${TestUserName}          |with options|-email ${UserEmail} -phone ${UserPhone} -mobile ${UserMobile}     |
+|List properties|emailAddress,phone,mobile|for user    |${TestUserName}|contains|${UserEmail}.*${UserPhone}.*${UserMobile}|
+|Delete User    |${TestUserName}                                                                                          |

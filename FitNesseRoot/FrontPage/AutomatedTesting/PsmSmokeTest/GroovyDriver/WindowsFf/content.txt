@@ -1,0 +1,27 @@
+!define OSType {Win}
+!define ProxyType {RDP}
+!define TestPsmLog {${prefix}_drvpsmlog.txt}
+!define Browser {FireFox}
+!define Image {Fake}
+
+
+
+!include -c <AutomatedTesting.SessionAlertsScenarios
+!include <AutomatedTesting.PlatformsTesting.WindowsLocalhost
+
+!*> Includes
+
+
+!include -c <AutomatedTesting.SessionAlertsScenarios.ScenarioLibrary
+
+!include -c <AutomatedTesting.PsmSmokeTest.ScenarioLibrary
+#!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+!include -c <AutomatedTesting.PsmSmokeTest.GroovyDriver.ScenarioLibrary
+
+*!
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|

@@ -1,0 +1,143 @@
+!contents
+
+
+!|scenario                       |XXX Web Service Ticket System|
+|Prepare Managed System                                        |
+|Create Web Service Ticket System|${TicketSystemName}          |
+|Delete Ticket System            |${TicketSystemName}          |
+|Remove System                   |${TicketSystemSystemName}    |
+
+
+!|scenario                       |Web Service Ticket System                             |
+|Prepare Managed System                                                                 |
+|Create Web Service Ticket System|${TicketSystemName}                                   |
+|Request File with Invalid Ticket Failed                                                |
+|Request File for Invalid System Failed                                                 |
+|Request File with Valid Ticket Successful                                              |
+|Request Password without Any Ticket Failed                                             |
+|Request Password with Invalid Ticket Failed                                            |
+|Request Password for Invalid System Failed                                             |
+|Request Password with Valid Ticket Successful                                          |
+|Request Password with Provisional Validation                                           |
+|Ticket Required for CLI Password Release                                               |
+|Request Session without Any Ticket Failed                                              |
+|Request Session with Invalid Ticket Failed                                             |
+|Request Session for Invalid System Failed                                              |
+|Request Session with Valid Ticket Successful                                           |
+|Enable Account Ticket Validation|${ManagedAccount}||!Any||${TicketNotifyEmail}||N||N||N|
+|Delete Ticket System            |${TicketSystemName}                                   |
+|Remove System                   |${TicketSystemSystemName}                             |
+#|Ticket Required for ISA Password Release                                                |
+#|Ticket Required for API Password Release                                                               |
+#|Copy ASP to IIS wwwroot                                                                                |
+#|Enable Account Ticket Validation|${ManagedAccount} ||${TicketSystemName}||${TicketNotifyEmail}||N||N||N|
+#|Enable Account Ticket Validation|${ManagedAccount2}||${TicketSystemName}||${TicketNotifyEmail}||N||N||N|
+
+
+############ Disabled because of BFER 5371
+#|Request Password with Provisional Validation                                                       |
+
+
+
+!|scenario        |Create Web Service Ticket System|systemName                                                                                                                                                                                                                       |
+|$res=            |GroovyWebDriver                 |CreateWebServiceTicketSystem;${TPAMHost};@systemName;${TicketSystemSystemAddress};${XMLPath};${XMLErrorPath};${TicketSystemSystemName};${TicketSystemSystemFunctAcct};${TicketParameterName};${ValidTicketNumber1};${NewRuleName}|
+|Verify_Contain_OR|$res;;System tested.*System saved.*Rule saved                                                                                                                                                                                                                     |
+
+
+
+#!|scenario            |Create Web Service Ticket System|systemName                    |
+#|Login                |${TPAMAdminURL}                 | |${TPAMMaster} ||${MasterPwd}|
+#|pause                |15000                                                          |
+#|clickAndWait         |link=Ticket Systems             |                              |
+#|click                |id=AddTicketSystem              |                              |
+#|waitForElementPresent|id=TSName                                                      |
+#|type;                |id=TSName                       |@systemName                   |
+#|type;                |id=TSDescription                |@systemName description       |
+#|click                |id=EnableFL                                                    |
+#|click                |id=AllowDisabledValidationFL                                   |
+#|waitForElementPresent|id=rbWeb                                                       |
+#|click                |id=rbWeb                                                       |
+#|waitForElementPresent|id=WebServiceURI                                               |
+#|type;                |id=WebServiceURI                |${WebServiceURI}              |
+#|click                |id=WebServiceType                                              |
+#|select;              |id=WebServiceType               |label=HTTP POST               |
+#|click                |css=option[value="HTTP POST"]                                  |
+#|select;              |id=WebServiceXMLEncoding        |label=ISO-8859-1              |
+#|type;                |id=WebServiceXPath              |${XMLPath}                    |
+#|type;                |id=WebServiceErrorXPath         |${XMLErrorPath}               |
+#|click                |id=rbWebServiceSystem                                          |
+#|waitForElementPresent|id=WebServiceSystemName                                        |
+#|type;                |id=WebServiceSystemName         |${TicketSystemSystemName}     |
+#|type;                |id=WebServiceAccountName        |${TicketSystemSystemFunctAcct}|
+#|click                |id=SubmitChanges                                              |
+#|pause                |10000                                                           |
+#|click                |id=Data                                                        |
+#|waitForElementPresent|css=input.parmname                                             |
+#|click                |css=input.parmname                                             |
+#|type;                |css=input.parmname              |${TicketParameterName}        |
+#|select;              |css=select.parmval              |label=:TicketNumber:          |
+#|click                |css=option[value=":TicketNumber:"]                             |
+#|pause                |2000                                                           |
+#|type;                |id=subTicketNumber              |${ValidTicketNumber1}         |
+#|pause                |2000                                                           |
+#|click                |id=btnGenerateList                                             |
+#|getConfirmation                                                                      |
+#|pause                |2000                                                           |
+#|waitForTextPresent   |Ticket System tested successfully                              |
+#|pause                |2000                                                           |
+#|click                |id=SubmitChanges                                               |
+#|pause                |2000                                                           |
+#|waitForTextPresent   |Ticket System saved successfully                               |
+#|pause                |5000                                             |
+#|clickAndWait         |link=Ticket Systems                            |
+#|pause                |5000                                             |
+#|waitForElementPresent|//td[contains(text(),'@systemName')]             |
+#|mouseDown            |//td[contains(text(),'@systemName')]             |
+#|click                |//td[contains(text(),'@systemName')]             |
+#|pause                |5000                                                           |
+#|click                |id=Rules                                                       |
+#|pause                |5000                                                           |
+#|click                |id=AddRule                                                     |
+#|pause                |10000                                                           |
+#|waitForElementPresent|id=RuleName                                                    |
+#|type;                |id=RuleName                     |${NewRuleName}                |
+#|pause                |2000                                                           |
+#|click                |id=RuleEnableFL                                                |
+#|pause                |2000                                                           |
+#|click                |name=LHV                                                       |
+#|pause                |2000                                                           |
+#|select;              |name=LHV                        |label=:Platform:              |
+#|pause                |2000                                                           |
+#|click                |css=option[value=":Platform:"]                                 |
+#|pause                |2000                                                           |
+#|click                |name=RHV1                                                      |
+#|select;              |name=RHV1                       |label=[ProductName]           |
+#|pause                |2000                                                           |
+#|click                |css=select[name="RHV1"] > option[value="[ProductName]"]        |
+#|pause                |2000                                                           |
+#|click                |id=btnValidate                                                 |
+#|pause                |5000                                                           |
+#|click                |id=SubmitChanges                                               |
+#|waitForTextPresent   |Ticket System Rules saved successfully                         |
+
+
+
+!|scenario        |Prepare Managed System                                                                                                                                                                                                                                                 |
+|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${TicketSystemSystemName} --NetworkAddress ${TicketSystemSystemAddress} --PlatformName \"${TicketSystemSystemPlatform}\" --FunctionalAccount ${TicketSystemSystemFunctAcct} --FuncAcctCred \"${TicketSystemSystemFunctAcctPwd}\"|
+|Verify_Contain_OR|$res;;successfully                                                                                                                                                                                                                                                     |
+
+
+
+!|scenario|Copy ASP to IIS wwwroot|
+
+!|scenario   |Request File with Invalid Ticket Failed                                                |
+|Request File|${SystemName}||${FileName}||${WebUser}||${InvalidTicketNumber}||Ticket Number not found|
+
+!|scenario                   |Request Password with Invalid Ticket Failed                       |
+|Request Password with Ticket|${ManagedAccount}||${InvalidTicketNumber}||Ticket Number not found|
+
+!|scenario                  |Request Session with Invalid Ticket Failed                        |
+|Request Session with Ticket|${ManagedAccount}||${InvalidTicketNumber}||Ticket Number not found|
+
+
+

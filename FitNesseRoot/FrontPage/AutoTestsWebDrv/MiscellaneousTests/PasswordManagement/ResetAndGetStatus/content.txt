@@ -1,0 +1,21 @@
+!define pwdChangeFreq {10}
+!define tempChangeProfile {${prefix}temp}
+!define dfltChangeProfile {Change Disabled}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                                       |
+|Open                           |${TPAMURL}       ||${TPAMAdmin}||${DefaultPwd}|
+|Set password change frequency  |${pwdChangeFreq}                              |
+|Reset Password                 |${ManagedAccount}||${ResetPasswordSuccessful} |
+|Check password change frequency|Every ${pwdChangeFreq} days                   |
+|Check Last Change Date                                                        |
+|stop                                                                          |
+
+!*> Clean Up
+!|script                                                                              |
+|Set Profile                       |${dfltChangeProfile}|for account|${ManagedAccount}|
+|Delete Ppm Password Change Profile|${tempChangeProfile}                              |
+*!

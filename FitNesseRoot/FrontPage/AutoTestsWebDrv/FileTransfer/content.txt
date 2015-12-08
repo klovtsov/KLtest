@@ -1,0 +1,3 @@
+!define checkProfileName {PersPassCheckProfile_1}
+!define changeProfileName {Change Disabled}
+!contents -R -p -g

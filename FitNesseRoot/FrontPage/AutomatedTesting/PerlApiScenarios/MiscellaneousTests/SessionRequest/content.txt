@@ -1,0 +1,44 @@
+!define SystemName {${prefix}PerlSystem1}
+!define AccountName {${prefix}PerlAccount1}
+!define Requestor {${prefix}PRequestor}
+!define Approver {${prefix}PApprover}
+
+!define authFile2 {${PathToKeys}${API_user_2}}
+!define PerlAPIparams2 {--keyFileName=${authFile2};--apiuserName=${API_user_2};--host=${TPAMHost}}
+
+!|script                                                                                                                                                          |
+|Add System        |${PerlAPIparams}||--SystemName=${SystemName};--PlatformName=Windows;--NetworkAddress=x.x.x.x                                     ||successfull|
+|Add Account       |${PerlAPIparams}||--SystemName=${SystemName};--AccountName=${AccountName};--Password=PAssword1                                   ||successfull|
+|Update PSM Account|${PerlAPIparams}||--System=${SystemName};--Account=${AccountName};--enableflag=Y;--proxytype=RDP - Automatic Login Using Password||successfull|
+
+
+!|script                                                                                                                                           |
+|NewAddUser       |${PerlAPIparams}||--UserName=${Requestor};--FirstName=fname;--LastName=lname                                       ||successfull|
+|NewAddUser       |${PerlAPIparams}||--UserName=${Approver};--FirstName=fname;--LastName=lname                                        ||successfull|
+|Set Access Policy|${PerlAPIparams}||--UserName=${Requestor};--Action=add;--accessPolicyName=PSM Requestor;--systemname=${SystemName} ||successfull|
+|Set Access Policy|${PerlAPIparams}||--UserName=${Approver};--Action=add;--accessPolicyName=PSM Approver;--systemname=${SystemName}   ||successfull|
+|Set Access Policy|${PerlAPIparams}||--UserName=${API_user_1};--Action=add;--accessPolicyName=PSM Requestor;--systemname=${SystemName}||successfull|
+|Set Access Policy|${PerlAPIparams}||--UserName=${API_user_2};--Action=add;--accessPolicyName=PSM Approver;--systemname=${SystemName} ||successfull|
+
+
+
+addSessionRequest, approveSessionRequest, cancelSessionRequest, getSessionRequest, listAcctsForSessionRequest, listSessionRequest, listSessionRequestDetails
+!|script                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|List Accts For Session Request|${PerlAPIparams} ||--SystemName=${SystemName};--AccountName=${AccountName}                                                                       ||systemName: ${SystemName}.*accountName: ${AccountName}.*nowFl: N.*details: Approval Required.*reqID: .*maxReleaseDuration: 10080.*requireTixForRequest: N.*ticketSystem: .*lastReleaseDt: .*description: .*totalRows: 1.*acctLockFl: N.*policyName: PSM Requestor.*minApprovers: 1|
+|Add Session Request           |${PerlAPIparams} ||--SystemName=${SystemName};--AccountName=${AccountName};--ForUser=${Requestor};--ReleaseDuration=60;--RequestNotes=checkonetwo||RequestID.*for a PSM Session for account.*${AccountName}.*${SystemName} has been submitted.*The current status is Pending Approval                                                                                                                                                |
+|Approve Session Request       |${PerlAPIparams2}||--RequestID=$RequestID;--Comment=OK                                                                                           ||Approved.*The response for Session Request $RequestID was submitted successfully                                                                                                                                                                                                  |
+|Set Access Policy             |${PerlAPIparams} ||--UserName=${API_user_2};--Action=add;--accessPolicyName=ISA;--systemname=${SystemName}                                       ||successfull                                                                                                                                                                                                                                                                       |
+|Get Session Request           |${PerlAPIparams2}||--RequestID=$RequestID                                                                                                        ||requestID: $RequestID.*requestorName: ${Requestor}.*systemName: ${SystemName}.*accountName: ${AccountName}.*releaseDuration: 60.*requestNotes: checkonetwo.*requestStatus: Active.*Approved.*accessPolicyName: PSM Requestor                                                     |
+|List Session Request          |${PerlAPIparams2}||--status=All;--requestorName=${Requestor};--accountName=${AccountName};--SystemName=${SystemName}                             ||requestID: $RequestID.*userName: ${Requestor}.*userFullName: lname, fname.*systemName: ${SystemName}.*accountName: ${AccountName}.*status: Active.*Approved.*accessPolicyName: PSM Requestor                                                                                      |
+|List Session Request Details  |${PerlAPIparams2}||--status=All;--requestorName=${Requestor};--accountName=${AccountName};--SystemName=${SystemName}                             ||requestID: $RequestID.*userName: ${Requestor}.*userFullName: lname, fname.*systemName: ${SystemName}.*accountName: ${AccountName}.*status: Active.*Approved.*accessPolicyName: PSM Requestor                                                                                      |
+|Cancel Session Request        |${PerlAPIparams2}||--RequestID=$RequestID;--Comment=OK                                                                                           ||Canceled.*The response for Session Request $RequestID.was submitted successfully                                                                                                                                                                                                  |
+
+
+
+!|script                                                             |
+|NewDeleteUser|${PerlAPIparams}||--UserName=${Requestor}||successfull|
+|NewDeleteUser|${PerlAPIparams}||--UserName=${Approver} ||successfull|
+
+!|script                                                                |
+|Delete System|${PerlAPIparams}||--SystemName=${SystemName}||successfull|
+

@@ -1,0 +1,3 @@
+!define QuickSubmitText {SPb Quick Submit from Mobile Device}
+
+!contents

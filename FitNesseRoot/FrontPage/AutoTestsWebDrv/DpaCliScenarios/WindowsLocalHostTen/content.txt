@@ -1,0 +1,3 @@
+!include <AutoTestsWebDrv.CliScenarios.WindowsLocalHostTen
+!include -c ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword

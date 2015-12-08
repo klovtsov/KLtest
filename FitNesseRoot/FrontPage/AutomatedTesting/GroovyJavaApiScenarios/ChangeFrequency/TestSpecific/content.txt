@@ -1,0 +1,6 @@
+!|scenario        |Update Synchronized Password Change Frequency Failed|SyncPassName                                          |                                          |options                                         |
+|$res=            |RunBatchGetOutput                                   |GroovyJavaAPI\groovy_runner.bat;updateSyncPass.groovy;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};SyncPassName=@SyncPassName;@options|
+|Verify_Contain_OR|$res;;ChangeFreq must be between -2 and 999. Invalid value = 1000                                                                                                                                      |
+
+
+

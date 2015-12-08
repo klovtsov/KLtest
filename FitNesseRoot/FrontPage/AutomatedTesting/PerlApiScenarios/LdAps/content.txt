@@ -1,0 +1,3 @@
+!include <AutomatedTesting.PlatformsTesting.LdAps
+!include -c <PerlApiScenarios.ScenarioLibrary
+!include -c <PerlApiScenarios.LdAp.PlatformSpecific

@@ -1,0 +1,3 @@
+!include <AutomatedTesting.PlatformsTesting.NisPlus
+!include -c <DpaScenarios.ScenarioLibrary
+#!include -c <DpaScenarios.NisPlus.BugWorkaround

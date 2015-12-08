@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.AixPlatform
+!include -c ScenarioLibrary

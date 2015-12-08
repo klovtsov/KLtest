@@ -1,0 +1,5 @@
+!define content {${ATPath}\PlatformsTesting\SolarisNine\content.txt}
+
+
+!include -c <AutomatedTesting.PlatformsTesting.SolarisNine 
+!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

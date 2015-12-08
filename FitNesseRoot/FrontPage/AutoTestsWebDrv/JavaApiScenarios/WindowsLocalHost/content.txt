@@ -1,0 +1,5 @@
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+
+!include -c <JavaApiScenarios.ScenarioLibrary

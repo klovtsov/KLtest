@@ -1,0 +1,6 @@
+!contents
+
+!define NotFailed {successfully}
+!define SuccessServiceStartResult {RUNNING;;START_PENDING}
+!define TaskName {WAMTask1}
+!define wampref {wam}

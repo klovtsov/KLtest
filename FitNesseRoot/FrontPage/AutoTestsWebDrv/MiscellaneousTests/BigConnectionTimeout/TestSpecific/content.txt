@@ -1,0 +1,14 @@
+!|scenario            |Set Connection Tab                 |
+|waitForElementPresent|id=Details    |                    |
+|click                |id=Details    |                    |
+|waitForElementPresent|id=Connection |                    |
+|click                |id=Connection |                    |
+|type;                |id=PARFuncAcct|${ParFunctAcct}     |
+|type;                |id=EGPFuncAcct|${PsmFunctAcct}     |
+|type;                |id=Timeout    |${LongSystemTimeout}|
+|click                |id=bt_Save    |                    |
+|waitForTextPresent   |successfull                        |
+
+!|scenario        |Check system timeout is|value                                                                  |
+|$res =           |GroovyWebDriver        |checkSystemTimeout;${TPAMHost};${TPAMAdmin};${DefaultPwd};${SystemName}|
+|Verify_Contain_OR|$res;;@value                                                                                   |

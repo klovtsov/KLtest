@@ -1,0 +1,3 @@
+!include <AutomatedTesting.PlatformsTesting.OracleTen
+!include -c <JavaApiScenarios.ScenarioLibrary
+!include -c <JavaApiScenarios.OraclePlatform.PlatformSpecific

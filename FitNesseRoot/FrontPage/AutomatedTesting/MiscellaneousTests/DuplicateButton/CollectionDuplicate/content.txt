@@ -1,0 +1,31 @@
+!********> Test Description
+This test checks that Dublicate button for collection is working.
+Duplicated collection has same membership and permission as original one. 
+**************!
+!define CollctnName {${prefix}Collctn}
+!define duplCollctnName {${CollctnName}_Duplicate}
+!define collDescription {Test}
+!define test_policy {\"PPM Requestor\"}
+!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${API_user_1} -apiUser ${API_user_1}}
+
+!note Managed System settings
+!include -c <AutomatedTesting.PlatformsTesting.MacOsxSix
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.PermissionHierarchy.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                                                                                               |
+|Add system                                                                                                                            |
+|Add Collection                      |${CollctnName}                                                                                   |
+|Add System To Collection            |${SystemName}                     |                   |${CollctnName}                            |
+|Set policy                          |${test_policy}                    |on collection      |${CollctnName}|for user|${CLI_user_2}     |
+|Duplicate                           |collection                        |                   |${CollctnName}|to      |${duplCollctnName}|
+|pause                               |${ApplyNewPoliciesInterval}                                                                      |
+|List Collection Membership by filter|-collection ${duplCollctnName}    |and result contains|${SystemName}                             |
+|List Policies by filter             |-CollectionName ${duplCollctnName}|contains           |${CLI_user_2}.*Requestor.*                |
+|Remove system                       |${SystemName}                                                                                    |
+|Delete Collection                   |${CollctnName}                                                                                   |
+|Delete Collection                   |${duplCollctnName}                                                                               |

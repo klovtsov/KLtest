@@ -1,0 +1,68 @@
+!|scenario            |Add API User              |UserName                        |
+|clickOnLink          |link=Add UserID                                            |
+|pause                |5000                                                       |
+|waitForElementPresent|id=UserName                                                |
+|type;                |id=UserName               |@UserName                       |
+|type;                |id=FirstName              |Shlomo1                         |
+|type;                |id=LastName               |Gardner1                        |
+|select;              |id=UType                  |label=Administrator             |
+|click                |id=cb_WebAccess                                            |
+|click                |id=KeyBased                                                |
+|click                |id=cb_ApiAccess                                            |
+|click                |id=SubmitChanges                                           |
+|waitForTextPresent   |User added successfully                                    |
+|Choose User          |@UserName                                                  |
+|click                |id=Details                                                 |
+|click                |id=KeyBased                                                |
+|click                |id=GetApiKey                                               |
+|pause                |5000                                                       |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}@UserName|
+
+
+
+!|scenario            |Add CLI User                |UserName                          |
+|clickOnLink          |link=Add UserID                                                |
+|pause                |5000                                                           |
+|waitForElementPresent|id=UserName                                                    |
+|type;                |id=UserName                 |@UserName                         |
+|type;                |id=FirstName                |Shlomo1                           |
+|type;                |id=LastName                 |Gardner1                          |
+|select;              |id=UType                    |label=Administrator               |
+|click                |id=cb_WebAccess                                                |
+|click                |id=KeyBased                                                    |
+|click                |id=cb_CliAccess                                                |
+|click                |id=SubmitChanges                                               |
+|waitForTextPresent   |User added successfully                                        |
+|Choose User          |@UserName                                                      |
+|click                |id=Details                                                     |
+|click                |id=KeyBased                                                    |
+|click                |id=GetCliKey                                                   |
+|pause                |5000                                                           |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}@UserName.ppk|
+
+
+
+!|scenario|Generate Plink Key    |KeyName    |
+|runBatch |puttygen.bat;puttygen.exe;@KeyName|
+|pause    |10000                             |
+|SWait    |ok.png                            |
+|SClick   |ok.png                            |
+|pause    |5000                              |
+|SWait    |SavePrivKey.png                   |
+|SClick   |SavePrivKey.png                   |
+|pause    |5000                              |
+|SWait    |yes.png                           |
+|SClick   |yes.png                           |
+|pause    |5000                              |
+|SType    |${PathToKeys}@KeyName             |
+|pause    |5000                              |
+|SWait    |Save.png                          |
+|SClick   |Save.png                          |
+|pause    |5000                              |
+|SWait    |Yes.png                           |
+|SClick   |Yes.png                           |
+|pause    |5000                              |
+|keytype  |\4                                |
+
+
+

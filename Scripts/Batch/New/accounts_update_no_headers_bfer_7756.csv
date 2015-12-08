@@ -1,0 +1,1 @@
+klbatchsys43,klbatchacc,U,0,870,Y,23:00,,Default Password Rule,N,N,1,,kltest@tpam.spb.qsft,Y,Y,Y,8640,This test shows that Multiple Approvers N does not prevent updates of accounts with Approvers required equal 1,,N,,N,N,N,,1,Any,,klescalate@tpam.spb.qsft,25,N,1,N,N,,,,,,,N,,,N,,,,,,,,

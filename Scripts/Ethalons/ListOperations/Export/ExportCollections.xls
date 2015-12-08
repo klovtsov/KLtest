@@ -1,0 +1,22 @@
+
+<table border="1" width="700">
+  <thead>
+      <tr>
+        <td colspan="3" bgcolor="#C0C0C0" align="center"><font size="5"><b>Listing of Collections</b></font></td>
+      </tr>
+    <tr>
+      <td bgcolor="#C0C0C0" width="200"><b>Collection Name</b></td>
+      <td bgcolor="#C0C0C0" width="600"><b>Collection Description</b></td>
+      <td bgcolor="#C0C0C0" width="100"><b>PSM DPA Affinity</b></td>
+    </tr>
+  </thead>
+  <tbody>
+	
+		<tr>
+			<td>prefixListCollection12</td>
+			<td></td> 
+			<td></td> 
+		</tr>
+	
+  </tbody>
+</table>

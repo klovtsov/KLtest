@@ -1,0 +1,12 @@
+!define ManagedAccount {${prefix}psAcnt}
+!define sysCheckFlagValue {Y}
+!define accCheckFlagValue {N}
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                           |
+|Add system             |${SystemName}                                                                             |with address |${SystemAddress}    |platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-CheckFlag ${sysCheckFlagValue}|
+|Add account            |${ManagedAccount}                                                                         |with password|${ManagedAccountPwd}|                                                                                                            |
+|Add account            |${ManagedAccount}2                                                                        |on system    |${SystemName}       |with options|-CheckFlag ${accCheckFlagValue}                                                                |
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount} -propsToList accountname,checkFl |contains     |${ManagedAccount}.*${sysCheckFlagValue}                                                                                          |
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount}2 -propsToList accountname,checkFl|contains     |${ManagedAccount}.*${accCheckFlagValue}                                                                                          |
+|Delete System          |${SystemName}                                                                                                                                                                                                                             |

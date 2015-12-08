@@ -1,0 +1,16 @@
+!* Test description
+A value of simultaneous Privileged releases should be propagated from template.
+*!
+!define ManagedAccount {reqApprover}
+!define defValue {1}
+!define specValue {0}
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                      |
+|Add account            |${ManagedAccount}                                                                                   |on system      |${TemplateName}                    |with options|-description "${accDescription}" -MinimumApprovers ${specValue}|
+|Add account            |${ManagedAccount}Two                                                                                |on system      |${TemplateName}                    |with options|-description "${accDescription}"                               |
+|Try to Add system      |${newSystemName}                                                                                    |with parameters|-templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully         |
+|List Systems by        |-systemName ${newSystemName}                                                                        |output params  |SystemName                         |contain     |${newSystemName}                                               |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount} -propsToList accountname,minApprovers   |contains       |${ManagedAccount}\s+${specValue}                                                                                |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount}Two -propsToList accountname,minApprovers|contains       |${ManagedAccount}Two\s+${defValue}                                                                              |
+|Delete System          |${newSystemName}                                                                                                                                                                                                                     |

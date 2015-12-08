@@ -1,0 +1,92 @@
+''System''
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+''Libraries''
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <PasswordProfiles.ScenarioLibrary
+
+!define CheckProfile1 {${prefix}Monthly1}
+!define ChangeProfileFoM {First of Month}
+
+!*> Prepare
+!|script                                                                                                                                                                                                                                                                                                                                                                    |
+|Open                                                   |${TPAMURL} ||${TPAMAdmin}                                                                                                                                                                                                                                                                           ||${DefaultPwd}|
+|Add System                                             |${CLIBatch}||--SystemName ${SystemName} --PlatformName ${SystemPlatform} --NetworkAddress ${SystemAddress} --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --PasswordCheckProfile ${PersistentPasswordCheckProfile1} --PasswordChangeProfile ${PersistentPasswordChangeProfile1}||successfully |
+|Create Account on System                                                                                                                                                                                                                                                                                                                                                   |
+|Create Password Profile With Monthly First Day Schedule|Check      ||${CheckProfile1}                                                                                                                                                                                                                                                                                      |
+
+*!
+
+
+''If password is specified the account should have an immediate check scheduled''
+
+!|script                                                                                                                                                                               |
+|Add Account   |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordCheckProfile ${CheckProfile1}||successfully|
+|pause         |30000                                                                                                                                                                  |
+|Check Test Log|${ManagedAccount}||Successful                                                                                                                                          |
+|Update Account|${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --AutoFlag N --PasswordCheckProfile "!NULL"                                ||successfully|
+|Delete Account|${CLIBatch}      ||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                           ||successfully|
+
+!note via DPA
+!|script                                                                                                                                                                               |
+|Set Affinity                                                                                                                                                                          |
+|Add Account   |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordCheckProfile ${CheckProfile1}||successfully|
+|pause         |30000                                                                                                                                                                  |
+|Check Test Log|${ManagedAccount}||Successful                                                                                                                                          |
+|Update Account|${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --AutoFlag N --PasswordCheckProfile "!NULL"                                ||successfully|
+|Delete Account|${CLIBatch}      ||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                           ||successfully|
+
+''If password is empty the account should have an immediate change scheduled''
+
+!|script                                                                                                                                                                                             |
+|Add Account     |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --PasswordChangeProfile \"${ChangeProfileFoM}\" --PasswordCheckProfile ${CheckProfile1}||successfully|
+|pause           |30000                                                                                                                                                                              |
+|Check Change Log|${ManagedAccount}||Forced Reset.*Success                                                                                                                                           |
+|Update Account  |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --AutoFlag N --PasswordCheckProfile "!NULL"                                            ||successfully|
+|Delete Account  |${CLIBatch}      ||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                                       ||successfully|
+
+!note via DPA
+!|script                                                                                                                                                                                             |
+|Set Affinity                                                                                                                                                                                        |
+|Add Account     |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --PasswordChangeProfile \"${ChangeProfileFoM}\" --PasswordCheckProfile ${CheckProfile1}||successfully|
+|pause           |30000                                                                                                                                                                              |
+|Check Change Log|${ManagedAccount}||Forced Reset.*Success                                                                                                                                           |
+|Update Account  |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --AutoFlag N --PasswordCheckProfile "!NULL"                                            ||successfully|
+|Delete Account  |${CLIBatch}      ||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                                       ||successfully|
+
+''If password is supplied and check is disabled the account should have an immediate change scheduled''
+
+!|script                                                                                                                                                                                                                                                   |
+|Add Account     |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile \"${ChangeProfileFoM}\" --PasswordCheckProfile ${PersistentPasswordCheckProfile1}||successfully|
+|pause           |30000                                                                                                                                                                                                                                    |
+|Check Change Log|${ManagedAccount}||Forced Reset.Success                                                                                                                                                                                                  |
+|Update Account  |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --AutoFlag N --PasswordCheckProfile "!NULL"                                                                                                  ||successfully|
+|Delete Account  |${CLIBatch}      ||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                                                                                             ||successfully|
+
+!note via DPA
+!|script                                                                                                                                                                                                                                                   |
+|Set Affinity                                                                                                                                                                                                                                              |
+|Add Account     |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password \"${ManagedAccountPwd}\" --PasswordChangeProfile \"${ChangeProfileFoM}\" --PasswordCheckProfile ${PersistentPasswordCheckProfile1}||successfully|
+|pause           |30000                                                                                                                                                                                                                                    |
+|Check Change Log|${ManagedAccount}||Forced Reset.Success                                                                                                                                                                                                  |
+|Update Account  |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --AutoFlag N --PasswordCheckProfile "!NULL"                                                                                                  ||successfully|
+|Delete Account  |${CLIBatch}      ||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                                                                                             ||successfully|
+
+
+''Test for BFER 7794 DateTime of account creation should not be displayed in Last Check and Last Successful Check''
+
+!|script                                                                                                                                                                                                                          |
+|Add Account                      |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --PasswordChangeProfile \"${ChangeProfileFoM}\" --PasswordCheckProfile ${PersistentPasswordCheckProfile1}||successfully|
+|pause                            |30000                                                                                                                                                                                          |
+|Management tab                   |${ManagedAccount}                                                                                                                                                                              |
+|Verify Last Check Date           |n/a        ||fakeparam                                                                                                                                                                         |
+|Verify Last Successful Check Date|n/a        ||fakeparam                                                                                                                                                                         |
+|Update Account                   |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --AutoFlag N --PasswordCheckProfile "!NULL"                                                              ||successfully|
+|Delete Account                   |${CLIBatch}||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                                                                                         ||successfully|
+
+
+!*> Cleanup
+!|script                                                                      |
+|Delete Account on System                                                     |
+|Delete System          |${CLIBatch}||--SystemName ${SystemName}||successfully|
+|Delete Password Profile|Check      ||${CheckProfile1}                        |
+*!

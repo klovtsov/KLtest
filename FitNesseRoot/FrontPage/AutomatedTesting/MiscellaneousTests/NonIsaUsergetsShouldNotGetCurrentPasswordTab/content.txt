@@ -1,0 +1,29 @@
+!note Managed System settings
+!include -c <AutomatedTesting.PlatformsTesting.MacOsxSix
+
+!define nonIsaUser {${prefix}tusik}
+
+!include -c <AutomatedTesting.PermissionHierarchy.ScenarioLibrary
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c >TestSpecific
+
+!* Create Environment
+!|script                                                                               |
+|Create Web User |${nonIsaUser}                                                        |
+|Change User Type|Admin            |for user     |${nonIsaUser}                        |
+|Create Account on System                                                              |
+|Add system                                                                            |
+|Add account     |${ManagedAccount}|with password|${ManagedAccountPwdNew}||successfully|
+|Reset Password  |${ManagedAccount}|             |${ResetPasswordSuccessful}           |
+*!
+
+!|script                              |
+|Current Password Tab Is not available|
+
+!* Remove All
+!|script                                   |
+|Remove system           |${SystemName}    |
+|Delete User             |${nonIsaUser}    |
+|Delete Account on System|${ManagedAccount}|
+*!

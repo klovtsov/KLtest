@@ -1,0 +1,21 @@
+!* Test description
+Check how main psm properties are propagated from template.
+Checked options: enable, file Transfer Upload ,file Transfer Download, fileTransfer type, psm proxy type 
+*!
+
+!define psmProxyType {"SSH - Automatic Login Using Password"}
+!define psmProxyType2 {"VNC Enterprise - Interactive Login"}
+!define proxyTypeShort {VNC Enterprise}
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                                                                                 |
+|Add account            |${ManagedAccount}                                                                    |on system      |${TemplateName}                    |with options      |-description "${accDescription}2"                                                                                                  |
+|Enable PSM for         |${ManagedAccount}                                                                    |on system      |${TemplateName}                    |with options      |-proxyType ${psmProxyType} -minApprovers 1 -FileTransDownFlag Y -FileTransUp Y -FileTransType SCP                                  |
+|Add account            |${ManagedAccount}2                                                                   |on system      |${TemplateName}                    |with options      |-description "${accDescription}2"                                                                                                  |
+|Enable PSM for         |${ManagedAccount}2                                                                   |on system      |${TemplateName}                    |with options      |-proxyType ${psmProxyType2} -minApprovers 0 -FileTransDownFlag N -FileTransUp N                                                    |
+|Try to Add system      |${newSystemName}                                                                     |with parameters|-templateSystemName ${TemplateName}|with result       |System changes for ${newSystemName} saved successfully                                                                             |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount} -propsToList accountname |contains       |${ManagedAccount}                                                                                                                                                                         |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount}2 -propsToList accountname|contains       |${ManagedAccount}2                                                                                                                                                                        |
+|List PSM Accounts      |${ManagedAccount}                                                                    |from system    |${newSystemName}                   |properties to list|accountName,enableFlag,fileTransUpFlag,fileTransDownFlag,fileTransType|contains|${ManagedAccount}\s+Y\s+Y\s+Y\s.*Secure Copy.*SCP  |
+|List PSM Accounts      |${ManagedAccount}2                                                                   |from system    |${newSystemName}                   |properties to list|accountName,enableFlag,fileTransUpFlag,fileTransDownFlag,proxyType    |contains|${ManagedAccount}2\s+Y\s+N\s+N\s.*${proxyTypeShort}|
+|Delete System          |${newSystemName}                                                                                                                                                                                                                                                                                |

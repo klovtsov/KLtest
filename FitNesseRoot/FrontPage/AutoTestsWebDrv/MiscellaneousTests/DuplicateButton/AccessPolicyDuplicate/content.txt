@@ -1,0 +1,32 @@
+!********> Test Description
+This test checks that it is possible to duplicate Access Policy.
+**************!
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSix
+
+!define testUser {${prefix}tstUser}
+!define testPolicy {PPM Requestor}
+!define newPolicyName {${prefix}TestPolicy}
+
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!* Create Envirinment
+!|script                                                                     |
+|Add system                                                                  |
+|Add User       |${testUser}                                                 |
+|Set Permissions|"${testPolicy}"|on system|${SystemName}|for user|${testUser}|
+*!
+!* Duplicate and check results
+!|script                                                                                                                   |
+|Duplicate              |policy                                          |         |${testPolicy}|to      |${newPolicyName}|
+|Set Permissions        |${newPolicyName}                                |on system|${SystemName}|for user|${testUser}     |
+|pause                  |${ApplyNewPoliciesInterval}                                                                       |
+|List Policies by filter|-systemName  ${SystemName} -username ${testUser}|contains |${testUser}.*${newPolicyName}.*        |
+*!
+!* Delete All
+!|script                       |
+|Delete System|${SystemName}   |
+|Delete User  |${testUser}     |
+|Delete Policy|${newPolicyName}|
+*!

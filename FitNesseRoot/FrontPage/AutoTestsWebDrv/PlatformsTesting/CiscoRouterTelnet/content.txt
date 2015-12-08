@@ -1,0 +1,13 @@
+!define SystemName {${prefix}_cisco}
+!define SystemPlatform {Cisco Router (TEL)}
+!define SystemAddress {10.30.44.204}
+!define FunctAcct {klroot}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {frujiE15}
+!define EnablePassword {grain41R}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.CiscoRouterSsh.PlatformSpecific
+
+
+
+

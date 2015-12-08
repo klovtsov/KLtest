@@ -1,0 +1,16 @@
+!define content {${ATPath}\PpmScenariosWebDriver\EdmzSpcwPwd\content.txt}
+
+!include -c <AutomatedTesting.PlatformsTesting.EdmzSpcwPwd
+!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary
+!include -c <AutomatedTesting.PpmScenariosWebDriver.NisPlus.PlatformSpecific
+!include -c <AutomatedTesting.PpmScenariosWebDriver.EdmzSpcw2.PlatformSpecific
+
+!define SystemName {${prefix}_edmzPwd}
+!define SystemPlatform {SPCW Pwd}
+!define ManagedAccount {${prefix}pwAcc}
+!define SystemAddress {10.30.39.144}
+!define FunctAcct {administrator}
+!define FunctAcctPwd {=1qwerty}
+!define FunctAcctWrongPwd {1}
+!define ParFunctAcct {spcwmaster}
+!define PathtoKey {C:\Program Files (x86)\Quest Software\SPCW\edmzsshd\home\${ParFunctAcct}\.ssh\authorized_keys}

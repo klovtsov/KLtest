@@ -1,0 +1,22 @@
+!define TaskName {TestTaskOne}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ChangeScheduledTasks.TestSpecific
+
+!|script                                                                                                                                                       |
+|Prepare environment on           |${SystemAddress}                                                                                                            |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                     |
+|Create Scheduled Task            |${TaskName}      |which is run under|${ManagedAccount}|and run under password is|${ManagedAccountPwdNew}|on|${SystemAddress}|
+|Stop Scheduled Task              |${TaskName}      |on                |${SystemAddress}                                                                       |
+|Uncheck Checkbox                   |changetasks      |for user          |DEFAULT                                                                                |
+|Reset Password                   |${ManagedAccount}|                  |${ResetPasswordSuccessful}                                                             |
+|Run Scheduled Task               |${TaskName}      |on                |${SystemAddress}                                                                       |
+|Check Scheduled Task Status      |Could.not.start          |on                |${SystemAddress}                                                                       |
+|Stop Scheduled Task              |${TaskName}      |on                |${SystemAddress}                                                                       |
+|Check Checkbox                 |changetasks      |for user          |DEFAULT                                                                                |
+|Reset Password                   |${ManagedAccount}|                  |${ResetPasswordSuccessful}                                                             |
+|Run Scheduled Task               |${TaskName}      |on                |${SystemAddress}                                                                       |
+|Check Scheduled Task Status      |Running  |on                |${SystemAddress}                                                                       |
+|Restore environment on           |${SystemAddress}                                                                                                            |

@@ -1,0 +1,7 @@
+!include <AutoTestsWebDrv.AccountDiscovery.TestCase
+
+!|script|
+|stop   |
+
+
+

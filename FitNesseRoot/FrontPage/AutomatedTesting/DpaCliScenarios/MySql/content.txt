@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.MySql
+!include -c ScenarioLibrary

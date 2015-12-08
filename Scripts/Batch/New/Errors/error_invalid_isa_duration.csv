@@ -1,0 +1,2 @@
+System Name,Network Address,Platform Name,Release Duration,Auto-Password Mgmt,Functional Account,Account Credential,Allow ISA Duration,Password Check Profile,Password Change Profile
+klbatchbadsystem,192.168.5.5,Windows,0,Y,Administrator,grain41R,Y,PersPassCheckProfile_1,PersPassChangeProfile_1

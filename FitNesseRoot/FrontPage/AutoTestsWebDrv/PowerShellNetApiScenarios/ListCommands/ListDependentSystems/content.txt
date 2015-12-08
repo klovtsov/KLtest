@@ -1,0 +1,32 @@
+!define dcName {${SystemName}}
+!define domainMemberName {${prefix}_testMember}
+!define secDomMemberName {${prefix}_anotherMember}
+!define dcPlatform {"SPCW (DC) 2"}
+!define DMSystemPlatform {"SPCW 2"}
+
+
+!*> Including section
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+*!
+!3 Test
+!*> Create environment section
+!|script                                                                                                                                                                                    |
+|Add system |${dcName}          |with address     |10.30.2.2|platform|${dcPlatform}      |managed by|fakeAdmin|additional parameters|-NetBiosName fakedomain -DomainName fakedomain.spb.qsft|
+|Add system |${domainMemberName}|with address     |10.30.2.3|platform|${DMSystemPlatform}|managed by|fakeAdmin|additional parameters|                                                       |
+|Add system |${secDomMemberName}|with address     |10.30.2.4|platform|${DMSystemPlatform}|managed by|fakeAdmin|additional parameters|                                                       |
+|Add account|${ManagedAccount}  |with password    |${ManagedAccountPwdNew}                                                                                                                  |
+|Assign     |${domainMemberName}|as dependent from|${ManagedAccount}                                                                                                                        |
+*!
+
+!|script                                                                    |
+|List Systems depended from  |${ManagedAccount}||${dcName}|contains|${domainMemberName}|
+|List Systems undepended from|${ManagedAccount}||${dcName}|contains|${secDomMemberName}|
+
+!*> Clean Up section
+!|script                                                               |
+|Unassign      |${domainMemberName}|as dependent from|${ManagedAccount}|
+|Delete Account|${ManagedAccount}                                      |
+|Delete system |${domainMemberName}                                    |
+|Delete system |${secDomMemberName}                                    |
+|Delete system |${dcName}                                              |
+*!

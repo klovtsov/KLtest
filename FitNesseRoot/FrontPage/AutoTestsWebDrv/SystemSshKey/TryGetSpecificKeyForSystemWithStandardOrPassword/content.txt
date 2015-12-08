@@ -1,0 +1,14 @@
+!define SystemNotConfiguredForSpecific {Managed System does not use a System-Specific DSS Key}
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!3 System which is configured to use Standard Key
+!|script                                                                  |
+|Add System with key                                                      |
+|Try to Retrieve Key from|${SystemName}||${SystemNotConfiguredForSpecific}|
+|Remove system           |${SystemName}                                   |
+!3 System which is configured to use Password
+!|script|
+|Add system                                                               |
+|Try to Retrieve Key from|${SystemName}||${SystemNotConfiguredForSpecific}|
+|Remove system           |${SystemName}                                   |

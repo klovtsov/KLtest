@@ -1,0 +1,6 @@
+!define ProfileName {${prefix}PCTAccDiscProfile5}
+
+!include -c <AutomatedTesting.PlatformsTesting.WindowsLocalHost
+!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary
+
+!include -c <AutomatedTesting.AccountDiscovery.ProfileCreateTurnoff.TestSpecific

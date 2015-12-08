@@ -1,0 +1,4 @@
+!| scenario       |Add system                                                                                                                                                  |
+|$res=            |PerlAPI     |${APIBatch} addSystemOracle ${SystemName} ${SystemAddress} "${SystemPlatform}" ${FunctAcct} ${FunctAcctPwd} ${SystemTimeout} ${Port} SID ${SID}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                            |
+|Set description  |${FunctAcct}|                                                            |${FunctAcctDescription}                                                           |

@@ -1,0 +1,23 @@
+!*> Includes
+!include -c <AutomatedTesting.PlatformsTesting.EdmzSpcwDc2
+!include -c <AutomatedTesting.TpamNetTools.ScenarioLibrary
+*!
+
+!*> Prepare
+!|script                                            |
+|AddSysAdminUser|${SysAdminUser}||${SysAdminUserPwd}|
+*!
+
+
+!|script                                                                                                                                                                  |
+|CheckConfigInterface|${SysAdminUser}||${SysAdminUserPwd}                                                                                                                 |
+|NetTools            |${TPAMHost}    ||:8443/config/||${SysAdminUser}||Password2||Ping      ||${SystemAddress}||Received = 4                                              |
+|NetTools            |${TPAMHost}    ||:8443/config/||${SysAdminUser}||Password2||Nslookup  ||${DomainName}   ||${SystemAddress}                                          |
+|NetTools            |${TPAMHost}    ||:8443/config/||${SysAdminUser}||Password2||TraceRoute||${SystemAddress}||Tracing route to ${SystemAddress}.*Trace complete         |
+|NetTools            |${TPAMHost}    ||:8443/config/||${SysAdminUser}||Password2||TelnetTest||${SystemAddress}||Telnet connection test to ${SystemAddress} on 23 completed|
+|NetTools            |${TPAMHost}    ||:8443/config/||${SysAdminUser}||Password2||ShowRoutes||fake            ||${TPAMHost}                                               |
+
+!*> Cleanup
+!|script                           |
+|DeleteSysAdminUser|${SysAdminUser}|
+*!

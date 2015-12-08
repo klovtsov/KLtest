@@ -1,0 +1,6 @@
+!include -c <AutomatedTesting.PlatformsTesting.AixPlatform
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.AixPlatform.PlatformSpecific
+
+!include -c <JavaApiScenarios.ScenarioLibrary

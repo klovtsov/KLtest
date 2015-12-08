@@ -1,0 +1,7 @@
+!define seleniumBrowser {*firefox}
+!include <AutomatedTesting.SetUp
+!|script|
+|Open|${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Create Users|
+|stop|
+|finalize|

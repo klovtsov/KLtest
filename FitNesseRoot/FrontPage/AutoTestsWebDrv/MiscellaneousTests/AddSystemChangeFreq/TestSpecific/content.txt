@@ -1,0 +1,9 @@
+!|scenario        |Add System|SysName                                                       |with ChangeFrequency                                                       |h                                                      |
+|$res=            |CLI       |${CLIBatch} AddSystem --SystemName @SysName --NetworkAddress 10.11.12.13 --PlatformName Windows --FunctionalAccount admin --FuncAcctCred \"T0PSecret\" --ChangeFrequency "@h" --ChangeTime "04:00"|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                             |
+
+!|scenario        |Check System Change Frequency                          |
+|$res=            |CLI |${CLIBatch} ListSystems --SystemName ${SystemName}|
+|Verify_Contain_OR|$res;;${SystemName}.*Windows\s*\${ChangeFrequencyValue}|
+
+

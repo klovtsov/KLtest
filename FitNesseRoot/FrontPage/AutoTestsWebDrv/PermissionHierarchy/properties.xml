@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<properties>
+	<Edit/>
+	<Files/>
+	<Help></Help>
+	<Properties/>
+	<RecentChanges/>
+	<Refactor/>
+	<Search/>
+	<Suite/>
+	<Suites></Suites>
+	<SymbolicLinks>
+		<IgnoreSystemAndCollectionPolicies>.FrontPage.AutoTestsWebDrv.PowerShellNetApiScenarios.AddAccountOptions.IgnoreSystemAndCollectionPolicies</IgnoreSystemAndCollectionPolicies>
+		<IgnoreSystemPoliciesFlag>.FrontPage.AutoTestsWebDrv.PowerShellNetApiScenarios.AddAccountOptions.IgnoreSystemPoliciesFlag</IgnoreSystemPoliciesFlag>
+	</SymbolicLinks>
+	<Versions/>
+	<WhereUsed/>
+</properties>

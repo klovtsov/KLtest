@@ -1,0 +1,11 @@
+%Host% 23
+WAIT "login"
+SEND "%RunningUser%\m"
+WAIT "assword"
+SEND "%RunningUserPassword%\m"
+WAIT "#"
+SEND "pwconv\m"
+WAIT "yes/no"
+SEND "yes\m"
+WAIT "#"
+SEND "exit\m"

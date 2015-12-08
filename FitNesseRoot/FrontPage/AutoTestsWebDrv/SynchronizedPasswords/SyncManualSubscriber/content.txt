@@ -1,0 +1,30 @@
+!include -c <SynchronizedPasswords.ScenarioLibrary
+!define expectedBtnStatus {Check Password Button is Disabled}
+!* Create Environment 
+!|script                                                                                                                                                    |
+|Add Sync Password        |${SyncPasswordName}|with value|${SincPwdInitialValue}|Check Profile|${SyncPwdCheckProfile}|Change Profile|${SyncPwdChangeProfile}|
+|Set manual management for|${ManagedAccount}  |from      |${SystemName}                                                                                     |
+|Add Subscriber           |${ManagedAccount}  |from      |${SystemName}                                                                                     |
+|Add Subscriber           |${ManagedAccount}  |from      |${SecSystemName}                                                                                  |
+*!
+
+!4 Reset Sync Password.
+!|script                                                                                                                           |
+|Reset Sync Password                                                                                                               |
+|pause                               |${PauseValue}                                                                                |
+|Check Sync Password                 |${SyncPasswordName}|subscriber|${ManagedAccount}|from|${SystemName}   |status is|Out of synch|
+|Check Sync Password                 |${SyncPasswordName}|subscriber|${ManagedAccount}|from|${SecSystemName}|status is|Current     |
+|Get Check Password button status for|${ManagedAccount}  |from      |${SystemName}    |    |${expectedBtnStatus}                   |
+
+!4 Sync Manual Password
+!|script                                                                                                      |
+|Force Reset manual password              |${ManagedAccount}|from         |${SystemName}                      |
+|Confirm Manual Password reset with status|fail             |and result is|Successful rollback                |
+|Force Reset manual password              |${ManagedAccount}|from         |${SystemName}                      |
+|Confirm Manual Password reset with status|success          |and result is|Successful commit                  |
+|Get Check Password button status for     |${ManagedAccount}|from         |${SystemName}||${expectedBtnStatus}|
+
+!* Delete All
+!|script                                 |
+|Delete Sync Password|${SyncPasswordName}|
+*!

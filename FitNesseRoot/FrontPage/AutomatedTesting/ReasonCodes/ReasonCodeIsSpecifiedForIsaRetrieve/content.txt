@@ -1,0 +1,12 @@
+!define PolicyName {"ISA"}
+!define RequestWithCodeResult {${ManagedAccountPwd}}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.ReasonCodes.ScenarioLibrary
+
+!|script                                               |
+|Set  Permission              |${PolicyName}           |for user|${CLI_user_1}|
+|pause|${ApplyNewPoliciesInterval}|
+|Retrieve Pwd with Reason Code|${RequestWithCodeResult}|
+|Revoke  Permission           |${PolicyName}           |for user|${CLI_user_1}|

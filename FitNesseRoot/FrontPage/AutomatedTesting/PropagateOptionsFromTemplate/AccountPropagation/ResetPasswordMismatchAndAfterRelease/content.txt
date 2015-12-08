@@ -1,0 +1,18 @@
+!* Test description
+A propagation of values from three checkboxes is verified: Reset Password on Mismatch, Change Password after any release and
+Do not automatically change the password while a release is active
+*!
+!define ManagedAccount {Reseter}
+!define defValue {Y}
+!define specValue {N}
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                                                                           |
+|Add account            |${ManagedAccount}                                                                                                               |on system      |${TemplateName}                    |with options|-description "${accDescription}" -ResetFlag ${specValue} -ReleaseChangeFlag ${specValue}|
+|Add account            |${ManagedAccount}A                                                                                                              |on system      |${TemplateName}                    |with options|-description "${accDescription}" -BlockAutoChangeFlag Y                                 |
+|Add account            |${ManagedAccount}Two                                                                                                            |on system      |${TemplateName}                    |with options|-description "${accDescription}"                                                        |
+|Try to Add system      |${newSystemName}                                                                                                                |with parameters|-templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully                                  |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount} -propsToList accountname,resetFl,releaseChgFl                       |contains       |${ManagedAccount}\s+${specValue}\s+${specValue}                                                                                          |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount}Two -propsToList accountname,resetFl,releaseChgFl,blockAutoChangeFlag|contains       |${ManagedAccount}Two\s+${defValue}\s+${defValue}\s+N                                                                                     |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount}A -propsToList accountname,blockAutoChangeFlag                       |contains       |${ManagedAccount}A\s+Y                                                                                                                   |
+|Delete System          |${newSystemName}                                                                                                                                                                                                                                                                          |

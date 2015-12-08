@@ -1,0 +1,22 @@
+
+!define OSType {Win}
+!define ProxyType {RDP Through SSH}
+
+!define TestPsmLog {${prefix}_testpsmlog.txt}
+!include -c <AutomatedTesting.SessionAlertsScenarios
+!include <AutomatedTesting.PlatformsTesting.EdmzSpcw2 
+!include -c <AutomatedTesting.SessionAlertsScenarios.ScenarioLibrary
+
+
+
+!include -c <AutomatedTesting.SessionAlertsScenarios.WindowsEight.PlatformSpecific
+!include -c <AutomatedTesting.PsmSmokeTest.ScenarioLibrary
+
+!include -c <AutomatedTesting.PsmSmokeTest.EdmzSpcw2.PlatformSpecific
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|
+

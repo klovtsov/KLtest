@@ -1,0 +1,28 @@
+!contents
+
+!define prfx {autu}
+!define UserName {${prfx}UserName1}
+!define UserPassword {Password1N}
+!define UserPasswordNew {Password2N}
+!define UserPasswordNewUI {Password3N}
+
+!define SystemName {${prfx}UsersTestsSystemName1}
+!define ManagedAccount {${prfx}UsersTestsManagedAccount1}
+!define SystemPlatform {Windows}
+!define SystemAddress {11.33.44.77}
+!define FunctAcct {root2}
+!define FunctAcctPwd {A\)&(d|ef<j>k$l1}
+!define ManagedAccountPwd {123456}
+!define ManagedAccountPwdNew {A\)&(d|e;f<j>k$l1}
+
+!define ISACLI_user_1 {${prfx}ISACLI_user_1}
+!define ISAWEB_user_1 {${prfx}ISAWEB_user_1}
+!define accountCLI {${prfx}accountCLI}
+!define accountWEB {${prfx}accountWEB}
+!define CLIBatchISA {-i ${ISACLI_user_1}.ppk -C ${ISACLI_user_1}@${TPAMHost}}
+
+
+!define RestrictedIPUserName {${prfx}RestrUser}
+!define RestrictedIPSysAdminName {${prfx}RestrSysAdmin}
+!define ValidIPList {${DispatcherAddress},1.1.1.1}
+!define InvalidIPList {2.2.2.2,1.1.1.1}

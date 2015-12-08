@@ -1,0 +1,23 @@
+!*> Includ
+!include -c <AutomatedTesting.ConfigInterfaceSmokeTest.ScenarioLibrary
+*!
+
+!define EthalonFile {${ProjDir}\Scripts\Ethalons\Settings\LicenseLimits.txt}
+!define ResultFile {${ProjDir}\Scripts\Ethalons\Settings\ResultLL.txt}
+!define SysAdminUserGS {${prefix}_SysAdminLL}
+!define SysAdminUserGSPwd {Password2}
+
+!*> Prepare
+!|script                                                |
+|AddSysAdminUser|${SysAdminUserGS}||${SysAdminUserGSPwd}|
+*!
+
+!|Script                                                                                                         |
+|GroovyWebDriver  |CheckLicenseManagement;${TPAMHost};${SysAdminUserGS};${SysAdminUserGSPwd};${ResultFile}|
+|$res=            |PowerShellScript                    |diff.ps1 ${EthalonFile} ${ResultFile}                    |
+|Verify_Contain_OR|$res;;Dump and ethalon are equal.                                                             |
+
+!*> Cleanup
+!|script                             |
+|DeleteSysAdminUser|${SysAdminUserGS}|
+*!

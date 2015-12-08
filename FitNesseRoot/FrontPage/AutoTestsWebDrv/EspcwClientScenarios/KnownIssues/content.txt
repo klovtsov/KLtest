@@ -1,0 +1,7 @@
+!|scenario     |BFER4795|Account|       |Result|
+|Reset Password|@Account|       |@Result|
+|pause         |${ExecDelay}            |
+|Reset Password|@Account|       |@Result|
+|pause         |${ExecDelay}            |
+
+

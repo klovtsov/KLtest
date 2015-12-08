@@ -1,0 +1,47 @@
+!* Test description
+This test checks that the errors which are described in bfers 6380 and 6424 do not appear again. 
+*!
+
+!define firstGroupName {${prefix}apprsOne}
+!define secondGroupName {${prefix}apprsTwo}
+
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!*> Prepare Environment
+!|script                                     |
+|Open|${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Try to Remove Groups                        |
+|Create Groups                               |
+|Set Permissions for groups                  |
+*!
+!3 bfer 6380  - set required approvers to 2. The error should not appear.
+!|script                                                               |
+|Choose Account       |${ManagedAccount}                               |
+|click                |id=Details                                      |
+|waitForElementPresent|id=MinApprovers                                 |
+|type;                |id=MinApprovers                |2               |
+|pause                |500                                             |
+|click                |id=SubmitChangesButton                          |
+|waitForTextPresent   |Changes saved successfully for ${ManagedAccount}|
+
+!3 bfer 6424  - "Require Multi-Group Approval from" checkbox should be enabled
+!|script                                                                                                                              |
+|click             |id=cbxPwdMultiApprovers                                                                                           |
+|select;           |id=PwdMultiApproverGroups                                |label=${firstGroupName}                                 |
+|select;           |id=PwdMultiApproverGroups                                |label=${secondGroupName}                                |
+|pause             |500                                                                                                               |
+|click             |id=SubmitChangesButton                                                                                            |
+|waitForTextPresent|One or more of the selected Multi-Group Approval Groups does not have any Users assigned to it and cannot be used.|
+
+#|click             |xpath=//select[@id='PwdMultiApproverGroups']/option[.='${firstGroupName}']                                        |
+#|click             |xpath=//select[@id='PwdMultiApproverGroups']/option[.='${secondGroupName}']                                       |
+
+
+!*> Clean Up
+!|script                             |
+|Uncheck Require Multi-Group checkbox|
+*!

@@ -1,0 +1,4 @@
+!include <AutomatedTesting.PlatformsTesting.OracleTen
+!include -c <CppScenarios.ScenarioLibrary
+!include -c <CppScenarios.OraclePlatform.PlatformSpecific
+

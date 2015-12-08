@@ -1,0 +1,58 @@
+!*> Test Description
+Test that CLI/API ISA user cann't create a system from template if he doesn't have permission to it.
+Also, when user has only PSM ISA permission to a template with automation turned on, force them to include --SystemAuto N in the parameters.
+*!
+
+!define SystemName {${prefix}Sample}
+!define SystemPlatform {Linux}
+!define FunctAcct {master}
+!define TemplateName {${prefix}Lekalo}
+!define newSystemName {${prefix}Phoenix}
+!define SystemAddress {10.30.136.146}
+!define SpecValue {sudo}
+!define newSystemAddress {10.30.156.132}
+!define failedMessage {You do not have ISA permissions to use the Template \(${TemplateName}\)}
+!define requirNonAutoMessage {The template \(${TemplateName}\) has automation enabled. You must specify SystemAutoFl=N.}
+!define nonAdminAPIUser {${prefix}Basilio}
+!define nonAdminCLIUser {${prefix}aClisa}
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PropagateOptionsFromTemplate.ScenarioLibrary
+!include -c >TestSpecific
+
+!4 Prepare system
+!|script                                                                                                                                                                           |
+|Login               |${TPAMURL}        |            |${TPAMAdmin}    |            |${DefaultPwd}                                                                                  |
+|Add API User        |${nonAdminAPIUser}|            |Basic                                                                                                                        |
+|Add CLI User        |${nonAdminCLIUser}|            |Basic                                                                                                                        |
+|Logout Paradmin                                                                                                                                                                   |
+|Add system          |${SystemName}     |with address|${SystemAddress}|platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-PlatSpecificValue ${SpecValue}|
+|Make System Template|${TemplateName}   |from        |${SystemName}   |with account|${FunctAcct}                                                                                   |
+|Set Permissions     |"PPM ISA"         |on system   |${SystemName}   |for user    |${nonAdminAPIUser}                                                                             |
+|Set Permissions     |"PPM ISA"         |on system   |${SystemName}   |for user    |${nonAdminCLIUser}                                                                             |
+
+!4 Try to copy a system from the template by API user
+!|script                                                                                                              |
+|Add system|${newSystemName}|from template|${TemplateName}|by API user|${nonAdminAPIUser}|with result|${failedMessage}|
+
+!4 Try to copy a system from the template by CLI user
+!|script                                                                                                              |
+|Add system|${newSystemName}|from template|${TemplateName}|by CLI user|${nonAdminCLIUser}|with result|${failedMessage}|
+
+!4 Force to include --SystemAuto N if user has only PSM ISA permission to a template 
+!|script                                                                                                                                                             |
+|Set Permissions    |"PSM ISA"       |on system    |${TemplateName}|for user   |${nonAdminCLIUser}                                                                   |
+|Add system         |${newSystemName}|from template|${TemplateName}|by CLI user|${nonAdminCLIUser}|with result|${requirNonAutoMessage}                               |
+|Add non auto system|${newSystemName}|from template|${TemplateName}|by CLI user|${nonAdminCLIUser}|with result|System changes for ${newSystemName} saved successfully|
+  
+!4 Delete all systems
+!|script                                              |
+|Delete System|${SystemName}                          |
+|Login        |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Remove system|${TemplateName}                        |
+|Logout Paradmin                                      |
+|Delete User  |${nonAdminCLIUser}                     |
+|Delete User  |${nonAdminAPIUser}                     |
+|Delete System|${newSystemName}                       |

@@ -1,0 +1,13 @@
+%Host% 23
+WAIT "login"
+SEND "%RunningUser%\m"
+WAIT "assword"
+SEND "%RunningUserPassword%\m"
+WAIT "#"
+SEND "passwd %NewUser%\m"
+WAIT "New password"
+SEND "%NewUserPassword%\m"
+WAIT "Re-enter new password"
+SEND "%NewUserPassword%\m"
+WAIT "successfully"
+SEND "exit\m"

@@ -1,0 +1,26 @@
+!define syncPassName {${prefix}PerlSyncPass1}
+
+!|script                                                                                                                             |
+|Add SyncPass   |${PerlAPIparams}||--SyncPassName=${syncPassName};--password=PAssword1||successfull                                  |
+|Delete SyncPass|${PerlAPIparams}||--SyncPassName=${syncPassName};                    ||${syncPassName} has been successfully deleted|
+
+!|script                                                                                                                       |
+|Add SyncPass   |${PerlAPIparams}||--syncPassName=${syncPassName};--disableFlag=Y||successfull                                 |
+|List SyncPass  |${PerlAPIparams}||--syncPassName=${syncPassName}                ||syncPassName: ${syncPassName}.*disabledFl: Y|
+|Delete SyncPass|${PerlAPIparams}||--syncPassName=${syncPassName}                ||successfull                                 |
+
+!|script                                                                                                                                                                                            |
+|Add SyncPass   |${PerlAPIparams}||--syncPassName=${syncPassName};--changeTime=11:22;--nextChangeDate=1/1/2022||successfull                                                                         |
+|List SyncPass  |${PerlAPIparams}||--syncPassName=${syncPassName}                                             ||syncPassName: ${syncPassName}.*scheduledChanges: .*Scheduled.*Jan.*1.*2022.*11.*22AM|
+|Delete SyncPass|${PerlAPIparams}||--syncPassName=${syncPassName}                                             ||successfull                                                                         |
+
+
+#syncPassName: ${syncPassName}.*scheduledChanges: .*Scheduled: 
+
+
+syncPassForceReset
+
+!|script                                                                                                                            |
+|Add SyncPass       |${PerlAPIparams}||--syncPassName=${syncPassName}                     ||successfull                             |
+|SyncPass ForceReset|${PerlAPIparams}||--syncPassName=${syncPassName};--Password=Password2||Synchronized password reset successfully|
+|Delete SyncPass    |${PerlAPIparams}||--syncPassName=${syncPassName}                     ||successfull                             |

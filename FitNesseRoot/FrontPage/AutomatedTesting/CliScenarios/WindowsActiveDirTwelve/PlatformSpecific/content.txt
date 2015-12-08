@@ -1,0 +1,7 @@
+!contents
+
+
+!| scenario|Add system                                                                                                                                                                                                                                                                      |
+|CLI       |${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --DomainName ${DomainName} --NetBiosName ${NETBIOSDomainName} --FunctionalAccount ${FunctAcct} --FuncAcctCred ${FunctAcctPwd} --Timeout ${SystemTimeout}|
+
+

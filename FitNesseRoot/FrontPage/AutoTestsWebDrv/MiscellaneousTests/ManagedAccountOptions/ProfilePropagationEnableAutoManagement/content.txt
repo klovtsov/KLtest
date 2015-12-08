@@ -1,0 +1,29 @@
+!define pwdChangeProfile {First of Month}
+!define pwdCheckProfile {Check and Reset}
+!define manualManagedAccnt {Manul}
+!define nonManagedAccnt {Nonna}
+!define newReleaseDuration {1440}
+!define allowIsaFlagValue {N}
+
+!*> Including section
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+
+!|script                                                                                                                                                                                                                                                                                                                                                          |
+|Add account            |${manualManagedAccnt}                                                                                                                                |on system|${SystemName}                                            |with options                                            |-AutoFlag M                                           |
+|Add account            |${nonManagedAccnt}                                                                                                                                   |on system|${SystemName}                                            |with options                                            |-AutoFlag N                                           |
+|Update System          |${SystemName}                                                                                                                                        |         |-passwordChangeProfile "${pwdChangeProfile}" -passwordCheckProfile "${pwdCheckProfile}" -releaseDuration ${newReleaseDuration} -AllowISADurationFlag ${allowIsaFlagValue}|
+|Push defaults out to all accounts and Enable Auto Management                                                                                                                                                                                                                                                                                                     |
+|List Accounts by filter|-systemName ${SystemName} -accountName ${ManagedAccount} -propsToList passwordCheckProfile,passwordChangeProfile,releaseDuration,allowISADurationFlag|contains |${pwdCheckProfile}\s+${pwdChangeProfile}\s+${newReleaseDuration}\s+${allowIsaFlagValue}                                                                                  |
+|List Accounts by filter|-systemName ${SystemName} -accountName ${manualManagedAccnt} -propsToList passwordCheckProfile,passwordChangeProfile,accountAutoFl                   |contains |${pwdCheckProfile}\s+${pwdChangeProfile}\s+Y                                                                                                                             |
+|List Accounts by filter|-systemName ${SystemName} -accountName ${nonManagedAccnt} -propsToList passwordCheckProfile,passwordChangeProfile,accountAutoFl                      |contains |${pwdCheckProfile}\s+${pwdChangeProfile}\s+Y                                                                                                                             |
+
+
+!*> Return default values
+!|script                                                                                                               |
+|Update Account|${ManagedAccount}||-passwordChangeProfile ${PpmChangeProfile}  -passwordCheckProfile ${PpmCheckProfile}|
+|Delete Account|${manualManagedAccnt}                                                                                  |
+|Delete Account|${nonManagedAccnt}                                                                                     |
+*!

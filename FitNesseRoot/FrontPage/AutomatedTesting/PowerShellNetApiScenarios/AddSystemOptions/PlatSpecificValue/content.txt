@@ -1,0 +1,7 @@
+!define SpecValue {sudo}
+!include -c  <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                        |
+|Add system     |${SystemName}            |with address |${SystemAddress}            |platform|Linux                      |additional parameters|-PlatSpecificValue ${SpecValue}|
+|List Systems by|-systemName ${SystemName}|output params|SystemName,PlatSpecificValue|contain |${SystemName}.*${SpecValue}|                                                     |
+|Delete System  |${SystemName}                                                                                                                                                  |

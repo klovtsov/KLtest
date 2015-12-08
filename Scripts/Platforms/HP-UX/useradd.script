@@ -1,0 +1,7 @@
+useradd -m %1
+#
+/usr/lbin/modprpw -v %1
+#
+/usr/lbin/modprpw -m umaxlntr=10 %1
+#
+exit

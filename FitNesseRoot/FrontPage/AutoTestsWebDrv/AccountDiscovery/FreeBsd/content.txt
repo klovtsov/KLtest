@@ -1,0 +1,13 @@
+!contents -R
+!define ProfileName {${SystemName}AccDiscProfile5}
+!include -c <AutoTestsWebDrv.PlatformsTesting.FreeBsd
+!define FunctAcct {root5}
+!define FunctAcctPwd {=1qwerty}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary.NixScenarioLibrary
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.FreeBsd.PlatformSpecific
+
+!define TemplateName {${SystemName}Template}

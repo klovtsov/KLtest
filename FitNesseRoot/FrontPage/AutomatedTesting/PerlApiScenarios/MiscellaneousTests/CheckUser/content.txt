@@ -1,0 +1,112 @@
+!define UserName {${prefix}PerlUser1}
+!define SystemName {${prefix}PerlSystem1}
+!define AccountName {${prefix}PerlAccount1}
+
+email, phone, description
+
+!|script                                                                                                                                                                                                                                                                       |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--email=email;--phone=123456;--password=Password1;--description=description;||User added successfully                                                                             |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                                                                                  ||userName: ${UserName}.*emailAddress: email.*phone: 123456.*userType: Basic.*description: description|
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                                                                                  ||${UserName} has been successfully deleted                                                           |
+
+
+userType
+
+!|script                                                                                                                                                 |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--userType=Basic;||User added successfully                  |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                       ||userName: ${UserName}.*userType: Basic   |
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                       ||${UserName} has been successfully deleted|
+
+!|script                                                                                                                                                       |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--userType=UserAdmin;||User added successfully                    |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                           ||userName: ${UserName}.*userType: User Admin|
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                           ||${UserName} has been successfully deleted  |
+
+!|script                                                                                                                                                 |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--userType=Basic;||User added successfully                  |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                       ||userName: ${UserName}.*userType: Basic   |
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                       ||${UserName} has been successfully deleted|
+
+!|script                                                                                                                                                   |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--userType=Auditor;||User added successfully                  |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                         ||userName: ${UserName}.*userType: Auditor |
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                         ||${UserName} has been successfully deleted|
+
+
+logonHoursFlag, logonHours, logonDays
+
+!|script                                                                                                                                                                                                                                         |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--logonHoursFlag=A;--logonHours=07:00-12:00;--logonDays=xxx....||User added successfully                                                            |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                                                                     ||userName: ${UserName}.*logonHoursFl: A.*logonHours: 07:00-12:00.*logonDays: SMT----|
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                                                                     ||${UserName} has been successfully deleted                                          |
+
+!|script                                                                                                                                                                                                                                       |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--logonHoursFlag=P;--logonHours=0700-1200;--logonDays=x.....x||User added successfully                                                            |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                                                                   ||userName: ${UserName}.*logonHoursFl: P.*logonHours: 07:00-12:00.*logonDays: S-----S|
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                                                                   ||${UserName} has been successfully deleted                                          |
+
+!|script                                                                                                                                                                                               |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--logonHoursFlag=N;--logonHours=07:00-12:00;--logonDays=x.....x||User added successfully                  |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                                                                     ||userName: ${UserName}.*logonHoursFl: N   |
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                                                                     ||${UserName} has been successfully deleted|
+
+!|script                                                                                                                                                                                                                                                                             |
+|NewAddUser|${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--logonHoursFlag=A;--logonHours=55:00-77:00;--logonDays=x.....x||Low end of range 55:00-77:00 not recognized as a valid time. High end of range 55:00-77:00 not recognized as a valid time.|
+
+!|script                                                                                                                                                                                         |
+|NewAddUser|${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--logonHoursFlag=A;--logonHours=07:00-12:00;--logonDays=.......||Logon Days must contain at least one X|
+
+!|script                                                                                                                                                                                 |
+|NewAddUser|${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--logonHoursFlag=Y;--logonHours=07:00-12:00;--logonDays=X......||Invalid value for LogonHoursFL|
+
+
+primaryAuthType, primaryAuthID, primaryAuthSystem
+
+!|script                                                                                                                                                                                                                                                    |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--primaryAuthType=WINAD;--primaryAuthSystem=KLad;--primaryAuthID=accname||User added successfully                                                              |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                                                                              ||userName: ${UserName}.*primAuthType: WinAD.*primAuthID: accname.*primAuthSystem: KLad|
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                                                                              ||${UserName} has been successfully deleted                                            |
+
+!|script                                                                                                                                                                                           |
+|NewAddUser|${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--primaryAuthType=WINADA;--primaryAuthSystem=KLad;--primaryAuthID=accname||Invalid value for PrimAuthType|
+
+
+secondaryAuthType, secondaryAuthID, secondaryAuthSystem
+
+!|script                                                                                                                                                                                                                                                   |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--secondaryAuth=WINAD;--secondaryAuthSystem=KLad;--secondaryUserID=accname||User added successfully                                                           |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                                                                                ||userName: ${UserName}.*secAuthType: WinAD.*secAuthID: accname.*secAuthSystem: KLad|
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                                                                                ||${UserName} has been successfully deleted                                         |
+
+disable
+
+!|script                                                                                                                                           |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--disable=Y||User added successfully                  |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                 ||userName: ${UserName}.*disabledFl: Y     |
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                 ||${UserName} has been successfully deleted|
+
+mobileAllowedFlag
+
+!|script                                                                                                                                                       |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--mobileAllowedFlag=Y||User added successfully                    |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                           ||userName: ${UserName}.*mobileAllowedFlag: Y|
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                           ||${UserName} has been successfully deleted  |
+
+localTimeZone
+
+!|script                                                                                                                                                         |
+|NewAddUser   |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--localTimeZone=Samoa||User added successfully                      |
+|NewListUsers |${PerlAPIparams}||--UserName=${UserName}                                                           ||userName: ${UserName}.*localtimezone:.* Samoa|
+|NewDeleteUser|${PerlAPIparams}||--UserName=${UserName}                                                           ||${UserName} has been successfully deleted    |
+
+!|script                                                                                                                                            |
+|NewAddUser|${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas;--localTimeZone=Maiami||Unrecognized Timezone or City Name|
+
+
+
+changeUserPassword
+
+!|script                                                                                                                                                |
+|NewAddUser        |${PerlAPIparams}||--UserName=${UserName};--FirstName=Korben;--LastName=Dallas||User added successfully                              |
+|ChangeUserPassword|${PerlAPIparams}||--UserName=${UserName};--Password=Password2                ||The password was successfully changed for ${UserName}|
+|NewDeleteUser     |${PerlAPIparams}||--UserName=${UserName}                                     ||${UserName} has been successfully deleted            |

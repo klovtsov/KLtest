@@ -1,0 +1,201 @@
+!|scenario        |Set policy|policy              |on system              |system              |for user             |user             |
+|$res=            |CLI       |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action ADD --SystemName @system --UserName @user|
+|Verify_Contain_OR|$res;;successful                                                                                                    |
+
+!|scenario        |Revoke policy|policy              |on system              |system              |for user              |user             |
+|$res=            |CLI          |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action DROP --SystemName @system --UserName @user|
+|Verify_Contain_OR|$res;;successful                                                                                                        |
+
+!| scenario       |Request Pwd by|cliuser                                    |with result                                   |result                                   |
+|$res=            |CLI           |-i @cliuser.ppk -C @cliuser@${TPAMHost} AddPwdRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --RequestNotes test|
+|Verify_Contain_OR|$res;;@result                                                                                                                                      |
+|$RequestID=      |get_RequestID |$res                                                                                                                                |
+
+!| scenario       |Approve Pwd request by|cliuser                   |with result                   |result                   |
+|$res=            |CLI                   |-i @cliuser.ppk -C @cliuser@${TPAMHost} Approve --RequestID $RequestID --Comment OK|
+|Verify_Contain_OR|$res;;@result                                                                                             |
+
+!| scenario    |Retrieve Pwd request by|cliuser                                                                |
+|$GeneratedPwd=|CLI                    |-i @cliuser.ppk -C @cliuser@${TPAMHost} Retrieve --RequestID $RequestID|
+
+!| scenario       |Cancel Pwd Request by|cliuser                                                                           |
+|$res=            |CLI                  |-i @cliuser.ppk -C @cliuser@${TPAMHost} Cancel --RequestID $RequestID --Comment OK|
+|Verify_Contain_OR|$res;;The response for Password Request.* was submitted successfully                                    |
+
+!| scenario       |Set policy|policy                   |on account                   |account                   |for user                   |user                   |
+|$res=            |CLI       |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action ADD --SystemName ${SystemName} --AccountName @account --UserName @user|
+|Verify_Contain_OR|$res;;successful                                                                                                                                 |
+
+!| scenario       |Set policy|policy                   |on file                   |fileName                   |for user                   |userName                   |
+|$res=            |CLI       |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action ADD --SystemName ${SystemName} --FileName @fileName --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                   |
+
+!| scenario       |Revoke policy|policy                    |on account                   |account                   |for user                   |user                   |
+|$res=            |CLI          |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action DROP --SystemName ${SystemName} --AccountName @account --UserName @user|
+|Verify_Contain_OR|$res;;successful                                                                                                                                     |
+
+!| scenario       |Revoke policy|policy                    |on file                   |fileName                   |for user                   |userName                   |
+|$res=            |CLI          |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action DROP --SystemName ${SystemName} --FileName @fileName --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                       |
+
+!| scenario       |Set policy|policy              |on collection              |collection              |for user             |user             |
+|$res=            |CLI       |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action ADD --CollectionName @collection --UserName @user|
+|Verify_Contain_OR|$res;;successful                                                                                                            |
+
+!| scenario       |Revoke policy|policy              |on collection              |collection              |for user              |user             |
+|$res=            |CLI          |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action DROP --CollectionName @collection --UserName @user|
+|Verify_Contain_OR|$res;;successful                                                                                                                |
+
+!3 Group assignment
+
+!|scenario        |Set policy|policy              |on system              |system              |for group             |group             |
+|$res=            |CLI       |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action ADD --SystemName @system --GroupName @group|
+|Verify_Contain_OR|$res;;successful                                                                                                      |
+
+!| scenario       |Set policy|policy                   |on file                   |fileName                   |for group                   |groupName                   |
+|$res=            |CLI       |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action ADD --SystemName ${SystemName} --FileName @fileName --GroupName @groupName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                     |
+
+
+!|scenario        |Revoke policy|policy              |on system              |system              |for group              |group             |
+|$res=            |CLI          |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action DROP --SystemName @system --GroupName @group|
+|Verify_Contain_OR|$res;;successful                                                                                                          |
+
+!| scenario       |Set policy|policy                   |on account                   |account                   |for group                   |group                   |
+|$res=            |CLI       |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action ADD --SystemName ${SystemName} --AccountName @account --GroupName @group|
+|Verify_Contain_OR|$res;;successful                                                                                                                                   |
+
+!| scenario       |Revoke policy|policy                    |on file                   |fileName                   |for group                   |groupName                   |
+|$res=            |CLI          |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action DROP --SystemName ${SystemName} --FileName @fileName --GroupName @groupName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                         |
+
+
+!| scenario       |Revoke policy|policy                    |on account                   |account                   |for group                   |group                   |
+|$res=            |CLI          |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action DROP --SystemName ${SystemName} --AccountName @account --GroupName @group|
+|Verify_Contain_OR|$res;;successful                                                                                                                                       |
+
+!| scenario       |Set policy|policy              |on collection              |collection              |for group             |group             |
+|$res=            |CLI       |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action ADD --CollectionName @collection --GroupName @group|
+|Verify_Contain_OR|$res;;successful                                                                                                              |
+
+!| scenario       |Revoke policy|policy              |on collection              |collection              |for group              |group             |
+|$res=            |CLI          |${CLIBatch} SetAccessPolicy --AccessPolicyName @policy --Action DROP --CollectionName @collection --GroupName @group|
+|Verify_Contain_OR|$res;;successful                                                                                                                  |
+
+!|scenario        |Delete Group|GroupName                       |
+|$res=            |CLI         |${CLIBatch} DropGroup @GroupName|
+|Verify_Contain_OR|$res;;successful                             |
+
+!| scenario           |Main test                                                                                                        |
+|Set policy           |${OverlappedPolicy} |on ${lowLevelType}|${lowLevelObjectName} |for ${lowLevelSubjectType} |${lowLevelSubjectName}|
+|Set policy           |Approver            |on ${lowLevelType}|${lowLevelObjectName} |for user                   |${CLI_user_1}         |
+|Request Pwd by       |${CLI_user_2}       |with result       |submitted                                                                |
+|Cancel Pwd Request by|${CLI_user_2}                                                                                                    |
+|Set policy           |${OverlappingPolicy}|on ${upLevelType} |${upLevelObjectName}  |for  ${upLevelSubjectType} |${upLevelSubjectName} |
+|pause                |${ApplyNewPoliciesInterval}                                                                                      |
+|Request Pwd by       |${CLI_user_2}       |with result       |You do not have permissions to create a Password Request for this account|
+|Revoke policy        |${OverlappingPolicy}|on ${upLevelType} |${upLevelObjectName}  |for  ${upLevelSubjectType} |${upLevelSubjectName} |
+|pause                |${ApplyNewPoliciesInterval}                                                                                      |
+|Request Pwd by       |${CLI_user_2}       |with result       |submitted                                                                |
+|Cancel Pwd Request by|${CLI_user_2}                                                                                                    |
+
+!| scenario       |Try to Update Account|acc        |by user        |cliuser       |params       |options       |with result       |result       |
+|$res=            |CLI                  |-i @cliuser.ppk -C @cliuser@${TPAMHost} UpdateAccount --System ${SystemName} --AccountName @acc @options|
+|Verify_Contain_OR|$res;;@result                                                                                                                 |
+
+!| scenario       |Change User Type|type             |for user             |user            |
+|$res=            |CLI             |${CLIBatch} UpdateUser --UserName @user --UserType @type|
+|Verify_Contain_OR|$res;;successful                                                         |
+
+!| scenario        |Request File by|Requestor               |with result              |result              |
+|$res =            |GroovyWebDriver|requestFile;${TPAMHost};@Requestor;${UserPwd};${SystemName};${FileName}|
+|Verify_Contain_NOT|$res;;something went wrong                                                             |
+|Verify_Contain_OR |$res;;@result                                                                          |
+
+
+!| scenario       |Try to Request File by|Requestor                                                              |
+|$res =           |GroovyWebDriver       |requestFile;${TPAMHost};@Requestor;${UserPwd};${SystemName};${FileName}|
+|Verify_Contain_OR|$res;;There are no files for request                                                          |
+
+!| scenario        |Cancel File Request by|Requestor                                                              |
+|$res =            |GroovyWebDriver       |requestFile;${TPAMHost};@Requestor;${UserPwd};${SystemName};${FileName}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                    |
+|Verify_Contain_OR |$res;;has been submitted                                                                      |
+
+!| scenario       |Create Web User|user                                                                                          |
+|$res=            |CLI            |${CLIBatch} AddUser --UserName @user --FirstName Test --LastName User --Password ${DefaultPwd}|
+|Verify_Contain_OR|$res;;User added successfully                                                                                 |
+|Change Pwd       |@user          |                 |${DefaultPwd}                 |                 |${UserPwd}                 |
+
+!| scenario       |List Accounts for Password request for|cliuser      |by filter      |filter      |contains      |result      |
+|$res=            |CLI                                   |-i @cliuser.ppk -C @cliuser@${TPAMHost} ListAcctsForPwdRequest @filter|
+|Verify_Contain_OR|$res;;@result                                                                                                |
+
+!|scenario|Retrieve System Specific Key            |keyFormat            |by            |cliuser           |
+|CLItoFile|-i @cliuser.ppk -C @cliuser@${TPAMHost} SSHKey --SystemName ${SystemName} --KeyFormat @keyFormat|
+|runBatch |CheckOutputFile;"${keyFileOrigin}";${ProjDir}\cliout.tmp                                        |
+|runBatch |movekey;${ProjDir}\cliout.tmp;${KeyFile}                                                        |
+
+
+!| scenario           |UI Request Pwd With Policy |policyName |by User   |userName |with expected result |result |
+|Login                |${TPAMURL}                 |           |@userName |         |${UserPwd}                   |
+|clickOnLink          |link=Add Password Request                                                                 |
+|type;                |id=SystemNm                |${SystemName}                                                 |
+|type;                |id=AccountNm               |${ManagedAccount}                                             |
+|click                |id=Accounts                |                                                              |
+|click                |xpath=//table[@id='accountsTable']//td[text()='@policyName']/../td/input[@type='checkbox']|
+|click                |id=Details                                                                                |
+|type;                |id=RequestReason           |password request reason                                       |
+|click                |id=SubmitChanges                                                                          |
+|waitForElementPresent|xpath=//div[@id='ResultsScrollDiv']                                                       |
+|$res=                |getText                    |xpath=//div[@id='ResultsScrollDiv']                           |
+|Verify_Contain_OR    |$res;;@result                                                                             |
+|Logout                                                                                                          |
+
+!| scenario           |UI Request Session With Policy |policyName |by User  |userName|with expected result|result|
+|Login                |${TPAMURL}                     |           |@userName|        |${UserPwd}                 |
+|clickOnLink          |link=Add Session Request                                                                  |
+|type;                |id=SystemNm                    |${SystemName}                                             |
+|type;                |id=AccountNm                   |${ManagedAccount}                                         |
+|click                |id=Accounts                    |                                                          |
+|click                |xpath=//table[@id='accountsTable']//td[text()='@policyName']/../td/input[@type='checkbox']|
+|click                |id=Details                                                                                |
+|type;                |id=RequestReason               |session request reason                                    |
+|click                |id=SubmitChanges                                                                          |
+|waitForElementPresent|xpath=//div[@id='ResultsScrollDiv']                                                       |
+|$res=                |getText                        |xpath=//div[@id='ResultsScrollDiv']                       |
+|Verify_Contain_OR    |$res;;@result                                                                             |
+|Logout                                                                                                          |
+
+!| scenario           |UI Cancel Password Request   |userName                        |
+|Login                |${TPAMURL}                   |   |@userName   |  |${UserPwd}  |
+|click                |id=CurrentRequests           |                                |
+|click                |xpath=//table[@id='requestsTable']//tr[contains(@id,'P')]/td/a|
+|waitForElementPresent|id=Details                                                    |
+|type;                |id=ResponseComment           |Decline                         |
+|click                |id=SubmitChanges                                              |
+|waitForTextPresent   |*The response* was submitted successfully*                    |
+|Logout                                                                              |
+
+!|scenario         |UI Cancel Session Request|userName              |
+|Login             |${TPAMURL}               ||@userName||${UserPwd}|
+|click             |id=CurrentRequests                              |
+|clickOnLink       |link=Sess(${ManagedAccount})                    |
+|click             |xpath=//td[contains(text(),'${ManagedAccount}')]|
+|click             |id=Details                                      |
+|type;             |id=ResponseComment       |cancel                |
+|click             |id=SubmitChanges                                |
+|waitForTextPresent|*The response * was submitted successfully*     |
+|Logout                                                             |
+
+!| scenario       |Request File With Policy|policyName         |by User        |userName        |with expected result        |result        |
+|$res=            |GroovyWebDriver         |SubmitFileRequestAndCheckRetrieveButton;${TPAMHost};@userName;${UserPwd};${FileName};@policyName|
+|Verify_Contain_OR|$res;;@result                                                                                                            |
+
+!| scenario       |Is policy       |policy            |on account            |accnt           |for user           |usr           |effective?           |expect           |
+|$res=            |PowerShellScript|ListAssignedPolicies.ps1 ${psConnectOptions}  -UserName @usr -AccountName @accnt -propsToList username,accessPolicyName,effectiveFlag|
+|Verify_Contain_OR|$res;;@usr\s+@policy\s+@expect                                                                                                                        |
+
+!| scenario       |Add account|acc                     |with password                    |pwd                    |                    |testRes                    |
+|$res=            |CLI        |${CLIBatch} AddAccount --System ${SystemName} --AccountName @acc --Password \"@pwd\" --Description \"${ManagedAccountDescription}\"|
+|Verify_Contain_OR|$res;;@testRes                                                                                                                                 |

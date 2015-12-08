@@ -1,0 +1,31 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.TerminalSessionActions.PlatformSpecific
+!note Terminal Session Actions: N - None, D - Disconnect, L - Logout
+
+!|script                                                                                                                              |
+|Add                              |${ManagedAccount}                        |to the group |Remote Desktop Users   |on|${SystemAddress}|
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                            |
+|Create Terminal Session for      |${ManagedAccount}|with password|${ManagedAccountPwdNew}|on|${SystemAddress}|
+|pause                            |100000                                                                                             |
+|Check Terminal session is        |Active                                   |for          |${ManagedAccount}      |on|${SystemAddress}|
+|Set Terminal Session Action      |N                                        |for user     |${ManagedAccount}      |on|${SystemAddress}|
+|Set Terminal Session Action      |D                                        |for user     |DEFAULT                |on|${SystemAddress}|
+|Reset Password                   |${ManagedAccount}                        |             |${ResetPasswordSuccessful}                 |
+|pause                            |1000                                                                                               |
+|Check Terminal session is        |Active                                   |for          |${ManagedAccount}      |on|${SystemAddress}|
+|Set Terminal Session Action      |D                                        |for user     |${ManagedAccount}      |on|${SystemAddress}|
+|Set Terminal Session Action      |N                                        |for user     |DEFAULT                |on|${SystemAddress}|
+|Reset Password                   |${ManagedAccount}                        |             |${ResetPasswordSuccessful}                 |
+|TSDisconnectionConfirmation                                                                                                          |
+|pause                            |10000                                                                                              |
+|Check Terminal session is        |Disc                                     |for          |${ManagedAccount}      |on|${SystemAddress}|
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                            |
+|Create Terminal Session for      |${ManagedAccount}|with password|${ManagedAccountPwdNew}|on|${SystemAddress}|
+|pause                            |100000                                                                                             |
+|Check Terminal session is        |Active                                   |for          |${ManagedAccount}      |on|${SystemAddress}|
+|Set Terminal Session Action      |L                                        |for user     |${ManagedAccount}      |on|${SystemAddress}|
+|Check Password                   |${ManagedAccount}                        |             |${CheckPasswordNotMatch}                   |
+|pause                            |1000                                                                                               |
+|TSLogoffConfirmation                                                                                                                 |
+|Set Terminal Session Action      |N                                        |for user     |DEFAULT                |on|${SystemAddress}|

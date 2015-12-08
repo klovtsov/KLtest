@@ -1,0 +1,5 @@
+!include -c <FrontPage.AutomatedTesting.PlatformsTesting.NisPlus
+!include -c <FrontPage.DeployProject.ScenarioLibrary
+
+!|Script|
+|Distribute Key to Nis Plus|

@@ -1,0 +1,79 @@
+!contents
+
+!include -c <AutomatedTesting.AccessPolicies.ScenarioLibrary
+!include -c <AutomatedTesting.AccessPolicies.SessionPolicies.ScenarioLibrary
+
+#!|script                                                                                                   |
+#|Prepare Environment                                                                                       |
+#|BFERs 6965 7015 Check Refresh Policy Button                                                                     |
+#|Clear Environment                                                                                         |
+
+
+!|script                                                                                                   |
+|Prepare Environment                                                                                       |
+|BFERs 6965 7015 Check Refresh Policy Button                                                               |
+|Session Approved           |${UserAccountRequestor}    ||${UserSystemApprover} ||${UserCollectionReviewer}|
+|Session Approved           |${GroupCollectionRequestor}||${GroupSystemApprover}||${GroupAccountReviewer}  |
+|Session Privileged         |${UserAccountPac}                                                             |
+|Session ISA                |${UserCollectionIsa}                                                          |
+|Session Denied             |${UserCollectionRequestor} ||Account                                          |
+|Session Without Permissions|${UserWithoutPermissions}  ||System                                           |
+|Clear Environment                                                                                         |
+
+
+
+
+
+
+#!|script                                                                                                               |
+#|Prepare Environment                                                                                                   |
+#|Session Approved                  |${UserAccountRequestor}    ||${UserAccountApprover}    ||${UserAccountReviewer}    |
+#|Session Approved                  |${UserSystemRequestor}     ||${UserSystemApprover}     ||${UserSystemReviewer}     |
+#|Session Approved                  |${UserCollectionRequestor} ||${UserCollectionApprover} ||${UserCollectionReviewer} |
+#|Session Approved                  |${GroupAccountRequestor}   ||${GroupAccountApprover}   ||${GroupAccountReviewer}   |
+#|Session Approved                  |${GroupSystemRequestor}    ||${GroupSystemApprover}    ||${GroupSystemReviewer}    |
+#|Session Approved                  |${GroupCollectionRequestor}||${GroupCollectionApprover}||${GroupCollectionReviewer}|
+#|Session Approved                  |${GlobalGroupPsmRequestor} ||${GlobalGroupPsmApprover} ||${GlobalGroupPsmReviewer} |
+#|Session Privileged                |${UserAccountPac}                                                                  |
+#|Session Privileged                |${UserSystemPac}                                                                   |
+#|Session Privileged                |${UserCollectionPac}                                                               |
+#|Session Privileged                |${GroupAccountPac}                                                                 |
+#|Session Privileged                |${GroupSystemPac}                                                                  |
+#|Session Privileged                |${GroupCollectionPac}                                                              |
+#|Session Privileged                |${GlobalGroupPsmPac}                                                               |
+#|Session ISA                       |${UserSystemIsa}                                                                   |
+#|Session ISA                       |${UserCollectionIsa}                                                               |
+#|Session ISA                       |${GroupSystemIsa}                                                                  |
+#|Session ISA                       |${GlobalGroupPsmIsa}                                                               |
+#|Session Requires PPM              |${UserSystemRequestor}     ||Account                                               |
+#|Session Requires PPM              |${UserCollectionRequestor} ||Account                                               |
+#|Session Requires PPM              |${GroupAccountRequestor}   ||Account                                               |
+#|Session Requires PPM              |${GroupSystemRequestor}    ||Account                                               |
+#|Session Requires PPM              |${GroupCollectionRequestor}||Account                                               |
+#|Session Requires PPM              |${GlobalGroupPsmRequestor} ||Account                                               |
+#|Session Requires PPM              |${UserAccountRequestor}    ||System                                                |
+#|Session Requires PPM              |${UserCollectionRequestor} ||System                                                |
+#|Session Requires PPM              |${GroupAccountRequestor}   ||System                                                |
+#|Session Requires PPM              |${GroupSystemRequestor}    ||System                                                |
+#|Session Requires PPM              |${GroupCollectionRequestor}||System                                                |
+#|Session Requires PPM              |${GlobalGroupPsmRequestor} ||System                                                |
+#|Session Denied                    |${UserSystemRequestor}     ||Account                                               |
+#|Session Denied                    |${UserCollectionRequestor} ||Account                                               |
+#|Session Denied                    |${GroupSystemRequestor}    ||Account                                               |
+#|Session Denied                    |${GroupCollectionRequestor}||Account                                               |
+#|Session Denied                    |${GlobalGroupPsmRequestor} ||Account                                               |
+#|Session Denied                    |${UserAccountRequestor}    ||System                                                |
+#|Session Denied                    |${UserCollectionRequestor} ||System                                                |
+#|Session Denied                    |${GroupAccountRequestor}   ||System                                                |
+#|Session Denied                    |${GroupCollectionRequestor}||System                                                |
+#|Session Denied                    |${GlobalGroupPsmRequestor} ||System                                                |
+#|Session Denied on Collection Level|${UserAccountRequestor}    ||${AccountCollection}                                  |
+#|Session Denied on Collection Level|${UserSystemRequestor}     ||${AccountCollection}                                  |
+#|Session Denied on Collection Level|${GroupAccountRequestor}   ||${SystemCollection}                                   |
+#|Session Denied on Collection Level|${GroupSystemRequestor}    ||${AccountCollection}                                  |
+#|Session Denied on Collection Level|${GlobalGroupPsmRequestor} ||${SystemCollection}                                   |
+#|Session Without Permissions       |${UserWithoutPermissions}  ||Account                                               |
+#|Session Without Permissions       |${UserWithoutPermissions}  ||System                                                |
+#|Clear Environment                                                                                                     |
+
+

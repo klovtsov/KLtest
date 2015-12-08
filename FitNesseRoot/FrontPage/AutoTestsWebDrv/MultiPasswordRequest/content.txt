@@ -1,0 +1,21 @@
+!*> First System
+!define FirstSystemName {${prefix}HydraOne}
+!define FirstSystemPlatform {Linux}
+!define FirstSystemAddress {10.30.199.188}
+!define FirstFunctAcct {Jedi}
+!define FirstFunctAcctPwd {T0P$ecret}
+!define FirstManagedAcct {${prefix}HydraHead}
+!define FirstManagedAcctPwd {S0H@rdPWd}
+*!
+!*> Second System
+!define SecSystemName {${prefix}HydraTwo}
+!define SecSystemPlatform {Linux}
+!define SecSystemAddress {10.30.199.189}
+!define SecFunctAcct {mstr}
+!define SecFunctAcctPwd {T0P$ecret}
+!define SecManagedAcct {${prefix}SecHydraAcct}
+!define SecManagedAcctPwd {An0theRPWd}
+*!
+!define Reviewer {${prefix}user_reviewer}
+!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${API_user_1} -apiUser ${API_user_1}}
+!contents -R2 -g -p -h -f

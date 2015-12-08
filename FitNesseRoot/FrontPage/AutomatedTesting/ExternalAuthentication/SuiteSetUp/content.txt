@@ -1,0 +1,13 @@
+!contents
+
+
+!include -c .FrontPage.AutomatedTesting.SetUp
+!include -c .FrontPage.AutomatedTesting.ExternalAuthentication.ScenarioLibrary
+
+
+!|script     |
+|Prepare Environment|
+
+
+
+!include -c .FrontPage.AutomatedTesting.ExternalAuthentication.TearDown

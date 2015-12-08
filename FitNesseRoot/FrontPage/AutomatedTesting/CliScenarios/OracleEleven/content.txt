@@ -1,0 +1,4 @@
+!include <AutomatedTesting.PlatformsTesting.OracleEleven
+!include -c <CliScenarios.ScenarioLibrary
+!include -c <CliScenarios.OraclePlatform.PlatformSpecific
+

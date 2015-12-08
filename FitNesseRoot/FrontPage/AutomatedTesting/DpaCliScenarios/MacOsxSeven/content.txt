@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.MacOsxSeven
+!include -c ScenarioLibrary

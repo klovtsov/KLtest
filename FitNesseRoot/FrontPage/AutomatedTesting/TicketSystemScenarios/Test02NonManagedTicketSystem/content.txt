@@ -1,0 +1,22 @@
+!contents
+
+
+!define newprefix {${prefix}2}
+
+!define TicketSystemName {${newprefix}TSSystem}
+
+!define NonManagedTicketSystemAddress {10.30.39.82}
+!define NonManagedTicketSystemPort {3306}
+!define NonManagedTicketSystemODBCDriver {MySQL}
+!define NonManagedTicketSystemUser {mymaster}
+!define NonManagedTicketSystemPassword {frujiE15}
+
+!define TicketSQLStatement {select * from ${TicketsDB}.${TicketsTable} where TicketNumber = :TicketNumber:}
+
+
+!include -c <AutomatedTesting.TicketSystemScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.TicketSystemScenarios.Test02NonManagedTicketSystem.ScenarioLibrary
+
+
+!|script              |
+|Non-Managed Ticket System|

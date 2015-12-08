@@ -1,0 +1,4 @@
+!define seleniumBrowser {*iexplore}
+!define SystemTimeout {90}
+!define seleniumTimeout {100}
+!contents -R

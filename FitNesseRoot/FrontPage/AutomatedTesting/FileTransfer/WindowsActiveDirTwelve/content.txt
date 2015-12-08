@@ -1,0 +1,26 @@
+!********> Test Short Description
+Share folder is c:\test. Test creates it by himself.
+You can change drive if you want by changing scenarios on Platform specific page under this one. 
+Also it creates a file !-${fileToDownload}.bat-! which will be downloaded.
+**************!
+!define psmProxyType {\"RDP - Automatic Login Using Password\"}
+!define shareFolder {${prefix}test}
+!define fileToDownload {${prefix}test File.txt}
+!define fileToUpload {UploadedFile.txt}
+!define secondFileToUpload {sec ond.txt}
+!define TransferMethod {WFC}
+
+!note Credentials which are specified at transfer time
+!define FileTransUser {${FunctAcct}}
+!define  isFileTransfUsrFunctional {Y}
+!define content {${ATPath}\CliScenarios\WindowsActiveDirTwelve\content.txt}
+!define AcceptImage {shortcut.png,psmWin12.png}
+
+!include -c <AutomatedTesting.PostSessionProcessing.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include <AutomatedTesting.CliScenarios.WindowsActiveDirTwelve
+!include -c <AutomatedTesting.CliScenarios.WindowsActiveDirTwelve.PlatformSpecific
+!include -c ScenarioLibrary
+!include -c FileTransferWindows.PlatformSpecific
+
+!include CommonFileTransferTest

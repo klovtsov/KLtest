@@ -1,0 +1,5 @@
+!note Test does not create a new Reason Code. The checked reason code has to exist on TPAM before test will be started. 
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+!define ExistingReasonCode {.*TestReasonCode}
+!|script|
+|Check Reason Code|${ExistingReasonCode}|

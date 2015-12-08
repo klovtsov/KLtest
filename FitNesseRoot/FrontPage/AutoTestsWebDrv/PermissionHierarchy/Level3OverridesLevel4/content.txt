@@ -1,0 +1,41 @@
+!* Test description
+A user has permissions for a system and for a collection which system belongs to.
+Permission on system should have a precedence
+*!
+
+!define CollectionName {${prefix}coltn}
+
+!define OverlappedPolicy {Requestor}
+!define lowLevelType {collection}
+!define lowLevelObjectName {${CollectionName}}
+!define lowLevelSubjectType {user}
+!define lowLevelSubjectName {${CLI_user_2}}
+
+!define OverlappingPolicy {ISA}
+!define upLevelType {system}
+!define upLevelObjectName {${SystemName}}
+!define upLevelSubjectType {user}
+!define upLevelSubjectName {${CLI_user_2}}
+
+!*> Include section
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+!*> Create Environment
+!|script                                                                                    |
+|Add system                                                                                 |
+|Add Collection          |${CollectionName}                                                 |
+|Add System To Collection|${SystemName}    |             |${CollectionName}                 |
+|Add account             |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed}|
+*!
+!|script  |
+|Main test|
+
+!*> Clean environment
+!|script                            |
+|Remove account   |${ManagedAccount}|
+|Remove system    |${SystemName}    |
+|Delete Collection|${CollectionName}|
+*!

@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.OracleTwelve 
+!include -c <CliScenarios.ScenarioLibrary
+!include -c <CliScenarios.OracleTwelve.PlatformSpecific
+!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword

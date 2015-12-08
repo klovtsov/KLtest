@@ -1,0 +1,2 @@
+!include <AutomatedTesting.PlatformsTesting.VmwareVsphere
+#!include -c <AutomatedTesting.InternetExplorerScenarios.VmwareVsphere.BugWorkaround

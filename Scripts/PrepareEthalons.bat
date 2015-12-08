@@ -1,0 +1,1 @@
+.\Scripts\sfk filter %~1 -rep "/%~2/%~3/" -write -yes

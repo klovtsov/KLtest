@@ -1,0 +1,3 @@
+!|scenario         |Login Account to System|ManPwd                                                                      |
+|$LoginResult=     |RunBatchGetOutputFull  |Platforms\${SystemPlatform};login;${SystemAddress};${ManagedAccount};@ManPwd|
+|Verify_Contain_NOT|$LoginResult;;Access denied                                                                         |

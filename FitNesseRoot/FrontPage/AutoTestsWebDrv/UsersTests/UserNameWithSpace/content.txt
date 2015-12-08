@@ -1,0 +1,6 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+
+!|script                                                                |
+|Login                      |${TPAMURL}    ||${TPAMAdmin}||${DefaultPwd}|
+|Add User With Space In Name|Buba Kastorsky||User4PAR    ||abc@gmail.com|
+

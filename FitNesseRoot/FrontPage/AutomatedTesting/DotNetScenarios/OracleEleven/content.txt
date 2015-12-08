@@ -1,0 +1,4 @@
+!include <AutomatedTesting.PlatformsTesting.OracleEleven
+!include -c <DotNetScenarios.ScenarioLibrary
+!include -c <DotNetScenarios.OraclePlatform.PlatformSpecific
+

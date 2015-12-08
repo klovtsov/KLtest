@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+!include -c <DotNetScenarios.ScenarioLibrary
+
+

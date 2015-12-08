@@ -1,0 +1,8 @@
+!contents
+
+!|scenario|Create Account on System      |Account      |
+|SSH      |userc.script;;@Account;;${ManagedAccountPwd}|
+
+!|scenario    |Create Group w Account on System                 |Account                 |                |Group                |
+|Create Account on System|@Account                              |
+|accountAction|${SystemPlatform};;group;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;@Account;;@Group|

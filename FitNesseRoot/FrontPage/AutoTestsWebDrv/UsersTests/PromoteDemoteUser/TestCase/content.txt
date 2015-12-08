@@ -1,0 +1,11 @@
+!*> Includes
+!include -c <AutoTestsWebDrv.UsersTests.ScenarioLibrary
+!include -c <AutoTestsWebDrv.UsersTests.PromoteDemoteUser.ScenarioLibrary
+*!
+
+
+!|script      |
+|Prepare Test |
+|Promote User |
+|Demote User  |
+|Clear Test   |

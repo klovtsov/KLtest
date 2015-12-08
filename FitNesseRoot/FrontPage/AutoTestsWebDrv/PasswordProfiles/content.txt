@@ -1,0 +1,3 @@
+!define defaultPause {90000}
+
+!contents -R -g -p -f -h

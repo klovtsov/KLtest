@@ -1,0 +1,86 @@
+!contents
+
+#
+
+!|scenario                          |Set Connection Tab                     |
+|click                              |id=Connection         |                |
+|type;                              |id=PARFuncAcct        |${FunctAcct}    |
+|click                              |id=rb_DSS                              |
+|pause                              |1000                                   |
+|click                              |id=rb_Specific                         |
+|click                              |id=btGeneratePair0                     |
+|waitForTextPresent                 |Successfully*generated*key pair        |
+|Check And Delete File on Dispatcher|${BrowserDownloadDir}\|   |id_dsa.pub  |
+|click                              |id=btDnldSpcOpenSSH                    |
+|pause                              |15000                                  |
+|type;                              |id=Timeout            |${SystemTimeout}|
+|pause                              |1000                                   |
+|click                              |id=bt_Save                             |
+|waitForTextPresent                 |System changes for * saved successfully|
+|pause                              |15000                                  |
+|Upload Generated Key                                                       |
+
+
+!| scenario    |Managed System                         |
+|Create Account on System                              |
+|Login         |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Add system                                            |
+|Set Connection Tab                                    |
+|Test System   |${TestSystemSuccessful}                |
+|Choose System                                         |
+|Regenerate DSS Key Without Uploading                  |
+|Test System   |${TestSystemFailed}                    |
+|Choose Account|${FunctAcct}                           |
+|Check Password|${CheckPasswordFailed}                 |
+
+
+
+
+!| scenario                       |Managed Account                                                                                                                          |
+|Add account                      |${ManagedAccount}|with password|${ManagedAccountPwd}                                                                                     |
+|Reset Password                   |${ResetPasswordFailed}                                                                                                                   |
+|Remove account                   |${ManagedAccount}                                                                                                                        |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}|and profiles|${PpmCheckProfile}                ||${PpmChangeProfile}                |
+|Schedule Reset Password          |Failed                                                                                                                                   |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                                  |
+|Remove account                   |${ManagedAccount}                                                                                                                        |
+|Upload Generated Key                                                                                                                                                       |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}|and profiles|${PpmCheckProfile}                ||${PersistentPasswordChangeProfile1}|
+|pause                            |${PpmScheduleTimeWindow}                                                                                                                 |
+|Check Status                     |Success          |for reason   |Mismatch                                                                                                 |
+|Reset Password                   |${ResetPasswordSuccessful}                                                                                                               |
+|Remove account                   |${ManagedAccount}                                                                                                                        |
+|Change Account Password on System|${ManagedAccountPwd}                                                                                                                     |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}|and profiles|${PersistentPasswordCheckProfile1}||${PpmChangeProfile}                |
+|Forced Reset                     |Success                                                                                                                                  |
+
+
+!| scenario                         |Regenerate DSS Key Without Uploading|
+|click                              |id=Details                          |
+|click                              |id=Connection                       |
+|pause                              |1000                                |
+|click                              |id=btGeneratePair0                  |
+|waitForTextPresent                 |Successfully*generated*key pair     |
+|Check And Delete File on Dispatcher|${BrowserDownloadDir}\ | |id_dsa.pub|
+|click                              |id=btDnldSpcOpenSSH                 |
+|pause                              |5000                                |
+
+!| scenario              |Delete All       |
+|Remove system           |${SystemName}    |
+|Delete Account on System|${ManagedAccount}|
+|Empty Authorized Keys File                |
+ 
+!| scenario|Upload Generated Key                                                                                                           |
+|runBatch  |UploadRootPublicSshKey.bat;${SystemAddress};${FunctAcct};${FunctAcctPwd};${BrowserDownloadDir};${AuthorizedKeysFile};id_dsa.pub|
+
+
+!| scenario|Empty Authorized Keys File                                                          |
+|runBatch  |EmptyKeyFile.bat;${SystemAddress};${FunctAcct};${FunctAcctPwd};${AuthorizedKeysFile}|
+
+
+!|scenario  |Add system                               |
+|pause      |5000                                     |
+|clickOnLink|link=Add System                          |
+|type;      |id=SystemName    |${SystemName}          |
+|type;      |id=NetworkAddress|${SystemAddress}       |
+|select;    |id=PlatformID    |label=${SystemPlatform}|

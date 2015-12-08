@@ -1,0 +1,58 @@
+!* Test description
+A user has permissions for a collection of files and for a file directly.
+Permission on file should have a precedence
+*!
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+!define FileName {${UserPrefix}TestFile}
+!define FilePath {c:\}
+!define FileDesc {${UserPrefix}FileDesc} 
+!define FileEmailAddr {${UserPrefix}FileEmailAddr0@tpam.spb.qsft}
+
+!define CollectionName {${prefix}AccntColtn}
+
+!define OverlappedPolicy {Requestor}
+!define lowLevelType {collection}
+!define lowLevelObjectName {${CollectionName}}
+!define lowLevelSubjectType {user}
+!define lowLevelSubjectName {${Requestor}}
+
+!define OverlappingPolicy {Approver}
+!define upLevelType {file}
+!define upLevelObjectName {${FileName}}
+!define upLevelSubjectType {user}
+!define upLevelSubjectName {${Requestor}}
+
+!*> Include section
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.FilesNotifications.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+!*> Create Environment
+!|script                                                              |
+|Add system                                                           |
+|Add Collection        |${CollectionName}                             |
+|Create File           |${FilePath}  ||${FileName}                    |
+|Add File                                                             |
+|Add File To Collection|${SystemName}||${FileName} ||${CollectionName}|
+*!
+
+!|script                                                                                                                                 |
+|Set policy            |${OverlappedPolicy} |on ${lowLevelType}|${lowLevelObjectName} |for ${lowLevelSubjectType} |${lowLevelSubjectName}|
+|Request File by       |${Requestor}        |with result       |submitted                                                                |
+|Cancel File Request by|${Requestor}                                                                                                     |
+|Set policy            |${OverlappingPolicy}|on ${upLevelType} |${upLevelObjectName}  |for  ${upLevelSubjectType} |${upLevelSubjectName} |
+|pause                 |${ApplyNewPoliciesInterval}                                                                                      |
+|Try to Request File by|${Requestor}                                                                                                   |
+|Revoke policy         |${OverlappingPolicy}|on ${upLevelType} |${upLevelObjectName}  |for  ${upLevelSubjectType} |${upLevelSubjectName} |
+|pause                 |${ApplyNewPoliciesInterval}                                                                                      |
+|Request File by       |${Requestor}        |with result       |submitted                                                                |
+|Cancel File Request by|${Requestor}                                                                                                     |
+
+!*> Clear Environment
+!|script                                   |
+|Delete File      |${FilePath}||${FileName}|
+|Remove system    |${SystemName}           |
+|Delete Collection|${CollectionName}       |
+*!

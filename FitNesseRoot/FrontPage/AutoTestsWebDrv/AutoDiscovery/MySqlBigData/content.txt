@@ -1,0 +1,25 @@
+!contents
+
+
+!include -c .FrontPage.AutoTestsWebDrv.AutoDiscovery.ScenarioLibrary
+
+
+!define newprefix {${prefix}BD}
+!define SystemName {${prefix}MySQL2}
+!define SystemPlatform {MySQL}
+!define SystemAddress {10.30.39.82}
+!define ConnectionPort {3306}
+!define FunctAcct {mymaster}
+!define FunctAcctPwd {frujiE15}
+!define FakeSystemName {klgenautodiscfakesystem}
+!define LongFakeSystemName {klgenautodiscsystemwithbigname}
+!define ExpectedLongSystemName {klgenautodiscsystemwithbigna_1}
+!define SystemTemplateName {kltemplformysqlad}
+
+!define PathToFiles {${ProjDir}\Scripts\MySQLAutoDiscovery}
+
+!define DatabaseName {${newprefix}adtest}
+!define ComputerTableName {systems}
+
+!define SelectComputerQuery {SELECT * FROM ${DatabaseName}.${ComputerTableName};}
+

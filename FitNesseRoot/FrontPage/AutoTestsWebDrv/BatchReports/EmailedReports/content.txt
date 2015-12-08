@@ -1,0 +1,42 @@
+!contents
+
+!|script                                     |
+|Check Emailed Report|CollectionMembership   |
+|Check Emailed Report|DlyActivityLog         |
+|Check Emailed Report|DlyApproverActivity    |
+|Check Emailed Report|DlyFailedLogins        |
+|Check Emailed Report|DlyFileAging           |
+|Check Emailed Report|DlyFileRelActivity     |
+|Check Emailed Report|DlyFirewallLog         |
+|Check Emailed Report|DlyGNSystemMappings    |
+|Check Emailed Report|DlyGNUserMappings      |
+|Check Emailed Report|DlyLDAPSystemMappings  |
+|Check Emailed Report|DlyLDAPUserMappings    |
+|Check Emailed Report|DlyPasswordAging       |
+|Check Emailed Report|DlyPwdTestResults      |
+|Check Emailed Report|DlyPwdTestSummary      |
+|Check Emailed Report|DlyPwdUpdateResults    |
+|Check Emailed Report|DlyPwdUpdateSummary    |
+|Check Emailed Report|DlyReleaseActivity     |
+|Check Emailed Report|DlySecurityLog         |
+|Check Emailed Report|DlySessionActivityDtls |
+|Check Emailed Report|DlySessionActivity     |
+|Check Emailed Report|DlySysAdminActivity    |
+|Check Emailed Report|GroupMembership        |
+|Check Emailed Report|MgmtSummaryReport      |
+|Check Emailed Report|SystemDPAAffinity      |
+|Check Emailed Report|SystemsNoAccount       |
+|Check Emailed Report|SystemsNoCollection    |
+|Check Emailed Report|UserEGPEntitlement     |
+|Check Emailed Report|UserEntitlement        |
+|Check Emailed Report|UserFileEntitlement    |
+|Check Emailed Report|UsersNoGroup           |
+|Check Emailed Report|WklyAppUsageReport     |
+|Check Emailed Report|WklyFileRelActivity    |
+|Check Emailed Report|WklyReleaseActivity    |
+|Check Emailed Report|WklySessionActivityDtls|
+|Check Emailed Report|WklySessionActivity    |
+#|Check Emailed Report|DlyReviewerActivity    |
+#|Check Emailed Report|PendingReleaseReviews  |
+#|Check Emailed Report|PendingSessionReviews  |
+

@@ -1,0 +1,13 @@
+!contents
+
+!define SystemName {${prefix}SystemName}
+!define SystemName2 {${prefix}SystemName2}
+!define SystemName3 {${prefix}SystemName3}
+!define SystemName4 {${prefix}SystemName4}
+!define SystemName5 {${prefix}SystemName5}
+!define SystemPlatform {FreeBSD}
+!define SystemAddress {4.4.4.4}
+!define FunctAcct {root4}
+!define FunctAcctPwd {A\)&(de;fjkl1$}
+!define ManagedAccount {RAmaccount1}
+!define ManagedAccountPwd {A\)&(de;fjkl1$}

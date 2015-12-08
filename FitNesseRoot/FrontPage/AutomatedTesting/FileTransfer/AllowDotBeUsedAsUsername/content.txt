@@ -1,0 +1,27 @@
+!define ManagedAccount {Karl.Peter}
+!define ManagedAccountPwd {gRain41R}
+!include -c <AutomatedTesting.ScenarioLibrary
+
+!define psmProxyType {\"SSH - Automatic Login Using Password\"}
+!define shareFolder {/shared}
+!define fileToDownload {${prefix}testFile.txt}
+!define fileToUpload {UploadedFile.txt}
+!define secondFileToUpload {sec ond.txt}
+!define TransferMethod {SCP}
+!include <AutomatedTesting.PlatformsTesting.LinuxRedHat
+!define content {${ATPath}\PlatformsTesting\LinuxRedHat\content.txt}
+!define FileTransUser {${ManagedAccount}}
+!define  isFileTransfUsrFunctional {N}
+!define AcceptImage {Accept4.png}
+
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+!include -c FileTransferLinux.PlatformSpecific
+#!include -c >TestSpecific
+
+!|script                       |
+|Prepare Enviroment            |
+|Add Session Request           |
+|Specify Creds at Transfer Time|
+|Cancel Session Request        |
+

@@ -1,0 +1,6 @@
+!define ReasonCodeName {${prefix}TestReasonCode}
+!*> System settings
+!include <AutomatedTesting.PlatformsTesting.WindowsActiveDir
+*!
+!define ManagedAccountPwd {VerySimple}
+!contents -R -p -g

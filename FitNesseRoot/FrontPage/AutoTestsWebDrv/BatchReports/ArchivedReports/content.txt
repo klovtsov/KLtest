@@ -1,0 +1,45 @@
+!contents
+
+
+
+!|script                                      |
+|Download Reports From Archive Server         |
+|Check Archived Report|CollectionMembership   |
+|Check Archived Report|DlyActivityLog         |
+|Check Archived Report|DlyApproverActivity    |
+|Check Archived Report|DlyFailedLogins        |
+|Check Archived Report|DlyFileAging           |
+|Check Archived Report|DlyFileRelActivity     |
+|Check Archived Report|DlyFirewallLog         |
+|Check Archived Report|DlyGNSystemMappings    |
+|Check Archived Report|DlyGNUserMappings      |
+|Check Archived Report|DlyLDAPSystemMappings  |
+|Check Archived Report|DlyLDAPUserMappings    |
+|Check Archived Report|DlyPasswordAging       |
+|Check Archived Report|DlyPwdTestResults      |
+|Check Archived Report|DlyPwdTestSummary      |
+|Check Archived Report|DlyPwdUpdateResults    |
+|Check Archived Report|DlyPwdUpdateSummary    |
+|Check Archived Report|DlyReleaseActivity     |
+|Check Archived Report|DlySecurityLog         |
+|Check Archived Report|DlySessionActivity     |
+|Check Archived Report|DlySessionActivityDtls |
+|Check Archived Report|DlySysAdminActivity    |
+|Check Archived Report|GroupMembership        |
+|Check Archived Report|MgmtSummaryReport      |
+|Check Archived Report|SystemDPAAffinity      |
+|Check Archived Report|SystemsNoAccount       |
+|Check Archived Report|SystemsNoCollection    |
+|Check Archived Report|UserEGPEntitlement     |
+|Check Archived Report|UserEntitlement        |
+|Check Archived Report|UserFileEntitlement    |
+|Check Archived Report|UsersNoGroup           |
+|Check Archived Report|WklyAppUsageReport     |
+|Check Archived Report|WklyFileRelActivity    |
+|Check Archived Report|WklyReleaseActivity    |
+|Check Archived Report|WklySessionActivity    |
+|Check Archived Report|WklySessionActivityDtls|
+#|Check Archived Report|DlyReviewerActivity    |
+#|Check Archived Report|PendingReleaseReviews  |
+#|Check Archived Report|PendingSessionReviews  |
+

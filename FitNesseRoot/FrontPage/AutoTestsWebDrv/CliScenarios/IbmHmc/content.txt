@@ -1,0 +1,6 @@
+!include <AutoTestsWebDrv.PlatformsTesting.IbmHmc
+!include -c <CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.ManagedAccountCanCheckPassword
+
+
+

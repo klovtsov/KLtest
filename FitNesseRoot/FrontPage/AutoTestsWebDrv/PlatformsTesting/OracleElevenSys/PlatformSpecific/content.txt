@@ -1,0 +1,20 @@
+!|scenario    |Create Account on System                                                                                                              |
+|accountAction|${SystemPlatform};;create;;${SystemAddress};;${Port};;${SID};;${FunctAcct2};;${FunctAcctPwd2};;${ManagedAccount};;${ManagedAccountPwd}|
+
+!|scenario    |Change Account Password on System                                          |NewPwd                                         |
+|accountAction|${SystemPlatform};;password;;${SystemAddress};;${Port};;${SID};;${FunctAcct2};;${FunctAcctPwd2};;${ManagedAccount};;@NewPwd|
+
+!|scenario    |Login Account to System                             |ManPwd                            |
+|accountAction|${SystemPlatform};;login;;${SystemAddress};;${Port};;${SID};;${ManagedAccount};;@ManPwd|
+
+!|scenario    |Delete Account on System                                                                                        |
+|accountAction|${SystemPlatform};;delete;;${SystemAddress};;${Port};;${SID};;${FunctAcct2};;${FunctAcctPwd2};;${ManagedAccount}|
+
+|scenario             |Add system                                  |
+|clickOnLink          |link=Add System                             |
+|waitForElementPresent|id=SystemName                               |
+|type;                |id=SystemName       |${SystemName}          |
+|type;                |id=NetworkAddress   |${SystemAddress}       |
+|select;              |id=PlatformID       |label=${SystemPlatform}|
+|type;                |id=PlatSpecificValue|DBA Privilege=SYSDBA   |
+

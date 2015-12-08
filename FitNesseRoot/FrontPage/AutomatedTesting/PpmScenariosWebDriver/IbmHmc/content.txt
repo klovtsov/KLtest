@@ -1,0 +1,5 @@
+!define content {${ATPath}\PlatformsTesting\IbmHmc\content.txt}
+
+
+!include -c <AutomatedTesting.PlatformsTesting.IbmHmc
+!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

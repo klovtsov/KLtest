@@ -1,0 +1,11 @@
+!define SystemName {${prefix}_MySQL}
+!define SystemPlatform {MySQL}
+!define SystemAddress {10.30.39.82}
+!define ConnectionPort {3306}
+!define FunctAcct {mymaster}
+!define FunctAcctPwd {frujiE15}
+!define TestSystemFailed {Unable to connect to;;Host Unreachable;;Failure }
+!define CheckPasswordFailed {Unable to connect to;;does not exist;;Host Unreachable;;Failure }
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.MySql.PlatformSpecific

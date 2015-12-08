@@ -1,0 +1,58 @@
+!define AnotherAccount {${prefix}AliBaba}
+!define psmProxyType {"SSH - Automatic Login Using Password"}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!*> Prepare Environment (creating system and two accounts)
+!|script                                                            |
+|Create Account on System                                           |
+|Add System                                                         |
+|Add account|${ManagedAccount}|with password|${ManagedAccountPwdNew}|
+|Add account|${AnotherAccount}|with password|${ManagedAccountPwdNew}|
+*!
+
+!3 1. ListPSMAccounts - Lists all accounts that can be PSM enabled.
+!|script                                                                                             |
+|List PSM Accounts|${prefix}*       |for which PSM enabled|ALL  |contains         |${AnotherAccount} |
+|Enable PSM for   |${ManagedAccount}|with options         |-proxyType ${psmProxyType} -minApprovers 1|
+|List PSM Accounts|${prefix}*       |for which PSM enabled|Y    |contains         |${ManagedAccount} |
+|List PSM Accounts|${prefix}*       |for which PSM enabled|Y    |does not contain |${AnotherAccount} |
+|Enable PSM for   |${AnotherAccount}|with options         |-proxyType ${psmProxyType} -minApprovers 1|
+|List PSM Accounts|${prefix}*       |for which PSM enabled|Y    |contains         |${AnotherAccount} |
+
+!3 2. listAcctsForSessionRequest - Provides a list of accounts that the user can submit a session request for.
+!|script                                                                                                        |
+|List Accounts for Session request for|${API_user_1}       |contains   |No Accounts to list                     |
+|Set Permissions                      |"PSM Requestor"     |on  account|${ManagedAccount}|for user|${API_user_1}|
+|List Accounts for Session request for|${API_user_1}       |contains   |${SystemName}.*${ManagedAccount}        |
+|Set Permissions                      |"PSM Approver"      |on  account|${ManagedAccount}|for user|${API_user_2}|
+|Set Permissions                      |"Approver-Requestor"|on  account|${ManagedAccount}|for user|${TPAMAdmin} |
+
+
+!3 3. Tests for listSessionRequest and listSessionRequestDetails commands.
+!|script                                                                                     |
+|Request Session for       |${TPAMAdmin}                                                     |
+|Set Permissions           |"ISA"       |on  account|${ManagedAccount}|for user|${API_user_1}|
+|List Session Request      |${TPAMAdmin}|with result|Pending Approval                        |
+|Get Session Request Status|Pending Approval                                                 |
+|Approve Session request by|${API_user_2}                                                    |
+|List Session Request      |${TPAMAdmin}|with result|Active/Approved                         |
+|List Session Request Details                                                                |
+|Get Session Request Status|Active/Approved                                                  |
+
+!3 New in 915: CreatedByUserName and CreatedByUserFullName output fields.
+!note When doing the "list" commands you must specify --RequestorName user=myself. (See bfer6568 history).
+!|script                                                                                                                                               |
+|Get Session Request with output fields |accountName,CreatedByUserName,CreatedByUserFullName|contains|${ManagedAccount}\s+${API_user_1}\s+${API_user_1}|
+|List Session Request with output fields|requestID,CreatedByUserName,CreatedByUserFullName  |contains|$RequestID\s+${API_user_1}\s+${API_user_1}       |
+|List Session Request Details           |requestID,CreatedByUserName,CreatedByUserFullName  |contains|$RequestID\s+${API_user_1}\s+${API_user_1}       |
+
+
+!*> Clean Up
+!|script                         |
+|Cancel Session Request          |
+|Delete Account|${AnotherAccount}|
+|Delete Account|${ManagedAccount}|
+|Delete System |${SystemName}    |
+*!

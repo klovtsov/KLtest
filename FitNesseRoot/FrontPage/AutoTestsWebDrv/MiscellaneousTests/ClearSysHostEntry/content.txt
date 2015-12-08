@@ -1,0 +1,29 @@
+!define Administrator {${prefix}Admin}
+!define CLIAdministrator {-i ${Administrator}.ppk -C ${Administrator}@${TPAMHost}}
+
+!define AdminAPI {${prefix}AdminAPI}
+!define authFile {${PathToKeys}${AdminAPI}}
+!define PerlAPIparams {--keyFileName=${authFile};--apiuserName=${AdminAPI};--host=${TPAMHost}}
+!define JavaauthFile {${AdminAPI}}
+!define JavaAPIparams {authFile=${JavaauthFile};apiUser=${AdminAPI};TPAM=${TPAMHost}}
+!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${AdminAPI} -apiUser ${AdminAPI}}
+
+
+!include -c <AutoTestsWebDrv.CustomPlatform.ConversationalPlatform.ScenarioLibrary
+!include -c <AutoTestsWebDrv.AccountDiscovery.MacOsxSeven 
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <AutoTestsWebDrv.MiscellaneousTests.ClearSysHostEntry.TestSpecific
+
+
+!|script                                |
+|Prepare                                |
+|Clear System Host Entry With Java API  |
+|Clear System Host Entry With Perl API  |
+|Clear System Host Entry                |
+|Clear System Host Entry DPA            |
+|Clear System Host Entry With dotNET DPA|
+|Cleanup                                |
+
+
+
+

@@ -1,0 +1,5 @@
+!include -c <FrontPage.AutomatedTesting.PlatformsTesting.EdmzSpcwDc
+!include -c <FrontPage.DeployProject.ScenarioLibrary
+
+!|Script|
+|Distribute Key to SPCW|${SystemAddress}|

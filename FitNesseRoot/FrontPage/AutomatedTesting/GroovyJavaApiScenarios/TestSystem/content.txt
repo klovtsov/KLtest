@@ -1,0 +1,10 @@
+!include -c <AutomatedTesting.PlatformsTesting.WindowsDesktop
+
+!include -c <FrontPage.AutomatedTesting.GroovyJavaApiScenarios.ListCommands.ScenarioLibrary
+!include -c <FrontPage.AutomatedTesting.GroovyJavaApiScenarios.ScenarioLibrary
+
+
+!|script                                                                                                                                                          |
+|Add System   |SystemName=${SystemName};NetworkAddress=${SystemAddress};FunctionalAccount=${FunctAcct};FuncAcctCred=${FunctAcctPwd};PlatformName=${SystemPlatform}|
+|Test System  |${SystemName}                                          |                                         |Success.                                         |
+|Remove System|${SystemName}                                                                                                                                      |

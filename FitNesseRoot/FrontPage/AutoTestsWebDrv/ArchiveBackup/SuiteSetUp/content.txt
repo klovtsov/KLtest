@@ -1,0 +1,10 @@
+!|import|
+|TPAM   |
+
+!|Library                                      |
+|tpam|${seleniumBrowser};;${seleniumPort};;fake|
+
+
+!|script                     |
+|Verify_Contain_OR_alnum|1;;1|
+

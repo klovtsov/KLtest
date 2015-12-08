@@ -1,0 +1,41 @@
+!define PolicyName {Approver-Requestor}
+!define psmProxyType {\"VNC Enterprise - Interactive Login\"}
+
+!include <AutoTestsWebDrv.PlatformsTesting.MacOsxSeven
+!define vncPwd {Q1w2e3r4t5}
+!define ManagedAccountPwd {P@r0leAA}
+!define pause {60000}
+!define PlaceHolder {${ManagedAccount}}
+!define expectedImageOnScreen {vncMac7.png}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PermissionHierarchy.ScenarioLibrary
+!include -c <AutoTestsWebDrv.FileTransfer.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PsmSmokeTest.ScenarioLibrary
+
+!*> Prepare environment: Add system, create users and set permissions
+!|script                                                                                                                         |
+|Open             |${TPAMURL}       |             |${TPAMAdmin}        |        |${DefaultPwd}                                   |
+|Prepare Requestor|${Requestor}                                                                                                  |
+|Create Account on System                                                                                                        |
+|Add System                                                                                                                      |
+|Add account      |${ManagedAccount}|with password|${ManagedAccountPwd}|        |Changes saved successfully for ${ManagedAccount}|
+|Set policy       |${PolicyName}    |on system    |${SystemName}       |for user|${Requestor}                                    |
+|stop                                                                                                                            |
+*!
+
+!|script                                 |
+|Set psm settings for  |${ManagedAccount}|
+|Set required approvers|0                |
+|Request Session                         |
+|Open session VNC                        |
+|Cancel psm request                      |
+
+!*> Remove system and users
+!|script                                   |
+|Remove system           |${SystemName}    |
+|Delete Account on System|${ManagedAccount}|
+|Remove User             |${Requestor}     |
+*!

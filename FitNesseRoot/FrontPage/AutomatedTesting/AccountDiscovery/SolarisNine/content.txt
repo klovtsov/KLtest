@@ -1,0 +1,8 @@
+!contents
+!define ProfileName {${SystemName}AccDiscProfile5}
+!include -c <AutomatedTesting.PlatformsTesting.SolarisNine
+!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary
+
+#!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary.NixScenarioLibrary
+
+!define TemplateName {${SystemName}Template}

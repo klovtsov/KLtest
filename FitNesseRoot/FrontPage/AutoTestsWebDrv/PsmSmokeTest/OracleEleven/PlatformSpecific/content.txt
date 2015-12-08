@@ -1,0 +1,69 @@
+!|scenario            |Open Session Do Nothing|requestorName         |                       |systemName         |         |accountName         |         |responceAction        |
+|$res=                |CLI                    |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                           |
+|$RequestID=          |get_session_RequestID  |$res                                                                                                                              |
+|stop                                                                                                                                                                            |
+|Login                |${TPAMURL}             |                      |@requestorName         |                   |${UserPwd}                                                     |
+|click                |id=CurrentRequests                                                                                                                                        |
+|waitForElementPresent|link=$RequestID                                                                                                                                           |
+|clickOnLink          |link=$RequestID                                                                                                                                           |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                     |
+|click                |id=StartSessionButton                                                                                                                                     |
+|pause                |30000                                                                                                                                                     |
+|selectWindow         |Quest Software PSM Session (${SystemName}/${ManagedAccount}/$RequestID)                                                                                   |
+|pause                |150000                                                                                                                                                    |
+|SWait                |sqlplus.png                                                                                                                                               |
+|stop                                                                                                                                                                            |
+|selectWindow         |Quest Software TPAM                                                                                                                                       |
+|stop                                                                                                                                                                            |
+|Cancel Session Request                                                                                                                                                          |
+
+
+!|scenario            |Add system       |systemName||systemAddress||systemPlatform||functAcct||functionalAccountPassword|
+|clickOnLink          |link=Add System                                                                                  |
+|waitForElementPresent|id=SystemName                                                                                    |
+|type;                |id=SystemName    |@systemName                                                                    |
+|type;                |id=NetworkAddress|@systemAddress                                                                 |
+|select;              |id=PlatformID    |label=@systemPlatform                                                          |
+|pause                |1000                                                                                             |
+|waitForElementPresent|id=Connection                                                                                    |
+|click                |id=Connection                                                                                    |
+|type;                |id=PARFuncAcct   |${FunctAcct}                                                                   |
+|type;                |id=pword         |${FunctAcctPwd}                                                                |
+|type;                |id=ConfPword     |${FunctAcctPwd}                                                                |
+|type;                |id=Timeout       |${SystemTimeout}                                                               |
+|type;                |id=Port          |${Port}                                                                        |
+|type;                |id=SIDSN         |${SID}                                                                         |
+|click                |id=bt_Save       |                                                                               |
+|waitForTextPresent   |System changes for * saved successfully                                                          |
+
+!|scenario    |Create Account on System      |accountName     |with password     |pwd     |on system     |systemAddress     |
+|accountAction|${SystemPlatform};;create;;@systemAddress;;${Port};;${SID};;${FunctAcct};;${FunctAcctPwd};;@accountName;;@pwd|
+
+!|scenario    |Delete Account on System             |accountName            |on system            |systemAddress            |
+|accountAction|${SystemPlatform};;delete;;@systemAddress;;${Port};;${SID};;${FunctAcct};;${FunctAcctPwd};;@accountName;;@pwd|
+
+!|scenario        |Prepare Test                                                                                                     |
+|Login            |${TPAMURL}       |          |${TPAMAdmin}     |         |${DefaultPwd}                                           |
+|Add System       |${SystemName}    |          |${SystemAddress} |         |${SystemPlatform}|        |${FunctAcct}||${FunctAcctPwd}|
+|Prepare Account  |${ManagedAccount}|          |${SystemName}    |         |${SystemAddress}                                        |
+|Prepare Requestor|${Requestor}                                                                                                     |
+|Add User To Group|${CLI_user_1}    |          |\"Global PSM Requestor Group\"                                                      |
+|Add User To Group|${CLI_user_1}    |          |\"Global ISA Group\"                                                                |
+|Assign Policy    |${PolicyName}    |To Account|${ManagedAccount}|On System|${SystemName}    |And User|${Requestor}                 |
+|pause            |${ApplyNewPoliciesInterval}                                                                                      |
+
+
+!|Scenario              |Open Session                                                  |
+|Open Session Do Nothing|${Requestor}||${SystemName}||${ManagedAccount}||psm_do_nothing|
+|pause                  |60000                                                         |
+
+!|scenario               |Clear Objects                                             |
+|Remove system           |${SystemName}                                             |
+|Delete Account on System|${ManagedAccount}|on system|${SystemAddress}              |
+|Remove User             |${Requestor}                                              |
+|Remove User From Group  |${CLI_user_1}    |         |\"Global PSM Requestor Group\"|
+|Remove User From Group  |${CLI_user_1}    |         |\"Global ISA Group\"          |
+|Login                   |${TPAMURL}       |         |${TPAMAdmin} | |${DefaultPwd} |
+|Hard-Delete System      |${SystemName}                                             |
+

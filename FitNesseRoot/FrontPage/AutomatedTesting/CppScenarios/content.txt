@@ -1,0 +1,13 @@
+!define SystemDescription {Test system}
+
+!define NotFailed {successfully}
+!define TestSystemFailed {failed;;.does not exist;;imed out;;Invalid password;;Host Unreachable;;Failure}
+!define TestSystemSuccessful {Success}
+!define ResetPasswordFailed {rror;;imed out;;Failure;;Host Unreachable}
+!define ResetPasswordSuccessful {successful;;Success}
+!define CheckPasswordNotMatch {Failure}
+!define CheckPasswordFailed {failed;;does not exist;;invalid user;;NOT MATCH;;error occurred;;imed out;;no listener;;Host Unreachable;;Failure}
+
+!define SystemTimeout {60}
+
+!contents -R

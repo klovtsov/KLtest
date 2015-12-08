@@ -1,0 +1,11 @@
+!include <AutoTestsWebDrv.PlatformsTesting.SybasePlatform
+!*> Added to workaround Java API issues with difficult passwords
+!define FunctAcct {sa}
+!define FunctAcctPwd {qwerty1}
+!define ManagedAccountPwd {master}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.SybasePlatform.PlatformSpecific
+*!
+!include -c <JavaApiScenarios.ScenarioLibrary
+
+

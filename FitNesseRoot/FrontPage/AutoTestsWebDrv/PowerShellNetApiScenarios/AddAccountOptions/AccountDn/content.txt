@@ -1,0 +1,14 @@
+!define AcctWrongDN {cn=nonExisting,dc=kantaten,dc=local}
+!include -c <AutoTestsWebDrv.PlatformsTesting.LdAp
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                |
+|Create Account on System                                                                                                                                                                                                               |
+|Add system    |${SystemName}    |with address|${SystemAddress}|platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-functAcctPwd ${FunctAcctPwd} -DomainName ${DomainName} -funcAcctDN ${FunctAcctDescription}|
+|Test System   |${TestSystemSuccessful}                                                                                                                                                                                                 |
+|Add account   |${ManagedAccount}|on system   |${SystemName}   |with options|-AccountDN "${ManagedAccountDescription}"                                                                                                                  |
+|Reset Password|${ResetPasswordSuccessful}                                                                                                                                                                                              |
+|Update Account|${ManagedAccount}|            |-AccountDN ${AcctWrongDN}                                                                                                                                                                |
+|Reset Password|${ResetPasswordFailed}                                                                                                                                                                                                  |
+|Delete Account on System                                                                                                                                                                                                               |
+|Delete System |${SystemName}                                                                                                                                                                                                           |

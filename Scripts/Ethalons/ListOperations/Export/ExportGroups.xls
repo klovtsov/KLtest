@@ -1,0 +1,25 @@
+
+<table border="1" width="700">
+  <thead>
+      <tr>
+        <td colspan="2" bgcolor="#C0C0C0" align="center"><font size="5"><b>Listing of Groups</b></font></td>
+      </tr>
+    <tr>
+      <td bgcolor="#C0C0C0" width="200"><b>Group Name</b></td>
+      <td bgcolor="#C0C0C0" width="600"><b>Group Description</b></td>
+    </tr>
+  </thead>
+  <tbody>
+	
+		<tr>
+			<td>prefixListGroup1</td>
+			<td></td> 
+		</tr>
+	
+		<tr>
+			<td>prefixListGroup12</td>
+			<td></td> 
+		</tr>
+	
+  </tbody>
+</table>

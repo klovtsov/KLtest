@@ -1,0 +1,5 @@
+!include <AutomatedTesting.PlatformsTesting.HpuxTrusted
+#!include -c <AutomatedTesting.InternetExplorerScenarios.AixPlatform.BugWorkaround
+#!include -c <AutomatedTesting.InternetExplorerScenarios.HpuxTrusted.BugWorkaround
+
+

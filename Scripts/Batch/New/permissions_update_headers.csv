@@ -1,0 +1,23 @@
+System Name,Account Name,File Name,Collection Name,Update Action,User Name,Group Name,Access Policy
+klbatchsys10,,,,A,klbatchuser1,,Approver
+klbatchsys11,,,,A,klbatchuser2,,Approver-Requestor
+klbatchsys12,,,,A,klbatchuser3,,Denied
+klbatchsys13,,,,A,klbatchuserwithveryverybigname,,ISA
+klbatchsys14,,,,A,klbatchuser5,,PPM Approver
+klbatchsys15,,,,A,,klbatch_group1,PPM Approver-Requestor
+klbatchsys16,,,,A,,klbatch_group2,PPM Denied
+klbatchsys17,,,,A,,klbatch_group1,PPM ISA
+klbatchsys18,,,,A,,klbatch_group2,PPM Privileged Access
+klbatchsys19,,,,A,,klbatch_group1,PPM Requestor
+klbatchsys20,klbatchacc,,,A,klbatchuser6,,PPM Reviewer
+klbatchsys21,klbatchacc,,,A,klbatchuser1,,Privileged Access
+klbatchsys22,klbatchacc,,,A,klbatchuser2,,PSM Approver
+klbatchsys23,klbatchacc,,,A,klbatchuser3,,PSM Approver-Requestor
+klbatchsys24,klbatchacc,,,A,klbatchuserwithveryverybigname,,PSM Denied
+klbatchsys25,klbatchacc,,,A,,klbatch_group1,PSM ISA
+klbatchsys26,klbatchacc,,,A,,klbatch_group2,PSM Privileged Access
+klbatchsys27,klbatchacc,,,A,,klbatch_group1,PSM Requestor
+klbatchsys28,klbatchacc,,,A,,klbatch_group2,PSM Reviewer
+klbatchsys29,klbatchacc,,,A,,klbatch_group1,Requestor
+,,,klbatch_collection2,A,,klbatch_group1,Requestor
+,,,klbatch_collection3,A,klbatchuser6,,Requestor

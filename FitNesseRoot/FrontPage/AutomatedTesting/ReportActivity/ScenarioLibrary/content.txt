@@ -1,0 +1,96 @@
+!| scenario       |Add system|SystemName                                                                                                                                                                                                          |
+|$res=            |CLI       |${CLIBatch} AddSystem --SystemName @SystemName --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --Timeout ${SystemTimeout}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                               |
+
+
+!| scenario          |Prepare Environment                                               |
+|Add system          |${SystemName}                                                     |
+|Add system          |${SystemName2}                                                    |
+|Add system          |${SystemName3}                                                    |
+|Add system          |${SystemName4}                                                    |
+|Add system          |${SystemName5}                                                    |
+|$Months=          |getEval|var d = new Date();d.getUTCMonth()+1;                                                                                                                                                                     |
+|$Days=            |getEval|var d = new Date();d.getUTCDate();                                                                                                                                                                        |
+|$Years=           |getEval|var d = new Date();d.getUTCFullYear();                                                                                                                                                                    |
+|$Hours=           |getEval|var d = new Date();d.getUTCHours();                                                                                                                                                                       |
+|$Minutesp=        |getEval|var d = new Date();var h = d.getUTCHours();var m = d.getUTCMinutes()+9;if (m > 59) {h = h + 1;m = m - 59;d = h+":0"+m} else {d = h+":"+m}                                                                 |
+|$Minutesm=        |getEval|var d = new Date();var h = d.getUTCHours();var m = d.getUTCMinutes()-9;if (m < 0) {h = h - 1;m = m + 60;d = h+":"+m} else {d = h+":"+m}                                                                   |
+|Add account         |${ManagedAccount}|with password|${ManagedAccountPwd}||successfully|
+|Set User Permissions|${CLI_user_1}                                                     |
+|Set User Permissions|${CLI_user_2}                                                     |
+|pause               |${ApplyNewPoliciesInterval}                                       |
+|Request Pwd                                                                            |
+|Approve Pwd                                                                            |
+#|Add account|${ManagedAccount}||${ManagedAccountPwd}|successfully |
+
+!| scenario        |Single Day                                                                                                                                            |
+|$res=             |CLI    |${CLIBatch} ReportActivity --username ${CLI_user_1} -operation add --objecttype system --target ${SystemName} --startdate $Months/$Days/$Years|
+|Verify_Contain_OR |$res;;${SystemName}                                                                                                                                   |
+|Verify_Contain_NOT|$res;;${SystemName2}                                                                                                                                  |
+
+
+!| scenario        |Date Range                                                                                                                                                                                                        |
+|$res=             |CLI    |${CLIBatch} ReportActivity --username ${CLI_user_1}  -operation add --objecttype system --target ${SystemName} --startdate \"$Months/$Days/$Years $Minutesm\" --enddate \"$Months/$Days/$Years $Minutesp\"|
+|Verify_Contain_OR |$res;;${SystemName}                                                                                                                                                                                               |
+|Verify_Contain_NOT|$res;;${SystemName2}                                                                                                                                                                                              |
+
+
+
+#!|scenario        |Set User Permissions                                                                                                     |
+#|$res=            |CLI|${CLIBatch} SetAccessPolicy --AccessPolicyName "ISA" --Action ADD --SystemName ${SystemName} --UserName ${CLI_user_1}|
+#|Verify_Contain_OR|$res;;successful                                                                                                         |
+
+#!|scenario        |Revoke User Permissions                                                                                                   |
+#|$res=            |CLI|${CLIBatch} SetAccessPolicy --AccessPolicyName "ISA" --Action DROP --SystemName ${SystemName} --UserName ${CLI_user_1}|
+#|Verify_Contain_OR|$res;;successful                                                                                                          |
+
+
+
+
+!| scenario             |Clear Environment|
+|Revoke User Permissions|${CLI_user_1}    |
+|Remove account         |${ManagedAccount}|
+|Remove system          |${SystemName}    |
+|Remove system          |${SystemName2}   |
+|Remove system          |${SystemName3}   |
+|Remove system          |${SystemName4}   |
+|Remove system          |${SystemName5}   |
+
+
+
+!| scenario       |Add account|acc                             |with password                             |pwd                             |                             |testRes                             |
+|$res=            |CLI        |${CLIBatch} AddAccount --System ${SystemName} --AccountName @acc --Password \"@pwd\" --Description \"${ManagedAccountDescription}\" --NextChangeDate $Months/$Days/$Years      |
+|Verify_Contain_OR|$res;;@testRes                                                                                                                                                                             |
+
+!| scenario       |Roles                                                                                                                                         |
+|$res=            |CLI    |${CLIBatch} ReportActivity --username ${CLI_user_1} --startdate \"$Months/$Days/$Years\" --enddate \"$Months/$Days/$Years\" --role REQ|
+|Verify_Contain_OR|$res;;Requestor                                                                                                                               |
+|$res=            |CLI    |${CLIBatch} ReportActivity --username ${CLI_user_2} --startdate \"$Months/$Days/$Years\" --enddate \"$Months/$Days/$Years\" --role APR|
+|Verify_Contain_OR|$res;;Approver                                                                                                                                |
+
+!| scenario        |MaxRows4                                                                                                                                                                                                               |
+|$res=             |CLI|${CLIBatch} ReportActivity --username ${CLI_user_1} --startdate \"$Months/$Days/$Years\" --enddate \"$Months/$Days/$Years\" -operation add --objecttype system --target ${SystemName}* --maxrows 4 --direction desc|
+|Verify_Contain_OR |$res;;.*${SystemName5}.*${SystemName4}.*${SystemName3}.*${SystemName2}.*                                                                                                                                               |
+|Verify_Contain_NOT|$res;;"${SystemName}"                                                                                                                                                                                                  |
+
+#|Verify_Contain_AND |$res;;.*${SystemName5}.*${SystemName4}.*${SystemName3}.*${SystemName2}.*           
+
+                                                               |
+!|scenario        |Group                                                                                                                                                                                                                                                                  |
+|$res=            |CLI|${CLIBatch} AddGroup --GroupName "ReportActivityGroup"                                                                                                                                                                                                             |
+|Verify_Contain_OR|$res;;successfully                                                                                                                                                                                                                                                     |
+|$res=            |CLI|${CLIBatch} AddGroupMember --GroupName "ReportActivityGroup"  --UserName ${CLI_user_1}                                                                                                                                                                             |
+|Verify_Contain_OR|$res;;successfully                                                                                                                                                                                                                                                     |
+|pause            |${ApplyNewPoliciesInterval}                                                                                                                                                                                                                                            |
+|$res=            |CLI|${CLIBatch} ReportActivity --GroupName "ReportActivityGroup" -operation add --objecttype system --startdate \"$Months/$Days/$Years $Minutesm\" --enddate \"$Months/$Days/$Years $Minutesp\"|
+|Verify_Contain_OR|$res;;.*${SystemName}.*${SystemName2}.*${SystemName3}.*${SystemName4}.*${SystemName5}.*                                                                                                                                                                                |
+|$res=            |CLI|${CLIBatch} DropGroup --GroupName "ReportActivityGroup"                                                                                                                                                                                                            |
+|Verify_Contain_OR|$res;;successfully                                                                                                                                                                                                                                                     |
+
+#|$res=            |CLI|${CLIBatch} ReportActivity --GroupName "ReportActivityGroup" --startdate \"$Months/$Days/$Years\" --enddate \"$Months/$Days/$Years\" -operation add --objecttype system --startdate \"$Months/$Days/$Years $Minutesm\" --enddate \"$Months/$Days/$Years $Minutesp\"|
+
+!|scenario        |Sort                                                                                                                                                                                   |
+|$res=            |CLI|${CLIBatch} ReportActivity --target *${ManagedAccount} --startdate \"$Months/$Days/$Years $Minutesm\" --enddate \"$Months/$Days/$Years $Minutesp\" --sort username --direction desc|
+|Verify_Contain_OR|$res;;.*${CLI_user_2}.*${CLI_user_1}.*                                                                                                                                                 |
+
+

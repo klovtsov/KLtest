@@ -1,0 +1,22 @@
+!contents
+
+
+!include -c .FrontPage.AutomatedTesting.CliScenarios.WindowsActiveDir.PlatformSpecific
+!include -c .FrontPage.AutomatedTesting.AutoDiscovery.ScenarioLibrary
+
+
+!define newprefix {${prefix}8}
+!define SystemName {${prefix}AD}
+!define SystemPlatform {Windows Active Dir}
+!define SystemAddress {10.30.38.59}
+!define FunctAcct {Administrator}
+!define FunctAcctPwd {frujiE15}
+!define DomainName {kltest16.spb.qsft}
+!define NETBIOSDomainName {KLTEST16}
+!define BaseName {DC=kltest16,DC=spb,DC=qsft}
+
+!define HASH {!-#-!}
+!define UserContainerName {${HASH}${newprefix} Users}
+!define SystemContainerName {${HASH}${newprefix} Computers}
+
+

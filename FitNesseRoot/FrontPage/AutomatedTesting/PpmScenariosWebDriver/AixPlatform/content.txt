@@ -1,0 +1,5 @@
+!define content {${ATPath}\PlatformsTesting\AixPlatform\content.txt}
+
+
+!include -c <AutomatedTesting.PlatformsTesting.AixPlatform 
+!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

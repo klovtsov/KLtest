@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<platform>
+  <verboseOutput>1</verboseOutput>
+  <checkSystem>
+    <commandType>3270</commandType>
+    <connectionParms>
+      <sslOption>0</sslOption>
+      <deviceName>%PLATSPECIFICVALUE%</deviceName>
+    </connectionParms>
+    <dialog>
+      <step type="wait" value="InputField" />
+      <step type="string" value="LOGON %FUNCACCT%\n" />
+      <step type="wait" value="InputField" />
+      <step type="string" value="%FUNCACCTPWD%\n" />
+      <step type="string" value="\n" />
+      <step type="string" value="\n" />
+      <step type="wait" value="InputField" />
+      <step type="string" value="logoff\n" />
+      <step type="wait" value="InputField" />
+      <step type="string" value="logoff\n" />
+      <step type="wait" value="Output" />
+      <step type="quit" />
+    </dialog>
+    <processResults>
+      <processType>parseOutput</processType>
+      <successPattern>last access at:</successPattern>
+      <successPattern>already logged on to system</successPattern>
+      <successPattern>logon in progress</successPattern>
+      <successPattern>tpx menu for</successPattern>
+      <successPattern>supersession main menu</successPattern>
+      <successPattern>application selection</successPattern>
+      <successPattern>ca-teleview</successPattern>
+      <failPattern>password not authorized</failPattern>
+      <failPattern>logon rejected</failPattern>
+    </processResults>
+  </checkSystem>
+  <checkPassword>
+    <method>
+      <accountList></accountList>
+      <commandType>3270</commandType>
+      <connectionParms>
+        <sslOption>0</sslOption>
+        <deviceName>%PLATSPECIFICVALUE%</deviceName>
+      </connectionParms>
+      <dialog>
+        <step type="wait" value="InputField" />
+        <step type="string" value="LOGON %ACCTNAME%\n" />
+        <step type="wait" value="InputField" />
+        <step type="string" value="%ACCTPWD%\n" />
+        <step type="string" value="\n" />
+        <step type="string" value="\n" />
+        <step type="wait" value="InputField"/>
+        <step type="string" value="ispf\n"/>
+        <step type="ascii"/>
+        <step type="wait" value="Output"/>
+        <step type="string" value="\\\pf3"/>
+        <step type="wait" value="InputField" />
+        <step type="string" value="logoff\n" />
+        <step type="wait" value="InputField" />
+        <step type="string" value="logoff\n" />
+        <step type="wait" value="Output" />
+        <step type="quit" />
+      </dialog>
+      <processResults>
+        <processType>parseOutput</processType>
+        <successPattern>last access at:</successPattern>
+        <successPattern>already logged on to system</successPattern>
+        <successPattern>logon in progress</successPattern>
+        <successPattern>tpx menu for</successPattern>
+        <successPattern>supersession main menu</successPattern>
+        <successPattern>application selection</successPattern>
+        <successPattern>ca-teleview</successPattern>
+        <mismatchPattern>password not authorized</mismatchPattern>
+        <mismatchPattern>logon rejected</mismatchPattern>
+      </processResults>
+    </method>
+  </checkPassword>
+  <changePassword>
+    <method>
+      <accountList></accountList>
+      <commandType>3270</commandType>
+      <connectionParms>
+        <sslOption>0</sslOption>
+        <deviceName>%PLATSPECIFICVALUE%</deviceName>
+      </connectionParms>
+      <dialog>
+        <step type="wait" value="InputField" />
+        <step type="string" value="LOGON %FUNCACCT%\n" />
+        <step type="wait" value="InputField" />
+        <step type="string" value="%FUNCACCTPWD%\n" />
+        <step type="string" value="\n" />
+        <step type="string" value="\n" />
+        <step type="wait" value="InputField" />
+        <step type="string" value="alu %ACCTNAME% password(%NEWACCTPWD%) NOEXPIRED\n" />
+        <step type="wait" value="InputField" />
+        <step type="string" value="logoff\n" />
+        <step type="wait" value="InputField" />
+        <step type="string" value="logoff\n" />
+        <step type="wait" value="Output" />
+        <step type="quit" />
+      </dialog>
+      <processResults>
+        <processType>parseOutput</processType>
+        <failPattern>password not authorized</failPattern>
+        <failPattern>invalid</failPattern>
+        <failPattern>logon rejected</failPattern>
+      </processResults>
+    </method>
+  </changePassword>
+  <PSMSession>
+    <method>
+      <accountList></accountList>
+      <commandType>3270</commandType>
+      <connectionParms>
+        <sslOption>0</sslOption>
+      </connectionParms>
+      <dialog>
+        <step type="wait" value="" />
+        <step type="string" value="LOGON %ACCTNAME%" />
+        <step type="enter" value="" />
+        <step type="wait" value="" />
+        <step type="string" value="%ACCTPWD%" />
+        <step type="enter" value="" />
+      </dialog>
+    </method>
+  </PSMSession>
+</platform>

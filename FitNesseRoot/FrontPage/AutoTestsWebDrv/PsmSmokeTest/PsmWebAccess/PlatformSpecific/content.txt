@@ -1,0 +1,53 @@
+!|scenario            |Open Session Do Nothing|requestorName         |                       |systemName         |         |accountName         |         |responceAction        |
+|$res=                |CLI                    |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+|Verify_Contain_OR    |$res;;submitted                                                                                                                                           |
+|$RequestID=          |get_session_RequestID  |$res                                                                                                                              |
+|stop                                                                                                                                                                            |
+|Login                |${TPAMURL}             |                      |@requestorName         |                   |${UserPwd}                                                     |
+|pause                |5000                                                                                                                                                      |
+|click                |id=CurrentRequests                                                                                                                                        |
+|waitForElementPresent|link=$RequestID                                                                                                                                           |
+|clickOnLink          |link=$RequestID                                                                                                                                           |
+|waitForElementPresent|id=StartSessionButton                                                                                                                                     |
+|click                |id=StartSessionButton                                                                                                                                     |
+|pause                |30000                                                                                                                                                     |
+|selectWindow         |Quest Software PSM Session (${SystemName}/${ManagedAccount}/$RequestID)                                                                                   |
+|pause                |150000                                                                                                                                                    |
+|SWait                |TPAMlogo.jpg                                                                                                                                              |
+|stop                                                                                                                                                                            |
+|selectWindow         |Quest Software TPAM                                                                                                                                       |
+|stop                                                                                                                                                                            |
+|Cancel Session Request                                                                                                                                                          |
+
+
+!|scenario            |Add system                                  |
+|pause                |1000                                        |
+|clickOnLink          |link=Add System                             |
+|waitForElementPresent|id=SystemName                               |
+|type;                |id=SystemName       |${SystemName}          |
+|select;              |id=PlatformID       |label=${SystemPlatform}|
+|pause                |1000                                        |
+|type;                |id=PlatSpecificValue|${RestrictedURL}       |
+|click                |id=bt_Save          |                       |
+|waitForTextPresent   |System changes for * saved successfully     |
+
+!|scenario        |Prepare Test                                                                            |
+|Login            |${TPAMURL}   |          |${TPAMAdmin}     |         |${DefaultPwd}                      |
+|Add System                                                                                                |
+|Prepare Requestor|${Requestor}                                                                            |
+|Add User To Group|${CLI_user_1}|          |\"Global PSM Requestor Group\"                                 |
+|Add User To Group|${CLI_user_1}|          |\"Global ISA Group\"                                           |
+|Assign Policy    |${PolicyName}|To Account|${ManagedAccount}|On System|${SystemName}|And User|${Requestor}|
+|pause            |${ApplyNewPoliciesInterval}                                                             |
+
+!|Scenario              |Open Session                                                  |
+|Open Session Do Nothing|${Requestor}||${SystemName}||${ManagedAccount}||psm_do_nothing|
+|pause                  |60000                                                         |
+
+!|scenario             |Clear Objects                                |
+|Remove system         |${SystemName}                                |
+|Remove User           |${Requestor}                                 |
+|Remove User From Group|${CLI_user_1}||\"Global PSM Requestor Group\"|
+|Remove User From Group|${CLI_user_1}||\"Global ISA Group\"          |
+|Login                 |${TPAMURL}   ||${TPAMAdmin} | |${DefaultPwd} |
+|Hard-Delete System    |${SystemName}                                |

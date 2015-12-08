@@ -1,0 +1,204 @@
+!|scenario        |List Systems                                                                                                                                                                                                                                                                                                                   |
+|$res=            |GroovyWebDriver                                                              |ListOperations;TPAMaddress=${TPAMHost};TPAMuserName=${ListAdmin};TPAMuserPwd=${DefaultPwd};Operation=System;SystemName=${SystemName1};NetworkAddr=1;CollectionName=${CollectionName}                                                             |
+|Verify_Contain_OR|$res;;Listing.*1.*${prefix}ListSystem1.*1.1.1.1.*Windows.*Y.*2.*${prefix}ListSystem12.*1.2.2.2.*AIX.*Y.*Collections.*All.*Systems.*Includes all systems.*${prefix}ListCollection1.*${prefix}ListCollection2.*Permissions.*${prefix}ListUser1.*Approver.*Yes.*${prefix}ListUser2.*${prefix}ListGroup1.*Requestor.*Yes.*Finished.|
+
+!|scenario        |List Accounts                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|$res=            |GroovyWebDriver                                                                                                                |ListOperations;TPAMaddress=${TPAMHost};TPAMuserName=${ListAdmin};TPAMuserPwd=${DefaultPwd};Operation=Account;SystemName=${SystemName1};NetworkAddr=1;CollectionName=${CollectionName};AccountName=${AccountName1}                                                                                                                |
+|Verify_Contain_OR|$res;;Listing.*1.*${prefix}ListSystem1.*${prefix}ListAccount1.*120.*Y.*N.*Default.*Password.*Rule.*N.*N.*N.*N.*1.*Y.*Y.*Y.*10080.*None.*None.*2.*${prefix}ListSystem1.*${prefix}ListAccount12.*120.*Y.*N.*Default.*Password.*Rule.*N.*N.*N.*N.*1.*Y.*Y.*Y.*10080.*None.*None.*Collections.*${prefix}ListCollection1.*${prefix}ListCollection2.*Permissions.*${prefix}ListUser1.*Approver.*Yes.*${prefix}ListUser2.*${prefix}ListGroup1.*Requestor.*Yes.*Finished.|
+
+!|scenario        |List PSMAccounts                                                                                                                                                                                                                                                                                                                                                                                             |
+|$res=            |GroovyWebDriver                                                                                  |ListOperations;TPAMaddress=${TPAMHost};TPAMuserName=${ListAdmin};TPAMuserPwd=${DefaultPwd};Operation=Account;SystemName=${SystemName1};NetworkAddr=1;CollectionName=${CollectionName};AccountName=${AccountName1};PSM=Yes                                                                                  |
+|Verify_Contain_OR|$res;;Listing.*1.*${prefix}ListSystem1.*${prefix}ListAccount1.*Local.*TPAM.*1.*N.*120.*1.*0.*0.*RDP.*Automatic.*Login.*Using.*Password.*Y.*8.*File.*Transfer.*Disabled.*Same.*0.*None.*0.*Y.*N.*Y.*N.*N.*2.*${prefix}ListSystem1.*${prefix}ListAccount12.*Local.*TPAM.*1.*N.*120.*1.*0.*0.*SSH.*-.*Automatic.*Login.*Using.*Password.*N.*File.*Transfer.*Disabled.*Same.*0.*None.*0.*Y.*N.*Y.*N.*N.*Finished.|
+
+!|scenario        |List Collections With Systems                                                                                                                                                                                  |
+|$res=            |GroovyWebDriver           |ListOperations;TPAMaddress=${TPAMHost};TPAMuserName=${ListAdmin};TPAMuserPwd=${DefaultPwd};Operation=Collection;SystemName=${SystemName1};CollectionName=${CollectionName}          |
+|Verify_Contain_OR|$res;;Listing.*1.*${prefix}ListCollection12.*Members.*${prefix}ListSystem12.*Windows.*1.1.1.1.*Y.*Permissions.*${prefix}ListUser2.*${prefix}ListGroup1.*Requestor.*Yes.*${prefix}ListUser3.*ISA.*Yes.*Finished.|
+
+!|scenario        |List Collections With Accounts                                                                                                                                                                                                                                                  |
+|$res=            |GroovyWebDriver                                          |ListOperations;TPAMaddress=${TPAMHost};TPAMuserName=${ListAdmin};TPAMuserPwd=${DefaultPwd};Operation=Collection;CollectionName=${CollectionName};AccountName=${AccountName1}                                          |
+|Verify_Contain_OR|$res;;Listing.*1.*${prefix}ListCollection1.*2.*${prefix}ListCollection12.*Members.*${prefix}ListSystem1.*${prefix}ListAccount1.*Windows.*1.1.1.1.*Y.*${prefix}ListSystem1.*${prefix}ListAccount1.*Windows.*1.1.1.1.*Y.*Permissions.*${prefix}ListUser1.*Approver.*Yes.*Finished.|
+
+!|scenario        |List Collections With Files                                                                                                                                                          |
+|$res=            |GroovyWebDriver|ListOperations;TPAMaddress=${TPAMHost};TPAMuserName=${ListAdmin};TPAMuserPwd=${DefaultPwd};Operation=Collection;CollectionName=${CollectionName};FileName=${FileName}|
+|Verify_Contain_OR|$res;;Listing.*1.*${prefix}ListCollection13.*Members.*${prefix}ListSystem13.*${prefix}ListFile1.txt.*Windows.*1.1.1.1.*Y.*Permissions.*Finished.                                     |
+
+!|scenario        |List Users                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|$res=            |GroovyWebDriver                                                                                                                                                                                                                                                     |ListOperations;TPAMaddress=${TPAMHost};TPAMuserName=${ListAdmin};TPAMuserPwd=${DefaultPwd};Operation=User;UserName=${UserName};GroupName=${GroupName1}                                                                                                                                                                                                                                                     |
+|Verify_Contain_OR|$res;;Listing.*1.*${prefix}ListUser1.*White.*Mr.*Basic.*web.*No.*No.*Restrictions.*None.*Local.*Local.*No.*UTC.*Coordinated.*Universal.*Time.*N.*0.*00.*00.*2.*${prefix}ListUser2.*Black.*Mr.*Basic.*web.*No.*No.*Restrictions.*None.*Local.*Local.*No.*(UTC).*Coordinated.*Universal.*Time.*N.*0.*00.*00.*3.*${prefix}ListUser3.*Red.*Mr.*Basic.*web.*No.*No.*Restrictions.*None.*Local.*Local.*No.*UTC.*Coordinated.*Universal.*Time.*N.*0.*00.*00.*Groups.*${prefix}ListGroup1.*${prefix}ListGroup12.*Permissions.*${prefix}ListSystem1.*funcacct.*Approver.*Yes.*${prefix}ListSystem12.*funcacct.*Requestor.*Yes.*${prefix}ListSystem13.*funcacct.*Requestor.*Yes.*Finished.|
+
+!|scenario        |List Groups                                                                                                                                                                                                                                                  |
+|$res=            |GroovyWebDriver                                            |ListOperations;TPAMaddress=${TPAMHost};TPAMuserName=${ListAdmin};TPAMuserPwd=${DefaultPwd};Operation=Group;UserName=${UserName};GroupName=${GroupName}                                           |
+|Verify_Contain_OR|$res;;Listing.*1.*${prefix}ListGroup1.*2.*${prefix}ListGroup12.*Members.*${prefix}ListUser1.*White.*Mr.*${prefix}ListUser2.*Black.*Mr.*Permissions.*${prefix}ListSystem1.*funcacct.*Approver.*Yes.*${prefix}ListSystem12.*funcacct.*Requestor.*Yes.*Finished.|
+
+!|scenario        |List Files                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|$res=            |GroovyWebDriver                                                                                                        |ListOperations;TPAMaddress=${TPAMHost};TPAMuserName=${ListAdmin};TPAMuserPwd=${DefaultPwd};Operation=File;SystemName=${SystemName1};NetworkAddr=1;CollectionName=${CollectionName};FileName=${FileName}                                                                                                        |
+|Verify_Contain_OR|$res;;Listing.*1.*${prefix}ListSystem1.*1.1.1.1.*Windows.*${prefix}ListFile1.txt.*${prefix}ListFile1.txt.*7.*1.*10080.*${prefix}ListFile.*email.com.*1.*2.*${prefix}ListSystem1.*1.1.1.1.*Windows.*${prefix}ListFile12.txt.*${prefix}ListFile12.txt.*7.*1.*10080.*${prefix}ListFile.*email.com.*1.*Collections.*${prefix}ListCollection1.*Permissions.*${prefix}ListUser1.*Approver.*Yes.*${prefix}ListUser2.*Requestor.*Yes.*Finished.|
+
+
+!|scenario        |Check Accounts Export                                             |
+|$res=            |PowerShellScript|diff.ps1 ${CSVEthalonFile} ${CSVResultFile}      |
+|Verify_Contain_OR|$res;;are equal                                                   |
+|$res=            |PowerShellScript|diff.ps1 ${ASPEthalonFile} ${ASPResultFile}      |
+|Verify_Contain_OR|$res;;are equal                                                   |
+|$res=            |PowerShellScript|diff.ps1 ${PSMCSVEthalonFile} ${PSMCSVResultFile}|
+|Verify_Contain_OR|$res;;are equal                                                   |
+|$res=            |PowerShellScript|diff.ps1 ${PSMASPEthalonFile} ${PSMASPResultFile}|
+|Verify_Contain_OR|$res;;are equal                                                   |
+#|runBatch         |DeleteFileByMask;${PathResultFile}*;fake                          |
+
+!|scenario        |Check Files Export                                          |
+|$res=            |PowerShellScript|diff.ps1 ${ASPEthalonFile} ${ASPResultFile}|
+|Verify_Contain_OR|$res;;are equal                                             |
+|runBatch         |DeleteFileByMask;${PathResultFile}*;fake                    |
+#|$res=            |PowerShellScript|diff.ps1 ${CSVEthalonFile} ${CSVResultFile}      |
+#|Verify_Contain_OR|$res;;are equal                                                   |
+
+!|scenario        |Check Systems Export                                        |
+|$res=            |PowerShellScript|diff.ps1 ${CSVEthalonFile} ${CSVResultFile}|
+|Verify_Contain_OR|$res;;are equal                                             |
+|$res=            |PowerShellScript|diff.ps1 ${ASPEthalonFile} ${ASPResultFile}|
+|Verify_Contain_OR|$res;;are equal                                             |
+#|runBatch         |DeleteFileByMask;${PathResultFile}*;fake                    |
+
+
+!|scenario        |Check Collections Export                                                  |
+|$res=            |PowerShellScript|diff.ps1 ${CSVEthalonFile} ${CSVResultFile}              |
+|Verify_Contain_OR|$res;;are equal                                                           |
+|$res=            |PowerShellScript|diff.ps1 ${ASPEthalonFile} ${ASPResultFile}              |
+|Verify_Contain_OR|$res;;are equal                                                           |
+|$res=            |PowerShellScript|diff.ps1 ${CSVMembersEthalonFile} ${CSVMembersResultFile}|
+|Verify_Contain_OR|$res;;are equal                                                           |
+|$res=            |PowerShellScript|diff.ps1 ${ASPMembersEthalonFile} ${ASPMembersResultFile}|
+|Verify_Contain_OR|$res;;are equal                                                           |
+|runBatch         |DeleteFileByMask;${PathResultFile}*;fake                                  |
+
+
+!|scenario        |Check Users Export                                          |
+|$res=            |PowerShellScript|diff.ps1 ${CSVEthalonFile} ${CSVResultFile}|
+|Verify_Contain_OR|$res;;are equal                                             |
+|$res=            |PowerShellScript|diff.ps1 ${ASPEthalonFile} ${ASPResultFile}|
+|Verify_Contain_OR|$res;;are equal                                             |
+#|runBatch         |DeleteFileByMask;${PathResultFile}*;fake                    |
+
+!|scenario        |Check Groups Export                                                       |
+|$res=            |PowerShellScript|diff.ps1 ${ASPEthalonFile} ${ASPResultFile}              |
+|Verify_Contain_OR|$res;;are equal                                                           |
+|$res=            |PowerShellScript|diff.ps1 ${ASPMembersEthalonFile} ${ASPMembersResultFile}|
+|Verify_Contain_OR|$res;;are equal                                                           |
+|$res=            |PowerShellScript|diff.ps1 ${CSVEthalonFile} ${CSVResultFile}              |
+|Verify_Contain_OR|$res;;are equal                                                           |
+|$res=            |PowerShellScript|diff.ps1 ${CSVMembersEthalonFile} ${CSVMembersResultFile}|
+|Verify_Contain_OR|$res;;are equal                                                           |
+|runBatch         |DeleteFileByMask;${PathResultFile}*;fake                                  |
+
+#!|scenario            |Add File         |SystemName||FileName||FileEmailAddr||FilePath|
+#|clickOnLink2         |link=Add File                                                  |
+#|waitForElementPresent|id=SystemNm                                                    |
+#|type;                |id=SystemNm      |@SystemName                                  |
+#|click                |id=System                                                      |
+#|waitForElementPresent|xpath=//td[contains(text(),'@SystemName')]                     |
+#|click                |xpath=//td[contains(text(),'@SystemName')]                     |
+#|click                |id=Details                                                     |
+#|waitForElementPresent|id=FileName                                                    |
+#|type;                |id=FileName      |@FileName                                    |
+#|type;                |id=RelNotifyEmail|@FileEmailAddr                               |
+#|click                |id=PAMUploadBtnSelect                                          |
+#|SWait                |browse.png                                                     |
+#|SClick               |browse.png                                                     |
+#|pause                |3000                                                           |
+#|SType                |@FilePath@FileName                                             |
+#|pause                |2000                                                           |
+#|SWait                |open.png                                                       |
+#|SClick               |open.png                                                       |
+#|pause                |5000                                                           |
+#|SWait                |upload_small.PNG                                               |
+#|SClick               |upload_small.PNG                                               |
+#|pause                |5000                                                           |
+#|click                |id=SubmitChanges                                               |
+#|waitForTextPresent   |*File saved successfully*                                      |
+
+!|scenario         |Add File       |SystemName                                |                               |FileName                               |
+|$res =            |GroovyWebDriver|tryToCreateFile;${TPAMHost};${TPAMAdmin};${DefaultPwd};@SystemName;${FilePath}@FileName;@FileName;${FileEmailAddr}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                        |
+|Verify_Contain_OR |$res;;File created successfully                                                                                                   |
+
+
+!|scenario        |Prefix replacer                                                             |
+|$res=            |PowerShellScript|replacer.ps1 ${EthalonFilesPath} ${DefaultPrefix} ${prefix}|
+|Verify_Contain_OR|$res;;successful                                                            |
+
+
+!|scenario        |DateTime replacer                                                     |
+|$res=            |PowerShellScript|replacer.ps1 ${PathResultFile} "${DateTimeRegExp}" ""|
+|Verify_Contain_OR|$res;;successful                                                      |
+
+
+!|scenario        |GroupID replacer                                                |
+|$res=            |PowerShellScript|replacer.ps1 ${PathResultFile} ${GroupIDRegExp}|
+|Verify_Contain_OR|$res;;successful                                                |
+
+!|scenario        |List Sys Admin Users                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|$res=            |CLI                                                                                                                                                                                                         |${CLISysAdmBatch} ListUsers --UserName ${SysAdminName}                                                                                                                                                                                                        |
+|Verify_Contain_OR|$res;;UserName.*LastName.*FirstName.*EmailAddress.*Phone.*Mobile.*UserType.*UserInterface.*Password.*DisabledFl.*SecAuthType.*SecAuthID.*Description.*LastAccessDate.*LogonHoursFl.*Hours.*SecAuthSystem.*PrimAuthType.*PrimAuthID.*PrimAuthSystem.*Timezone.*DstFl.*LogonDays.*MobileAllowed.*PrimAuthExtra.*${prefix}CLIAdmin.*test.*test.*testEmail@mail.com.*123456789.*987654321.*None.*SysAdmin.*clia.*N.*A.*None.*N.*None.*Local.*Coordinated.*Universal.*Time.*N.*N|
+#|Verify_Contain_OR|$res;;UserName.*LastName.*FirstName.*EmailAddress.*Phone.*Mobile.*UserType.*UserInterface.*Password.*DisabledFl.*SecAuthType.*SecAuthID.*Description.*LastAccessDate.*LogonHoursFl.*Hours.*SecAuthSystem.*PrimAuthType.*PrimAuthID.*PrimAuthSystem.*Timezone.*DstFl.*LogonDays.*MobileAllowed.*PrimAuthExtra.*${prefix}CLIAdmin.*L.*K.*None.*SysAdmin.*clia.*N.*A.*None.*descriptor.*N.*None.*Local.*Coordinated.*Universal.*Time.*N.*N|
+
+!| scenario       |Update Admin User|CLIBatch  |  |options  |  |result |
+|$res=            |CLI              |@CLIBatch UpdateAdminUser @options|
+|Verify_Contain_OR|$res;;@result                                       |
+
+
+!|scenario         |System Listing |SystemName||NetworkAddress||CollectionName||containResult||notcontainResult|
+|clickOnLink       |link=List Systems                                                                          |
+|type;             |id=SystemNm    |@SystemName                                                                |
+|type;             |id=NetworkAddr |@NetworkAddress                                                            |
+|type;             |id=CollectionNm|@CollectionName                                                            |
+|click             |id=Listing                                                                                 |
+|$res=             |getText        |id=systemListingReport                                                     |
+|Verify_Contain_OR |$res;;@containResult                                                                       |
+|Verify_Contain_NOT|$res;;@notcontainResult                                                                    |
+
+!|scenario         |Account Listing|AccountName||CollectionName||containResult||notcontainResult|
+|clickOnLink       |link=List Accounts                                                          |
+|type;             |id=AccountNm   |@AccountName                                                |
+|type;             |id=CollectionNm|@CollectionName                                             |
+|click             |id=Listing                                                                  |
+|$res=             |getText        |id=accountListingReport                                     |
+|Verify_Contain_OR |$res;;@containResult                                                        |
+|Verify_Contain_NOT|$res;;@notcontainResult                                                     |
+
+
+!|scenario         |User Listing|UserName||GroupName||containResult||notcontainResult|
+|clickOnLink       |link=List UserIDs                                                |
+|type;             |id=UsrNm    |@UserName                                           |
+|type;             |id=GroupNm  |@GroupName                                          |
+|click             |id=Listing                                                       |
+|$res=             |getText     |id=UserListingReport                                |
+|Verify_Contain_OR |$res;;@containResult                                             |
+|Verify_Contain_NOT|$res;;@notcontainResult                                          |
+
+!|scenario         |Group Listing|UserName||GroupName||containResult||notcontainResult|
+|clickOnLink       |link=List Groups                                                  |
+|type;             |id=UserNm    |@UserName                                           |
+|type;             |id=GroupNm   |@GroupName                                          |
+|click             |id=Listing                                                        |
+|$res=             |getText      |id=GroupListingReport                               |
+|Verify_Contain_OR |$res;;@containResult                                              |
+|Verify_Contain_NOT|$res;;@notcontainResult                                           |
+
+!|scenario         |Collection Listing|AccountName||CollectionName||containResult||notcontainResult|
+|clickOnLink       |link=List Collections                                                          |
+|type;             |id=CollectionNm   |@CollectionName                                             |
+|type;             |id=AccountNm      |@AccountName                                                |
+|click             |id=Listing                                                                     |
+|$res=             |getText           |id=CollectionListingReport                                  |
+|Verify_Contain_OR |$res;;@containResult                                                           |
+|Verify_Contain_NOT|$res;;@notcontainResult                                                        |
+
+!|scenario         |File Listing   |FileName||CollectionName||containResult||notcontainResult|
+|clickOnLink       |link=List Files                                                          |
+|type;             |id=CollectionNm|@CollectionName                                          |
+|type;             |id=FileNm      |@FileName                                                |
+|click             |id=Listing                                                               |
+|$res=             |getText        |id=fileListingReport                                     |
+|Verify_Contain_OR |$res;;@containResult                                                     |
+|Verify_Contain_NOT|$res;;@notcontainResult                                                  |

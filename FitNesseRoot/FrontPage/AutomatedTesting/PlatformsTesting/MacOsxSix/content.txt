@@ -1,0 +1,8 @@
+!define SystemName {${prefix}_macosx10.6}
+!define SystemPlatform {MacOSX 10.5,10.6}
+!define SystemAddress {10.30.33.5}
+!define FunctAcct {powergui}
+!define FunctAcctPwd {master}
+!define ManagedAccountPwd {PArr0le}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.MacOsxSix.PlatformSpecific

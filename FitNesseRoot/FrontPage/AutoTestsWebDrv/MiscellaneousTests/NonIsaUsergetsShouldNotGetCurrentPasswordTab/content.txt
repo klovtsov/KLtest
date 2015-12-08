@@ -1,0 +1,31 @@
+!note Managed System settings
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSix
+
+!define nonIsaUser {${prefix}tusik}
+
+!include -c <AutoTestsWebDrv.PermissionHierarchy.ScenarioLibrary
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c >TestSpecific
+
+!* Create Environment
+!|script                                                                                |
+|Open            |${TPAMURL}       |             |${TPAMAdmin}           ||${DefaultPwd}|
+|Create Web User |${nonIsaUser}                                                         |
+|Change User Type|Admin            |for user     |${nonIsaUser}                         |
+|Create Account on System                                                               |
+|Add system                                                                             |
+|Add account     |${ManagedAccount}|with password|${ManagedAccountPwdNew}||successfully |
+|Reset Password  |${ManagedAccount}|             |${ResetPasswordSuccessful}            |
+|stop                                                                                   |
+*!
+
+!|script                              |
+|Current Password Tab Is not available|
+
+!* Remove All
+!|script                                   |
+|Remove system           |${SystemName}    |
+|Delete User             |${nonIsaUser}    |
+|Delete Account on System|${ManagedAccount}|
+*!

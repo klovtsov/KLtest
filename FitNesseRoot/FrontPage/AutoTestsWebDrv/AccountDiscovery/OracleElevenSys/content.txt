@@ -1,0 +1,7 @@
+!define ProfileName {${SystemName}AccDiscProfile5}
+!include -c <AutoTestsWebDrv.PlatformsTesting.OracleElevenSys
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.OraclePlatform.PlatformSpecific
+!include -c <AutoTestsWebDrv.PlatformsTesting.OracleElevenSys.PlatformSpecific
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary.DbScenarioLibrary
+!include -c <AutoTestsWebDrv.AccountDiscovery.OracleElevenSys.PlatformSpecific

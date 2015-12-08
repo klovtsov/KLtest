@@ -1,0 +1,32 @@
+!define BasicWebUser  {${prefix}BasicWebUser}
+!define AuditorWebUser  {${prefix}AuditorWebUser}
+!define WebUserAdministrator {${prefix}WebUserAdmin}
+
+CLI parameters
+
+!define BasicUserName {${prefix}BasicTestUser}
+!define CLIBatchBasicUser {-i ${BasicUserName}.ppk -C ${BasicUserName}@${TPAMHost}}
+
+!define AuditorUserName {${prefix}AuditorTestUser}
+!define CLIBatchAuditorUser {-i ${AuditorUserName}.ppk -C ${AuditorUserName}@${TPAMHost}}
+
+!define UserAdministrator {${prefix}UserAdmin}
+!define CLIUserAdministrator {-i ${UserAdministrator}.ppk -C ${UserAdministrator}@${TPAMHost}}
+
+!define SystemName {${prefix}TestSystemName}
+!define SystemName2 {${prefix}TestSystemName2}
+!define PlatformName {Windows}
+!define NetworkAddress {x.x.x.x}
+!define AccountName {${prefix}TestAccountName}
+!define UserName {${prefix}TestUserName}
+!define GroupName {${prefix}TestGroupName}
+!define CollectionName {${prefix}TestCollectionName}
+!define SyncPassName {${prefix}SyncPassName}
+
+API parameters
+
+!define BasicApiUser  {${prefix}BasicApiUser}
+!define AuditorApiUser  {${prefix}AuditorApiUser}
+!define ApiUserAdministrator {${prefix}ApiUserAdmin}
+
+!contents -R2 -g -p -h -f

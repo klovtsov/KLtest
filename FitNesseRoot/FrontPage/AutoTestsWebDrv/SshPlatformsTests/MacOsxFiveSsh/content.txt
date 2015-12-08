@@ -1,0 +1,9 @@
+!contents
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxFive
+!define AuthorizedKeysFile {authorized_keys}
+!define ManagedAccountPwd {frujiE13}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSix.PlatformSpecific
+!include -c <AutoTestsWebDrv.SshPlatformsTests.AixSshPlatform.PlatformSpecific

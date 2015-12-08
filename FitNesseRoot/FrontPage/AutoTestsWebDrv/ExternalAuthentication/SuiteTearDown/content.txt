@@ -1,0 +1,13 @@
+!contents
+
+
+!include -c .FrontPage.AutoTestsWebDrv.SetUp
+!include -c .FrontPage.AutoTestsWebDrv.ExternalAuthentication.ScenarioLibrary
+
+
+
+!|script     |
+|Delete Environment|
+
+
+!include -c .FrontPage.AutoTestsWebDrv.ExternalAuthentication.TearDown

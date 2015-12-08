@@ -1,0 +1,12 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <FrontPage.AutomatedTesting.SetUp
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+
+!|script                                             |
+|Uncheck Checkbox        |useoldpass|for user|DEFAULT|
+|Remove account          |${ManagedAccount}          |
+|Remove system           |${SystemName}              |
+|Delete Account on System|${ManagedAccount}          |
+
+!include -c <EspcwClientScenarios.TearDown

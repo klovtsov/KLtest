@@ -1,0 +1,267 @@
+!contents
+
+!|scenario             |Prepare Test                           |
+|Get DPA Name and IP Address                                   |
+|Login                 |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Prepare Scripts and Ethalons                                  |
+|Add Collection        |${TemplateCollectionName}              |
+|Add System                                                    |
+|Add Fake System       |${FakeSystemName}                      |
+|Add Fake System       |${LongFakeSystemName}                  |
+|Create Database                                               |
+|Create Table                                                  |
+|Create System Template|${SystemTemplateName}                  |
+
+
+#!| scenario       |Add System                                                                                                                                                                                                                                           |
+#|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --Timeout ${SystemTimeout} --DomainName ${DomainName}|
+#|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                     |
+
+!|scenario            |Add System                               |
+|pause                |5000                                     |
+|clickOnLink          |link=Add System                          |
+|waitForElementPresent|id=SystemName                            |
+|type;                |id=SystemName    |${SystemName}          |
+|type;                |id=NetworkAddress|${SystemAddress}       |
+|select;              |id=PlatformID    |label=${SystemPlatform}|
+|click                |id=Connection    |                       |
+|type;                |id=PARFuncAcct   |${FunctAcct}           |
+|type;                |id=pword         |${FunctAcctPwd}        |
+|type;                |id=ConfPword     |${FunctAcctPwd}        |
+|type;                |id=Port          |${ConnectionPort}      |
+|click                |id=bt_Save       |                       |
+|waitForTextPresent   |System changes for * saved successfully  |
+
+
+!|scenario|Create Database                                                                                                   |
+|runBatch |MySQLActionBigData;${SystemAddress};${ConnectionPort};${FunctAcct};${FunctAcctPwd};${PathToFiles}\createSchema.sql|
+
+!|scenario|Create Table                                                                                                     |
+|runBatch |MySQLActionBigData;${SystemAddress};${ConnectionPort};${FunctAcct};${FunctAcctPwd};${PathToFiles}\createTable.sql|
+
+
+#!|scenario|Add Systems to Data Source                                                                                         |
+#|runBatch |MySQLActionBigData;${SystemAddress};${ConnectionPort};${FunctAcct};${FunctAcctPwd};${PathToFiles}\insertSystems.sql|
+
+!|scenario|Update Systems in Data Source                                   |sqlScript                                  |
+|runBatch |MySQLActionBigData;${SystemAddress};${ConnectionPort};${FunctAcct};${FunctAcctPwd};${PathToFiles}\@sqlScript|
+
+
+!|scenario|Delete Database                                                                                                 |
+|runBatch |MySQLActionBigData;${SystemAddress};${ConnectionPort};${FunctAcct};${FunctAcctPwd};${PathToFiles}\dropSchema.sql|
+
+
+!|scenario                                                |Auto Discovery           |
+|Update Systems in Data Source                            |insertSystems.sql        |
+|Create Generic System Mapping                                                      |
+|Select Generic Mapping for                               |${CollectionName}        |
+|Run Discovery                                                                      |
+|pause                                                    |180000                   |
+|BFER 6708 System Inherited Template Collection Membership|${ExpectedLongSystemName}|
+|Check Discovered Systems                                 |discovered_systems.txt   |
+|Update Systems in Data Source                            |updateSystems.sql        |
+|Select Generic Mapping for                               |${CollectionName}        |
+|Run Discovery                                                                      |
+|pause                                                    |180000                   |
+|BFER 6944 System With Unique Name Must Be Created Only Once                        |
+|Check Discovered Systems                                 |updated_systems.txt      |
+|Check Ignore Updates                                                               |
+
+
+|scenario                     |Check Ignore Updates                 |
+|Set Ignore Settings 1                                              |
+|Update Systems in Data Source|updateSystemsWithIgnoredSettings1.sql|
+|Run Discovery                                                      |
+|pause                        |180000                               |
+|Check Discovered Systems     |ignored_settings_1.txt               |
+|Set Ignore Settings 1                                              |
+|Run Discovery                                                      |
+|pause                        |180000                               |
+|Check Discovered Systems     |not_ignored_settings_1.txt           |
+|Set Ignore Settings 2                                              |
+|Update Systems in Data Source|updateSystemsWithIgnoredSettings2.sql|
+|Run Discovery                                                      |
+|pause                        |180000                               |
+|Check Discovered Systems     |ignored_settings_2.txt               |
+|Set Ignore Settings 2                                              |
+|Run Discovery                                                      |
+|pause                        |180000                               |
+|Check Discovered Systems     |not_ignored_settings_2.txt           |
+
+
+!|scenario                  |BFER 6944 System With Unique Name Must Be Created Only Once|
+|Check Collection Membership|${CollectionName}       |       |${FakeSystemName}_1       |
+|Check No System            |${FakeSystemName}_2                                        |
+
+
+
+!|scenario             |Clear Objects            |
+|Delete Database                                 |
+|Delete Generic System Mapping                   |
+|Remove System         |${SystemName}            |
+|Batch Remove Systems                            |
+|Delete Collection     |${CollectionName}        |
+|Delete System Template|${SystemTemplateName}    |
+|Delete Collection     |${TemplateCollectionName}|
+|Rollback Scripts and Ethalons                   |
+|Logout                                          |
+
+
+!|scenario            |Create Generic System Mapping                                                                                  |
+|pause                |3000                                                                                                           |
+|clickOnLink          |link=Generic                                                                                                   |
+|pause                |3000                                                                                                           |
+|click                |id=AddSystemsButton                                                                                            |
+|type;                |id=SystemName                                            |${SystemName}                                        |
+|type;                |id=AccountName                                           |${FunctAcct}                                         |
+|type;                |id=Command                                               |${SelectComputerQuery}                               |
+|select;              |id=AutoUpdFreq_Minutes                                   |label=15                                             |
+|select;              |id=NotifyType                                            |label=All                                            |
+|type;                |id=NotifyEmail                                           |${AutoDiscoveryEMail}                                |
+|select;              |id=MissingDN                                             |label=Create Unique TPAM System                      |
+|select;              |id=ExistingDN                                            |label=Create Unique TPAM System                      |
+|select;              |id=DeletedSource                                         |label=Soft Delete System regardless of other mappings|
+|click                |id=System                                                                                                      |
+|waitForElementPresent|id=PARCollectionName                                                                                           |
+|type;                |id=PARCollectionName                                     |${CollectionName}                                    |
+|select;              |id=TemplateSystemID                                      |label=${SystemTemplateName} [Windows]                |
+|pause                |1000                                                                                                           |
+|click                |id=SaveButton                                                                                                  |
+|waitForTextPresent   |successfully                                                                                                   |
+|click                |id=Source                                                                                                      |
+|waitForElementPresent|id=btnTestSQL                                                                                                  |
+|click                |id=btnTestSQL                                                                                                  |
+|pause                |6000                                                                                                           |
+|click                |id=btnGNAutoMap                                                                                                |
+|getConfirmation                                                                                                                      |
+|pause                |1000                                                                                                           |
+|select;              |xpath=//td[text()='PortNumber']/../td/select             |label=Port Number                                    |
+|click                |xpath=//td[text()='PortNumber']/../td/select                                                                   |
+|select;              |xpath=//td[text()='EscalationTime']/../td/select         |label=Escalation Time                                |
+|click                |xpath=//td[text()='EscalationTime']/../td/select                                                               |
+|select;              |xpath=//td[text()='SSHPort']/../td/select                |label=SSH Port                                       |
+|click                |xpath=//td[text()='SSHPort']/../td/select                                                                      |
+|select;              |xpath=//td[text()='AccountDiscoveryTimeout']/../td/select|label=Account Discovery Timeout                      |
+|click                |xpath=//td[text()='AccountDiscoveryTimeout']/../td/select                                                      |
+|click                |id=SaveButton                                                                                                  |
+|waitForTextPresent   |Auto Discovery mapping change saved successfully                                                               |
+
+
+!| scenario  |Prepare Scripts and Ethalons                   |
+|Prepare File|${PathToFiles}||DPAPLACEHOLDER   ||$TPAMDPA    |
+|Prepare File|${PathToFiles}||PREFIXPLACEHOLDER||${newprefix}|
+
+
+!| scenario  |Rollback Scripts and Ethalons                  |
+|Prepare File|${PathToFiles}||$TPAMDPA    ||DPAPLACEHOLDER   |
+|Prepare File|${PathToFiles}||${newprefix}||PREFIXPLACEHOLDER|
+
+!| scenario       |Prepare File         |path    |    |changeFrom   |   |changeTo   |
+|$res=            |RunBatchGetOutputFull|PrepareEthalons;@path;@changeFrom;@changeTo|
+|Verify_Contain_OR|$res;;write.*changes                                             |
+
+
+
+!|scenario            |Get DPA Name and IP Address                                                 |
+|Login                |${TPAMURL}|          |${TPAMAdmin}         |         |${DefaultPwd}         |
+|pause                |6000                                                                        |
+|clickOnLink          |link=DPAs                                                                   |
+|pause                |3000                                                                        |
+|waitForElementPresent|xpath=//table[@id='serversTable']//td[text()='Up']                          |
+|$TPAMDPA=            |getText   |xpath=//table[@id='serversTable']//td[text()='Up']/../td[1]      |
+|Verify_Contain_OR    |$TPAMDPA;;DPA                                                               |
+|$DPAAddress=         |getText   |xpath=//table[@id='serversTable']//td[text()='$TPAMDPA']/../td[2]|
+|Logout                                                                                            |
+
+!| scenario|List Systems                                                               |
+|$res=     |CLItoFile|${CLIBatch} ListSystems --SystemName klgenautodisc* --MaxRows 150|
+
+!|scenario        |Check Discovered Systems|Ethalon                                       |
+|List Systems                                                                             |
+|pause            |20000                                                                  |
+|$res=            |compareDump             |${PathToFiles}\@Ethalon;;${ProjDir}\cliout.tmp|
+|Verify_Contain_OR|$res;;are equal                                                        |
+
+
+!|scenario               |Batch Remove Systems                                                   |
+|clickOnLink             |link=Update Systems                                                    |
+|pause                   |2000                                                                   |
+|click                   |id=PAMUploadBtnSelect                                                  |
+|SWait                   |browse.PNG                                                             |
+|SClick                  |browse.PNG                                                             |
+|pause                   |1500                                                                   |
+|SType                   |${PathToFiles}\updated_systems.txt                                     |
+|pause                   |1500                                                                   |
+|SWait                   |open.PNG                                                               |
+|SClick                  |open.PNG                                                               |
+|pause                   |2000                                                                   |
+|SWait                   |upload_small.PNG                                                       |
+|SClick                  |upload_small.PNG                                                       |
+|pause                   |2000                                                                   |
+|click                   |id=Radio1                               |                              |
+|type;                   |id=Comment2                             |delete systems                |
+|click                   |id=btnProcessFile                       |                              |
+|pause                   |1500                                                                   |
+|waitForElementPresent   |xpath=//tr[@id='50']                                                   |
+|pause                   |60000                                                                  |
+|verifyText              |xpath=//div[@id='divBatchResults']/table||Deleted the following systems|
+|Check Discovered Systems|no_systems.txt                                                         |
+
+
+!|scenario                 |Set Ignore Settings 1                                                           |
+|Select Generic Mapping for|${CollectionName}                                                               |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Network Address']                 |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Domain Name']                     |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='NetBIOS Domain Name']             |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Func Acct DN']                    |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Non-Priv Functional Account Flag']|
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Oracle SIDSN']                    |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Oracle Type']                     |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Functional Account']              |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Password Change Profile']         |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='PSM DPA Affinity']                |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Password Rule Name']              |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Require Ticket for API Retrieve'] |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Require Ticket for CLI Retrieve'] |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Ticket Notification Email']       |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Profile Certificate Type']        |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Profile Notification Thumbprint'] |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Use SSH Flag']                    |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='SSH Account']                     |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='SSH Key']                         |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='SSH Port']                        |
+|click                     |id=SaveButton                                                                   |
+|waitForTextPresent        |Auto Discovery mapping change saved successfully                                |
+
+
+
+
+!|scenario                 |Set Ignore Settings 2                                                                        |
+|Select Generic Mapping for|${CollectionName}                                                                            |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Allow Functional Account to be requested Flag']|
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Allow ISA Duration']                           |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Description']                                  |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Escalation Email']                             |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Escalation Time']                              |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Line Definition']                              |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Max Release Duration']                         |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Password Check Profile']                       |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Platform Name']                                |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Platform Specific Value']                      |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Port Number']                                  |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='PPM DPA Affinity']                             |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Primary Email']                                |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Release Duration']                             |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Require Ticket for ISA Retrieve']              |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Require Ticket for PSM Request']               |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Require Ticket for Request']                   |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Server O/S']                                   |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Ticket System']                                |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Timeout']                                      |
+|click                     |xpath=//select[@id='UpdateColumns']/option[.='Use SSL Flag']                                 |
+|click                     |id=SaveButton                                                                                |
+|waitForTextPresent        |Auto Discovery mapping change saved successfully                                             |
+
+
+
+

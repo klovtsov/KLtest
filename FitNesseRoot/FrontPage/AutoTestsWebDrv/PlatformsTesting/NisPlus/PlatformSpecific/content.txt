@@ -1,0 +1,40 @@
+!|scenario|Create Account on System                                      |
+|SSH      |Create;;${ManagedAccount};;${ManagedAccountPwd};;${DomainName}|
+#|accountAction|${SystemPlatform};create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${ManagedAccount};${Domain}|
+
+!|scenario|Change Account Password on System          |NewPwd         |
+|SSH      |PasswordChange;;${ManagedAccount};;${FunctAcctPwd};;@NewPwd|
+
+!|scenario|Login Account to System                               |ManPwd                              |
+|ssh      |${SystemAddress};;${ManagedAccount};;${ManagedAccountPwd};;${SystemPlatform}\Login;;@ManPwd|
+
+
+!|scenario    |Delete Account on System                                                                                    |
+|accountAction|${SystemPlatform};;delete;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${ManagedAccount};;${DomainName}|
+
+!|scenario    |Set password                   |one                   |                  |switch                  |
+|accountAction|${SystemPlatform};;corrupt;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${PathtoKey};;@switch|
+
+!|scenario            |Set Connection Tab                                 |
+|waitForElementPresent|id=Connection           |                          |
+|click                |id=Connection           |                          |
+|type;                |id=PARFuncAcct          |${FunctAcct}              |
+|type;                |id=Timeout              |${SystemTimeout}          |
+|type;                |id=DomainName           |${DomainName}             |
+|click                |id=bt_Save              |                          |
+|waitForResult        |System changes for ${SystemName} saved successfully|
+
+!|scenario            |Add account                                 |accountName|with password|accPwd|
+|clickOnLink          |link=Add Account                            |                                |
+|type;                |id=SystemNm                                 |${SystemName}                   |
+|click                |id=System                                   |                                |
+|waitForElementPresent|xpath=//td[contains(text(),'${SystemName}')]|                                |
+|click                |xpath=//td[contains(text(),'${SystemName}')]|                                |
+|click                |id=Details                                  |                                |
+|type;                |id=AccountName                              |@accountName                    |
+|type;                |id=sPswd                                    |@accPwd                         |
+|type;                |id=sConfPswd                                |@accPwd                         |
+|click                |id=SubmitChangesButton                      |                                |
+|waitForResult        |Changes saved successfully for @accountName                                  |
+
+

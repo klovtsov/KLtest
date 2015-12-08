@@ -1,0 +1,8 @@
+!define SystemName {${prefix}_macosxSeven}
+!define SystemPlatform {MacOSX 10.7}
+!define SystemAddress {10.30.34.35}
+!define FunctAcct {tpamadmin}
+!define FunctAcctPwd {Q1w2e3r4t5}
+!define ManagedAccountPwd {P@Rr0le}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSix.PlatformSpecific

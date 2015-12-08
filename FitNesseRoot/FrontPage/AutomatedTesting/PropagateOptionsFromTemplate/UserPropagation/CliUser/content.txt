@@ -1,0 +1,18 @@
+!define usrType {Auditor}
+
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+
+!4 Create make API user template and create a new user from template
+!|script                                                                                                    |
+|Create Non Web User Template|${TemplateName}|interface    |CLI|type|${usrType}|restricted hosts|10.30.22.22|
+|Create User                 |${newUserName} |from template|${TemplateName}                                 |
+
+!4 Check new user properties
+!|script                                                                                                          |
+|List properties|userName,userInterface,userType|for user|${newUserName}|contains|${newUserName}\s+cli.*${usrType}|
+
+!*> Fake step to a normal work of the TearDown.
+!|script                                                   |
+|Add User|${TestUserName}|with options|-MobileAllowedFlag Y|
+*!

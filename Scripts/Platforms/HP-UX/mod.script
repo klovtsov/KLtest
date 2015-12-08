@@ -1,0 +1,16 @@
+/usr/sbin/pwunconv
+#
+/usr/lbin/tsconvert
+#
+/usr/lbin/modprpw -v -m umaxlntr=0 %1
+#
+/usr/lbin/modprpw -v -m umaxlntr=0 root
+#
+/usr/lbin/modprpw -v -m umaxlntr=0 root4
+#
+/usr/lbin/modprpw -v -m umaxlntr=0 root3
+#
+/usr/lbin/modprpw -v -m umaxlntr=0 klroot
+#
+exit
+    

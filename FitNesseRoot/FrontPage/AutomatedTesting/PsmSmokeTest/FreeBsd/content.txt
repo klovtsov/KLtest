@@ -1,0 +1,21 @@
+!define OSType {fbsd}
+!define ProxyType {SSH}
+
+!include -c <AutomatedTesting.SessionAlertsScenarios
+!include -c <AutomatedTesting.PlatformsTesting.FreeBsd
+
+!define FunctAcct {root5}
+!define FunctAcctPwd {=1qwerty}
+
+!include -c <AutomatedTesting.SessionAlertsScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.SessionAlertsScenarios.WindowsEight.PlatformSpecific
+!include -c <AutomatedTesting.PsmSmokeTest.ScenarioLibrary
+!include -c <AutomatedTesting.PsmSmokeTest.LinuxRedHat.PlatformSpecific
+!include -c <AutomatedTesting.PsmSmokeTest.FreeBsd.PlatformSpecific
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|
+

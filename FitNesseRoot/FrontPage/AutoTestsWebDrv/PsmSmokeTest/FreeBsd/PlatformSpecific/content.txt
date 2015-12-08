@@ -1,0 +1,5 @@
+!|scenario      |Prepare Account|accountName||systemName||systemAddress|
+|Add PSM Account|@accountName   |on system  |@systemName               |
+|pause          |1000                                                  |
+|Create Account on System                                              |
+|pause          |1000                                                  |

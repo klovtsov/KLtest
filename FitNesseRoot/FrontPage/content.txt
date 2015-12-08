@@ -1,0 +1,159 @@
+|!1 Welcome to TPAM Autotest|!img http://localhost/files/images/tpam.gif|
+|!contents                                                              |
+
+!2 Variables definition:
+!*> Libraries and test system
+!path lib/*.jar
+!define TEST_SYSTEM {slim}
+*!
+!*> TPAM Host
+!define TPAMHost {10.30.44.192}
+!define baseURL {https://${TPAMHost}}
+!define TPAMURL {tpam/main.asp}
+!define TPAMAdminURL {admin/main.asp}
+!define TPAMMaster {parmaster}
+!define MasterPwd {Master4PAR}
+!define TPAMAdmin {ParAdmin}
+!define DefaultPwd {Admin4PAR}
+!define NTPServer1 {10.1.1.10}
+!define NTPServer2 {time.windows.com}
+!define SystemTimeout {90}
+*!
+!*> SMTP Server
+!define MailServer {10.30.46.234}
+!define MailServerAdmin {Administrator}
+!define MailServerAdminPassword {=1qwerty}
+!define PathToMailbox {C:\Inetpub\mailroot\Mailbox\${TPAMEMailDomain}}
+!define TPAMEMailDomain {tpam.spb.qsft}
+!define TPAMEMailPassword {grain41R}
+!define FromMail {tpamadmin}
+!define ReleaseRequestNotificationSubject {Release}
+!define ReleaseRequestNotificationBody {submitted}
+*!
+!*> Syslog Server
+!define SyslogServer {10.30.33.123}
+!define SyslogPort {514}
+!define SyslogUser {root}
+!define SyslogUserPwd {spb9449}
+*!
+!*> Autotest General 
+!define DispatcherAddress {10.30.33.21}
+!define prefix {auto}
+!define UserPrefix {${prefix}}
+!define ProjDir {C:\TPAM}
+!define BrowserDownloadDir {${ProjDir}\Scripts\keys\}
+!define PathToKeys {${ProjDir}\Scripts\keys\}
+!define seleniumHost {localhost}
+#!define seleniumPort {4444}
+!define seleniumBrowser {*firefox}
+!define seleniumTimeout {100}
+!define PersistentRequestorPolicy {${prefix}_pers_req_policy}
+!define ApplyNewPoliciesInterval {60000}
+*!
+!*> API Users 
+!define API_user_1 {${prefix}test_user1_api}
+!define API_user_2 {${prefix}test_user2_api}
+!define APIBatch {-i ${API_user_1} ${API_user_1} ${TPAMHost}}
+!define APIBatch2 {-i ${API_user_2} ${API_user_2} ${TPAMHost}}
+!define CLI_user_1 {${prefix}test_user_cli}
+!define CLI_user_2 {${prefix}test_user2_cli}
+!define CLIBatch {-i ${CLI_user_1}.ppk -C ${CLI_user_1}@${TPAMHost}}
+!define CLIBatch2 {-i ${CLI_user_2}.ppk -C ${CLI_user_2}@${TPAMHost}}
+*!
+!*> Batch Reports Infrastructure
+!define PersistentArchiveServerName {PersArchiveServer}
+!define PersistentArchiveServerAddress {10.30.38.252}
+!define PersistentArchiveServerPort {22}
+!define PersistentArchiveServerUserName {ArchUser}
+!define BatchReportsFolder {BatchReports}
+!define PersistentArchiveServerRootName {root}
+!define PersistentArchiveServerRootPassword {frujiE15}
+!define BatchReportsEmail {AutoBatchReports@${TPAMEMailDomain}}
+!define PathToStoredReports {${ProjDir}\Scripts\Ethalons\StoredReports\}
+*!
+!*> PPM Scenarios
+!3 Accounts
+!define UserPwd {User4PAR}
+!define Approver {${prefix}TPAM_user_appr}
+!define Requestor {${prefix}TPAM_user_req}
+!define RequestorEMail {${prefix}tpamreq@tpam.spb.qsft}
+!define RequestorEMailPwd {grain41R}
+!define ApproverEMail {${prefix}tpamappr@tpam.spb.qsft}
+!define ApproverEMailPwd {grain41R}
+!define FunctAcctWrongPwd {verywrongPwd}
+!define ManagedAccount {${prefix}Acc}
+!define ManagedAccountPwd {\=-0`123}
+!define ManagedAccountPwdNew {grain41R}
+!define ManagedAccountDescription {TPAM Autotest managed account}
+!define FunctAcctDescription {AutomatedFunctionalAccount}
+!3 PPM delays
+#!define ChangeManagedAccountPasswordTimeout {60000}
+!define ChangeManagedAccountPasswordTimeout {30000}
+!define SchedulePasswordResetTimeout {600000}
+!define PpmScheduleTimeWindow {240000}
+!define RestoreFunctAcctPasswordTimeout {90000}
+!define CheckPasswordInterval {30000}
+!3 PPM Error text templates
+!define TestSystemSuccessful {successful}
+!define CheckPasswordSuccessful {checked successfully;;matches the managed system;;Success}
+!define TestSystemFailed {failed;;.does not exist;;imed out;;Unable to;;Permission denied (publickey);;Failure;;ost.*nreachable;;man-in-the-middle attack;;Connection refused}
+!define ResetPasswordFailed {rror;;imed out;;Permission denied (publickey);;ost.*nreachable;;password change failed;;Unable to connect to;;Failure;;rror;;timed out;;Unable to determine}
+!define ResetPasswordSuccessful {successful}
+!define CheckPasswordNotMatch {NOT MATCH}
+!define CheckPasswordFailed {failed;;does not exist;;invalid user;;NOT MATCH;;error occurred;;imed out;;no listener;;Unable to connect to;;no such entry;;name could not be found;;path was not found;;Permission denied (publickey);;ost.*nreachable;;server is not operational;;Invalid credentials;;Failed connecting}
+*!
+!*> Persistent Access Policies
+!define FileRequestorPolicy {Pers File Requestor}
+!define PasswordRequestorPolicy {Pers Password Requestor}
+!define SessionRequestorPolicy {Pers Session Requestor}
+!define CommandRequestorPolicy {Pers Command Requestor}
+
+!define FileApproverPolicy {Pers File Approver}
+!define PasswordApproverPolicy {Pers Password Approver}
+!define SessionApproverPolicy {Pers Session Approver}
+!define CommandApproverPolicy {Pers Command Approver}
+
+!define PasswordReviewerPolicy {Pers Password Reviewer}
+!define SessionReviewerPolicy {Pers Session Reviewer}
+
+!define FileIsaPolicy {Pers File ISA}
+!define PasswordIsaPolicy {Pers Password ISA}
+!define SessionIsaPolicy {Pers Session ISA}
+
+!define FilePacPolicy {Pers File PAC}
+!define PasswordPacPolicy {Pers Password PAC}
+!define SessionPacPolicy {Pers Session PAC}
+
+!define FileDeniedPolicy {Pers File Denied}
+!define PasswordDeniedPolicy {Pers Password Denied}
+!define SessionDeniedPolicy {Pers Session Denied}
+*!
+
+!define PersistentReasonCodeName {PersReasonCode}
+
+!define PersistentTicketSystemName {PersTicketSystem}
+!define PersistentPwdRuleName {PersPwdRule}
+!define PersistentPostSessionProfileName {PersPostSessionProfile}
+!define PersistentConnectionProfile {PersConnectionProfile}
+!define PersistentPasswordChangeProfile1 {PersPassChangeProfile_1}
+!define PersistentPasswordChangeProfile2 {PersPassChangeProfile_2}
+!define PersistentPasswordCheckProfile1 {PersPassCheckProfile_1}
+!define PersistentPasswordCheckProfile2 {PersPassCheckProfile_2}
+
+!*> Ppm Password Profiles
+!define PpmCheckProfile {PpmPasswordCheckProfile}
+!define PpmChangeProfile {PpmPasswordChangeProfile}
+*!
+
+!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${API_user_1} -apiUser ${API_user_1}}
+
+!define ATPath {${ProjDir}\FitNesseRoot\FrontPage\AutomatedTesting}
+!define FrontPageContent {${ProjDir}\FitNesseRoot\FrontPage\content.txt}
+
+!*> CPU Alerts Settings
+!define CPUAlertsReceiver {CPUAlertsReceiver}
+!define CPUAlertsReceiverEmail {CPUAlerts${TPAMHost}@${TPAMEMailDomain}}
+!define CheckEvery {10}
+!define Threshold {50}
+!define Cycles {6}
+*!

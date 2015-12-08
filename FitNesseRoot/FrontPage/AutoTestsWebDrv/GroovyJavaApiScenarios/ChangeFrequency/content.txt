@@ -1,0 +1,30 @@
+!define Password {PAssword1}
+!define SystemNameChFr {${prefix}SystemChFr}
+!define AccountNameChFr {${prefix}AccountChFr}
+!define SyncPassNameChFr {${prefix}SyncPwdChFr}
+
+!include -c <FrontPage.AutoTestsWebDrv.GroovyJavaApiScenarios.ListCommands.ScenarioLibrary
+!include -c <FrontPage.AutoTestsWebDrv.GroovyJavaApiScenarios.ScenarioLibrary
+!include -c <FrontPage.AutoTestsWebDrv.GroovyJavaApiScenarios.ChangeFrequency.TestSpecific 
+
+!3 Change Frequency for System and Account
+!|script                                                                                                                                                                    |
+|Add System              |SystemName=${SystemNameChFr};NetworkAddress=1.2.3.4;FunctionalAccount=FunctAcct;FuncAcctCred=FunctAcctPwd;PlatformName=Windows;ChangeFrequency=365|
+|List Systems by         |SystemName=${SystemNameChFr}                                                                                                                      |
+|Verify_Contain_OR       |$res;;System Name: ${SystemNameChFr}.*ChangeFrequency: 365                                                                                        |
+|Update System           |${SystemNameChFr}              |              |ChangeFrequency=367                                                                                |
+|List Systems by         |SystemName=${SystemNameChFr}                                                                                                                      |
+|Verify_Contain_OR       |$res;;System Name: ${SystemNameChFr}.*ChangeFrequency: 367                                                                                        |
+|Add Account with options|${SystemNameChFr}              |              |${AccountNameChFr}             |             |Password=${Password};ChangeFrequency=369             |
+|List Account by         |SystemName=${SystemNameChFr};AccountName=${AccountNameChFr}                                                                                       |
+|Verify_Contain_OR       |$res;;System Name: ${SystemNameChFr}.*Account Name: ${AccountNameChFr}.*ChangeFrequency: 369                                                      |
+|Update Account          |${SystemNameChFr}              |              |${AccountNameChFr}             |             |ChangeFrequency=370                                  |
+|List Account by         |SystemName=${SystemNameChFr};AccountName=${AccountNameChFr}                                                                                       |
+|Verify_Contain_OR       |$res;;System Name: ${SystemNameChFr}.*Account Name: ${AccountNameChFr}.*ChangeFrequency: 370                                                      |
+|Remove System           |${SystemNameChFr}                                                                                                                                 |
+
+!3 Change Frequency for Sync Password
+!|script                                                                                                                             |
+|Add Sync Password                                   |SyncPassName=${prefix}SyncPassNameChFr;Password=${Password};ChangeFrequency=999|
+|Update Synchronized Password Change Frequency Failed|${prefix}SyncPassNameChFr           |           |ChangeFrequency=1000          |
+|Delete Sync Password                                |${prefix}SyncPassNameChFr                                                      |

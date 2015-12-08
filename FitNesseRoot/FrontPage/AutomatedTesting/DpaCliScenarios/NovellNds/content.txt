@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.NovellNds
+!include -c ScenarioLibrary

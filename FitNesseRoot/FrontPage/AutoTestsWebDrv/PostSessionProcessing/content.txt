@@ -1,0 +1,36 @@
+!contents
+
+
+!define SystemName {${prefix}PostSess}
+!define SystemPlatform {Windows Active Dir}
+
+!define PrimarySystemEMail {${SystemName}@${TPAMEMailDomain}}
+!define SessionStartEmail {${prefix}_session_start@${TPAMEMailDomain}}
+!define RelNotifyEmail {${prefix}_rel_notify@${TPAMEMailDomain}}
+
+!define DomainName {kltest21.spb.qsft}
+!define NETBIOSDomainName {KLTEST21}
+!define SystemAddress {10.30.46.235}
+!define FunctAcct {Administrator}
+!define FuncAccPwd {grain41R}
+!define ManagedAccount1 {${prefix}ManAcc1}
+!define ManagedAccount2 {${prefix}ManAcc2}
+!define ManagedAccount3 {${prefix}ManAcc3}
+!define ManagedAccountPassword {frujiE15}
+
+
+!define Requestor {${prefix}Requestor}
+!define Approver {${prefix}Approver}
+!define Approver2 {${prefix}Approver2}
+!define Reviewer {${prefix}Reviewer}
+!define GroupMember {${prefix}GroupMember}
+!define NotificationGroup {${prefix}NotificationGroup}
+
+!define RequestorEmail {${Requestor}@${TPAMEMailDomain}}
+!define ApproverEmail {${Approver}@${TPAMEMailDomain}}
+!define Approver2Email {${Approver2}@${TPAMEMailDomain}}
+!define ReviewerEmail {${Reviewer}@${TPAMEMailDomain}}
+!define GroupMemberEmail {${GroupMember}@${TPAMEMailDomain}}
+
+!define PostSessionProfileName {${prefix}PostSessionProfile}
+!define PostSessionProfileEMail {${prefix}.post.session@${TPAMEMailDomain}}

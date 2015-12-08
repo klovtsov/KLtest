@@ -1,0 +1,1588 @@
+!include -c <AutoTestsWebDrv.CliScenarios
+
+
+
+!|scenario                         |Test Batch Import and Update                                     |
+|Login                             |${TPAMURL}                          ||${TPAMAdmin}||${DefaultPwd}|
+|pause                             |10000                                                            |
+|Batch Import Groups               |groups_import_no_headers            ||csv                        |
+|Batch Update Groups               |groups_update_headers               ||txt                        |
+|Batch Import Collections          |collections_import_no_headers       ||csv                        |
+|Batch Update Collections          |collections_update_headers          ||txt                        |
+|Batch Import Systems              |systems_import_headers              ||txt                        |
+|Batch Update Systems              |systems_update_headers              ||txt                        |
+|Batch Import Accounts             |accounts_import_headers             ||csv                        |
+|Batch Update PSM Accounts         |accounts_psm_update_no_headers      ||txt                        |
+|Check Errors                                                                                        |
+|Load Collection Membership        |collection_membership_load_headers  ||csv                        |
+|Batch Import Users                |users_import_headers                ||csv                        |
+|Batch Update Users                |users_update_no_headers             ||txt                        |
+|Load Group Membership             |group_membership_load_headers       ||csv                        |
+|Batch Update Systems              |systems_update_no_headers           ||txt                        |
+|Batch Import Systems from Template|systems_import_from_template        ||txt                        |
+|Batch Update Accounts             |accounts_update_no_headers          ||csv                        |
+|Batch Update Accounts             |accounts_update_no_headers_bfer_7035||csv                        |
+|Batch Update Accounts             |accounts_update_no_headers_bfer_7756||csv                        |
+|Batch Update Permissions          |permissions_update_headers          ||csv                        |
+|Granular System Updates                                                                             |
+|Batch Delete Systems              |systems_delete_headers              ||txt                        |
+|Batch Delete Groups               |groups_delete_headers               ||txt                        |
+|Batch Delete Collections          |collections_delete_headers          ||txt                        |
+|Batch Delete Users                |users_delete_headers                ||csv                        |
+
+#
+#|Batch Delete Accounts    |accounts_delete_headers                |
+
+
+
+!|scenario                  |Batch Import Groups                     |filename|         |extention        |
+|clickOnLink                |link=Import/Update Groups               |                                    |
+|pause                      |2000                                                                         |
+|click                      |id=PAMUploadBtnSelect                                                        |
+|SWait                      |browse.PNG                                                                   |
+|SClick                     |browse.PNG                                                                   |
+|pause                      |1500                                                                         |
+|SType                      |${PathToBatch}\@filename.@extention                                          |
+|pause                      |1500                                                                         |
+|SWait                      |open.PNG                                                                     |
+|SClick                     |open.PNG                                                                     |
+|pause                      |2000                                                                         |
+|SWait                      |upload_small.PNG                                                             |
+|SClick                     |upload_small.PNG                                                             |
+|pause                      |2000                                                                         |
+|type;                      |id=Comment2                             |import groups                       |
+|click                      |id=btnProcessFile                       |                                    |
+|pause                      |10000                                                                        |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Adding the following groups|
+|Check Group                |klbatch_group1                          |        |TPAM Test Group            |
+|Check Group                |klbatch_group2                          |        |TPAM Test Group            |
+|Check Group                |klbatch_group3                          |        |TPAM Test Group            |
+|Check Manage Batches Report|@filename                               |        |Update Groups              |
+
+
+!|scenario                  |Batch Update Groups                     |filename|          |extention         |
+|clickOnLink                |link=Import/Update Groups               |                                      |
+|pause                      |2000                                                                           |
+|click                      |id=PAMUploadBtnSelect                                                          |
+|SWait                      |browse.PNG                                                                     |
+|SClick                     |browse.PNG                                                                     |
+|pause                      |1500                                                                           |
+|SType                      |${PathToBatch}\@filename.@extention                                            |
+|pause                      |1500                                                                           |
+|SWait                      |open.PNG                                                                       |
+|SClick                     |open.PNG                                                                       |
+|pause                      |2000                                                                           |
+|SWait                      |upload_small.PNG                                                               |
+|SClick                     |upload_small.PNG                                                               |
+|pause                      |2000                                                                           |
+|type;                      |id=Comment2                             |update groups                         |
+|click                      |id=Radio3                               |                                      |
+|click                      |id=btnProcessFile                       |                                      |
+|pause                      |1500                                                                           |
+|waitForElementPresent      |xpath=//tr[@id='6']                                                            |
+|pause                      |10000                                                                          |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Updating the following groups|
+|Check Group                |klbatch_group1                          |        |New TPAM Test Group          |
+|Check Group                |klbatch_group2                          |        |New TPAM Test Group          |
+|Check Group                |klbatch_group3                          |        |New TPAM Test Group          |
+|Check Manage Batches Report|@filename                               |        |Update Groups                |
+
+
+!|scenario                  |Batch Delete Groups                     |filename|          |extention         |
+|clickOnLink                |link=Import/Update Groups               |                                      |
+|pause                      |2000                                                                           |
+|click                      |id=PAMUploadBtnSelect                                                          |
+|SWait                      |browse.PNG                                                                     |
+|SClick                     |browse.PNG                                                                     |
+|pause                      |1500                                                                           |
+|SType                      |${PathToBatch}\@filename.@extention                                            |
+|pause                      |1500                                                                           |
+|SWait                      |open.PNG                                                                       |
+|SClick                     |open.PNG                                                                       |
+|pause                      |2000                                                                           |
+|SWait                      |upload_small.PNG                                                               |
+|SClick                     |upload_small.PNG                                                               |
+|pause                      |2000                                                                           |
+|type;                      |id=Comment2                             |Delete groups                         |
+|click                      |id=btnProcessFile                       |                                      |
+|pause                      |1500                                                                           |
+|waitForElementPresent      |xpath=//tr[@id='6']                                                            |
+|pause                      |10000                                                                          |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Deleting the following groups|
+|List Groups                                                                                                |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                         |
+|Check Manage Batches Report|@filename                               |        |Update Groups                |
+
+
+
+
+!|scenario                  |Batch Import Collections                |filename|           |extention           |
+|clickOnLink                |link=Import/Update Collections          |                                         |
+|pause                      |2000                                                                              |
+|click                      |id=PAMUploadBtnSelect                                                             |
+|SWait                      |browse.PNG                                                                        |
+|SClick                     |browse.PNG                                                                        |
+|pause                      |1500                                                                              |
+|SType                      |${PathToBatch}\@filename.@extention                                               |
+|pause                      |1500                                                                              |
+|SWait                      |open.PNG                                                                          |
+|SClick                     |open.PNG                                                                          |
+|pause                      |2000                                                                              |
+|SWait                      |upload_small.PNG                                                                  |
+|SClick                     |upload_small.PNG                                                                  |
+|pause                      |2000                                                                              |
+|type;                      |id=Comment2                             |import collections                       |
+|click                      |id=btnProcessFile                       |                                         |
+|pause                      |1500                                                                              |
+|waitForElementPresent      |xpath=//tr[@id='6']                                                               |
+|pause                      |10000                                                                             |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Adding the following collections|
+|List Collections                                                                                              |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                            |
+|Check Manage Batches Report|@filename                               |        |Update Collections              |
+
+
+!|scenario                  |Batch Update Collections                |filename|            |extention            |
+|clickOnLink                |link=Import/Update Collections          |                                           |
+|pause                      |2000                                                                                |
+|click                      |id=PAMUploadBtnSelect                                                               |
+|SWait                      |browse.PNG                                                                          |
+|SClick                     |browse.PNG                                                                          |
+|pause                      |1500                                                                                |
+|SType                      |${PathToBatch}\@filename.@extention                                                 |
+|pause                      |1500                                                                                |
+|SWait                      |open.PNG                                                                            |
+|SClick                     |open.PNG                                                                            |
+|pause                      |2000                                                                                |
+|SWait                      |upload_small.PNG                                                                    |
+|SClick                     |upload_small.PNG                                                                    |
+|pause                      |2000                                                                                |
+|click                      |id=Radio3                               |                                           |
+|type;                      |id=Comment2                             |update collections                         |
+|click                      |id=btnProcessFile                       |                                           |
+|pause                      |1500                                                                                |
+|waitForElementPresent      |xpath=//tr[@id='6']                                                                 |
+|pause                      |10000                                                                               |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Updating the following collections|
+|List Collections                                                                                                |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                              |
+|Check Manage Batches Report|@filename                               |        |Update Collections                |
+
+
+!|scenario                  |Batch Delete Collections                |filename|            |extention            |
+|clickOnLink                |link=Import/Update Collections          |                                           |
+|pause                      |2000                                                                                |
+|click                      |id=PAMUploadBtnSelect                                                               |
+|SWait                      |browse.PNG                                                                          |
+|SClick                     |browse.PNG                                                                          |
+|pause                      |1500                                                                                |
+|SType                      |${PathToBatch}\@filename.@extention                                                 |
+|pause                      |1500                                                                                |
+|SWait                      |open.PNG                                                                            |
+|SClick                     |open.PNG                                                                            |
+|pause                      |2000                                                                                |
+|SWait                      |upload_small.PNG                                                                    |
+|SClick                     |upload_small.PNG                                                                    |
+|pause                      |2000                                                                                |
+|click                      |id=Radio2                               |                                           |
+|type;                      |id=Comment2                             |delete collections                         |
+|click                      |id=btnProcessFile                       |                                           |
+|pause                      |1500                                                                                |
+|waitForElementPresent      |xpath=//tr[@id='6']                                                                 |
+|pause                      |10000                                                                               |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Deleting the following collections|
+|List Collections                                                                                                |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                              |
+|Check Manage Batches Report|@filename                               |        |Update Collections                |
+
+
+
+
+
+!|scenario                  |Batch Import Systems                                       |filename|           |extention          |
+|clickOnLink                |link=Import Systems                                        |                                        |
+|pause                      |2000                                                                                                |
+|click                      |id=PAMUploadBtnSelect                                                                               |
+|SWait                      |browse.PNG                                                                                          |
+|SClick                     |browse.PNG                                                                                          |
+|pause                      |1500                                                                                                |
+|SType                      |${PathToBatch}\@filename.@extention                                                                 |
+|pause                      |1500                                                                                                |
+|SWait                      |open.PNG                                                                                            |
+|SClick                     |open.PNG                                                                                            |
+|pause                      |2000                                                                                                |
+|SWait                      |upload_small.PNG                                                                                    |
+|SClick                     |upload_small.PNG                                                                                    |
+|pause                      |2000                                                                                                |
+|type;                      |id=Comment2                                                |import systems                          |
+|click                      |id=btnProcessFile                                          |                                        |
+|pause                      |1500                                                                                                |
+|waitForElementPresent      |xpath=//tr[@id='40']                                                                                |
+|pause                      |240000                                                                                              |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table/tbody/tr[@id='80']|        |Systems were successfully added|
+|List Systems                                                                                                                    |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                                              |
+|Check Manage Batches Report|@filename                                                  |        |Import Systems                 |
+
+
+!|scenario                  |Batch Import Systems from Template      |filename|           |extention          |
+|clickOnLink                |link=Import Systems                     |                                        |
+|pause                      |2000                                                                             |
+|click                      |id=PAMUploadBtnSelect                                                            |
+|SWait                      |browse.PNG                                                                       |
+|SClick                     |browse.PNG                                                                       |
+|pause                      |1500                                                                             |
+|SType                      |${PathToBatch}\@filename.@extention                                              |
+|pause                      |1500                                                                             |
+|SWait                      |open.PNG                                                                         |
+|SClick                     |open.PNG                                                                         |
+|pause                      |2000                                                                             |
+|SWait                      |upload_small.PNG                                                                 |
+|SClick                     |upload_small.PNG                                                                 |
+|pause                      |2000                                                                             |
+|type;                      |id=Comment2                             |import systems from template            |
+|click                      |id=btnProcessFile                       |                                        |
+|pause                      |1500                                                                             |
+|waitForElementPresent      |xpath=//tr[@id='6']                                                              |
+|pause                      |30000                                                                            |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Systems were successfully added|
+|List Systems                                                                                                 |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                           |
+|Check Manage Batches Report|@filename                               |        |Import Systems                 |
+
+
+!|scenario                  |Batch Update Systems                    |filename|  |extention  |
+|clickOnLink                |link=Update Systems                     |                       |
+|pause                      |2000                                                            |
+|click                      |id=PAMUploadBtnSelect                                           |
+|SWait                      |browse.PNG                                                      |
+|SClick                     |browse.PNG                                                      |
+|pause                      |1500                                                            |
+|SType                      |${PathToBatch}\@filename.@extention                             |
+|pause                      |1500                                                            |
+|SWait                      |open.PNG                                                        |
+|SClick                     |open.PNG                                                        |
+|pause                      |2000                                                            |
+|SWait                      |upload_small.PNG                                                |
+|SClick                     |upload_small.PNG                                                |
+|pause                      |2000                                                            |
+|click                      |id=Radio2                               |                       |
+|type;                      |id=Comment2                             |update systems         |
+|click                      |id=btnProcessFile                       |                       |
+|pause                      |1500                                                            |
+|waitForElementPresent      |xpath=//tr[@id='8']                                             |
+|pause                      |240000                                                          |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |successfully  |
+|List Systems                                                                                |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                          |
+|Check Manage Batches Report|@filename                               |        |Update Systems|
+
+
+!|scenario            |Granular Batch Update System            |systemName|Update     |parameterName    |
+|clickOnLink          |link=Update Systems                     |                                        |
+|pause                |2000                                                                             |
+|click                |id=PAMUploadBtnSelect                                                            |
+|SWait                |browse.PNG                                                                       |
+|SClick               |browse.PNG                                                                       |
+|pause                |1500                                                                             |
+|SType                |${PathToBatch}\GranularUpdates\update_@parameterName.txt                         |
+|pause                |1500                                                                             |
+|SWait                |open.PNG                                                                         |
+|SClick               |open.PNG                                                                         |
+|pause                |2000                                                                             |
+|SWait                |upload_small.PNG                                                                 |
+|SClick               |upload_small.PNG                                                                 |
+|pause                |2000                                                                             |
+|click                |id=Radio2                               |                                        |
+|type;                |id=Comment2                             |update system                           |
+|click                |id=btnProcessFile                       |                                        |
+|pause                |1500                                                                             |
+|waitForElementPresent|xpath=//tr[@id='8']                                                              |
+|pause                |20000                                                                            |
+|verifyText           |xpath=//div[@id='divBatchResults']/table|          |@systemName Successful Update|
+|List System          |@systemName                             |                                        |
+|Check Batch Contents |${PathToEthalon}\GranularUpdates\ethalon_update_@parameterName.txt               |
+
+!|scenario            |Failed Granular Batch Update for System |systemName|update parameter|parameterName|failed with message|errorText|
+|clickOnLink          |link=Update Systems                                                                                             |
+|pause                |2000                                                                                                            |
+|click                |id=PAMUploadBtnSelect                                                                                           |
+|SWait                |browse.PNG                                                                                                      |
+|SClick               |browse.PNG                                                                                                      |
+|pause                |1500                                                                                                            |
+|SType                |${PathToBatch}\GranularUpdates\failed_update_@parameterName.txt                                                 |
+|pause                |1500                                                                                                            |
+|SWait                |open.PNG                                                                                                        |
+|SClick               |open.PNG                                                                                                        |
+|pause                |2000                                                                                                            |
+|SWait                |upload_small.PNG                                                                                                |
+|SClick               |upload_small.PNG                                                                                                |
+|pause                |2000                                                                                                            |
+|click                |id=Radio2                                                                                                       |
+|type;                |id=Comment2                             |update systems                                                         |
+|click                |id=btnProcessFile                                                                                               |
+|pause                |1500                                                                                                            |
+|waitForElementPresent|xpath=//tr[@id='6']                                                                                             |
+|pause                |10000                                                                                                           |
+|verifyText           |xpath=//div[@id='divBatchResults']/table|          |@errorText                                                  |
+
+
+!|scenario                              |Granular System Updates                                                                                                                                                                                               |
+|Granular Batch Update System           |klbatchsys44|Update          |network_address                                                                                                                                                                         |
+|Granular Batch Update System           |klbatchsys44|Update          |primary_email                                                                                                                                                                           |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|windows_active_dir                 |failed with message|The following Systems were not updated because NetBiosName is required for Systems of that platform                             |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|release_duration                   |failed with message|The following systems had invalid release durations specified. Must be between 0 and 10080                                      |
+|Granular Batch Update System           |klbatchsys44|Update          |release_duration                                                                                                                                                                        |
+|Granular Batch Update System           |klbatchsys44|Update          |functional_account                                                                                                                                                                      |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|functional_account_credential      |failed with message|The following Systems were not updated because the Platform does not allow a DSS-authenticated functional account               |
+|Granular Batch Update System           |klbatchsys44|Update          |password_rule                                                                                                                                                                           |
+|Granular Batch Update System           |klbatchsys44|Update          |port_number                                                                                                                                                                             |
+|Granular Batch Update System           |klbatchsys44|Update          |description                                                                                                                                                                             |
+|Granular Batch Update System           |klbatchsys44|Update          |timeout                                                                                                                                                                                 |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|oracle_type                        |failed with message|Ignoring the following system platform changes because Oracle requires Oracle Type to be SID or SERVICE                         |
+|Granular Batch Update System           |klbatchsys44|Update          |oracle_type                                                                                                                                                                             |
+|Granular Batch Update System           |klbatchsys44|Update          |oracle_sidsn                                                                                                                                                                            |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|non_priv_func_acct_flag            |failed with message|The Non-Priv Func Flag does not apply to the following systems, Must be either empty or N                                       |
+|Granular Batch Update System           |klbatchsys44|Update          |allow_func_acct_req_flag                                                                                                                                                                |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|escalation_time                    |failed with message|The following systems had invalid Escalation Time specified. Must be between 0 and 999                                          |
+|Granular Batch Update System           |klbatchsys44|Update          |escalation_time                                                                                                                                                                         |
+|Granular Batch Update System           |klbatchsys44|Update          |escalation_email                                                                                                                                                                        |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|max_release_duration               |failed with message|The following systems had invalid max release durations specified. Must be between 1 and 10080                                  |
+|Granular Batch Update System           |klbatchsys44|Update          |max_release_duration                                                                                                                                                                    |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|extra_db_connection_string         |failed with message|Ignoring some updates for the following systems because DB Connection strings must be "key=value;key=value;..."                 |
+|Granular Batch Update System           |klbatchsys44|Update          |platform_specific_value                                                                                                                                                                 |
+|Granular Batch Update System           |klbatchsys44|Update          |require_ticket_for_request                                                                                                                                                              |
+|Granular Batch Update System           |klbatchsys44|Update          |require_ticket_for_isa                                                                                                                                                                  |
+|Granular Batch Update System           |klbatchsys44|Update          |require_ticket_for_cli                                                                                                                                                                  |
+|Granular Batch Update System           |klbatchsys44|Update          |require_ticket_for_api                                                                                                                                                                  |
+|Granular Batch Update System           |klbatchsys44|Update          |require_ticket_for_psm                                                                                                                                                                  |
+|Granular Batch Update System           |klbatchsys44|Update          |ticket_system_name                                                                                                                                                                      |
+|Granular Batch Update System           |klbatchsys44|Update          |ticket_notify_email                                                                                                                                                                     |
+|Granular Batch Update System           |klbatchsys44|Update          |allow_isa_duration                                                                                                                                                                      |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|use_ssh_account_not_defined        |failed with message|The following Systems were not updated because the Use SSH flag is set but do not have an SSH Account defined                   |
+|Granular Batch Update System           |klbatchsys44|Update          |use_ssh_flag                                                                                                                                                                            |
+|Granular Batch Update System           |klbatchsys44|Update          |ssh_account                                                                                                                                                                             |
+|Granular Batch Update System           |klbatchsys44|Update          |ssh_port                                                                                                                                                                                |
+|Granular Batch Update System           |klbatchsys44|Update          |ssh_key_type                                                                                                                                                                            |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|psm_dpa_priority                   |failed with message|The following Systems were not updated because one or more PSM DPA Affinity has a missing or non-numeric priority               |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|psm_dpa_referenced_more_than_once  |failed with message|The following Systems were not updated because a DPA was referenced more than once in the PSM DPA Affinity                      |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|ppm_dpa_priority                   |failed with message|The following Systems were not updated because one or more PPM DPA Affinity has a missing or non-numeric priority               |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|ppm_dpa_referenced_more_than_once  |failed with message|The following Systems were not updated because a DPA was referenced more than once in the PPM DPA Affinity                      |
+|Granular Batch Update System           |klbatchsys44|Update          |psm_dpa_affinity                                                                                                                                                                        |
+|Granular Batch Update System           |klbatchsys44|Update          |ppm_dpa_affinity                                                                                                                                                                        |
+|Granular Batch Update System           |klbatchsys44|Update          |password_check_profile                                                                                                                                                                  |
+|Granular Batch Update System           |klbatchsys44|Update          |password_change_profile                                                                                                                                                                 |
+|Granular Batch Update System           |klbatchsys44|Update          |profile_certificate_type                                                                                                                                                                |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|func_acct_dn                       |failed with message|The following Systems were not updated because Func Account DN may only be specified on LDAP, LDAPS, or Novel NDS platforms     |
+|Failed Granular Batch Update for System|klbatchsys44|update parameter|platform_name                      |failed with message|The following Systems were not updated because Auto Management is set to Y, but Auto management is not supported by the platform|
+|Granular Batch Update System           |klbatchsys44|Update          |platform_name                                                                                                                                                                           |
+|Failed Granular Batch Update for System|klbatchsys61|update parameter|fake_account_discovery_profile     |failed with message|The following Systems were not updated because the Auto Discovery Profile is not recognized                                     |
+|Granular Batch Update System           |klbatchsys61|Update          |domain_name                                                                                                                                                                             |
+|Granular Batch Update System           |klbatchsys61|Update          |netbios_domain_name                                                                                                                                                                     |
+|Failed Granular Batch Update for System|klbatchsys61|update parameter|netbios_domain_name                |failed with message|The following Systems were not updated because NetBiosName is required for Systems of that platform                             |
+|Granular Batch Update System           |klbatchsys61|Update          |non_priv_func_acct_flag                                                                                                                                                                 |
+|Granular Batch Update System           |klbatchsys61|Update          |account_discovery_profile                                                                                                                                                               |
+|Granular Batch Update System           |klbatchsys61|Update          |account_discovery_exclude_list                                                                                                                                                          |
+|Granular Batch Update System           |klbatchsys61|Update          |account_discovery_timeout                                                                                                                                                               |
+|Failed Granular Batch Update for System|klbatchsys27|update parameter|psm_dpa_affinity                   |failed with message|The following Systems were not updated because PSM Affinity is entered and the platform does not support PSM                    |
+|Granular Batch Update System           |klbatchsys27|Update          |func_acct_dn                                                                                                                                                                            |
+|Failed Granular Batch Update for System|klbatchsys27|update parameter|fake_platform_name                 |failed with message|Ignoring the following system platform changes because of unknown platform                                                      |
+|Failed Granular Batch Update for System|klbatchsys27|update parameter|fake_password_rule                 |failed with message|The following Systems were not updated because they have invalid password rules specified                                       |
+|Failed Granular Batch Update for System|klbatchsys27|update parameter|fake_password_check_profile        |failed with message|The following Systems were not updated because the Password Check Profile is not recognized                                     |
+|Failed Granular Batch Update for System|klbatchsys27|update parameter|fake_password_change_profile       |failed with message|The following Systems were not updated because the Password Change Profile is not recognized                                    |
+|Failed Granular Batch Update for System|klbatchsys27|update parameter|notification_certificate_type      |failed with message|The following Systems were not updated because Thumbprint is missing                                                            |
+|Failed Granular Batch Update for System|klbatchsys27|update parameter|notification_certificate_wrong_type|failed with message|Ignoring some updates for the following systems because they have one or more invalid flag values                               |
+|Granular Batch Update System           |klbatchsys29|Update          |functional_account_credential                                                                                                                                                           |
+|Granular Batch Update System           |klbatchsys29|Update          |use_specific_dss_key                                                                                                                                                                    |
+|Failed Granular Batch Update for System|klbatchsys29|update parameter|oracle_platform                    |failed with message|Ignoring the following system platform changes because Oracle requires Oracle Type to be SID or SERVICE                         |
+|Failed Granular Batch Update for System|klbatchsys29|update parameter|illegal_space                      |failed with message|Ignoring some updates for the following systems because they contained an illegal space                                         |
+|Granular Batch Update System           |klbatchsys36|Update          |use_ssl_flag                                                                                                                                                                            |
+|Granular Batch Update System           |klbatchsys36|Update          |line_definition                                                                                                                                                                         |
+|Failed Granular Batch Update for System|klbatchsys36|update parameter|account_discovery_profile          |failed with message|The following Systems were not updated because Auto Discovery Profiles may only be specified on Windows.*nix.*DBMS platforms    |
+|Failed Granular Batch Update for System|klbatchsys53|update parameter|use_ssh_flag                       |failed with message|The following Systems were not updated because they have both Use SSH and Use SSL flags set                                     |
+|Failed Granular Batch Update for System|klbatchsys53|update parameter|custom_columns                     |failed with message|Data in the following System Custom column.*is being ignored because the column has not been defined                            |
+
+
+
+
+
+!|scenario                  |Batch Delete Systems                    |filename|          |extention         |
+|clickOnLink                |link=Update Systems                     |                                      |
+|pause                      |2000                                                                           |
+|click                      |id=PAMUploadBtnSelect                                                          |
+|SWait                      |browse.PNG                                                                     |
+|SClick                     |browse.PNG                                                                     |
+|pause                      |1500                                                                           |
+|SType                      |${PathToBatch}\@filename.@extention                                            |
+|pause                      |1500                                                                           |
+|SWait                      |open.PNG                                                                       |
+|SClick                     |open.PNG                                                                       |
+|pause                      |2000                                                                           |
+|SWait                      |upload_small.PNG                                                               |
+|SClick                     |upload_small.PNG                                                               |
+|pause                      |2000                                                                           |
+|click                      |id=Radio1                               |                                      |
+|type;                      |id=Comment2                             |delete systems                        |
+|click                      |id=btnProcessFile                       |                                      |
+|pause                      |1500                                                                           |
+|waitForElementPresent      |xpath=//tr[@id='50']                                                           |
+|pause                      |40000                                                                          |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Deleted the following systems|
+|List Systems                                                                                               |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                         |
+|Check Manage Batches Report|@filename                               |        |Update Systems               |
+
+
+!|scenario                  |Batch Import Accounts                   |filename|           |extention           |
+|clickOnLink                |link=Import Accounts                    |                                         |
+|pause                      |2000                                                                              |
+|click                      |id=PAMUploadBtnSelect                                                             |
+|SWait                      |browse.PNG                                                                        |
+|SClick                     |browse.PNG                                                                        |
+|pause                      |1500                                                                              |
+|SType                      |${PathToBatch}\@filename.@extention                                               |
+|pause                      |1500                                                                              |
+|SWait                      |open.PNG                                                                          |
+|SClick                     |open.PNG                                                                          |
+|pause                      |2000                                                                              |
+|SWait                      |upload_small.PNG                                                                  |
+|SClick                     |upload_small.PNG                                                                  |
+|pause                      |2000                                                                              |
+|type;                      |id=Comment2                             |import accounts                          |
+|click                      |id=btnProcessFile                       |                                         |
+|pause                      |1500                                                                              |
+|waitForElementPresent      |xpath=//tr[@id='8']                                                               |
+|pause                      |90000                                                                             |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Accounts were successfully added|
+|List Accounts                                                                                                 |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                            |
+|Check Manage Batches Report|@filename                               |        |Import Accounts                 |
+
+
+!|scenario                  |Batch Update Accounts                   |filename|               |extention               |
+|clickOnLink                |link=Update Accounts                    |                                                 |
+|pause                      |2000                                                                                      |
+|click                      |id=PAMUploadBtnSelect                                                                     |
+|SWait                      |browse.PNG                                                                                |
+|SClick                     |browse.PNG                                                                                |
+|pause                      |1500                                                                                      |
+|SType                      |${PathToBatch}\@filename.@extention                                                       |
+|pause                      |1500                                                                                      |
+|SWait                      |open.PNG                                                                                  |
+|SClick                     |open.PNG                                                                                  |
+|pause                      |2000                                                                                      |
+|SWait                      |upload_small.PNG                                                                          |
+|SClick                     |upload_small.PNG                                                                          |
+|pause                      |2000                                                                                      |
+|type;                      |id=Comment2                             |update accounts                                  |
+|click                      |id=btnProcessFile                       |                                                 |
+|pause                      |1500                                                                                      |
+|waitForElementPresent      |xpath=//tr[@id='5']                                                                       |
+|pause                      |20000                                                                                     |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |The following Accounts are being updated|
+|List Accounts                                                                                                         |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                                    |
+|Check Manage Batches Report|@filename                               |        |Update Accounts                         |
+
+
+!|scenario                  |Batch Update PSM Accounts               |filename|     |extention    |
+|clickOnLink                |link=Update PSM Accounts                |                            |
+|pause                      |2000                                                                 |
+|click                      |id=PAMUploadBtnSelect                                                |
+|SWait                      |browse.PNG                                                           |
+|SClick                     |browse.PNG                                                           |
+|pause                      |1500                                                                 |
+|SType                      |${PathToBatch}\@filename.@extention                                  |
+|pause                      |1500                                                                 |
+|SWait                      |open.PNG                                                             |
+|SClick                     |open.PNG                                                             |
+|pause                      |2000                                                                 |
+|SWait                      |upload_small.PNG                                                     |
+|SClick                     |upload_small.PNG                                                     |
+|pause                      |2000                                                                 |
+|type;                      |id=Comment2                             |update PSM accounts         |
+|click                      |id=btnProcessFile                       |                            |
+|pause                      |1500                                                                 |
+|waitForElementPresent      |xpath=//tr[@id='14']                                                 |
+|pause                      |30000                                                                |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |successfully       |
+|List PSM Accounts                                                                                |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                               |
+|Check Manage Batches Report|@filename                               |        |Update PSM Accounts|
+
+
+
+!|scenario                  |Batch Import Users                      |filename|          |extention         |
+|clickOnLink                |link=Import UserIDs                     |                                      |
+|pause                      |2000                                                                           |
+|click                      |id=PAMUploadBtnSelect                                                          |
+|SWait                      |browse.PNG                                                                     |
+|SClick                     |browse.PNG                                                                     |
+|pause                      |1500                                                                           |
+|SType                      |${PathToBatch}\@filename.@extention                                            |
+|pause                      |1500                                                                           |
+|SWait                      |open.PNG                                                                       |
+|SClick                     |open.PNG                                                                       |
+|pause                      |2000                                                                           |
+|SWait                      |upload_small.PNG                                                               |
+|SClick                     |upload_small.PNG                                                               |
+|pause                      |2000                                                                           |
+|type;                      |id=Comment2                             |import users                          |
+|click                      |id=btnProcessFile                       |                                      |
+|pause                      |1500                                                                           |
+|waitForElementPresent      |xpath=//tr[@id='3']                                                            |
+|pause                      |120000                                                                         |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Users were successfully added|
+|List Users                                                                                                 |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                         |
+|Check Manage Batches Report|@filename                               |        |Import Users                 |
+
+
+!|scenario                  |Batch Update Users                      |filename|         |extention         |
+|clickOnLink                |link=Update UserIDs                     |                                     |
+|pause                      |2000                                                                          |
+|click                      |id=PAMUploadBtnSelect                                                         |
+|SWait                      |browse.PNG                                                                    |
+|SClick                     |browse.PNG                                                                    |
+|pause                      |1500                                                                          |
+|SType                      |${PathToBatch}\@filename.@extention                                           |
+|pause                      |1500                                                                          |
+|SWait                      |open.PNG                                                                      |
+|SClick                     |open.PNG                                                                      |
+|pause                      |2000                                                                          |
+|SWait                      |upload_small.PNG                                                              |
+|SClick                     |upload_small.PNG                                                              |
+|pause                      |2000                                                                          |
+|type;                      |id=Comment2                             |update or delete users               |
+|click                      |id=btnProcessFile                       |                                     |
+|pause                      |1500                                                                          |
+|waitForElementPresent      |xpath=//tr[@id='10']                                                          |
+|pause                      |60000                                                                         |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Deleting the following Users|
+|List Users                                                                                                |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                        |
+|Check Manage Batches Report|@filename                               |        |Update Users                |
+
+
+!|scenario                  |Batch Delete Users                      |filename|         |extention         |
+|clickOnLink                |link=Update UserIDs                     |                                     |
+|pause                      |2000                                                                          |
+|click                      |id=PAMUploadBtnSelect                                                         |
+|SWait                      |browse.PNG                                                                    |
+|SClick                     |browse.PNG                                                                    |
+|pause                      |1500                                                                          |
+|SType                      |${PathToBatch}\@filename.@extention                                           |
+|pause                      |1500                                                                          |
+|SWait                      |open.PNG                                                                      |
+|SClick                     |open.PNG                                                                      |
+|pause                      |2000                                                                          |
+|SWait                      |upload_small.PNG                                                              |
+|SClick                     |upload_small.PNG                                                              |
+|pause                      |2000                                                                          |
+|click                      |id=Radio1                               |                                     |
+|type;                      |id=Comment2                             |delete users                         |
+|click                      |id=btnProcessFile                       |                                     |
+|pause                      |1500                                                                          |
+|waitForElementPresent      |xpath=//tr[@id='3']                                                           |
+|pause                      |60000                                                                         |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Deleting the following Users|
+|List Users                                                                                                |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                        |
+|Check Manage Batches Report|@filename                               |        |Update Users                |
+
+
+
+!|scenario                  |Load Collection Membership              |filename|         |extention         |
+|clickOnLink                |link=Add/Drop Collection Members        |                                     |
+|pause                      |2000                                                                          |
+|click                      |id=PAMUploadBtnSelect                                                         |
+|SWait                      |browse.PNG                                                                    |
+|SClick                     |browse.PNG                                                                    |
+|pause                      |1500                                                                          |
+|SType                      |${PathToBatch}\@filename.@extention                                           |
+|pause                      |1500                                                                          |
+|SWait                      |open.PNG                                                                      |
+|SClick                     |open.PNG                                                                      |
+|pause                      |2000                                                                          |
+|SWait                      |upload_small.PNG                                                              |
+|SClick                     |upload_small.PNG                                                              |
+|pause                      |2000                                                                          |
+|type;                      |id=Comment2                             |Load Collection Membership           |
+|click                      |id=btnProcessFile                       |                                     |
+|pause                      |1500                                                                          |
+|waitForElementPresent      |xpath=//tr[@id='4']                                                           |
+|pause                      |10000                                                                         |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Adding                      |
+|List Collection Membership                                                                                |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                        |
+|Check Manage Batches Report|@filename                               |        |Update Collection Membership|
+
+
+
+!|scenario                  |Load Group Membership                   |filename|                                                               |extention                                                              |
+|pause                      |5000                                                                                                                                                                                     |
+|clickOnLink                |link=Add/Drop Group Members             |                                                                                                                                                |
+|pause                      |2000                                                                                                                                                                                     |
+|click                      |id=PAMUploadBtnSelect                                                                                                                                                                    |
+|SWait                      |browse.PNG                                                                                                                                                                               |
+|SClick                     |browse.PNG                                                                                                                                                                               |
+|pause                      |1500                                                                                                                                                                                     |
+|SType                      |${PathToBatch}\@filename.@extention                                                                                                                                                      |
+|pause                      |1500                                                                                                                                                                                     |
+|SWait                      |open.PNG                                                                                                                                                                                 |
+|SClick                     |open.PNG                                                                                                                                                                                 |
+|pause                      |2000                                                                                                                                                                                     |
+|SWait                      |upload_small.PNG                                                                                                                                                                         |
+|SClick                     |upload_small.PNG                                                                                                                                                                         |
+|pause                      |2000                                                                                                                                                                                     |
+|type;                      |id=Comment2                             |Load Group Membership                                                                                                                           |
+|click                      |id=btnProcessFile                       |                                                                                                                                                |
+|pause                      |1500                                                                                                                                                                                     |
+|waitForElementPresent      |xpath=//tr[@id='15']                                                                                                                                                                     |
+|pause                      |10000                                                                                                                                                                                    |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Ignoring the following adds because the specified user is either a Cache, SysAdmin, User Admin, or Auditor which can't belong to groups|
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Adding the following Group members                                                                                                     |
+|List Group Membership                                                                                                                                                                                                |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                                                                                                                                   |
+|Check Manage Batches Report|@filename                               |        |Update Group Membership                                                                                                                |
+
+
+
+!|scenario                  |Batch Update Permissions                |filename|                           |extention                          |
+|clickOnLink                |link=Update Permissions                 |                                                                        |
+|pause                      |2000                                                                                                             |
+|click                      |id=PAMUploadBtnSelect                                                                                            |
+|SWait                      |browse.PNG                                                                                                       |
+|SClick                     |browse.PNG                                                                                                       |
+|pause                      |1500                                                                                                             |
+|SType                      |${PathToBatch}\@filename.@extention                                                                              |
+|pause                      |1500                                                                                                             |
+|SWait                      |open.PNG                                                                                                         |
+|SClick                     |open.PNG                                                                                                         |
+|pause                      |2000                                                                                                             |
+|SWait                      |upload_small.PNG                                                                                                 |
+|SClick                     |upload_small.PNG                                                                                                 |
+|pause                      |2000                                                                                                             |
+|type;                      |id=Comment2                             |update permissions                                                      |
+|click                      |id=btnProcessFile                       |                                                                        |
+|pause                      |1500                                                                                                             |
+|waitForElementPresent      |xpath=//tr[@id='10']                                                                                             |
+|pause                      |65000                                                                                                            |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table|        |Adding Permissions to the following Systems, Accounts, or Files|
+|List Permissions                                                                                                                             |
+|Check Batch Contents       |${PathToEthalon}\ethalon_@filename.txt                                                                           |
+|Check Manage Batches Report|@filename                               |        |Update Permissions                                             |
+
+
+!|scenario        |Check Manage Batches Report|batchName        |       |operationName       |
+|clickOnLink      |link=Manage Batches                                                       |
+|type;            |id=SubmitterNm             |${TPAMAdmin}                                  |
+|deselect;        |id=BatchTypes              |label=All                                     |
+|select;          |id=BatchTypes              |label=@operationName                          |
+|click            |id=rb_FiltBatchStatusCompleted                                            |
+|click            |id=rb_filterDt0                                                           |
+|pause            |2000                                                                      |
+|click            |id=Listing                                                                |
+|pause            |2000                                                                      |
+|$res=            |getText                    |xpath=//table[@id='BatchListing']//tr[1]/td[1]|
+|Verify_Contain_OR|$res;;@operationName                                                      |
+|$res=            |getText                    |xpath=//table[@id='BatchListing']//tr[1]/td[2]|
+|Verify_Contain_OR|$res;;@batchName                                                          |
+|$res=            |getText                    |xpath=//table[@id='BatchListing']//tr[2]/td[3]|
+|Verify_Contain_OR|$res;;${TPAMAdmin}                                                        |
+#|click            |xpath=//select[@id='BatchTypes']/option[.='@operationName']               |
+
+
+!|scenario        |Check Batch Contents|Ethalon                        |
+|pause            |5000                                                |
+|$res=            |compareDump         |@Ethalon;;${ProjDir}\cliout.tmp|
+|Verify_Contain_OR|$res;;are equal                                     |
+
+
+!|scenario   |Prepare Environment                      |
+|Prepare User|${TPAMAdmin}||Admin                      |
+|Get DPA Name and IP Address                           |
+|Login       |${TPAMURL}  ||${TPAMAdmin}||${DefaultPwd}|
+|Create System and Account Templates                   |
+|Create Account Discovery Profile                      |
+|Create Custom Conversational Platform                 |
+|Logout                                                |
+|Prepare Batch                                         |
+
+
+!|scenario             |Clear Environment    |
+|Rollback Batch                              |
+|Hard-Delete System    |klbatchsys61         |
+|Hard-Delete System    |klbatchsys106        |
+|Delete Account Discovery Profile            |
+|Delete System Template|${SystemTemplateName}|
+|Delete Custom Conversational Platform       |
+|Logout                                      |
+|Remove User           |${TPAMAdmin}         |
+
+
+!|scenario   |Prepare Simple Environment|
+|Prepare User|${TPAMAdmin}   |  |Admin  |
+
+
+!|scenario         |Clear Simple Environment|
+|Hard-Delete System|klbatchsys61            |
+|Logout                                     |
+|Remove User       |${TPAMAdmin}            |
+
+
+!|scenario            |Create System and Account Templates                                                           |
+|clickOnLink          |link=Add System Template                                                                      |
+|pause                |5000                                                                                          |
+|type;                |id=SystemName                                       |${SystemTemplateName}                    |
+|type;                |id=NetworkAddress                                   |1.1.1.1                                  |
+|select;              |id=PlatformID                                       |label=Windows                            |
+|select;              |id=MaxDurationDays                                  |label=3                                  |
+|type;                |id=PrimaryEmail                                     |${SystemTemplateName}@${TPAMEMailDomain} |
+|type;                |id=Comment                                          |${SystemTemplateName} description        |
+|type;                |id=EscalationTime                                   |30                                       |
+|type;                |id=EscalationEmail                                  |Escalation@${TPAMEMailDomain}            |
+|click                |id=Connection                                                                                 |
+|waitForElementPresent|id=cb_AllowFuncReqFl                                                                          |
+|type;                |id=PARFuncAcct                                      |templfunk                                |
+|type;                |id=pword                                            |grain41R                                 |
+|type;                |id=ConfPword                                        |grain41R                                 |
+|click                |id=cb_AllowFuncReqFl                                                                          |
+|click                |id=Management                                                                                 |
+|pause                |2000                                                                                          |
+|select;              |id=PasswordCheckProfileID                           |label=${PersistentPasswordCheckProfile1} |
+|select;              |id=PasswordChangeProfileID                          |label=${PersistentPasswordChangeProfile1}|
+|select;              |id=DurationHrs                                      |label=3                                  |
+|select;              |id=DurationQtrHrs                                   |label=30                                 |
+|click                |id=cb_AllowISADuration                                                                        |
+|click                |id=TicketSystem                                                                               |
+|pause                |1000                                                                                          |
+|click                |id=RequireTixForRequest                                                                       |
+|click                |id=RequireTixForCLI                                                                           |
+|pause                |1000                                                                                          |
+|type;                |id=TixEmailNotify                                   |TicketNotify@${TPAMEMailDomain}          |
+|click                |id=bt_Save                                                                                    |
+|waitForTextPresent   |System changes for ${SystemTemplateName} saved successfully                                   |
+|clickOnLink          |link=Add Account                                                                              |
+|type;                |id=SystemNm                                         |${SystemTemplateName}                    |
+|click                |id=System                                                                                     |
+|click                |xpath=//td[contains(text(),'${SystemTemplateName}')]|                                         |
+|pause                |2000                                                                                          |
+|click                |id=Details                                                                                    |
+|pause                |1000                                                                                          |
+|type;                |id=AccountName                                      |${AccountTemplateName}                   |
+|select;              |id=PwdRule                                          |label=${PersistentPwdRuleName}           |
+|type;                |id=AcctDesc                                         |${AccountTemplateName} description       |
+|click                |id=cb_EnableBeforeReleaseFl                                                                   |
+|click                |id=Reviews                                                                                    |
+|type;                |id=PwdReviewCnt                                     |1                                        |
+|click                |id=PwdReviewerType1                                                                           |
+|click                |id=Management                                                                                 |
+|select;              |id=PasswordCheckProfileID                           |label=${PersistentPasswordCheckProfile2} |
+|select;              |id=PasswordChangeProfileID                          |label=${PersistentPasswordChangeProfile2}|
+|click                |id=TicketSystem                                                                               |
+|click                |id=RequireTixForISA                                                                           |
+|click                |id=RequireTixForAPI                                                                           |
+|select;              |id=TSID                                             |label=${PersistentTicketSystemName}      |
+|click                |id=SubmitChangesButton                                                                        |
+|waitForTextPresent   |Changes saved successfully for ${AccountTemplateName}                                         |
+
+
+
+!|scenario         |Delete System Template    |templateName     |
+|pause             |2000                                        |
+|clickOnLink       |link=Manage Systems                         |
+|type;             |id=SystemNm               |@templateName    |
+|click             |id=Listing                                  |
+|click             |xpath=//td[contains(text(),'@templateName')]|
+|click             |id=bt_Del                                   |
+|getConfirmation                                                |
+|waitForTextPresent|@templateName has been successfully deleted |
+
+
+!|scenario            |Create Account Discovery Profile                                             |
+|clickOnLink          |link=Profile Management                                                      |
+|select;              |id=ProfileType            |label=Account Discovery                           |
+|waitForElementPresent|id=NewButton                                                                 |
+|click                |id=NewButton                                                                 |
+|type;                |id=ProfileName            |${AccountDiscoveryProfileName}                    |
+|type;                |id=Description            |Description                                       |
+|click                |id=btnAddRow                                                                 |
+|select;              |className=autoAcctTemplate|label=${SystemTemplateName}/${AccountTemplateName}|
+|type;                |className=autoSIDFilter   |*                                                 |
+|click                |id=SaveButton                                                                |
+|waitForTextPresent   |The profile saved successfully                                               |
+
+
+!|scenario            |Delete Account Discovery Profile                   |
+|clickOnLink          |link=Profile Management                            |
+|select;              |id=ProfileType|label=Account Discovery             |
+|waitForElementPresent|id=DeleteButton                                    |
+|select;              |id=ProfileID  |label=${AccountDiscoveryProfileName}|
+|click                |id=DeleteButton                                    |
+|getConfirmation                                                          |
+|waitForTextPresent   |The profile was deleted successfully               |
+
+
+!|scenario         |Create Custom Conversational Platform                  |
+|pause             |1000                                                   |
+|clickOnLink       |link=Custom Platforms                                  |
+|pause             |3000                                                   |
+|click             |id=btnAddPlatform                                      |
+|pause             |1000                                                   |
+|type;             |id=CustomPlatformName|${CustomPlatformName}            |
+|type;             |id=Description       |${CustomPlatformName} Description|
+|select;           |id=PlatformTypeID    |label=Conversational             |
+|pause             |1000                                                   |
+|type;             |id=Port              |22                               |
+|click             |id=SSHFl                                               |
+|click             |id=PasswordFl                                          |
+|click             |id=btnSavePlatform                                     |
+|waitForTextPresent|saved successfully                                     |
+|$res=             |getText              |xpath=//div[@id='ResultsDiv']    |
+|Verify_Contain_OR |$res;;saved successfully                               |
+|click             |id=PAMUploadBtnSelect                                  |
+|SWait             |browse.PNG                                             |
+|SClick            |browse.PNG                                             |
+|pause             |1500                                                   |
+|SType             |${PathToCustomPlatformXML}                             |
+|pause             |1500                                                   |
+|SWait             |open.PNG                                               |
+|SClick            |open.PNG                                               |
+|pause             |2000                                                   |
+|SWait             |upload_small.PNG                                       |
+|SClick            |upload_small.PNG                                       |
+|pause             |10000                                                  |
+|click             |id=btnProcessFile                                      |
+|pause             |10000                                                  |
+|$res=             |getText              |xpath=//td[@class='success']     |
+|Verify_Contain_OR |$res;;Y                                                |
+|$res=             |getText              |xpath=//td[@class='active']      |
+|Verify_Contain_OR |$res;;Current                                          |
+|click             |id=ActiveFl                                            |
+|pause             |1000                                                   |
+|click             |id=AutomationActiveFl                                  |
+|click             |id=btnSavePlatform                                     |
+|waitForTextPresent|saved successfully                                     |
+|pause             |3000                                                   |
+|$res=             |getText              |xpath=//div[@id='ResultsDiv']    |
+|Verify_Contain_OR |$res;;saved successfully                               |
+
+
+
+!|scenario         |Delete Custom Conversational Platform               |
+|pause             |1000                                                |
+|clickOnLink       |link=Custom Platforms                               |
+|click             |id=Listing                                          |
+|pause             |1000                                                |
+|click             |xpath=//td[contains(text(),'${CustomPlatformName}')]|
+|pause             |1000                                                |
+|click             |id=btnDeletePlatform                                |
+|getConfirmation                                                        |
+|waitForTextPresent|deleted successfully                                |
+|$res=             |getText        |xpath=//div[@id='ResultsDiv']       |
+|pause             |3000                                                |
+|Verify_Contain_OR |$res;;deleted successfully                          |
+
+
+
+!| scenario  |Prepare Batch                             |
+|Prepare File|${PathToBatch}  ||DPAPLACEHOLDER||$TPAMDPA|
+|Prepare File|${PathToEthalon}||DPAPLACEHOLDER||$TPAMDPA|
+
+
+!| scenario  |Rollback Batch                            |
+|Prepare File|${PathToBatch}  ||$TPAMDPA||DPAPLACEHOLDER|
+|Prepare File|${PathToEthalon}||$TPAMDPA||DPAPLACEHOLDER|
+
+
+!| scenario       |Prepare File         |path    |    |changeFrom   |   |changeTo   |
+|$res=            |RunBatchGetOutputFull|PrepareEthalons;@path;@changeFrom;@changeTo|
+|Verify_Contain_OR|$res;;write.*changes                                             |
+
+
+!|scenario            |Get DPA Name and IP Address                                                 |
+|Login                |${TPAMURL}|          |${TPAMAdmin}         |         |${DefaultPwd}         |
+|pause                |6000                                                                        |
+|clickOnLink          |link=DPAs                                                                   |
+|pause                |3000                                                                        |
+|waitForElementPresent|xpath=//table[@id='serversTable']//td[text()='Up']                          |
+|$TPAMDPA=            |getText   |xpath=//table[@id='serversTable']//td[text()='Up']/../td[1]      |
+|Verify_Contain_OR    |$TPAMDPA;;DPA                                                               |
+|$DPAAddress=         |getText   |xpath=//table[@id='serversTable']//td[text()='$TPAMDPA']/../td[2]|
+|Logout                                                                                            |
+
+
+!|scenario            |Check Group|groupName                |               |description               |
+|clickOnLink          |link=Manage Groups                                                              |
+|waitForElementPresent|id=GroupNm                                                                      |
+|type;                |id=GroupNm |@groupName                                                          |
+|click                |id=Listing                                                                      |
+|waitForElementPresent|xpath=//div[@id='reportTab']/table/tbody/tr/td/table/tbody/tr/td/div            |
+|$res=                |getText    |xpath=//div[@id='reportTab']/table/tbody/tr/td/table/tbody/tr/td/div|
+|Verify_Contain_OR    |$res;;@groupName                                                                |
+|Verify_Contain_OR    |$res;;@description                                                              |
+
+
+
+!| scenario|List Systems                                                         |
+|$res=     |CLItoFile|${CLIBatch} ListSystems --SystemName klbatch* --MaxRows 150|
+
+!|scenario|List System|systemName                                      |
+|$res=    |CLItoFile  |${CLIBatch} ListSystems --SystemName @systemName|
+
+!| scenario|List Accounts                                                                                  |
+|$res=     |CLItoFile|${CLIBatch} ListAccounts --SystemName klbatch* --AccountName klbatchacc --MaxRows 100|
+                                                                                                                                                                                                   
+!| scenario|List Users                                                           |
+|$res=     |CLItoFile|${CLIBatch} ListUsers --UserName klbatchuser* --MaxRows 100|
+
+!| scenario|List Groups                                                        |
+|$res=     |CLItoFile|${CLIBatch} ListGroups --GroupName klbatch* --MaxRows 100|
+
+!| scenario|List Collections                                                             |
+|$res=     |CLItoFile|${CLIBatch} ListCollections --CollectionName klbatch* --MaxRows 100|
+
+!| scenario|List PSM Accounts                                                                                  |
+|$res=     |CLItoFile|${CLIBatch} ListEGPAccounts --SystemName klbatch* --AccountName klbatchacc  --MaxRows 100|
+
+!| scenario|List Permissions                                                                  |
+|$res=     |CLItoFile|${CLIBatch} ListAssignedPolicies --AccountName klbatchacc  --MaxRows 100|
+
+!| scenario|List Collection Membership                             |
+|$res=     |CLItoFile|${CLIBatch} ListCollectionMembership klbatch*|
+
+!| scenario|List Group Membership                             |
+|$res=     |CLItoFile|${CLIBatch} ListGroupMembership klbatch*|
+
+!| scenario       |Check No System|systemName                                      |
+|$res=            |CLI            |${CLIBatch} ListSystems --SystemName @systemName|
+|Verify_Contain_OR|$res;;No Systems to list                                        |
+
+!| scenario       |Check No Account|accountName                                        |
+|$res=            |CLI             |${CLIBatch} ListAccounts --AccountName @accountName|
+|Verify_Contain_OR|$res;;No Accounts to list                                           |
+
+
+
+!|scenario            |Check Import System Error               |errorText||filename||extension|
+|clickOnLink          |link=Import Systems                     |                              |
+|pause                |2000                                                                   |
+|click                |id=PAMUploadBtnSelect                                                  |
+|SWait                |browse.PNG                                                             |
+|SClick               |browse.PNG                                                             |
+|pause                |1500                                                                   |
+|SType                |${PathToErrorsBatch}\@filename.@extension                              |
+|pause                |1500                                                                   |
+|SWait                |open.PNG                                                               |
+|SClick               |open.PNG                                                               |
+|pause                |2000                                                                   |
+|SWait                |upload_small.PNG                                                       |
+|SClick               |upload_small.PNG                                                       |
+|pause                |2000                                                                   |
+|type;                |id=Comment2                             |import systems                |
+|click                |id=btnProcessFile                       |                              |
+|pause                |1500                                                                   |
+|waitForElementPresent|xpath=//tr[@id='6']                                                    |
+|pause                |10000                                                                  |
+|verifyText           |xpath=//div[@id='divBatchResults']/table|         |@errorText          |
+|Check No System      |klbatchbadsystem                                                       |
+
+!|scenario            |Check Import Account Error              |errorText||filename||extension|
+|clickOnLink          |link=Import Accounts                    |                              |
+|pause                |2000                                                                   |
+|click                |id=PAMUploadBtnSelect                                                  |
+|SWait                |browse.PNG                                                             |
+|SClick               |browse.PNG                                                             |
+|pause                |1500                                                                   |
+|SType                |${PathToErrorsBatch}\@filename.@extension                              |
+|pause                |1500                                                                   |
+|SWait                |open.PNG                                                               |
+|SClick               |open.PNG                                                               |
+|pause                |2000                                                                   |
+|SWait                |upload_small.PNG                                                       |
+|SClick               |upload_small.PNG                                                       |
+|pause                |2000                                                                   |
+|type;                |id=Comment2                             |import accounts               |
+|click                |id=btnProcessFile                       |                              |
+|pause                |1500                                                                   |
+|waitForElementPresent|xpath=//tr[@id='6']                                                    |
+|pause                |10000                                                                  |
+|verifyText           |xpath=//div[@id='divBatchResults']/table|         |@errorText          |
+|Check No Account     |klbatchbadacc                                                          |
+
+
+!|scenario                 |Check Errors                                                                                                                                                        |
+|Check Import System Error |The following Systems were not added because they have an invalid Password Check Profile specified           ||error_check_profile_does_not_exist              ||csv|
+|Check Import System Error |The following Systems were not added because they have an invalid Password Change Profile specified          ||error_change_profile_does_not_exist             ||csv|
+|Check Import System Error |The following Systems were not added because they have one or more invalid flag values                       ||error_invalid_auto_management_flag              ||csv|
+|Check Import System Error |The following Systems were not added because one or more values contained an illegal space                   ||error_illegal_space                             ||csv|
+|Check Import System Error |The following Systems were not added because Auto management is not supported by the platform                ||error_auto_management_is_not_supported          ||csv|
+|Check Import System Error |The following Systems were not added because one or more PSM DPA Affinity Names were not recognized          ||error_invalid_psm_dpa                           ||csv|
+|Check Import System Error |The following Systems were not added because one or more PPM DPA Affinity Names were not recognized          ||error_invalid_ppm_dpa                           ||csv|
+|Check Import System Error |The following Systems were not added because of an invalid Platform Name                                     ||error_invalid_platform_name                     ||csv|
+|Check Import System Error |The following Systems were not added because they have Allow ISA Duration set with 0 for Release Duration    ||error_invalid_isa_duration                      ||csv|
+|Check Import System Error |The following Systems were not added because PSM Only Systems do not support PPM DPA Affinity                ||error_psm_only_does_not_support_ppm_dpa_affinity||csv|
+|Check Import System Error |The following Systems were not added because of an invalid Platform Name                                     ||error_bfer_7677_template_platform_ignored       ||txt|
+|Check Import System Error |The following Systems were not added because of an invalid Ticket System name                                ||error_bfer_7677_template_ticket_system_ignored  ||txt|
+|Check Import System Error |The following Systems were not added because they have an invalid Password Check Profile specified           ||error_bfer_7677_template_check_profile_ignored  ||txt|
+|Check Import System Error |The following Systems were not added because they have an invalid Password Change Profile specified          ||error_bfer_7677_template_change_profile_ignored ||txt|
+|Check Import System Error |The following Systems were not added because they have invalid password rules specified                      ||error_bfer_7677_template_password_rule_ignored  ||txt|
+|Check Import Account Error|The following Accounts have Enable Before Release set and it is not currently supported on the given platform||error_enable_before_release_flag_not_supported  ||csv|
+|BFER 7690 Functional Accounts Conflict                                                                                                                                                         |
+
+
+######################################################################################################
+######################################################################################################
+######################################################################################################
+############################ Test Advanced Batch File Setting ########################################
+######################################################################################################
+######################################################################################################
+
+!|scenario                         |Test Advanced Batch File Setting       |
+|Login                             |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|pause                             |10000                                  |
+|Batch Import Systems Advanced 1   |systems_import_headers_skip_dollar_bar |
+|Batch Import Systems Advanced 2   |systems_import_headers_limit_dollar_cr |
+|Batch Import Accounts Advanced    |accounts_import_headers_percent_lf     |
+|Batch Update PSM Accounts Advanced|accounts_psm_update_headers_tab_crlf   |
+|Batch Import Users Advanced       |users_import_headers_limit_caret_cr    |
+|Batch Update Users Advanced       |users_update_no_headers_limit_wave_lf  |
+|Batch Delete Systems Advanced     |systems_delete_headers_ampersand_crlf  |
+
+
+
+!|scenario   |Set Advanced File Settings 1              |
+|click       |xpath=//input[@value='Adv. File Settings']|
+|pause       |1000                                      |
+|typeNoClear;|id=SkipFirstRows            |2            |
+|typeNoClear;|id=SkipDataRows             |10           |
+|click       |id=cbxFileTypeAuto                        |
+|pause       |1000                                      |
+|click       |id=rbColDelimOther                        |
+|pause       |1000                                      |
+|type;       |id=OtherColumnDelimiter     |${DOLLAR}    |
+|click       |id=rbRowDelimOther                        |
+|pause       |1000                                      |
+|type;       |id=OtherRowDelimiter        |${BAR}       |
+
+!|scenario   |Set Advanced File Settings 2              |
+|click       |xpath=//input[@value='Adv. File Settings']|
+|pause       |1000                                      |
+|typeNoClear;|id=SkipFirstRows            |2            |
+|typeNoClear;|id=RowLimit                 |10           |
+|click       |id=cbxFileTypeAuto                        |
+|pause       |1000                                      |
+|click       |id=rbColDelimOther                        |
+|pause       |1000                                      |
+|type;       |id=OtherColumnDelimiter     |${DOLLAR}    |
+|click       |id=rbRowDelimCR                           |
+
+!|scenario|Set Advanced File Settings 3              |
+|click    |xpath=//input[@value='Adv. File Settings']|
+|pause    |1000                                      |
+|click    |id=rbColHdrYes                            |
+|click    |id=cbxFileTypeAuto                        |
+|click    |id=rbColDelimOther                        |
+|pause    |1000                                      |
+|type;    |id=OtherColumnDelimiter         |%        |
+|click    |id=rbRowDelimLF                           |
+
+!|scenario|Set Advanced File Settings 4              |
+|click    |xpath=//input[@value='Adv. File Settings']|
+|pause    |1000                                      |
+|click    |id=cbxFileTypeAuto                        |
+
+!|scenario   |Set Advanced File Settings 5              |
+|click       |xpath=//input[@value='Adv. File Settings']|
+|pause       |1000                                      |
+|click       |id=rbColHdrYes                            |
+|typeNoClear;|id=RowLimit                     |5        |
+|click       |id=cbxFileTypeAuto                        |
+|pause       |1000                                      |
+|click       |id=rbColDelimOther                        |
+|pause       |1000                                      |
+|type;       |id=OtherColumnDelimiter         |^        |
+|click       |id=rbRowDelimCR                           |
+
+!|scenario   |Set Advanced File Settings 6              |
+|click       |xpath=//input[@value='Adv. File Settings']|
+|pause       |1000                                      |
+|click       |id=rbColHdrNo                             |
+|typeNoClear;|id=RowLimit                     |5        |
+|click       |id=cbxFileTypeAuto                        |
+|pause       |1000                                      |
+|click       |id=rbColDelimOther                        |
+|pause       |1000                                      |
+|type;       |id=OtherColumnDelimiter         |~        |
+|click       |id=rbRowDelimLF                           |
+
+!|scenario|Set Advanced File Settings 7              |
+|click    |xpath=//input[@value='Adv. File Settings']|
+|pause    |1000                                      |
+|click    |id=rbColHdrYes                            |
+|click    |id=cbxFileTypeAuto                        |
+|pause    |1000                                      |
+|click    |id=rbColDelimOther                        |
+|pause    |1000                                      |
+|type;    |id=OtherColumnDelimiter         |&        |
+|pause    |1000                                      |
+|click    |id=rbRowDelimOther                        |
+
+
+!|scenario                  |Batch Import Systems Advanced 1         |filename                        |
+|clickOnLink                |link=Import Systems                     |                                |
+|pause                      |2000                                                                     |
+|Set Advanced File Settings 1                                                                         |
+|pause                      |2000                                                                     |
+|click                      |id=PAMUploadBtnSelect                                                    |
+|SWait                      |browse.PNG                                                               |
+|SClick                     |browse.PNG                                                               |
+|pause                      |1500                                                                     |
+|SType                      |${PathToBatch}\Advanced\@filename.txt                                    |
+|pause                      |1500                                                                     |
+|SWait                      |open.PNG                                                                 |
+|SClick                     |open.PNG                                                                 |
+|pause                      |2000                                                                     |
+|SWait                      |upload_small.PNG                                                         |
+|SClick                     |upload_small.PNG                                                         |
+|pause                      |2000                                                                     |
+|type;                      |id=Comment2                             |import systems                  |
+|click                      |id=btnProcessFile                       |                                |
+|pause                      |1500                                                                     |
+|waitForElementPresent      |xpath=//tr[@id='10']                                                     |
+|pause                      |60000                                                                    |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table||Systems were successfully added|
+|List Systems                                                                                         |
+|Check Batch Contents       |${PathToEthalon}\Advanced\ethalon_@filename.txt                          |
+|Check Manage Batches Report|@filename                               ||Import Systems                 |
+
+
+
+!|scenario                  |Batch Import Systems Advanced 2         |filename                        |
+|clickOnLink                |link=Import Systems                     |                                |
+|pause                      |2000                                                                     |
+|Set Advanced File Settings 2                                                                         |
+|pause                      |2000                                                                     |
+|click                      |id=PAMUploadBtnSelect                                                    |
+|SWait                      |browse.PNG                                                               |
+|SClick                     |browse.PNG                                                               |
+|pause                      |1500                                                                     |
+|SType                      |${PathToBatch}\Advanced\@filename.txt                                    |
+|pause                      |1500                                                                     |
+|SWait                      |open.PNG                                                                 |
+|SClick                     |open.PNG                                                                 |
+|pause                      |2000                                                                     |
+|SWait                      |upload_small.PNG                                                         |
+|SClick                     |upload_small.PNG                                                         |
+|pause                      |2000                                                                     |
+|type;                      |id=Comment2                             |import systems                  |
+|click                      |id=btnProcessFile                       |                                |
+|pause                      |1500                                                                     |
+|waitForElementPresent      |xpath=//tr[@id='10']                                                     |
+|pause                      |60000                                                                    |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table||Systems were successfully added|
+|List Systems                                                                                         |
+|Check Batch Contents       |${PathToEthalon}\Advanced\ethalon_@filename.txt                          |
+|Check Manage Batches Report|@filename                               ||Import Systems                 |
+
+
+!|scenario                  |Batch Import Accounts Advanced          |filename                         |
+|clickOnLink                |link=Import Accounts                    |                                 |
+|pause                      |2000                                                                      |
+|Set Advanced File Settings 3                                                                          |
+|pause                      |2000                                                                      |
+|click                      |id=PAMUploadBtnSelect                                                     |
+|SWait                      |browse.PNG                                                                |
+|SClick                     |browse.PNG                                                                |
+|pause                      |1500                                                                      |
+|SType                      |${PathToBatch}\Advanced\@filename.txt                                     |
+|pause                      |1500                                                                      |
+|SWait                      |open.PNG                                                                  |
+|SClick                     |open.PNG                                                                  |
+|pause                      |2000                                                                      |
+|SWait                      |upload_small.PNG                                                          |
+|SClick                     |upload_small.PNG                                                          |
+|pause                      |2000                                                                      |
+|type;                      |id=Comment2                             |import accounts                  |
+|click                      |id=btnProcessFile                       |                                 |
+|pause                      |1500                                                                      |
+|waitForElementPresent      |xpath=//tr[@id='20']                                                      |
+|pause                      |60000                                                                     |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table||Accounts were successfully added|
+|List Accounts                                                                                         |
+|Check Batch Contents       |${PathToEthalon}\Advanced\ethalon_@filename.txt                           |
+|Check Manage Batches Report|@filename                               ||Import Accounts                 |
+
+
+!|scenario                  |Batch Update PSM Accounts Advanced      |filename            |
+|clickOnLink                |link=Update PSM Accounts                |                    |
+|pause                      |2000                                                         |
+|Set Advanced File Settings 4                                                             |
+|pause                      |2000                                                         |
+|click                      |id=PAMUploadBtnSelect                                        |
+|SWait                      |browse.PNG                                                   |
+|SClick                     |browse.PNG                                                   |
+|pause                      |1500                                                         |
+|SType                      |${PathToBatch}\Advanced\@filename.txt                        |
+|pause                      |1500                                                         |
+|SWait                      |open.PNG                                                     |
+|SClick                     |open.PNG                                                     |
+|pause                      |2000                                                         |
+|SWait                      |upload_small.PNG                                             |
+|SClick                     |upload_small.PNG                                             |
+|pause                      |2000                                                         |
+|type;                      |id=Comment2                             |update PSM accounts |
+|click                      |id=btnProcessFile                       |                    |
+|pause                      |1500                                                         |
+|waitForElementPresent      |xpath=//tr[@id='14']                                         |
+|pause                      |60000                                                        |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table||successfully       |
+|List PSM Accounts                                                                        |
+|Check Batch Contents       |${PathToEthalon}\Advanced\ethalon_@filename.txt              |
+|Check Manage Batches Report|@filename                               ||Update PSM Accounts|
+
+
+!|scenario                  |Batch Import Users Advanced             |filename                      |
+|clickOnLink                |link=Import UserIDs                     |                              |
+|pause                      |2000                                                                   |
+|Set Advanced File Settings 5                                                                       |
+|pause                      |2000                                                                   |
+|click                      |id=PAMUploadBtnSelect                                                  |
+|SWait                      |browse.PNG                                                             |
+|SClick                     |browse.PNG                                                             |
+|pause                      |1500                                                                   |
+|SType                      |${PathToBatch}\Advanced\@filename.txt                                  |
+|pause                      |1500                                                                   |
+|SWait                      |open.PNG                                                               |
+|SClick                     |open.PNG                                                               |
+|pause                      |2000                                                                   |
+|SWait                      |upload_small.PNG                                                       |
+|SClick                     |upload_small.PNG                                                       |
+|pause                      |2000                                                                   |
+|type;                      |id=Comment2                             |import users                  |
+|click                      |id=btnProcessFile                       |                              |
+|pause                      |1500                                                                   |
+|waitForElementPresent      |xpath=//tr[@id='7']                                                    |
+|pause                      |90000                                                                  |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table||Users were successfully added|
+|List Users                                                                                         |
+|Check Batch Contents       |${PathToEthalon}\Advanced\ethalon_@filename.txt                        |
+|Check Manage Batches Report|@filename                               ||Import Users                 |
+
+
+!|scenario                  |Batch Update Users Advanced             |filename                     |
+|clickOnLink                |link=Update UserIDs                     |                             |
+|pause                      |2000                                                                  |
+|Set Advanced File Settings 6                                                                      |
+|pause                      |2000                                                                  |
+|click                      |id=PAMUploadBtnSelect                                                 |
+|SWait                      |browse.PNG                                                            |
+|SClick                     |browse.PNG                                                            |
+|pause                      |1500                                                                  |
+|SType                      |${PathToBatch}\Advanced\@filename.txt                                 |
+|pause                      |1500                                                                  |
+|SWait                      |open.PNG                                                              |
+|SClick                     |open.PNG                                                              |
+|pause                      |2000                                                                  |
+|SWait                      |upload_small.PNG                                                      |
+|SClick                     |upload_small.PNG                                                      |
+|pause                      |2000                                                                  |
+|type;                      |id=Comment2                             |update or delete users       |
+|click                      |id=btnProcessFile                       |                             |
+|pause                      |1500                                                                  |
+|waitForElementPresent      |xpath=//tr[@id='7']                                                   |
+|pause                      |90000                                                                 |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table||Deleting the following Users|
+|List Users                                                                                        |
+|Check Batch Contents       |${PathToEthalon}\Advanced\ethalon_@filename.txt                       |
+|Check Manage Batches Report|@filename                               ||Update Users                |
+
+
+
+!|scenario                  |Batch Delete Systems Advanced           |filename                      |
+|clickOnLink                |link=Update Systems                     |                              |
+|pause                      |2000                                                                   |
+|Set Advanced File Settings 7                                                                       |
+|pause                      |2000                                                                   |
+|click                      |id=PAMUploadBtnSelect                                                  |
+|SWait                      |browse.PNG                                                             |
+|SClick                     |browse.PNG                                                             |
+|pause                      |1500                                                                   |
+|SType                      |${PathToBatch}\Advanced\@filename.txt                                  |
+|pause                      |1500                                                                   |
+|SWait                      |open.PNG                                                               |
+|SClick                     |open.PNG                                                               |
+|pause                      |2000                                                                   |
+|SWait                      |upload_small.PNG                                                       |
+|SClick                     |upload_small.PNG                                                       |
+|pause                      |2000                                                                   |
+|click                      |id=Radio1                               |                              |
+|type;                      |id=Comment2                             |delete systems                |
+|click                      |id=btnProcessFile                       |                              |
+|pause                      |1500                                                                   |
+|waitForElementPresent      |xpath=//tr[@id='50']                                                   |
+|pause                      |60000                                                                  |
+|verifyText                 |xpath=//div[@id='divBatchResults']/table||Deleted the following systems|
+|List Systems                                                                                       |
+|Check Batch Contents       |${PathToEthalon}\Advanced\ethalon_@filename.txt                        |
+|Check Manage Batches Report|@filename                               ||Update Systems               |
+
+
+
+!| scenario        |Change Pwd  |userName|         |currenPwd|  |newPwd |
+|Login             |${TPAMURL}  |        |@userName|         |@currenPwd|
+|pause             |15000                                               |
+|type;             |id=sOldPwd  |@currenPwd                             |
+|type;             |id=sPassword|@newPwd                                |
+|type;             |id=sConfirm |@newPwd                                |
+|pause             |2000                                                |
+|click             |id=save                                             |
+|click             |id=save                                             |
+|waitForTextPresent|Your password has been successfully changed         |
+|stop                                                                   |
+
+
+!|scenario |Prepare User|UserName|          |UserType      |
+|Add User  |@UserName   |        |${UserPwd}||@UserType    |
+|pause     |5000                                           |
+|Change Pwd|@UserName   |        |${UserPwd}||${DefaultPwd}|
+
+!|scenario        |Add User|UserName                  |                  |Password                  |                  |UserType                  |
+|$res=            |CLI     |${CLIBatch} AddUser --UserName @UserName --FirstName Ivan --LastName Ivanov --Password @Password  --UserType @UserType|
+|Verify_Contain_OR|$res;;successful                                                                                                               |
+
+
+!| scenario       |Remove User|userName                        |
+|$res=            |CLI        |${CLIBatch} DeleteUser @userName|
+|Verify_Contain_OR|$res;;successful                            |
+
+
+############################################################################################
+################################## BFERs ###################################################
+############################################################################################
+
+!| scenario              |BFER 6459 Import Linux System with AD Functional Account|
+|Login                   |${TPAMURL}    |    |${TPAMAdmin}   |   |${DefaultPwd}   |
+|Import System           |${BatchImportAD}                                        |
+|Import System           |${BatchImportLinux}                                     |
+|Check Functional Account|klbatchlinux                                            |
+|Delete Systems for BFER 6459                                                     |
+|Logout                                                                           |
+
+!| scenario           |Import System                                             |fileName                        |
+|pause                |5000                                                                                       |
+|clickOnLink          |link=Import Systems                                       |                                |
+|pause                |2000                                                                                       |
+|click                |id=PAMUploadBtnSelect                                                                      |
+|SWait                |browse.PNG                                                                                 |
+|SClick               |browse.PNG                                                                                 |
+|pause                |1500                                                                                       |
+|SType                |${PathToBFERsBatch}\@fileName                                                              |
+|pause                |1500                                                                                       |
+|SWait                |open.PNG                                                                                   |
+|SClick               |open.PNG                                                                                   |
+|pause                |2000                                                                                       |
+|SWait                |upload_small.PNG                                                                           |
+|SClick               |upload_small.PNG                                                                           |
+|pause                |2000                                                                                       |
+|type;                |id=Comment2                                               |import systems                  |
+|click                |id=btnProcessFile                                         |                                |
+|pause                |1500                                                                                       |
+|waitForElementPresent|xpath=//tr[@id='5']                                                                        |
+|pause                |10000                                                                                      |
+|verifyText           |xpath=//div[@id='divBatchResults']/table/tbody/tr[@id='8']||Systems were successfully added|
+
+
+
+
+!| scenario             |Check Functional Account|systemName           |
+|clickOnLink            |link=Manage Systems                           |
+|type;                  |id=SystemNm             |@systemName          |
+|click                  |id=Listing                                    |
+|waitForElementPresent  |xpath=//td[contains(text(),'@systemName')]    |
+|mouseMoveOver          |xpath=//td[contains(text(),'@systemName')]    |
+|click                  |xpath=//td[contains(text(),'@systemName')]    |
+|click                  |id=Details                                    |
+|pause                  |3000                                          |
+|$res=                  |getSelectedLabel        |id=PlatformID        |
+|Verify_Contain_OR      |$res;;Linux                                   |
+|click                  |id=Connection                                 |
+|waitForElementPresent  |id=cb_AllowFuncReqFl                          |
+|$res=                  |isChecked               |id=cb_funcacct_domain|
+|Verify_Contain_OR      |$res;;true                                    |
+|$res=                  |getSelectedLabel        |id=DAID              |
+|Verify_Contain_OR_alnum|$res;;kltest.spb.qsft\_klfunc                 |
+
+
+!|scenario            |Import Accounts                         |filename                         |
+|clickOnLink          |link=Import Accounts                    |                                 |
+|pause                |2000                                                                      |
+|click                |id=PAMUploadBtnSelect                                                     |
+|SWait                |browse.PNG                                                                |
+|SClick               |browse.PNG                                                                |
+|pause                |1500                                                                      |
+|SType                |${PathToBFERsBatch}\@filename                                             |
+|pause                |1500                                                                      |
+|SWait                |open.PNG                                                                  |
+|SClick               |open.PNG                                                                  |
+|pause                |2000                                                                      |
+|SWait                |upload_small.PNG                                                          |
+|SClick               |upload_small.PNG                                                          |
+|pause                |2000                                                                      |
+|type;                |id=Comment2                             |import accounts                  |
+|click                |id=btnProcessFile                       |                                 |
+|pause                |1500                                                                      |
+|waitForElementPresent|xpath=//tr[@id='5']                                                       |
+|pause                |15000                                                                     |
+|verifyText           |xpath=//div[@id='divBatchResults']/table||Accounts were successfully added|
+
+
+!|scenario            |Batch Delete System                     |filename                      |
+|clickOnLink          |link=Update Systems                     |                              |
+|pause                |2000                                                                   |
+|click                |id=PAMUploadBtnSelect                                                  |
+|SWait                |browse.PNG                                                             |
+|SClick               |browse.PNG                                                             |
+|pause                |1500                                                                   |
+|SType                |${PathToBFERsBatch}\@filename                                          |
+|pause                |1500                                                                   |
+|SWait                |open.PNG                                                               |
+|SClick               |open.PNG                                                               |
+|pause                |2000                                                                   |
+|SWait                |upload_small.PNG                                                       |
+|SClick               |upload_small.PNG                                                       |
+|pause                |2000                                                                   |
+|click                |id=Radio1                               |                              |
+|type;                |id=Comment2                             |delete systems                |
+|click                |id=btnProcessFile                       |                              |
+|pause                |1500                                                                   |
+|waitForElementPresent|xpath=//tr[@id='5']                                                    |
+|pause                |10000                                                                  |
+|verifyText           |xpath=//div[@id='divBatchResults']/table||Deleted the following systems|
+
+
+!|scenario            |Update Accounts                         |filename                                 |
+|clickOnLink          |link=Update Accounts                    |                                         |
+|pause                |2000                                                                              |
+|click                |id=PAMUploadBtnSelect                                                             |
+|SWait                |browse.PNG                                                                        |
+|SClick               |browse.PNG                                                                        |
+|pause                |1500                                                                              |
+|SType                |${PathToBFERsBatch}\@filename                                                     |
+|pause                |1500                                                                              |
+|SWait                |open.PNG                                                                          |
+|SClick               |open.PNG                                                                          |
+|pause                |2000                                                                              |
+|SWait                |upload_small.PNG                                                                  |
+|SClick               |upload_small.PNG                                                                  |
+|pause                |2000                                                                              |
+|click                |id=Radio2                               |                                         |
+|type;                |id=Comment2                             |update accounts                          |
+|click                |id=btnProcessFile                       |                                         |
+|pause                |1500                                                                              |
+|waitForElementPresent|xpath=//tr[@id='5']                                                               |
+|pause                |15000                                                                             |
+|verifyText           |xpath=//div[@id='divBatchResults']/table||The following Accounts are being updated|
+
+
+!|scenario            |Check Allow ISA Duration Flag              |systemName||accountName||result|
+|clickOnLink          |link=Manage Accounts                                                       |
+|type;                |id=SystemNm                                |@systemName                    |
+|type;                |id=AccountNm                               |@accountName                   |
+|click                |id=Listing                                 |                               |
+|waitForElementPresent|xpath=//td[contains(text(),'@accountName')]|                               |
+|mouseMoveOver        |xpath=//td[contains(text(),'@accountName')]|                               |
+|click                |xpath=//td[contains(text(),'@accountName')]|                               |
+|click                |id=Details                                 |                               |
+|pause                |3000                                                                       |
+|click                |id=Management                                                              |
+|waitForElementPresent|id=cb_PullFromParentFl                                                     |
+|$res=                |isChecked                                  |id=cb_AllowISADuration         |
+|Verify_Contain_OR    |$res;;@result                                                              |
+
+
+!|scenario          |Delete Systems for BFER 6459|
+|Batch Delete System|${BatchImportLinux}         |
+|Batch Delete System|${BatchImportAD}            |
+
+
+!|scenario                    |BFER 6460 Set Allow ISA Duration Flag  |
+|Login                        |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Import System                |system_import_bfer_6460.csv            |
+|Import Accounts              |accounts_import_bfer_6460.csv          |
+|Check Allow ISA Duration Flag|klupd     ||account1    ||false        |
+|Check Allow ISA Duration Flag|klupd     ||account2    ||false        |
+|Check Allow ISA Duration Flag|klupd     ||account3    ||false        |
+|Update Accounts              |accounts_update_bfer_6460.csv          |
+|Check Allow ISA Duration Flag|klupd     ||account1    ||true         |
+|Check Allow ISA Duration Flag|klupd     ||account2    ||true         |
+|Check Allow ISA Duration Flag|klupd     ||account3    ||true         |
+|Batch Delete System          |system_import_bfer_6460.csv            |
+|Logout                                                               |
+
+!|scenario        |Set User Permission on System Level|userName                 |                 |userPermission                 |                 |systemName                 |
+|$res=            |CLI                                |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action ADD --SystemName @systemName --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                             |
+
+!|scenario        |Set Approvers Count|SystemName               |               |AccountName               |              |ApprCount              |
+|$res=            |CLI                |${CLIBatch} UpdateAccount --SystemName @SystemName --AccountName @AccountName --MinimumApprovers @ApprCount|
+|Verify_Contain_OR|$res;;successful                                                                                                               |
+
+!| scenario       |Retrieve Password|systemName                         |                         |accountName                        |
+|$res=            |CLI              |${CLIBatch} AddPwdRequest --SystemName @systemName --AccountName @accountName --RequestNotes test|
+|Verify_Contain_OR|$res;;submitted                                                                                                    |
+|$RequestID=      |get_RequestID    |$res                                                                                             |
+|$GeneratedPwd=   |CLI              |${CLIBatch} Retrieve --RequestID $RequestID                                                      |
+|Verify_Contain_OR|$GeneratedPwd;;grain41R                                                                                            |
+
+
+!|scenario                          |BFER 6856 Cisco ENABLE Account Created When System Imported|
+|Login                              |${TPAMURL}       |    |${TPAMAdmin}   |   |${DefaultPwd}   |
+|Import System                      |system_import_bfer_6856.csv                                |
+|Set User Permission on System Level|${CLI_user_1}    |    |Requestor      |   |k6856cisco      |
+|Set Approvers Count                |k6856cisco       |    |ENABLE         |   |0               |
+|Retrieve Password                  |k6856cisco       |    |ENABLE                              |
+|Batch Delete System                |system_import_bfer_6856.csv                                |
+|Logout                                                                                         |
+
+
+!|scenario                |BFER 7690 Functional Accounts Conflict                                                                                                                                                 |
+|Create Template With Domain Account                                                                                                                                                                              |
+|Check Import System Error|The following Systems were not added because the platform does not support domain functional accounts                            ||error_bfer_7690_platform_not_support_dom_acc   ||txt|
+|Check Import System Error|The following Systems were not added because the functional account type specified in the import file conflicts with the template||error_bfer_7690_dom_acc_conflicts_with_funcacct||txt|
+|Delete System Template   |${SystemTemplateWithDomainAccount}                                                                                                                                                     |
+
+
+!|scenario            |Create Template With Domain Account                                             |
+|clickOnLink          |link=Add System Template                                                        |
+|pause                |5000                                                                            |
+|type;                |id=SystemName             |${SystemTemplateWithDomainAccount}                   |
+|type;                |id=NetworkAddress         |1.1.1.1                                              |
+|select;              |id=PlatformID             |label=Windows                                        |
+|select;              |id=MaxDurationDays        |label=3                                              |
+|type;                |id=PrimaryEmail           |${SystemTemplateWithDomainAccount}@${TPAMEMailDomain}|
+|type;                |id=Comment                |${SystemTemplateWithDomainAccount} description       |
+|type;                |id=EscalationTime         |30                                                   |
+|type;                |id=EscalationEmail        |Escalation@${TPAMEMailDomain}                        |
+|click                |id=Connection                                                                   |
+|waitForElementPresent|id=cb_AllowFuncReqFl                                                            |
+|click                |id=cb_funcacct_domain                                                           |
+|pause                |3000                                                                            |
+|select;              |id=DAID                   |label=mydomain.mc.co\klbatchfcctacct7                |
+|click                |id=Management                                                                   |
+|pause                |2000                                                                            |
+|select;              |id=PasswordCheckProfileID |label=${PersistentPasswordCheckProfile1}             |
+|select;              |id=PasswordChangeProfileID|label=${PersistentPasswordChangeProfile1}            |
+|select;              |id=DurationHrs            |label=5                                              |
+|select;              |id=DurationQtrHrs         |label=30                                             |
+|click                |id=cb_AllowISADuration                                                          |
+|click                |id=TicketSystem                                                                 |
+|pause                |1000                                                                            |
+|click                |id=RequireTixForRequest                                                         |
+|click                |id=RequireTixForCLI                                                             |
+|pause                |1000                                                                            |
+|type;                |id=TixEmailNotify         |TicketNotify@${TPAMEMailDomain}                      |
+|click                |id=bt_Save                                                                      |
+|waitForTextPresent   |System changes for ${SystemTemplateWithDomainAccount} saved successfully        |
+

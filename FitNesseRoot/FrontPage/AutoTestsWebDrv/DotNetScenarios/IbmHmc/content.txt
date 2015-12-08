@@ -1,0 +1,7 @@
+!include <AutoTestsWebDrv.PlatformsTesting.IbmHmc
+!define SchedCheckResultWrongFunctAccntPwd {Success}
+!define ManAccntCheckPassword {${SchedCheckResultWrongFunctAccntPwd}}
+!include -c <DotNetScenarios.ScenarioLibrary
+
+
+

@@ -1,0 +1,3 @@
+echo %2 | pw mod user %1 -h 0
+#
+exit

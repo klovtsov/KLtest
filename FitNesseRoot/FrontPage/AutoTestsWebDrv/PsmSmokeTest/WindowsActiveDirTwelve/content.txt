@@ -1,0 +1,16 @@
+!define OSType {Winad}
+!define ProxyType {RDP}
+
+!define TestPsmLog {${prefix}_testpsmlog.txt}
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios
+!include -c <AutoTestsWebDrv.CliScenarios.WindowsActiveDirTwelve
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios.WindowsEight.PlatformSpecific
+!include -c <AutoTestsWebDrv.PsmSmokeTest.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.WindowsActiveDirTwelve.PlatformSpecific
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|

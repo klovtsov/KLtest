@@ -1,0 +1,47 @@
+!contents
+
+
+!define SystemName {${prefix}CustSys}
+!define SystemAddress {10.30.39.82}
+!define SystemDescription {Custom Platform-based System}
+!define SystemPort {22}
+!define SystemTimeout {60}
+!define FuncAcct {root}
+!define FuncAcctPassword {frujiE15}
+!define FuncAcctDescription {System Functional Account}
+!define ManagedAccount {${prefix}custom}
+!define ManagedAccountPassword {frujiE15}
+!define ManagedAccountPwdNew {grain42R}
+!define ManagedAccountDescription {Managed Account}
+
+
+!define ShareFolder {/home/${ManagedAccount}}
+!define FileToDownload {${prefix}DownFile.txt}
+!define FileToUpload {${prefix}UpFile.txt}
+
+!define CommandTimeout {60}
+
+!define SystemPlatform {Linux}
+
+!define CustomPlatformName {${prefix}CP14}
+!define CustomPlatformType {Conversational}
+!define CustomPLatformPort {22}
+!define PathToXML {${ProjDir}\Scripts\CustomLinuxPlatform.xml}
+
+!include -c .FrontPage.AutoTestsWebDrv.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.CustomPlatform.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.CustomPlatform.ConversationalPlatform.ScenarioLibrary
+
+
+!|script                              |
+|Create Custom Conversational Platform|
+|Test UI Custom Platform              |
+|Test CLI Custom Platform             |
+|Check Automation Inactive Platform   |
+|Check API Calls                      |
+|Check Duplicated Platform            |
+|Delete Custom Conversational Platform|
+
+#|Test CLI Custom Platform             |
+#|Check Automation Inactive Platform   |
+#|Check API Calls                      |

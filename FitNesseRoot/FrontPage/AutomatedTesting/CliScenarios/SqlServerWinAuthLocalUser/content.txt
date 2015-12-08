@@ -1,0 +1,18 @@
+!define HostSystemName {spb8672-vm09}
+!define HostSystemPlatform {Windows}
+!define HostSystemAddress {10.30.38.91}
+!define SqlInstanceName {tpamtest}
+!define SystemAddress {${HostSystemAddress}\${SqlInstanceName}}
+!define SystemName {${prefix}_sql}
+!define SystemPlatform {MS SQL Server}
+!define FunctAcct {sikvel}
+!define FunctAcctPwd {Cg6cZfP}
+!define SqlInstanceName {tpamtest}
+!define ManagedAccount {${prefix}edAcc}
+!define ManagedAccountPwd {A\)&(d\ef<>$}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <CliScenarios.ScenarioLibrary
+!include -c <CliScenarios.SqlServerWinAuthLocalUser.PlatformSpecific
+
+

@@ -1,0 +1,12 @@
+!| scenario                       |Managed Account  Probably Obsolete                                   |
+|Add account                      |${ManagedAccount}|with password|${ManagedAccountPwd}|
+|Reset Password                   |${ResetPasswordFailed}                              |
+|Schedule Reset Password          |Failed                                              |
+|Change Account Password on System|${ManagedAccountPwdNew}                             |
+|Set password                     |${FunctAcct}     |             |${FunctAcctPwd}     |
+|pause                            |${ChangeManagedAccountPasswordTimeout}              |
+|Choose Account                   |${ManagedAccount}                                   |
+|BFER3899                                                                              |
+|Check Status                     |Success          |for reason   |Mismatch            |
+|Reset Password                   |${ResetPasswordSuccessful}                          |
+|Schedule Reset Password          |Success                                             |

@@ -1,0 +1,8 @@
+!include <AutoTestsWebDrv.PlatformsTesting.LinuxRedHat
+!*> Added to workaround Java API issues with difficult passwords
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.LinuxRedHat.PlatformSpecific
+*!
+!include -c <JavaApiScenarios.ScenarioLibrary
+

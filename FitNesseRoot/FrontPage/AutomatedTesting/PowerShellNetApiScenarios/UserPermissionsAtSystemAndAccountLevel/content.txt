@@ -1,0 +1,39 @@
+!define ManagedAccount {${prefix}tesAcnt}
+!define SystemName {${prefix}FakeSystem}
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!3 API Basic User has just ISA permission to System nothing assigned for Accounts
+!|script                                                                                                                                        |
+|Update User    |${API_user_2}     |             |-userType Basic                                                                               |
+|Add system     |${SystemName}     |with address |10.9.8.7                   |platform|Windows|managed by|admin|additional parameters|parameters|
+|Add account    |${ManagedAccount}1|with password|${ManagedAccountPwdNew}                                                                       |
+|Add account    |${ManagedAccount}2|with password|${ManagedAccountPwdNew}                                                                       |
+|Set Permissions|ISA               |on system    |${SystemName}              |for user|${API_user_2}                                            |
+|pause          |${ApplyNewPoliciesInterval}                                                                                                    |
+|Update System  |${SystemName}     |             |-Description NewDescription|by user |${API_user_2}                                            |
+|Add account    |${ManagedAccount}3|on system    |${SystemName}              |by user |${API_user_2}                                            |
+
+!3 Then the Denied permission is added to API User for Account2
+!|script                                                                                                                                                                    |
+|Set Permissions      |Denied            |on  account|${ManagedAccount}2                |for user|${API_user_2}                                                             |
+|Try to Update Account|${ManagedAccount}2|           |-Description NewAccountDescription|by user |${API_user_2}|with result|You are not authorized to perform this operation|
+|Update System        |${SystemName}     |           |-Description ChangedDescription   |by user |${API_user_2}                                                             |
+|Add account          |${ManagedAccount}4|on system  |${SystemName}                     |by user |${API_user_2}                                                             |
+
+!3 Now API user has permission only on account but system
+!|script                                                                                                                                                                        |
+|Revoke Permissions   |ISA               |on system  |${SystemName}                         |for user|${API_user_2}                                                             |
+|Revoke Permissions   |Denied            |on  account|${ManagedAccount}2                    |for user|${API_user_2}                                                             |
+|Set Permissions      |ISA               |on  account|${ManagedAccount}3                    |for user|${API_user_2}                                                             |
+|Try to Update Account|${ManagedAccount}3|           |-Description ChangedAccountDescription|by user |${API_user_2}|with result|successful                                      |
+|Try to Update System |${SystemName}     |           |-Description NewSystemDescription     |by user |${API_user_2}|with result|You are not authorized to perform this operation|
+
+!*> Clean Up section
+!|script                                      |
+|Update User   |${API_user_2}||-userType Admin|
+|Delete Account|${ManagedAccount}1            |
+|Delete Account|${ManagedAccount}2            |
+|Delete Account|${ManagedAccount}3            |
+|Delete Account|${ManagedAccount}4            |
+|Delete System |${SystemName}                 |
+*!

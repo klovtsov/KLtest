@@ -1,0 +1,25 @@
+!define User  {${prefix}TheSameName}
+
+!|script                                                                    |
+|Open              |${TPAMURL}   ||${TPAMAdmin}     |     |${DefaultPwd}    |
+|Add user          |${User}      ||Password1        |     |fake             |
+|click             |id=Disabled                                             |
+|pause             |2000                                                    |
+|click             |id=SubmitChanges                                        |
+|waitForTextPresent|updated successfully                                    |
+|verifyText        |id=ResultsDiv||updated successfully                     |
+|click             |id=Delete                                               |
+|getConfirmation                                                            |
+|waitForTextPresent|successfully deleted                                    |
+|verifyText        |id=ResultsDiv||successfully deleted                     |
+|Add user          |${User}      ||Password1        |     |fake             |
+|type;             |id=sPassword |newPwd1                                   |
+|type;             |id=Confirm   |newPwd1                                   |
+|pause             |2000                                                    |
+|click             |id=SubmitChanges                                        |
+|waitForTextPresent|The password was successfully changed for               |
+|verifyText        |id=ResultsDiv||The password was successfully changed for|
+|click             |id=Delete                                               |
+|getConfirmation                                                            |
+|waitForTextPresent|successfully deleted                                    |
+|verifyText        |id=ResultsDiv||successfully deleted                     |

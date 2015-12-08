@@ -1,0 +1,10 @@
+!define FunctAcctwrongDescription {cn=nonExisting,dc=kantaten,dc=local}
+!include -c <AutoTestsWebDrv.PlatformsTesting.LdAp
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                  |
+|Add system   |${SystemName}|with address|${SystemAddress}|platform|${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-functAcctPwd ${FunctAcctPwd} -DomainName ${DomainName} -funcAcctDN ${FunctAcctwrongDescription}|
+|Test System  |${TestSystemFailed}                                                                                                                                                                                                  |
+|Update System|${SystemName}|            |--funcAcctDN ${FunctAcctDescription}                                                                                                                                                      |
+|Test System          |${TestSystemSuccessful}                                                                                                                                                                            |
+|Delete System        |${SystemName}                                                                                                                                                                                      |

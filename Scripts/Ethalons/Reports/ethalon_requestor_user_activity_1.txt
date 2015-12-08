@@ -1,0 +1,2 @@
+kl777RepRequestor1	Ivanov, Ivan	Requestor	Password	Retrieve Password	0	kl777RepSys/kl777RepAcc1	TPAMCONSOLE
+kl777RepRequestor1	Ivanov, Ivan	Requestor	Password	Request Release	0	kl777RepSys/kl777RepAcc1	TPAMCONSOLE

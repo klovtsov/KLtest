@@ -1,0 +1,8 @@
+
+!define CommandTimeout {100}
+
+!include <AutoTestsWebDrv.PlatformsTesting.NisPlus
+!include -c <CppScenarios.ScenarioLibrary
+!include -c <CppScenarios.NisPlus.PlatformSpecific
+
+

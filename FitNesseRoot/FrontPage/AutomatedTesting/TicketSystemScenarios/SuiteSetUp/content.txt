@@ -1,0 +1,8 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <TicketSystemScenarios.ScenarioLibrary
+!include -c <FrontPage.AutomatedTesting.SetUp
+
+!|script           |
+|Prepare Environment|
+
+!include -c <TicketSystemScenarios.TearDown

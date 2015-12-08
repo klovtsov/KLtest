@@ -1,0 +1,14 @@
+!define SystemName {${prefix}_Sybase}
+!define SystemPlatform {Sybase}
+!define SystemAddress {10.30.38.5}
+!define FunctAcct {sa2}
+!define FunctAcctPwd {A\)&(d|ef<j>k$l1}
+!define ManagedAccountPwd {A\)&(d|ef<j>k$l1}
+!define Port {5000}
+!define Catalog {master}
+
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.SybasePlatform.PlatformSpecific
+
+

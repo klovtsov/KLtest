@@ -1,0 +1,16 @@
+!|scenario        |Create account in AD|userName                       |with password                      |Password                      |                      |
+|$res=            |PowerShellScript    |manageADusers.ps1 create ${dcAddress} ${NETBIOSDomainName}\${dcFunctAcct} ${dcFunctAcctPwd} @userName @Password          |
+|Verify_Contain_OR|$res;;successful                                                                                                                              |
+|$res=            |PowerShellScript    |manageADgroups.ps1 addmember ${dcAddress} ${NETBIOSDomainName}\${dcFunctAcct} ${dcFunctAcctPwd} "Domain Admins" @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                              |
+
+!|scenario       |Delete Account on AD System                                 |acctName                                |
+|PowerShellScript|manageADusers.ps1 delete ${dcAddress} ${NETBIOSDomainName}\${dcFunctAcct} ${dcFunctAcctPwd} @acctName|
+
+!|scenario        |Check is NLA active|rslt                               |on computer                               |computer                               |
+|$res=            |PowerShellScript   |manageNLAsettings.ps1 -ComputerName @computer get -User ${NETBIOSDomainName}\${dcFunctAcct} -UserPwd ${dcFunctAcctPwd}|
+|Verify_Contain_OR|$res;;@rslt                                                                                                                               |
+
+!|scenario        |Set NLA setting |setting                                 |on computer                                 |computer                                 |
+|$res=            |PowerShellScript|manageNLAsettings.ps1 -ComputerName @computer -User ${NETBIOSDomainName}\${dcFunctAcct} -UserPwd ${dcFunctAcctPwd} set @setting|
+|Verify_Contain_OR|$res;;successful                                                                                                                                |

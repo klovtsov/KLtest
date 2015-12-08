@@ -1,0 +1,10 @@
+!contents
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.AixPlatform
+
+!define AuthorizedKeysFile {authorized_keys}
+!define ManagedAccountPwd {frujiE13}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.AixPlatform.PlatformSpecific
+!include -c <AutoTestsWebDrv.SshPlatformsTests.AixSshPlatform.PlatformSpecific

@@ -1,0 +1,8 @@
+!include -c <FrontPage.AutoTestsWebDrv.SetUp
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                              |
+|Create Web User       |${Requestor}                                  |

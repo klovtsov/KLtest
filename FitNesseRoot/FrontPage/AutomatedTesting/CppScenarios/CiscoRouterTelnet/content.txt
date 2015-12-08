@@ -1,0 +1,6 @@
+!include <AutomatedTesting.PlatformsTesting.CiscoRouterTelnet
+!include -c <CppScenarios.ScenarioLibrary
+!include -c <CppScenarios.CiscoRouterSsh.PlatformSpecific
+
+
+

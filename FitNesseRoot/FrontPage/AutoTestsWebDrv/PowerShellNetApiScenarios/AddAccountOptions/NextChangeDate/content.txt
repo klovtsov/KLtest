@@ -1,0 +1,12 @@
+!define ManagedAccount {${prefix}psAcnt}
+!define NextChangeDateYear {2017}
+!define NextChangeDateMonth {11}
+!define NextChangeDateDay {30}
+!define NextChangeDate {"${NextChangeDateYear},${NextChangeDateMonth},${NextChangeDateDay}"}
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                             |
+|Add system             |${SystemName}                                                                                 |with address|${SystemAddress}|platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-ChangeFrequency 0|
+|Add account            |${ManagedAccount}                                                                             |on system   |${SystemName}   |with options|-nextChangeDate ${NextChangeDate}                                                 |
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount} -propsToList accountname,nextChangeDt|contains    |${ManagedAccount}.*${NextChangeDateYear}-${NextChangeDateMonth}-${NextChangeDateDay}                           |
+|Delete System          |${SystemName}                                                                                                                                                                                                               |

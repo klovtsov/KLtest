@@ -1,0 +1,52 @@
+!contents
+
+!|scenario                        |Prepare Environment                                                                                                                            |
+|Add System                       |${SystemName}|               |${SystemAddress}|             |${SystemPlatform}|         |${FunctAcct}|         |${FuncAccPwd}                  |
+|Add Account                      |${ManagedAccount}                                                                                                                              |
+|Update PSM Details               |${ManagedAccount}                                                                                                                              |
+|Prepare User                     |${Requestor} |with first name|${Requestor}    |and last name|Smith            |with type|Basic       |and email|${Requestor}@${TPAMEMailDomain}|
+|Set User Permissions System Level|${Requestor} |               |\"PSM Privileged Access\"                                                                                        |
+
+
+
+!| scenario       |Add Account|accountName                                                                                                                                        |
+|$res=            |CLI        |${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName @accountName --Password ${ManagedAccountPassword} --AutoFlag N --MinimumApprovers 1|
+|Verify_Contain_OR|$res;;successful                                                                                                                                               |
+
+
+
+!| scenario       |Update PSM Details|accountName                                                                                                                                                                         |
+|$res=            |CLI               |${CLIBatch} UpdateEGPAccount --System ${SystemName} --Account @accountName  --ProxyType \"RDP - Interactive Login\" --EnableFlag Y  --MinApprovers 1 --PasswordMethod \"Not Stored\"|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                       |
+
+
+!| scenario        |Request Session                                 |
+|Login             |${TPAMURL}        | |${Requestor} | |${UserPwd} |
+|pause             |6000                                            |
+|clickOnLink       |link=Add Session Request                        |
+|type;             |id=SystemNm       |${SystemName}                |
+|type;             |id=AccountNm      |${ManagedAccount}            |
+|click             |id=Accounts       |                             |
+|click             |xpath=//input[@type='checkbox']                 |
+|click             |id=Details                                      |
+|type;             |id=RequestReason  |session request reason       |
+|pause             |1000                                            |
+|click             |id=SubmitChanges                                |
+|waitForTextPresent|submitted                                       |
+|$res=             |getText           |xpath=//div[@id='ResultsDiv']|
+|Verify_Contain_OR |$res;;Active/Approved                           |
+|pause             |10000                                           |
+|type;             |id=ResponseComment|cancel request               |
+|pause             |1000                                            |
+|click             |id=SubmitChanges                                |
+|waitForTextPresent|*The response * was submitted successfully*     |
+|stop                                                               |
+
+
+!|scenario         |Clear Environment                      |
+|Login             |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Remove System     |${SystemName}                          |
+|Hard-Delete System|${SystemName}                          |
+|Remove User       |${Requestor}                           |
+|stop                                                      |
+

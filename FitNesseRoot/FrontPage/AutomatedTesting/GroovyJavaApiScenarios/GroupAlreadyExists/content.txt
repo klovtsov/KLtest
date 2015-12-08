@@ -1,0 +1,8 @@
+!include -c <FrontPage.AutomatedTesting.GroovyJavaApiScenarios.ListCommands.ScenarioLibrary
+!include -c <FrontPage.AutomatedTesting.GroovyJavaApiScenarios.ScenarioLibrary
+
+
+!|script                                                            |
+|Add Group       |${prefix}GroupEx                                  |
+|Try to Add Group|${prefix}GroupEx||${prefix}GroupEx already exists.|
+|Delete Group    |${prefix}GroupEx                                  |

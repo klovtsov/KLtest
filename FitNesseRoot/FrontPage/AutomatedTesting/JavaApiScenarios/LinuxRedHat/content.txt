@@ -1,0 +1,8 @@
+!include <AutomatedTesting.PlatformsTesting.LinuxRedHat
+!*> Added to workaround Java API issues with difficult passwords
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.LinuxRedHat.PlatformSpecific
+*!
+!include -c <JavaApiScenarios.ScenarioLibrary
+

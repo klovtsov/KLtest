@@ -1,0 +1,766 @@
+##############################
+#### Common scenarios ########
+##############################
+
+
+
+!|scenario               |Create Environment                                                                         |
+|Login                   |${TPAMURL}       |             |${TPAMAdmin}        |                      |${DefaultPwd}  |
+|Create File             |${FilePath}      |             |${FileName}                                                |
+|Add System                                                                                                          |
+|Set Connection Tab                                                                                                  |
+|Add Fake System                                                                                                     |
+|Set Connection Tab                                                                                                  |
+|Add account             |${ManagedAccount}|with password|${ManagedAccountPwd}|and notification email|${AccountEMail}|
+|Add account             |${FakeAccount}   |with password|${ManagedAccountPwd}|and notification email|${AccountEMail}|
+|Logout                                                                                                              |
+|Add File                |${FileName}                                                                                |
+|Add File                |${FakeFile}                                                                                |
+|Create Account on System|${ManagedAccount}|             |${ManagedAccountPwd}                                       |
+|Add Collections                                                                                                     |
+|Create Users                                                                                                        |
+|Create Groups                                                                                                       |
+|Add Users To Groups                                                                                                 |
+|Set Membership                                                                                                      |
+#|Create Mailboxes                                                                                                    |
+#|Create Policies                                                                                                     |
+
+!|scenario|Create Policies|
+|Create File Policies     |
+|Create Password Policies |
+|Create Session Policies  |
+
+
+!|scenario     |Add Collections     |
+|Add Collection|${FileCollection}   |
+|Add Collection|${AccountCollection}|
+|Add Collection|${SystemCollection} |
+
+
+
+!|scenario    |Create Account on System              |accountName             |             |accountPassword             |
+|accountAction|${SystemPlatform};;create;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;@accountName;;@accountPassword|
+
+!|scenario    |Delete Account on System                          |accountName                          |
+|accountAction|${SystemPlatform};;delete;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;@accountName|
+
+
+!|scenario     |Create Mailboxes                                       |
+|Create Mailbox|${FileEmailAddr}                 ||${TPAMEMailPassword}|
+|Create Mailbox|${SystemEMail}                   ||${TPAMEMailPassword}|
+|Create Mailbox|${AccountEMail}                  ||${TPAMEMailPassword}|
+|Create Mailbox|${SystemEscalationEMail}         ||${TPAMEMailPassword}|
+|Create Mailbox|${ReviewerEscalationEMail}       ||${TPAMEMailPassword}|
+|Create Mailbox|${TicketNotifyEMail}             ||${TPAMEMailPassword}|
+|Create Mailbox|${SessionStartContactEMail}      ||${TPAMEMailPassword}|
+|Create Mailbox|${SessionReviewerEscalationEMail}||${TPAMEMailPassword}|
+|Create Mailbox|${SyncPwdContact}                ||${TPAMEMailPassword}|
+|Create Mailbox|${SyncPwdSubscriberEMail}        ||${TPAMEMailPassword}|
+
+!|scenario     |Drop Mailboxes                   |
+|Delete Mailbox|${FileEmailAddr}                 |
+|Delete Mailbox|${SystemEMail}                   |
+|Delete Mailbox|${AccountEMail}                  |
+|Delete Mailbox|${SessionStartContactEMail}      |
+|Delete Mailbox|${SystemEscalationEMail}         |
+|Delete Mailbox|${ReviewerEscalationEMail}       |
+|Delete Mailbox|${SessionReviewerEscalationEMail}|
+|Delete Mailbox|${TicketNotifyEMail}             |
+|Delete Mailbox|${SyncPwdContact}                |
+|Delete Mailbox|${SyncPwdSubscriberEMail}        |
+
+!|scenario              |Create Users                                                          |
+|Create User And Mailbox|${Auditor}                 ||${AuditorEMail}                 ||Auditor|
+|Create User And Mailbox|${GlobalGroupPpmApprover}  ||${GlobalGroupPpmApproverEMail}  ||Basic  |
+|Create User And Mailbox|${GlobalGroupPpmRequestor} ||${GlobalGroupPpmRequestorEMail} ||Basic  |
+|Create User And Mailbox|${GlobalGroupPpmReviewer}  ||${GlobalGroupPpmReviewerEMail}  ||Basic  |
+|Create User And Mailbox|${GlobalGroupPpmIsa}       ||${GlobalGroupPpmIsaEMail}       ||Basic  |
+|Create User And Mailbox|${GlobalGroupPpmPac}       ||${GlobalGroupPpmPacEMail}       ||Basic  |
+|Create User And Mailbox|${GlobalGroupPsmApprover}  ||${GlobalGroupPsmApproverEMail}  ||Basic  |
+|Create User And Mailbox|${GlobalGroupPsmRequestor} ||${GlobalGroupPsmRequestorEMail} ||Basic  |
+|Create User And Mailbox|${GlobalGroupPsmReviewer}  ||${GlobalGroupPsmReviewerEMail}  ||Basic  |
+|Create User And Mailbox|${GlobalGroupPsmIsa}       ||${GlobalGroupPsmIsaEMail}       ||Basic  |
+|Create User And Mailbox|${GlobalGroupPsmPac}       ||${GlobalGroupPsmPacEMail}       ||Basic  |
+|Create User And Mailbox|${GroupAccountApprover}    ||${GroupAccountApproverEMail}    ||Basic  |
+|Create User And Mailbox|${GroupAccountRequestor}   ||${GroupAccountRequestorEMail}   ||Basic  |
+|Create User And Mailbox|${GroupAccountReviewer}    ||${GroupAccountReviewerEMail}    ||Basic  |
+|Create User And Mailbox|${GroupAccountIsa}         ||${GroupAccountIsaEMail}         ||Basic  |
+|Create User And Mailbox|${GroupAccountPac}         ||${GroupAccountPacEMail}         ||Basic  |
+|Create User And Mailbox|${GroupFileApprover}       ||${GroupFileApproverEMail}       ||Basic  |
+|Create User And Mailbox|${GroupFileRequestor}      ||${GroupFileRequestorEMail}      ||Basic  |
+|Create User And Mailbox|${GroupFileIsa}            ||${GroupFileIsaEMail}            ||Basic  |
+|Create User And Mailbox|${GroupFilePac}            ||${GroupFilePacEMail}            ||Basic  |
+|Create User And Mailbox|${GroupSystemApprover}     ||${GroupSystemApproverEMail}     ||Basic  |
+|Create User And Mailbox|${GroupSystemRequestor}    ||${GroupSystemRequestorEMail}    ||Basic  |
+|Create User And Mailbox|${GroupSystemReviewer}     ||${GroupSystemReviewerEMail}     ||Basic  |
+|Create User And Mailbox|${GroupSystemIsa}          ||${GroupSystemIsaEMail}          ||Basic  |
+|Create User And Mailbox|${GroupSystemPac}          ||${GroupSystemPacEMail}          ||Basic  |
+|Create User And Mailbox|${GroupCollectionApprover} ||${GroupCollectionApproverEMail} ||Basic  |
+|Create User And Mailbox|${GroupCollectionRequestor}||${GroupCollectionRequestorEMail}||Basic  |
+|Create User And Mailbox|${GroupCollectionReviewer} ||${GroupCollectionReviewerEMail} ||Basic  |
+|Create User And Mailbox|${GroupCollectionIsa}      ||${GroupCollectionIsaEMail}      ||Basic  |
+|Create User And Mailbox|${GroupCollectionPac}      ||${GroupCollectionPacEMail}      ||Basic  |
+|Create User And Mailbox|${UserAccountApprover}     ||${UserAccountApproverEMail}     ||Basic  |
+|Create User And Mailbox|${UserAccountRequestor}    ||${UserAccountRequestorEMail}    ||Basic  |
+|Create User And Mailbox|${UserAccountReviewer}     ||${UserAccountReviewerEMail}     ||Basic  |
+|Create User And Mailbox|${UserAccountIsa}          ||${UserAccountIsaEMail}          ||Basic  |
+|Create User And Mailbox|${UserAccountPac}          ||${UserAccountPacEMail}          ||Basic  |
+|Create User And Mailbox|${UserFileApprover}        ||${UserFileApproverEMail}        ||Basic  |
+|Create User And Mailbox|${UserFileRequestor}       ||${UserFileRequestorEMail}       ||Basic  |
+|Create User And Mailbox|${UserFileIsa}             ||${UserFileIsaEMail}             ||Basic  |
+|Create User And Mailbox|${UserFilePac}             ||${UserFilePacEMail}             ||Basic  |
+|Create User And Mailbox|${UserSystemApprover}      ||${UserSystemApproverEMail}      ||Basic  |
+|Create User And Mailbox|${UserSystemRequestor}     ||${UserSystemRequestorEMail}     ||Basic  |
+|Create User And Mailbox|${UserSystemReviewer}      ||${UserSystemReviewerEMail}      ||Basic  |
+|Create User And Mailbox|${UserSystemIsa}           ||${UserSystemIsaEMail}           ||Basic  |
+|Create User And Mailbox|${UserSystemPac}           ||${UserSystemPacEMail}           ||Basic  |
+|Create User And Mailbox|${UserCollectionApprover}  ||${UserCollectionApproverEMail}  ||Basic  |
+|Create User And Mailbox|${UserCollectionRequestor} ||${UserCollectionRequestorEMail} ||Basic  |
+|Create User And Mailbox|${UserCollectionReviewer}  ||${UserCollectionReviewerEMail}  ||Basic  |
+|Create User And Mailbox|${UserCollectionIsa}       ||${UserCollectionIsaEMail}       ||Basic  |
+|Create User And Mailbox|${UserCollectionPac}       ||${UserCollectionPacEMail}       ||Basic  |
+|Create User And Mailbox|${UserWithoutPermissions}  ||${UserWithoutPermissionsEMail}  ||Basic  |
+
+
+
+
+!|scenario|Create Groups               |
+|Add Group|${GroupAccountApprovers}    |
+|Add Group|${GroupAccountRequestors}   |
+|Add Group|${GroupAccountReviewers}    |
+|Add Group|${GroupAccountIsas}         |
+|Add Group|${GroupAccountPacs}         |
+|Add Group|${GroupFileApprovers}       |
+|Add Group|${GroupFileRequestors}      |
+|Add Group|${GroupFileIsas}            |
+|Add Group|${GroupFilePacs}            |
+|Add Group|${GroupSystemApprovers}     |
+|Add Group|${GroupSystemRequestors}    |
+|Add Group|${GroupSystemReviewers}     |
+|Add Group|${GroupSystemIsas}          |
+|Add Group|${GroupSystemPacs}          |
+|Add Group|${GroupCollectionApprovers} |
+|Add Group|${GroupCollectionRequestors}|
+|Add Group|${GroupCollectionReviewers} |
+|Add Group|${GroupCollectionIsas}      |
+|Add Group|${GroupCollectionPacs}      |
+
+
+
+
+
+!|scenario        |Add Users To Groups                                           |
+|Add User To Group|${CLI_user_1}              ||\"Global PPM Requestor Group\"   |
+|Add User To Group|${CLI_user_1}              ||\"Global PSM Requestor Group\"   |
+|Add User To Group|${GlobalGroupPpmApprover}  ||\"Global PPM Approver Group\"    |
+|Add User To Group|${GlobalGroupPpmRequestor} ||\"Global PPM Requestor Group\"   |
+|Add User To Group|${GlobalGroupPpmReviewer}  ||\"Global PPM Reviewer Group\"    |
+|Add User To Group|${GlobalGroupPpmIsa}       ||\"Global PPM ISA Group\"         |
+|Add User To Group|${GlobalGroupPpmPac}       ||\"Global PPM Priv. Access Group\"|
+|Add User To Group|${GlobalGroupPsmApprover}  ||\"Global PSM Approver Group\"    |
+|Add User To Group|${GlobalGroupPsmRequestor} ||\"Global PSM Requestor Group\"   |
+|Add User To Group|${GlobalGroupPsmReviewer}  ||\"Global PSM Reviewer Group\"    |
+|Add User To Group|${GlobalGroupPsmIsa}       ||\"Global PSM ISA Group\"         |
+|Add User To Group|${GlobalGroupPsmPac}       ||\"Global PSM Priv. Access Group\"|
+|Add User To Group|${GroupAccountApprover}    ||${GroupAccountApprovers}         |
+|Add User To Group|${GroupAccountRequestor}   ||${GroupAccountRequestors}        |
+|Add User To Group|${GroupAccountReviewer}    ||${GroupAccountReviewers}         |
+|Add User To Group|${GroupAccountIsa}         ||${GroupAccountIsas}              |
+|Add User To Group|${GroupAccountPac}         ||${GroupAccountPacs}              |
+|Add User To Group|${GroupFileApprover}       ||${GroupFileApprovers}            |
+|Add User To Group|${GroupFileRequestor}      ||${GroupFileRequestors}           |
+|Add User To Group|${GroupFileIsa}            ||${GroupFileIsas}                 |
+|Add User To Group|${GroupFilePac}            ||${GroupFilePacs}                 |
+|Add User To Group|${GroupSystemApprover}     ||${GroupSystemApprovers}          |
+|Add User To Group|${GroupSystemRequestor}    ||${GroupSystemRequestors}         |
+|Add User To Group|${GroupSystemReviewer}     ||${GroupSystemReviewers}          |
+|Add User To Group|${GroupSystemIsa}          ||${GroupSystemIsas}               |
+|Add User To Group|${GroupSystemPac}          ||${GroupSystemPacs}               |
+|Add User To Group|${GroupCollectionApprover} ||${GroupCollectionApprovers}      |
+|Add User To Group|${GroupCollectionRequestor}||${GroupCollectionRequestors}     |
+|Add User To Group|${GroupCollectionReviewer} ||${GroupCollectionReviewers}      |
+|Add User To Group|${GroupCollectionIsa}      ||${GroupCollectionIsas}           |
+|Add User To Group|${GroupCollectionPac}      ||${GroupCollectionPacs}           |
+
+
+
+
+!| scenario               |Set Membership                                        |
+|Add File To Collection   |${SystemName}||${FileName}      ||${FileCollection}   |
+|Add Account To Collection|${SystemName}||${ManagedAccount}||${AccountCollection}|
+|Add System To Collection |${SystemName}||${SystemCollection}                    |
+
+
+!| scenario                    |Delete Membership                                     |
+|Remove File From Collection   |${SystemName}||${FileName}      ||${FileCollection}   |
+|Remove Account From Collection|${SystemName}||${ManagedAccount}||${AccountCollection}|
+|Remove System From Collection |${SystemName}||${SystemCollection}                    |
+
+
+
+
+!|scenario               |Remove Environment                           |
+|Open                    |${TPAMURL}   ||${TPAMAdmin} | |${DefaultPwd} |
+|pause                   |5000                                         |
+|Delete Membership                                                     |
+|Remove File             |${FileName}                                  |
+|Remove File             |${FakeFile}                                  |
+|Remove System           |${SystemName}                                |
+|Hard-Delete System      |${SystemName}                                |
+|Remove System           |${FakeSystem}                                |
+|Hard-Delete System      |${FakeSystem}                                |
+|Delete File             |${FilePath}  ||${FileName}                   |
+|Delete Collections                                                    |
+|Remove User From Group  |${CLI_user_1}||\"Global PPM Requestor Group\"|
+|Remove User From Group  |${CLI_user_1}||\"Global PSM Requestor Group\"|
+|Remove Users                                                          |
+|Remove Groups                                                         |
+|Delete Account on System|${ManagedAccount}                            |
+|Logout                                                                |
+#|Drop Mailboxes                                                        |
+#|Delete Policies                                                  |
+
+!|scenario              |Remove Users                                                          |
+|Remove User And Mailbox|${Auditor}                 ||${AuditorEMail}                 ||Auditor|
+|Remove User And Mailbox|${GlobalGroupPpmApprover}  ||${GlobalGroupPpmApproverEMail}  ||Basic  |
+|Remove User And Mailbox|${GlobalGroupPpmRequestor} ||${GlobalGroupPpmRequestorEMail} ||Basic  |
+|Remove User And Mailbox|${GlobalGroupPpmReviewer}  ||${GlobalGroupPpmReviewerEMail}  ||Basic  |
+|Remove User And Mailbox|${GlobalGroupPpmIsa}       ||${GlobalGroupPpmIsaEMail}       ||Basic  |
+|Remove User And Mailbox|${GlobalGroupPpmPac}       ||${GlobalGroupPpmPacEMail}       ||Basic  |
+|Remove User And Mailbox|${GlobalGroupPsmApprover}  ||${GlobalGroupPsmApproverEMail}  ||Basic  |
+|Remove User And Mailbox|${GlobalGroupPsmRequestor} ||${GlobalGroupPsmRequestorEMail} ||Basic  |
+|Remove User And Mailbox|${GlobalGroupPsmReviewer}  ||${GlobalGroupPsmReviewerEMail}  ||Basic  |
+|Remove User And Mailbox|${GlobalGroupPsmIsa}       ||${GlobalGroupPsmIsaEMail}       ||Basic  |
+|Remove User And Mailbox|${GlobalGroupPsmPac}       ||${GlobalGroupPsmPacEMail}       ||Basic  |
+|Remove User And Mailbox|${GroupAccountApprover}    ||${GroupAccountApproverEMail}    ||Basic  |
+|Remove User And Mailbox|${GroupAccountRequestor}   ||${GroupAccountRequestorEMail}   ||Basic  |
+|Remove User And Mailbox|${GroupAccountReviewer}    ||${GroupAccountReviewerEMail}    ||Basic  |
+|Remove User And Mailbox|${GroupAccountIsa}         ||${GroupAccountIsaEMail}         ||Basic  |
+|Remove User And Mailbox|${GroupAccountPac}         ||${GroupAccountPacEMail}         ||Basic  |
+|Remove User And Mailbox|${GroupFileApprover}       ||${GroupFileApproverEMail}       ||Basic  |
+|Remove User And Mailbox|${GroupFileRequestor}      ||${GroupFileRequestorEMail}      ||Basic  |
+|Remove User And Mailbox|${GroupFileIsa}            ||${GroupFileIsaEMail}            ||Basic  |
+|Remove User And Mailbox|${GroupFilePac}            ||${GroupFilePacEMail}            ||Basic  |
+|Remove User And Mailbox|${GroupSystemApprover}     ||${GroupSystemApproverEMail}     ||Basic  |
+|Remove User And Mailbox|${GroupSystemRequestor}    ||${GroupSystemRequestorEMail}    ||Basic  |
+|Remove User And Mailbox|${GroupSystemReviewer}     ||${GroupSystemReviewerEMail}     ||Basic  |
+|Remove User And Mailbox|${GroupSystemIsa}          ||${GroupSystemIsaEMail}          ||Basic  |
+|Remove User And Mailbox|${GroupSystemPac}          ||${GroupSystemPacEMail}          ||Basic  |
+|Remove User And Mailbox|${GroupCollectionApprover} ||${GroupCollectionApproverEMail} ||Basic  |
+|Remove User And Mailbox|${GroupCollectionRequestor}||${GroupCollectionRequestorEMail}||Basic  |
+|Remove User And Mailbox|${GroupCollectionReviewer} ||${GroupCollectionReviewerEMail} ||Basic  |
+|Remove User And Mailbox|${GroupCollectionIsa}      ||${GroupCollectionIsaEMail}      ||Basic  |
+|Remove User And Mailbox|${GroupCollectionPac}      ||${GroupCollectionPacEMail}      ||Basic  |
+|Remove User And Mailbox|${UserAccountApprover}     ||${UserAccountApproverEMail}     ||Basic  |
+|Remove User And Mailbox|${UserAccountRequestor}    ||${UserAccountRequestorEMail}    ||Basic  |
+|Remove User And Mailbox|${UserAccountReviewer}     ||${UserAccountReviewerEMail}     ||Basic  |
+|Remove User And Mailbox|${UserAccountIsa}          ||${UserAccountIsaEMail}          ||Basic  |
+|Remove User And Mailbox|${UserAccountPac}          ||${UserAccountPacEMail}          ||Basic  |
+|Remove User And Mailbox|${UserFileApprover}        ||${UserFileApproverEMail}        ||Basic  |
+|Remove User And Mailbox|${UserFileRequestor}       ||${UserFileRequestorEMail}       ||Basic  |
+|Remove User And Mailbox|${UserFileIsa}             ||${UserFileIsaEMail}             ||Basic  |
+|Remove User And Mailbox|${UserFilePac}             ||${UserFilePacEMail}             ||Basic  |
+|Remove User And Mailbox|${UserSystemApprover}      ||${UserSystemApproverEMail}      ||Basic  |
+|Remove User And Mailbox|${UserSystemRequestor}     ||${UserSystemRequestorEMail}     ||Basic  |
+|Remove User And Mailbox|${UserSystemReviewer}      ||${UserSystemReviewerEMail}      ||Basic  |
+|Remove User And Mailbox|${UserSystemIsa}           ||${UserSystemIsaEMail}           ||Basic  |
+|Remove User And Mailbox|${UserSystemPac}           ||${UserSystemPacEMail}           ||Basic  |
+|Remove User And Mailbox|${UserCollectionApprover}  ||${UserCollectionApproverEMail}  ||Basic  |
+|Remove User And Mailbox|${UserCollectionRequestor} ||${UserCollectionRequestorEMail} ||Basic  |
+|Remove User And Mailbox|${UserCollectionReviewer}  ||${UserCollectionReviewerEMail}  ||Basic  |
+|Remove User And Mailbox|${UserCollectionIsa}       ||${UserCollectionIsaEMail}       ||Basic  |
+|Remove User And Mailbox|${UserCollectionPac}       ||${UserCollectionPacEMail}       ||Basic  |
+|Remove User And Mailbox|${UserWithoutPermissions}  ||${UserWithoutPermissionsEMail}  ||Basic  |
+
+
+
+!|scenario   |Remove Groups               |
+|Delete Group|${GroupAccountApprovers}    |
+|Delete Group|${GroupAccountRequestors}   |
+|Delete Group|${GroupAccountReviewers}    |
+|Delete Group|${GroupAccountIsas}         |
+|Delete Group|${GroupAccountPacs}         |
+|Delete Group|${GroupFileApprovers}       |
+|Delete Group|${GroupFileRequestors}      |
+|Delete Group|${GroupFileIsas}            |
+|Delete Group|${GroupFilePacs}            |
+|Delete Group|${GroupSystemApprovers}     |
+|Delete Group|${GroupSystemRequestors}    |
+|Delete Group|${GroupSystemReviewers}     |
+|Delete Group|${GroupSystemIsas}          |
+|Delete Group|${GroupSystemPacs}          |
+|Delete Group|${GroupCollectionApprovers} |
+|Delete Group|${GroupCollectionRequestors}|
+|Delete Group|${GroupCollectionReviewers} |
+|Delete Group|${GroupCollectionIsas}      |
+|Delete Group|${GroupCollectionPacs}      |
+
+
+!|scenario|Delete Policies|
+|Delete File Policies     |
+|Delete Password Policies |
+|Delete Session Policies  |
+
+!|scenario        |Delete Collections  |
+|Delete Collection|${FileCollection}   |
+|Delete Collection|${AccountCollection}|
+|Delete Collection|${SystemCollection} |
+
+
+!|scenario     |Create User And Mailbox|UserName|             |UserMail|         |UserType  |
+|Add User      |@UserName              |        |${DefaultPwd}|        |@UserMail||@UserType|
+|pause         |2000                                                                        |
+|Change Pwd    |@UserName              |        |${DefaultPwd}|        |${UserPwd}          |
+|Create Mailbox|@UserMail              |        |${TPAMEMailPassword}                       |
+
+!|scenario     |Remove User And Mailbox|UserName||UserEmail|
+|Remove User   |@UserName                                  |
+|Delete Mailbox|@UserEmail                                 |
+
+!|scenario         |Add File       |fileName                                                                                                              |
+|$res =            |GroovyWebDriver|tryToCreateFile;${TPAMHost};${TPAMAdmin};${DefaultPwd};${SystemName};${FilePath}${FileName};@fileName;${FileEmailAddr}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                            |
+|Verify_Contain_OR |$res;;File created successfully                                                                                                       |
+
+!|scenario         |Remove File          |FileName          |
+|pause             |10000                                   |
+|clickOnLink       |link=Manage Files                       |
+|type;             |id=FileNm            |@FileName         |
+|click             |id=Listing                              |
+|click             |xpath=//td[contains(text(),'@FileName')]|
+|click             |id=Delete                               |
+|getConfirmation                                            |
+|waitForTextPresent|@FileName has been successfully deleted |
+
+!|scenario|Create File |filepath||filename|
+|runBatch |CreateFile2;@filepath;@filename|
+
+!|scenario|Delete File |filepath||filename|
+|runBatch |DeleteFile2;@filepath;@filename|
+
+
+!|scenario         |Hard-Delete System                        |systemName |
+|pause             |10000                                                 |
+|clickOnLink       |link=Deleted Systems                                  |
+|type;             |id=SystemNm                               |@systemName|
+|click             |id=Listing                                |           |
+|click             |xpath=//td[contains(text(),'@systemName')]|           |
+|click             |id=HardDeleteButton                       |           |
+|getConfirmation                                                          |
+|waitForTextPresent|has been successfully deleted                         |
+
+
+
+
+!| scenario             |Check Mail|user          |          |subject          |         |body         |
+|$res=                  |CheckMail |${MailServer};@user;${TPAMEMailPassword};${FromMail};@subject;@body|
+|Verify_Contain_OR_alnum|$res;;@body                                                                   |
+
+!| scenario             |Check No Mail|user          |          |subject          |         |body         |
+|$res=                  |CheckMail    |${MailServer};@user;${TPAMEMailPassword};${FromMail};@subject;@body|
+|Verify_Contain_OR_alnum|$res;;no messages                                                                |
+
+!| scenario             |Delete Mails|user                                    |
+|$res=                  |ClearMailbox|${MailServer};@user;${TPAMEMailPassword}|
+|Verify_Contain_OR_alnum|$res;;Messages deleted                               |
+
+
+!|scenario            |Add system                                 |
+|clickOnLink          |link=Add System                            |
+|waitForElementPresent|id=SystemName                              |
+|type;                |id=SystemName     |${SystemName}           |
+|type;                |id=NetworkAddress |${SystemAddress}        |
+|type;                |id=PrimaryEmail   |${SystemEMail}          |
+|type;                |id=EscalationTime |1                       |
+|type;                |id=EscalationEmail|${SystemEscalationEMail}|
+|select;              |id=PlatformID     |label=${SystemPlatform} |
+
+
+!|scenario            |Add Fake system                            |
+|clickOnLink          |link=Add System                            |
+|waitForElementPresent|id=SystemName                              |
+|type;                |id=SystemName     |${FakeSystem}           |
+|type;                |id=NetworkAddress |1.1.1.1                 |
+|type;                |id=PrimaryEmail   |fake@${TPAMEMailDomain} |
+|type;                |id=EscalationTime |1                       |
+|type;                |id=EscalationEmail|${SystemEscalationEMail}|
+|select;              |id=PlatformID     |label=${SystemPlatform} |
+
+
+!| scenario           |Get Login                                                     |
+|Login                |${TPAMURL}            |    |${Requestor}    |   |${UserPwd}   |
+|pause                |20000                                                         |
+|click                |id=CurrentRequests    |                                       |
+|click                |xpath=//table[@id='requestsTable']//tr[contains(@id,'P')]/td/a|
+|waitForElementPresent|id=Password                                                   |
+|pause                |20000                                                         |
+|Logout                                                                              |
+
+!|scenario          |Add account                                 |accountName|with password|accPwd|and notification email|accNotifyEmail|
+|clickOnLink        |link=Add Account                            |                                                                      |
+|type;              |id=SystemNm                                 |${SystemName}                                                         |
+|click              |id=System                                   |                                                                      |
+|click              |xpath=//td[contains(text(),'${SystemName}')]|                                                                      |
+|Set account details|@accountName                                |           |@accPwd      |      |@accNotifyEmail                      |
+|Set description    |${ManagedAccountDescription}                |                                                                      |
+|Set reviews                                                                                                                            |
+|Set PSM Details For Account                                                                                                            |
+
+!|scenario  |Choose Account                                                |accountName  |
+|pause      |10000                                                                       |
+|clickOnLink|link=Manage Accounts                                          |             |
+|type;      |id=SystemNm                                                   |${SystemName}|
+|click      |id=Listing                                                    |             |
+|click      |xpath=//table[@id='AccountListing']//td[text()='@accountName']|             |
+
+
+!|scenario         |Set account details       |accountName  | |accPwd | |accNotifyEmail |
+|click             |id=Details                |                                         |
+|pause             |1000                                                                |
+|type;             |id=AccountName            |@accountName                             |
+|type;             |id=sPswd                  |@accPwd                                  |
+|type;             |id=sConfPswd              |@accPwd                                  |
+|type;             |id=MinApprovers           |${ApproversCount}                        |
+|type;             |id=RelNotifyEmail         |@accNotifyEmail                          |
+|click             |id=SubmitChangesButton    |                                         |
+|waitForTextPresent|Changes saved successfully for @accountName                         |
+|click             |id=Management                                                       |
+|pause             |1000                                                                |
+|select;           |id=PasswordCheckProfileID |label=${PersistentPasswordCheckProfile1} |
+|select;           |id=PasswordChangeProfileID|label=${PersistentPasswordChangeProfile1}|
+|pause             |1000                                                                |
+|select;           |id=DurationQtrHrs         |label=15                                 |
+|select;           |id=DurationHrs            |label=0                                  |
+|click             |id=SubmitChangesButton    |                                         |
+|waitForTextPresent|Changes saved successfully for @accountName                         |
+
+
+
+
+!|scenario         |Set reviews                                      |
+|click             |id=Reviews            |                          |
+|pause             |1000                                             |
+|type;             |id=PwdReviewCnt       |${ReviewersCount}         |
+|type;             |id=PwdEscalationEmail |${ReviewerEscalationEMail}|
+|click             |id=SubmitChangesButton|                          |
+|waitForTextPresent|Changes saved successfully for                   |
+
+
+!|scenario         |Set PSM Details For Account                                          |
+|click             |id=PSMDetails             |                                          |
+|pause             |1000                                                                 |
+|click             |id=cb_EnableFl            |                                          |
+|select;           |id=ProxyType              |label=SSH - Automatic Login Using Password|
+|type;             |id=NotifyFreq             |60                                        |
+|type;             |id=NotifyThresh           |1                                         |
+|select;           |id=EgpDurationQtrHrs      |label=15                                  |
+|select;           |id=EgpDurationHrs         |label=0                                   |
+|click             |id=cb_RecordingRequiredFl |                                          |
+|type;             |id=SessionStartNotifyEmail|${SessionStartContactEMail}               |
+|click             |id=ReviewRequirements     |                                          |
+|type;             |id=ReviewCnt              |1                                         |
+|type;             |id=EscalationTime         |1                                         |
+|type;             |id=EscalationEmail        |${SessionReviewerEscalationEMail}         |
+|click             |id=SubmitChangesButton    |                                          |
+|waitForTextPresent|PSM Details saved successfully                                       |
+
+
+!|scenario        |Set User Permissions Account Level|userName                                            |                                            |userPermission                                           |
+|$res=            |CLI                               |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action ADD --SystemName ${SystemName} --AccountName ${ManagedAccount} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                              |
+
+!|scenario        |Remove User Permissions On Account|userName                                            |                                            |userPermission                                            |
+|$res=            |CLI                               |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action DROP --SystemName ${SystemName} --AccountName ${ManagedAccount} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                               |
+
+
+!|scenario        |Set Group Permissions Account Level|groupName                                            |                                            |groupPermission                                            |
+|$res=            |CLI                                |${CLIBatch} SetAccessPolicy --AccessPolicyName @groupPermission --Action ADD --SystemName ${SystemName} --AccountName ${ManagedAccount} --GroupName @groupName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                  |
+
+!|scenario        |Remove Group Permissions On Account|groupName                                             |                                            |groupPermission                                            |
+|$res=            |CLI                                |${CLIBatch} SetAccessPolicy --AccessPolicyName @groupPermission --Action DROP --SystemName ${SystemName} --AccountName ${ManagedAccount} --GroupName @groupName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                   |
+
+
+
+!|scenario        |Set User Permissions System Level|userName                                 |                                 |userPermission                                 |
+|$res=            |CLI                              |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action ADD --SystemName ${SystemName} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                             |
+
+!|scenario        |Remove User Permissions On System|userName                                  |                                 |userPermission                                 |
+|$res=            |CLI                              |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action DROP --SystemName ${SystemName} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                              |
+
+
+
+!|scenario        |Set Group Permissions System Level|groupName                                  |                                 |groupPermission                                 |
+|$res=            |CLI                               |${CLIBatch} SetAccessPolicy --AccessPolicyName @groupPermission --Action ADD --SystemName ${SystemName} --GroupName @groupName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                 |
+
+!|scenario        |Remove Group Permissions On System|groupName                                  |                                  |groupPermission                                 |
+|$res=            |CLI                               |${CLIBatch} SetAccessPolicy --AccessPolicyName @groupPermission --Action DROP --SystemName ${SystemName} --GroupName @groupName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                  |
+
+
+
+!|scenario        |Set User Permissions Collection Level|userName                  |                  |userPermission                  |                  |collectionName                 |
+|$res=            |CLI                                  |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action ADD --CollectionName @collectionName --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                       |
+
+!|scenario        |Remove User Permissions On Collection|userName                  |                  |userPermission                  |                  |collectionName                  |
+|$res=            |CLI                                  |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action DROP --CollectionName @collectionName --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                        |
+
+
+!|scenario        |Set Group Permissions Collection Level|groupName                  |                  |groupPermission                  |                  |collectionName                  |
+|$res=            |CLI                                   |${CLIBatch} SetAccessPolicy --AccessPolicyName @groupPermission --Action ADD --CollectionName @collectionName --GroupName @groupName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                           |
+
+!|scenario        |Remove Group Permissions On Collection|groupName                   |                  |groupPermission                  |                  |collectionName                  |
+|$res=            |CLI                                   |${CLIBatch} SetAccessPolicy --AccessPolicyName @groupPermission --Action DROP --CollectionName @collectionName --GroupName @groupName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                            |
+
+
+!|scenario        |Set User Permissions File Level|userName                                         |                                         |userPermission                                        |
+|$res=            |CLI                            |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action ADD --SystemName ${SystemName} --FileName ${FileName} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                  |
+
+!|scenario        |Remove User Permissions On File|userName                                         |                                         |userPermission                                         |
+|$res=            |CLI                            |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action DROP --SystemName ${SystemName} --FileName ${FileName} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                   |
+
+
+!|scenario        |Set Group Permissions File Level|GroupName                                         |                                         |groupPermission                                         |
+|$res=            |CLI                             |${CLIBatch} SetAccessPolicy --AccessPolicyName @groupPermission --Action ADD --SystemName ${SystemName} --FileName ${FileName} --GroupName @GroupName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                      |
+
+!|scenario        |Remove Group Permissions On File|GroupName                                          |                                         |groupPermission                                         |
+|$res=            |CLI                             |${CLIBatch} SetAccessPolicy --AccessPolicyName @groupPermission --Action DROP --SystemName ${SystemName} --FileName ${FileName} --GroupName @GroupName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                       |
+
+
+##############################################
+
+
+!|scenario        |Set User Permissions On Fake File|userName                                         |                                         |userPermission                                        |
+|$res=            |CLI                              |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action ADD --SystemName ${SystemName} --FileName ${FakeFile} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                    |
+
+!|scenario        |Remove User Permissions On Fake File|userName                                         |                                         |userPermission                                         |
+|$res=            |CLI                                 |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action DROP --SystemName ${SystemName} --FileName ${FakeFile} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                        |
+
+
+!|scenario        |Set User Permissions On Fake Account|userName                                           |                                           |userPermission                                          |
+|$res=            |CLI                                 |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action ADD --SystemName ${SystemName} --AccountName ${FakeAccount} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                             |
+
+!|scenario        |Remove User Permissions On Fake Account|userName                                           |                                           |userPermission                                           |
+|$res=            |CLI                                    |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action DROP --SystemName ${SystemName} --AccountName ${FakeAccount} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                 |
+
+
+!|scenario        |Set User Permissions On Fake System|userName                                 |                                 |userPermission                                 |
+|$res=            |CLI                                |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action ADD --SystemName ${FakeSystem} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                               |
+
+!|scenario        |Remove User Permissions On Fake System|userName                                  |                                 |userPermission                                 |
+|$res=            |CLI                                   |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action DROP --SystemName ${FakeSystem} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                   |
+
+
+##################################################
+
+
+!| scenario          |Request Password and Login               |
+|Login               |${TPAMURL}  ||${TPAMAdmin}||${DefaultPwd}|
+|pause               |20000                                    |
+|Set User Permissions|${Requestor}||"PPM Requestor"            |
+|Set User Permissions|${Approver} ||"PPM Approver"             |
+|Logout                                                        |
+|Request Pwd                                                   |
+|Approve Pwd                                                   |
+|Get Login                                                     |
+
+!|scenario        |Add User|UserName               |               |Password               |               |EMail               |               |UserType              |
+|$res=            |CLI     |${CLIBatch} AddUser --UserName @UserName --FirstName Testfirst --LastName Testlast --Password @Password --Email @EMail --UserType @UserType|
+|Verify_Contain_OR|$res;;successful                                                                                                                                    |
+
+!|scenario        |Add Group|GroupName                                                                  |
+|$res=            |CLI      |${CLIBatch} AddGroup --GroupName @GroupName --Description "TPAM Test Group"|
+|Verify_Contain_OR|$res;;successful                                                                     |
+
+
+!|scenario        |Add User To Group|UserName                 |                 |GroupName                 |
+|$res=            |CLI              |${CLIBatch} AddGroupMember --UserName @UserName --GroupName @GroupName|
+|Verify_Contain_OR|$res;;successful                                                                        |
+
+
+!|scenario        |Remove User From Group|UserName                  |                 |GroupName                 |
+|$res=            |CLI                   |${CLIBatch} DropGroupMember --UserName @UserName --GroupName @GroupName|
+|Verify_Contain_OR|$res;;successful                                                                              |
+
+
+!|scenario        |Delete Group|GroupName                                   |
+|$res=            |CLI         |${CLIBatch} DropGroup --GroupName @GroupName|
+|Verify_Contain_OR|$res;;successful                                         |
+
+!|scenario        |Remove User|UserName                                   |
+|$res=            |CLI        |${CLIBatch} DeleteUser --UserName @UserName|
+|Verify_Contain_OR|$res;;successful                                       |
+
+!|scenario        |Remove Account|UserName                 |                 |SystemName                 |
+|$res=            |CLI           |${CLIBatch} DeleteAccount --SystemName @SystemName --UserName @UserName|
+|Verify_Contain_OR|$res;;successful                                                                      |
+
+!|scenario        |Remove System|SystemName                                       |
+|$res=            |CLI          |${CLIBatch} DeleteSystem --SystemName @SystemName|
+|Verify_Contain_OR|$res;;successful                                               |
+
+
+
+
+!|scenario        |Add Collection|CollectionName                                                                                 |
+|$res=            |CLI           |${CLIBatch} AddCollection --CollectionName @CollectionName --Description "TPAM Test Collection"|
+|Verify_Contain_OR|$res;;successful                                                                                              |
+
+
+!|scenario        |Add System To Collection|SystemName                     |                     |CollectionName                     |
+|$res=            |CLI                     |${CLIBatch} AddCollectionMember --SystemName @SystemName --CollectionName @CollectionName|
+|Verify_Contain_OR|$res;;successful                                                                                                  |
+
+!|scenario        |Add Account To Collection|SystemName                |                |AccountName               |               |CollectionName               |
+|$res=            |CLI                      |${CLIBatch} AddCollectionMember --AccountName @AccountName --SystemName @SystemName --CollectionName @CollectionName|
+|Verify_Contain_OR|$res;;successful                                                                                                                              |
+
+!|scenario        |Add File To Collection|SystemName               |               |FileName               |               |CollectionName              |
+|$res=            |CLI                   |${CLIBatch} AddCollectionMember --FileName @FileName --SystemName @SystemName --CollectionName @CollectionName|
+|Verify_Contain_OR|$res;;successful                                                                                                                     |
+
+
+
+
+!|scenario        |Delete Collection|CollectionName                                             |
+|$res=            |CLI              |${CLIBatch} DropCollection --CollectionName @CollectionName|
+|Verify_Contain_OR|$res;;successful                                                             |
+
+
+!|scenario        |Remove File From Collection|SystemName               |               |FileName               |               |CollectionName               |
+|$res=            |CLI                        |${CLIBatch} DropCollectionMember --FileName @FileName --SystemName @SystemName --CollectionName @CollectionName|
+|Verify_Contain_OR|$res;;successful                                                                                                                           |
+
+!|scenario        |Remove Account From Collection|SystemName                |                |AccountName                |               |CollectionName               |
+|$res=            |CLI                           |${CLIBatch} DropCollectionMember --AccountName @AccountName --SystemName @SystemName --CollectionName @CollectionName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                    |
+
+
+!|scenario        |Remove System From Collection|SystemName                      |                     |CollectionName                     |
+|$res=            |CLI                          |${CLIBatch} DropCollectionMember --SystemName @SystemName --CollectionName @CollectionName|
+|Verify_Contain_OR|$res;;successful                                                                                                        |
+
+
+!|scenario  |Choose system                                             |
+|clickOnLink|link=Manage Systems                                       |
+|pause      |5000                                                      |
+|type;      |id=SystemNm                                 |${SystemName}|
+|click      |id=Listing                                                |
+|click      |xpath=//td[contains(text(),'${SystemName}')]|             |
+
+
+
+!|scenario  |Choose Group         |groupName          |
+|clickOnLink|link=Manage Groups                       |
+|type;      |id=GroupNm           |@groupName         |
+|click      |id=Listing                               |
+|click      |xpath=//td[contains(text(),'@groupName')]|
+
+
+
+!|scenario         |Set Connection Tab                     |
+|click             |id=Connection     |                    |
+|type;             |id=PARFuncAcct    |${FunctAcct}        |
+|type;             |id=pword          |${FunctAcctPwd}     |
+|type;             |id=ConfPword      |${FunctAcctPwd}     |
+|type;             |id=Timeout        |${SystemTimeout}    |
+|click             |id=bt_Save        |                    |
+|waitForTextPresent|System changes for * saved successfully|
+
+
+!|scenario    |Create File Policies                 |
+|Create Policy|${FileRequestorPolicy}||File||Request|
+|Create Policy|${FileApproverPolicy} ||File||Approve|
+|Create Policy|${FileIsaPolicy}      ||File||ISA    |
+|Create Policy|${FilePacPolicy}      ||File||PrivAcc|
+|Create Policy|${FileDeniedPolicy}   ||File||Denied |
+
+!|scenario    |Create Password Policies                     |
+|Create Policy|${PasswordRequestorPolicy}||Password||Request|
+|Create Policy|${PasswordApproverPolicy} ||Password||Approve|
+|Create Policy|${PasswordReviewerPolicy} ||Password||Review |
+|Create Policy|${PasswordIsaPolicy}      ||Password||ISA    |
+|Create Policy|${PasswordPacPolicy}      ||Password||PrivAcc|
+|Create Policy|${PasswordDeniedPolicy}   ||Password||Denied |
+
+!|scenario    |Create Session Policies                    |
+|Create Policy|${SessionApproverPolicy} ||Session||Approve|
+|Create Policy|${SessionRequestorPolicy}||Session||Request|
+|Create Policy|${SessionReviewerPolicy} ||Session||Review |
+|Create Policy|${SessionIsaPolicy}      ||Session||ISA    |
+|Create Policy|${SessionPacPolicy}      ||Session||PrivAcc|
+|Create Policy|${SessionDeniedPolicy}   ||Session||Denied |
+
+
+!|scenario    |Delete File Policies  |
+|Delete Policy|${FileRequestorPolicy}|
+|Delete Policy|${FileApproverPolicy} |
+|Delete Policy|${FileIsaPolicy}      |
+|Delete Policy|${FilePacPolicy}      |
+|Delete Policy|${FileDeniedPolicy}   |
+
+!|scenario    |Delete Password Policies  |
+|Delete Policy|${PasswordRequestorPolicy}|
+|Delete Policy|${PasswordApproverPolicy} |
+|Delete Policy|${PasswordReviewerPolicy} |
+|Delete Policy|${PasswordIsaPolicy}      |
+|Delete Policy|${PasswordPacPolicy}      |
+|Delete Policy|${PasswordDeniedPolicy}   |
+
+!|scenario    |Delete Session Policies  |
+|Delete Policy|${SessionApproverPolicy} |
+|Delete Policy|${SessionRequestorPolicy}|
+|Delete Policy|${SessionReviewerPolicy} |
+|Delete Policy|${SessionIsaPolicy}      |
+|Delete Policy|${SessionPacPolicy}      |
+|Delete Policy|${SessionDeniedPolicy}   |
+
+
+
+
+
+!|scenario         |Create Policy |policyName||object||permission|
+|pause             |10000                                        |
+|clickOnLink       |link=Access Policies                         |
+|click             |id=AddPolicyButton                           |
+|type;             |id=PolicyName |@policyName                   |
+|type;             |id=Description|test policy for @permission   |
+|click             |id=cbxAPDtlType@object                       |
+|click             |id=cbx@permission                            |
+|click             |id=SubmitChangesButton                       |
+|waitForTextPresent|Access Policy saved successfully             |
+
+!|scenario         |Delete Policy                             |policyName |
+|pause             |10000                                                 |
+|clickOnLink       |link=Access Policies                                  |
+|type;             |id=filtPolicyName                         |@policyName|
+|click             |id=Listing                                            |
+|click             |xpath=//td[contains(text(),'@policyName')]|           |
+|click             |id=Details                                            |
+|click             |id=cbxActiveFl                                        |
+|click             |id=SubmitChangesButton                                |
+|waitForTextPresent|Access Policy saved successfully                      |
+|click             |id=DeleteButton                                       |
+|getConfirmation                                                          |
+|waitForTextPresent|Access Policy successfully deleted.                   |
+                                                                                                              
+

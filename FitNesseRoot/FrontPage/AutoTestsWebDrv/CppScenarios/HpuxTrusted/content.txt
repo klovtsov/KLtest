@@ -1,0 +1,7 @@
+!include -c <AutoTestsWebDrv.KnownIssues.ScenarioLibrary
+!include <AutoTestsWebDrv.PlatformsTesting.HpuxTrusted
+!include -c <AutoTestsWebDrv.CppScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.HpuxShadow.PlatformSpecific
+!include -c <AutoTestsWebDrv.PlatformsTesting.PlatformSpecific.PasswordRuleNoMoreThanEightCharacters
+!include -c <AutoTestsWebDrv.CliScenarios.PlatformSpecific.PasswordRuleNoMoreThanEightCharacters
+

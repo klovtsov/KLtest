@@ -1,0 +1,26 @@
+!contents
+
+
+
+!define OSType {Win}
+!define ProxyType {RDP}
+!define CommandText {notepad.exe}
+!define WorkingDir {%SystemRoot%\system32\}
+
+
+!define SystemName {${prefix}_Windows}
+!define SystemPlatform {Windows}
+!define SystemAddress {10.30.38.23}
+!define FunctAcct {cotin}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {grain41R}
+
+
+!include -c .FrontPage.AutomatedTesting.PcmScenarios.ScenarioLibrary
+!include -c .FrontPage.AutomatedTesting.PcmScenarios.WindowsLocalHost.PlatformSpecific
+
+
+!|script      |
+|Prepare Test |
+|Run Command |
+|Clear Objects|

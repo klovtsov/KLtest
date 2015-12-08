@@ -1,0 +1,31 @@
+!contents
+
+
+!define SystemName {${prefix}SimSystem}
+!define SystemPlatform {Windows Desktop}
+!define SystemAddress {10.30.38.23}
+!define FunctAcct {cotin}
+!define FunctAcctPwd {frujiE15}
+
+
+!define seleniumTimeout {200}
+
+!define PathToBatch {${ProjDir}\Scripts\Batch\}
+!define UsersFileName {Sim_Users_List.txt}
+!define AccountsFileName {Sim_Accounts_List.txt}
+!define PermissionsFileName {Sim_Permissions_List.txt}
+
+!define UserBaseName {simuser}
+!define UserName {${prefix}simuser}
+!define UserType {Basic}
+!define UserInterface {web}
+!define UserInitialPassword {${DefaultPwd}}
+
+!define AccountBaseName {Simacc}
+!define AccountName {${prefix}Simacc}
+!define AccountInitialPassword {grain41R}
+
+!define UsersQuantity {100}
+!define AccountsQuantity {100}
+
+!define PolicyName {Requestor}

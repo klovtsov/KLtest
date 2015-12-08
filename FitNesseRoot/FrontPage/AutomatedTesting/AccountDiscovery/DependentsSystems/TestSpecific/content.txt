@@ -1,0 +1,136 @@
+#!|scenario            |Run AccDiscovery                       |
+#|Choose System        |${SystemName}                          |
+#|click                |id=AccountDiscovery                    |
+#|waitForElementPresent|id=btnRunDiscovery                     |
+#|click                |id=btnRunDiscovery                     |
+#|pause                |5000                                   |
+#|waitForElementPresent|id=btnRefresh                          |
+#|Logout                                                       |
+#|pause                |60000                                  |
+#|Open                 |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+
+!|scenario    |Create Account on System                                                                                                   |
+|accountAction|${AdSystemPlatform};;create;;${AdSystemAddress};;${AdFunctAcct};;${AdFunctAcctPwd};;${ManagedAccount};;${ManagedAccountPwd}|
+
+!|scenario    |Delete Account on System                                                                             |
+|accountAction|${AdSystemPlatform};;delete;;${AdSystemAddress};;${AdFunctAcct};;${AdFunctAcctPwd};;${ManagedAccount}|
+
+!|scenario         |Set password           |accountName||accPwd|
+|click             |id=Details             |                   |
+|type;             |id=AccountName         |@accountName       |
+|type;             |id=sPswd               |@accPwd            |
+|type;             |id=sConfPswd           |@accPwd            |
+|click             |id=SubmitChangesButton |                   |
+|waitForTextPresent|Changes saved successfully for @accountName|
+
+!|scenario            |Add AD account                          |accountName|with password|accPwd|
+|clickAndWait         |link=Add Account                        |                                |
+|type;                |id=SystemNm                             |${AdSystemName}                 |
+|click                |id=System                               |                                |
+|waitForElementPresent|//td[contains(text(),'${AdSystemName}')]|                                |
+|mouseDown            |//td[contains(text(),'${AdSystemName}')]|                                |
+|click                |//td[contains(text(),'${AdSystemName}')]|                                |
+|Set password         |@accountName                            |           |@accPwd             |
+|Set description      |${ManagedAccountDescription}            |                                |
+
+#!|scenario        |Check name                                                 |
+#|Choose Ad Account|${ManagedAccount}                                          |
+#|click            |id=Dependents                                              |
+#|click            |id=cb_Assigned                                             |
+#|click            |xpath=(//a[contains(text(),'Results')])[2]                 |
+#|verifyText       |xpath=(//table[@id='dependentTable'])[2].0.0||${SystemName}|
+
+!|scenario        |Check name                                                                                                                   |
+|$res=            |CLI|${CLIBatch} ListDependentSystems --systemname ${AdSystemName} --accountname ${ManagedAccount} --DependentStatus Dependent|
+|Verify_Contain_OR|$res;;${SystemName}                                                                                                          |
+
+!|scenario       |Create Template                                                             |
+|Add system                                                                                   |
+|Set Connection Tab                                                                           |
+|Set FuncAccEMail|${FuncAccEMail}                                                             |
+|Add account     |${AutoDiscoveryAccount1}|with password|${AutoDiscoveryAccountPassword1}||suc|
+|Choose System   |${SystemName}                                                               |
+|Set Template                                                                                 |
+
+!|scenario            |Add system                               |
+|clickAndWait         |link=Add System                          |
+|waitForElementPresent|id=SystemName                            |
+|type;                |id=SystemName    |${SystemName}          |
+|type;                |id=NetworkAddress|${SystemAddress}       |
+|type;                |id=PrimaryEmail  |${SystemEMail}         |
+|select;              |id=PlatformID    |label=${SystemPlatform}|
+
+!|scenario            |Choose Ad Account                                       |accountName    |
+|pause                |5000                                                                    |
+|waitForElementPresent|link=Manage Accounts                                    |               |
+|click                |link=Manage Accounts                                    |               |
+|pause                |60000                                                                   |
+|waitForElementPresent|id=SystemNm                                             |               |
+|type;                |id=SystemNm                                             |${AdSystemName}|
+|click                |id=Listing                                              |               |
+|waitForElementPresent|//table[@id='AccountListing']//td[text()='@accountName']|               |
+|mouseDown            |//table[@id='AccountListing']//td[text()='@accountName']|               |
+|click                |//table[@id='AccountListing']//td[text()='@accountName']|               |
+
+!|scenario            |Create Account Discovery Profile                                            |
+|click                |link=Profile Management                                                     |
+|pause                |5000                                                                        |
+|waitForElementPresent|id=NewButton  |                                                             |
+|click                |id=NewButton                                                                |
+|type;                |id=ProfileName|${ProfileName}                                               |
+|type;                |id=Description|Description                                                  |
+|Add Detail           |0             ||Create Account||${TemplateName}/${FunctAcct}|||||||||||||||||
+|click                |css=input.autoServiceFl.autoDiscCtrl                                        |
+|click                |id=SaveButton                                                               |
+|waitForTextPresent   |The profile saved successfully                                              |
+
+
+!|scenario|Account Discovery                      |
+|Open     |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Netbios name                                     |
+|Fqdn name                                        |
+
+
+!| scenario                        |Netbios name                                                                                            |
+|Create Account on AD System       |${ManagedAccount}                    |with password            |"${ManagedAccountPwd}"                  |
+|Add AD system                                                                                                                              |
+|Add AD account                    |${ManagedAccount}                    |with password            |${ManagedAccountPwd}                    |
+|Create Template                                                                                                                            |
+|Create Account Discovery Profile                                                                                                           |
+|Create Service which is run by    |${ServiceAccount}                    |and run under password is|${ManagedAccountPwd}|on|${SystemAddress}|
+|Start Service                     |${SuccessServiceStartResult}         |on                       |${SystemAddress}                        |
+|Set AccDiscovery profile to System|${ProfileName}                       |                         |${SystemName}                           |
+|Run AccDiscovery                                                                                                                           |
+|Check name                                                                                                                                 |
+|Stop Service on                   |${SystemAddress}                                                                                        |
+|Delete Service on                 |${SystemAddress}                                                                                        |
+|Set AccDiscovery profile to System|No Account Discovery Profile selected|                         |${SystemName}                           |
+|Delete Account Discovery Profile  |${ProfileName}                                                                                          |
+|Remove system                     |${SystemName}                                                                                           |
+|Remove system                     |${AdSystemName}                                                                                         |
+|Remove system                     |${TemplateName}                                                                                         |
+|Delete Account on System                                                                                                                   |
+
+!| scenario                        |Fqdn name                                                                                               |
+|Create Account on AD System       |${ManagedAccount}                    |with password            |"${ManagedAccountPwd}"                  |
+|Add AD system                                                                                                                              |
+|Add AD account                    |${ManagedAccount}                    |with password            |${ManagedAccountPwd}                    |
+|Create Template                                                                                                                            |
+|Create Account Discovery Profile                                                                                                           |
+|Create Service which is run by    |${ServiceAccountfqdn}                |and run under password is|${ManagedAccountPwd}|on|${SystemAddress}|
+|Start Service                     |${SuccessServiceStartResult}         |on                       |${SystemAddress}                        |
+|Set AccDiscovery profile to System|${ProfileName}                       |                         |${SystemName}                           |
+|Run AccDiscovery                                                                                                                           |
+|Check name                                                                                                                                 |
+|Stop Service on                   |${SystemAddress}                                                                                        |
+|Delete Service on                 |${SystemAddress}                                                                                        |
+|Set AccDiscovery profile to System|No Account Discovery Profile selected|                         |${SystemName}                           |
+|Delete Account Discovery Profile  |${ProfileName}                                                                                          |
+|Remove system                     |${SystemName}                                                                                           |
+|Remove system                     |${AdSystemName}                                                                                         |
+|Remove system                     |${TemplateName}                                                                                         |
+|Delete Account on System                                                                                                                   |
+
+!| scenario       |Add account|acc                                 |with password                                 |pwd                                 |                                 |testRes                                 |
+|$res=            |CLI        |${CLIBatch} AddAccount --System ${SystemName} --AccountName @acc --Password \"@pwd\" --Description \"${ManagedAccountDescription}\" --ChangeServiceFlag Y --ChangeTaskFlag Y --RestartServiceFlag Y|
+|Verify_Contain_OR|$res;;@testRes                                                                                                                                                                                                 |

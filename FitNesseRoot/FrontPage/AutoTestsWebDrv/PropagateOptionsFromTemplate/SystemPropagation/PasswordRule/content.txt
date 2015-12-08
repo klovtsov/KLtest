@@ -1,0 +1,19 @@
+!define newSystemAddress {10.30.45.65}
+!define pwdRuleName {${prefix}NewPwdRule}
+!include -c <AutoTestsWebDrv.PasswordRules.ScenarioLibrary
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+
+!4 Create system, make template from system and create system from template
+!|script                                                                                                                                                                                                                               |
+|Login               |${TPAMAdminURL} |               |${TPAMMaster}                                                         |            |${MasterPwd}                                                                                |
+|Create Password Rule|${pwdRuleName}                                                                                                                                                                                                   |
+|Logout                                                                                                                                                                                                                                |
+|Add system          |${SystemName}   |with address   |${SystemAddress}                                                      |platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-PasswordRule ${pwdRuleName}|
+|Make System Template|${TemplateName} |from           |${SystemName}                                                         |with account|${FunctAcct}                                                                                |
+|Try to Add system   |${newSystemName}|with parameters|-systemAddress ${newSystemAddress} -templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully                                      |
+
+!4 Check new system properties
+!|script                                                                                                                     |
+|List Systems by|-systemName ${newSystemName}|output params|SystemName,PasswordRule|contain|${newSystemName}\s+${pwdRuleName}|

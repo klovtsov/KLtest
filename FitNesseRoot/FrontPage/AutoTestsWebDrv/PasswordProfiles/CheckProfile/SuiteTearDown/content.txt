@@ -1,0 +1,34 @@
+!*> Includes
+''System''
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+''Libraries''
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <PasswordProfiles.ScenarioLibrary
+*!
+
+!|script                                                                       |
+|Open                   |${TPAMURL} ||${TPAMAdmin}              ||${DefaultPwd}|
+|Delete Account on System                                                      |
+|Delete System          |${CLIBatch}||--SystemName ${SystemName}||successfully |
+|Delete Password Profile|Check      ||${CheckProfile1NismatchDonothing}        |
+|Delete Password Profile|Check      ||${CheckProfile2NismatchReset}            |
+|Delete Password Profile|Check      ||${CheckProfile3NismatchDisable}          |
+|Delete Password Profile|Check      ||${CheckProfile4NismatchLock}             |
+|Delete Password Profile|Check      ||${CheckProfile5FailureDoNothing}         |
+|Delete Password Profile|Check      ||${CheckProfile6FailureDisable}           |
+|Delete Password Profile|Check      ||${CheckProfile7FailureLock}              |
+|Delete Password Profile|Check      ||${NoSchedule}                            |
+|Delete Password Profile|Check      ||${DailySchedule}                         |
+|Delete Password Profile|Check      ||${Weekly1Schedule}                       |
+|Delete Password Profile|Check      ||${Weekly2Schedule}                       |
+|Delete Password Profile|Check      ||${Weekly3Schedule}                       |
+|Delete Password Profile|Check      ||${Weekly4Schedule}                       |
+|Delete Password Profile|Check      ||${EverySchedule}                         |
+|Delete Password Profile|Check      ||${MonthlyFirstSchedule}                  |
+|Delete Password Profile|Check      ||${MonthlyLastSchedule}                   |
+|Delete Password Profile|Check      ||${MonthlyDaysOfSchedule}                 |
+|Delete Mailbox         |${SystemEMail}                                        |
+|stop                                                                          |
+
+
+

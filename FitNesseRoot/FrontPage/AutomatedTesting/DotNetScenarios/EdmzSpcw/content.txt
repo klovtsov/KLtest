@@ -1,0 +1,4 @@
+!include <AutomatedTesting.PlatformsTesting.EdmzSpcw
+!include -c <DotNetScenarios.ScenarioLibrary
+!include -c <DotNetScenarios.EdmzSpcw2.PlatformSpecific
+

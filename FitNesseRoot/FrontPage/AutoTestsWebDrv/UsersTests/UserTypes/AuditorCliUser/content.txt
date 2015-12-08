@@ -1,0 +1,91 @@
+!*> Includes
+!include -c <AutoTestsWebDrv.UsersTests.ScenarioLibrary
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+*!
+
+!*> Prepare
+!|script                                                                                                                                                                       |
+|Open                 |${TPAMURL}        ||${TPAMAdmin}                                                                                                         ||${DefaultPwd}|
+|Add CLI User         |${AuditorUserName}||Auditor                                                                                                                             |
+|Add System           |${CLIBatch}       ||--SystemName ${SystemName2} --PlatformName ${PlatformName} --NetworkAddress ${NetworkAddress}                        ||successfully |
+|Add Account          |${CLIBatch}       ||--SystemName ${SystemName2} --AccountName ${AccountName}2                                                            ||successfully |
+|Add Group            |${CLIBatch}       ||--GroupName ${GroupName}2                                                                                            ||successfully |
+|Add Collection       |${CLIBatch}       ||--CollectionName ${CollectionName}                                                                                   ||successfully |
+|Add Collection member|${CLIBatch}       ||--CollectionName ${CollectionName} --SystemName ${SystemName2}                                                       ||successfully |
+|Add User             |${CLIBatch}       ||--UserName ${UserName}2 --LastName test --FirstName test                                                             ||successfully |
+|Update PSM Account   |${CLIBatch}       ||--System ${SystemName2} --Account ${AccountName}2 --EnableFlag Y --ProxyType \"RDP - Automatic Login Using Password\"||successfully |
+|Add Grp member       |${CLIBatch}       ||--GroupName ${GroupName}2 --UserName ${UserName}2                                                                    ||successfully |
+*!
+
+!|script                                                                                                                                                                                                                                                                                                |
+|Add System                    |${CLIBatchAuditorUser}||--SystemName ${SystemName} --PlatformName ${PlatformName} --NetworkAddress ${NetworkAddress}                                            ||You do not have a valid UserID to perform this operation.                                             |
+|Add Account                   |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}                                                                                ||${AuditorUserName} is not authorized.                                                                 |
+|Add User                      |${CLIBatchAuditorUser}||--UserName ${UserName} --FirstName Kaizer --LastName Sozo                                                                               ||${AuditorUserName} is not authorized to modify users.                                                 |
+|Add Group                     |${CLIBatchAuditorUser}||--GroupName ${GroupName}                                                                                                                ||${AuditorUserName} is not authorized to save groups.                                                  |
+|Add Grp member                |${CLIBatchAuditorUser}||--GroupName ${GroupName}2 --UserName ${AuditorUserName}                                                                                 ||${AuditorUserName} is not authorized to update group membership.                                      |
+|Add Collection                |${CLIBatchAuditorUser}||--CollectionName ${CollectionName}2                                                                                                     ||${AuditorUserName} is not authorized save collections.                                                |
+|Add Collection member         |${CLIBatchAuditorUser}||--CollectionName ${CollectionName} --SystemName  ${SystemName2}                                                                         ||${AuditorUserName} is not authorized to add collection members                                        |
+|Add Collection member         |${CLIBatchAuditorUser}||--CollectionName ${CollectionName} --SystemName  ${SystemName2} --AccountName  ${AccountName}2                                          ||${AuditorUserName} is not authorized to add collection members                                        |
+|Add PwdRequest                |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}2                                                                               ||${AuditorUserName} is not authorized to add requests                                                  |
+|Add SyncPass                  |${CLIBatchAuditorUser}||--SyncPassName ${SyncPassName}                                                                                                          ||${AuditorUserName} is not authorized.                                                                 |
+|List Systems                  |${CLIBatchAuditorUser}||--SystemName ${SystemName2}                                                                                                             ||${SystemName2}                                                                                        |
+|List Accounts                 |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}2                                                                               ||${AccountName}2                                                                                       |
+|List Users                    |${CLIBatchAuditorUser}||--UserName ${UserName}2                                                                                                                 ||${UserName}                                                                                           |
+|List Groups                   |${CLIBatchAuditorUser}||--GroupName ${GroupName}2                                                                                                               ||${GroupName}2                                                                                         |
+|List Group Membership         |${CLIBatchAuditorUser}||--GroupName ${GroupName}2                                                                                                               ||${UserName}2                                                                                          |
+|List Accts For Pwd Request    |${CLIBatchAuditorUser}||                                                                                                                                        ||No Accounts to list                                                                                   |
+|List Dependent Systems        |${CLIBatchAuditorUser}||--System Fake --Account Fake                                                                                                            ||${AuditorUserName} is not currently authorized                                                        |
+|List Synchronized Passwords   |${CLIBatchAuditorUser}||                                                                                                                                        ||${AuditorUserName} is not authorized.                                                                 |
+|List Reason Codes             |${CLIBatchAuditorUser}||                                                                                                                                        ||${PersistentReasonCodeName}                                                                           |
+|Delete Account                |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}2                                                                               ||You are not authorized to perform this operation                                                      |
+|Drop Collection               |${CLIBatchAuditorUser}||--CollectionName ${CollectionName}                                                                                                      ||${AuditorUserName} is not authorized save collections.                                                |
+|Drop Collection Member        |${CLIBatchAuditorUser}||--CollectionName ${CollectionName} --SystemName ${SystemName2}                                                                          ||You do not have the necessary permissions to modify Collection assignments for System: ${SystemName2}.|
+|Drop Group                    |${CLIBatchAuditorUser}||--GroupName ${GroupName}2                                                                                                               ||${AuditorUserName} is not authorized to save groups.                                                  |
+|Drop Group Member             |${CLIBatchAuditorUser}||--GroupName ${GroupName}2 --UserName ${UserName}                                                                                        ||${AuditorUserName} is not authorized to update group membership.                                      |
+|Delete User                   |${CLIBatchAuditorUser}||--UserName ${UserName}2                                                                                                                 ||is not authorized                                                                                     |
+|Update Account                |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}2 --Description test                                                            ||${AuditorUserName} is not authorized                                                                  |
+|Update System                 |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --Description test                                                                                          ||You do not have a valid UserID to perform this operation.                                             |
+|Update Dependent Systems      |${CLIBatchAuditorUser}||--System Fake --Account Fake --Assign test                                                                                              ||${AuditorUserName} is not currently authorized                                                        |
+|Update SyncPass               |${CLIBatchAuditorUser}||--SyncPassName ${SyncPassName}                                                                                                          ||${AuditorUserName} is not authorized.                                                                 |
+|Update User                   |${CLIBatchAuditorUser}||--UserName ${UserName}2 --Description test                                                                                              ||${AuditorUserName} is not authorized to modify users.                                                 |
+|Change User Password          |${CLIBatchAuditorUser}||--UserName ${UserName}2 --Password Password1                                                                                            ||is not authorized                                                                                     |
+|Force Reset                   |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}2                                                                               ||You are not authorized to perform this operation                                                      |
+|Set Access Policy             |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}2 --Action ADD --AccessPolicyNam ISA --UserNam ${UserName}2                     ||You are not a valid user                                                                              |
+|Sync Pass Force Reset         |${CLIBatchAuditorUser}||--SyncPassName ${SyncPassName}                                                                                                          ||${AuditorUserName} is not authorized.                                                                 |
+|Test System                   |${CLIBatchAuditorUser}||--SystemName ${SystemName2}                                                                                                             ||You are not authorized to perform this operation                                                      |
+|Unlock User                   |${CLIBatchAuditorUser}||--UserName Fake                                                                                                                         ||${AuditorUserName} is not authorized to unlock users.                                                 |
+|Report Activity               |${CLIBatchAuditorUser}||--UserName ${AuditorUserName}                                                                                                           ||${AuditorUserName}                                                                                    |
+|Retrieve                      |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}2                                                                               ||You are not authorized to perform this operation                                                      |
+|Add Session Request           |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}2                                                                               ||${AuditorUserName} is not authorized to add requests                                                  |
+|List Accts For Session Request|${CLIBatchAuditorUser}||                                                                                                                                        ||No Accounts to list                                                                                   |
+|List PSM Accounts             |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}2                                                                               ||${AccountName}2                                                                                       |
+|Update PSM Account            |${CLIBatchAuditorUser}||--System ${SystemName2} --Account ${AccountName}2 --SessionStartNotifyEmail mail@mail.mail                                              ||You are not authorized to perform this operation                                                      |
+|Set Access Policy             |${CLIBatch}           ||--SystemName ${SystemName2} --AccountName ${AccountName}2 --Action ADD --AccessPolicyNam Approver-Requestor --UserNam ${AuditorUserName}||User Name is not valid .*${AuditorUserName}.*                                                         |
+|List Collections              |${CLIBatchAuditorUser}||--CollectionName ${CollectionName}                                                                                                      ||${CollectionName}                                                                                     |
+|Delete System                 |${CLIBatchAuditorUser}||--SystemName ${SystemName2}                                                                                                             ||${AuditorUserName} is not authorized to delete systems.                                               |
+|Check Password                |${CLIBatchAuditorUser}||--SystemName ${SystemName2} --AccountName ${AccountName}2                                                                               ||You are not authorized to perform this operation                                                      |
+|List Collection Membership    |${CLIBatchAuditorUser}||--CollectionName ${CollectionName}                                                                                                      ||${CollectionName}.*${SystemName2}                                                                     |
+
+
+
+
+
+  	
+ 		
+
+# temporarily bisabled.
+#|List Collections          |${CLIBatchAuditorUser}||                                                                                              ||is not authorized                                                                                                               |
+#|List Collection Membership|${CLIBatchAuditorUser}||                                                                                              ||is not authorized                                                                                                               |
+#|Delete System              |${CLIBatchAuditorUser}||--SystemName ${SystemName2}                                                                   ||You are not authorized to perform this operation.                                                                               |
+#|Check PAssword        |
+#|List Assigned policies|
+
+!*> Clenup
+!|script                                                                      |
+|Delete System  |${CLIBatch}||--SystemName ${SystemName2}       ||successfully|
+|Drop Group     |${CLIBatch}||--GroupName ${GroupName}2         ||successfully|
+|Drop Collection|${CLIBatch}||--CollectionName ${CollectionName}||successfully|
+|Delete User    |${CLIBatch}||--UserName ${UserName}2           ||successfully|
+|Remove user    |${AuditorUserName}                                           |
+|Remove Keys    |${AuditorUserName}*                                          |
+*!

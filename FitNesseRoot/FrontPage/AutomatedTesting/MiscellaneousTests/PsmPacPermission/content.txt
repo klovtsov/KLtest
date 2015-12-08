@@ -1,0 +1,25 @@
+!include <AutomatedTesting.PlatformsTesting.WindowsLocalhost
+
+!define SystemName {${prefix}_PsmPacPermission}
+!define UserName {${prefix}_PsmPac}
+
+
+!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+
+#
+
+
+!|Script                                                                                                                                                                                                                            |
+|Add User           |${CLIBatch}||--UserName ${UserName} --FirstName test --LastName test --UserType Basic --Password Password1                                                             ||successful                            |
+|Add System         |${CLIBatch}||--SystemName ${SystemName} --PlatformName ${SystemPlatform} --NetworkAddress ${SystemAddress}                                                             ||successfully                          |
+|Add Account        |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --MinimumApprovers 1 --AutoFlag N                                                              ||successfully                          |
+|Update PSM Account |${CLIBatch}||--System ${SystemName} --Account ${ManagedAccount} --EnableFlag Y --ProxyType \"RDP - Interactive Login\" --MinApprovers 1 --PasswordMethod \"Not Stored\"||successfully                          |
+|Set Access Policy  |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Action ADD --AccessPolicyNam \"PSM Privileged Access\" --UserNam ${UserName}                 ||successfully                          |
+|Set Access Policy  |${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Action ADD --AccessPolicyNam \"PSM Requestor\" --UserNam ${CLI_user_1}                       ||successfully                          |
+|Add Session Request|${CLIBatch}||--SystemName ${SystemName} --AccountName ${ManagedAccount} --ForUser ${UserName} --RequestNote RequestNote                                                ||The current status is Active.*Approved|
+|Delete User        |${CLIBatch}||--UserName ${UserName}                                                                                                                                    ||successfully                          |
+|Delete System      |${CLIBatch}||--SystemName ${SystemName}                                                                                                                                ||successfully                          |
+
+
+
+

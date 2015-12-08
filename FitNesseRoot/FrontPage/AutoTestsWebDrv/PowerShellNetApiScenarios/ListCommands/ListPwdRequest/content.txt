@@ -1,0 +1,42 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!*> Prepare Environment (creating system, account)
+!|script                                                            |
+|Create Account on System                                           |
+|Add System                                                         |
+|Add account|${ManagedAccount}|with password|${ManagedAccountPwdNew}|
+*!
+
+!3 1. listAcctsForPwdRequest - Provides a list of accounts that the user can submit a session request for.
+!|script                                                                                                    |
+|List Accounts for Password request for|${API_user_1}  |contains   |No Accounts to list                     |
+|Set Permissions                       |"PPM Requestor"|on  account|${ManagedAccount}|for user|${API_user_1}|
+|List Accounts for Password request for|${API_user_1}  |contains   |${SystemName}.*${ManagedAccount}        |
+|Set Permissions                       |"PPM Approver" |on  account|${ManagedAccount}|for user|${API_user_2}|
+
+
+!3 2. Tests for listRequest and listRequestDetails commands.
+!|script                                                        |
+|Request Pwd by             |${API_user_1}                      |
+|List Request               |Pending Approval                   |
+|Get Password Request Status|${ManagedAccount}.*Pending Approval|
+|Approve Pwd by             |${API_user_2}                      |
+|List Request               |Active/Approved                    |
+|List Request Details                                           |
+|Get Password Request Status|${ManagedAccount}.*Active/Approved |
+
+!3 New in 915: CreatedByUserName and CreatedByUserFullName output fields.
+!|script                                                                                                                                               |
+|List Request with output fields        |requestID,CreatedByUserName,CreatedByUserFullName  |contains|$RequestID\s+${API_user_1}\s+${API_user_1}       |
+|Get Password Request with output fields|accountName,CreatedByUserName,CreatedByUserFullName|contains|${ManagedAccount}\s+${API_user_1}\s+${API_user_1}|
+|List Request Details with output fields|requestID,CreatedByUserName,CreatedByUserFullName  |contains|$RequestID\s+${API_user_1}\s+${API_user_1}   |   |
+
+!|script                                               |
+|Cancel Request by          |${API_user_1}                      |
+|Get Password Request Status|${ManagedAccount}.*Expired         |
+!*> Clean Up
+!|script                         |
+|Delete Account|${ManagedAccount}|
+|Delete System |${SystemName}    |
+*!

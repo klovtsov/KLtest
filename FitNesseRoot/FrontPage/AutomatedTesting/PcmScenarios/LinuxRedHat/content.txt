@@ -1,0 +1,33 @@
+!contents
+
+
+################################################################################################
+################################################################################################
+### Sendmail on Linux must be configured to be able to send emails to tpam.spb.qsft email domain
+### (on this managed system autotest's SMTP server is configured as a SMART in sendmail.cf)
+################################################################################################
+################################################################################################
+!define OSType {Nix}
+!define ProxyType {SSH}
+#!define CommandText {/bin/touch pcmtest.txt}
+!define CommandText {/bin/echo '${NotificationEmailBody}' | /bin/mail -s '${NotificationEmailSubject}' ${NotificationEmail}}
+!define WorkingDir {/var/tmp}
+
+
+!include -c <AutomatedTesting.PlatformsTesting.LinuxRedHat
+
+!define FunctAcct {root}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {grain41R}
+
+!define SystemFQDN {KLapache.kllinux.spb.qsft}
+!define FromMail {${ManagedAccount}@${SystemFQDN}}
+
+!include -c .FrontPage.AutomatedTesting.PcmScenarios.ScenarioLibrary
+!include -c .FrontPage.AutomatedTesting.PcmScenarios.LinuxRedHat.PlatformSpecific
+
+
+!|script      |
+|Prepare Test |
+|Run Command |
+|Clear Objects|

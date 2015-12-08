@@ -1,0 +1,3 @@
+!| scenario       |Add system                                                                                                                                                             |
+|$res=            |CppAPI|${APIBatch} AddSystem ${SystemName} ${SystemAddress} "${SystemPlatform}" "${SystemDescription}" ${SystemTimeout} ${FunctAcct} ${FunctAcctPwd} ${Port} SID ${SID}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                       |

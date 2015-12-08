@@ -1,0 +1,4 @@
+!|script                                                       |
+|$res=             |RunBatchGetOutputFull|ping;${SystemAddress}|
+|Verify_Contain_NOT|$res;;timed out                            |
+|Verify_Contain_OR|$res;;bytes=32.*Lost = 0                    |

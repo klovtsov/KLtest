@@ -1,0 +1,8 @@
+!include -c <FrontPage.AutomatedTesting.SetUp
+!include -c <FrontPage.AutomatedTesting.ScenarioLibrary
+!include -c <FrontPage.DeployProject.ScenarioLibrary
+
+!|script         |
+|Get Open SSH key|
+
+!include <FrontPage.DeployProject.TearDown

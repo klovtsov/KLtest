@@ -1,0 +1,101 @@
+!include -c <AutoTestsWebDrv.PasswordProfiles.ScenarioLibrary
+!include -c <AutoTestsWebDrv.FailoverScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.GroovyJavaApiScenarios.ListCommands.ScenarioLibrary
+!include -c <AutoTestsWebDrv.ConfigInterfaceSmokeTest.ScenarioLibrary
+!include -c <AutoTestsWebDrv.MiscellaneousTests.CustomColumns.ScenarioLibrary
+
+
+
+
+
+!|script                                                                                   |
+|Prepare Environment                                                                       |
+|List Collection by options           |SystemName=${SystemName}     ||${CollectionName}    |
+|List Collection by options           |AccountName=${ManagedAccount}||${CollectionName2}   |
+|List Collection by options           |FileName=${FileName}         ||${FileCollectionName}|
+|List Collection                      |${CollectionName}            ||${SystemName}        |
+|List Collection Membership by options|SystemName=${SystemName}     ||${CollectionName}    |
+|List Collection Membership by options|AccountName=${ManagedAccount}||${CollectionName2}   |
+|List Collection Membership by options|FileName=${FileName}         ||${FileCollectionName}|
+|List Collection Membership           |${CollectionName2}                                  |
+|List Groups                                                                               |
+|List Group Membership                                                                     |
+|List Systems                                                                              |
+|List Users                                                                                |
+|List Dependent Systems                                                                    |
+|List Request                                                                              |
+|Get Request                          |$RequestIDp                                         |
+|List Acc for Session Request                                                              |
+|List PSM Accounts                                                                         |
+|List Session Request Details                                                              |
+|Get Session Request                  |$RequestIDs                                         |
+|List Request Details                                                                      |
+|List Assigned Policy                                                                      |
+|System options                                                                            |
+|Account options                                                                           |
+|User options                                                                              |
+|ListReasonCodes                      |.*${PersistentReasonCodeName}                       |
+|Clear Environment                                                                         |
+
+
+
+Enable Before Release Flag
+
+!|script                   |
+|Enable Before Release Flag|
+
+Account DN and Functional account DN
+
+!|script                             |
+|Account DN and Functional account DN|
+
+PPM and PSM DPA Affinity
+
+!|script                 |
+|PPM and PSM DPA Affinity|
+
+
+Check account and system RequireTicketForPSM flag
+
+!|script                                       |
+|System and Account Require Ticket For PSM flag|
+
+
+Custom columns for Account, System and User
+
+
+!*> Prepare
+!|script                                               |
+|AddSysAdminUser   |${SysAdminUser}||${SysAdminUserPwd}|
+|Add Custom Columns|${SysAdminUser}||${SysAdminUserPwd}|
+*!
+
+Account
+
+!|script               |
+|Account Custom Columns|
+
+System
+
+!|script              |
+|System Custom Columns|
+
+User
+
+!|script            |
+|User Custom Columns|
+
+!*> Cleanup
+!|script                                                  |
+|Delete Custom Columns|${SysAdminUser}||${SysAdminUserPwd}|
+|DeleteSysAdminUser   |${SysAdminUser}                    |
+*!
+
+
+Check Disabled Schedules, Disable Change Schedule Flag, Disabl eCheck Schedule Flag
+
+!|script           |
+|Disabled Schedules|
+

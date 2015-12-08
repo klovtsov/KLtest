@@ -1,0 +1,9 @@
+
+
+!|scenario|Create Account on System                              |
+|SSH      |mod.script;;${FunctAcct}                              |
+|SSH      |useradd.script;;${ManagedAccount}                     |
+|SSH      |passwd.script;;${ManagedAccount};;${ManagedAccountPwd}|
+
+!|scenario|Change Account Password on System |NewPwd|
+|SSH      |passwd.script;;${ManagedAccount};;@NewPwd|

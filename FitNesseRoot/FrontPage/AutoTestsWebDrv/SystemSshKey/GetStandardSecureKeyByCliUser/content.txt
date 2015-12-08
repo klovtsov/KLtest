@@ -1,0 +1,9 @@
+!define sysCLIBatch {${CLIBatch}}
+!define CreateSystemMethod {Add System with key}
+!define RetrieveKeyMethod {Retrieve Standard Key}
+!define keyFormat {SecSSH}
+!define keyFileOrigin {BEGIN SSH2 PUBLIC KEY}
+!define KeyFile {${ProjDir}\Scripts\keys\id_dsa.export}
+
+!3 Run the test
+!include <SystemSshKey.RetrieveSystemKeyBaseTest

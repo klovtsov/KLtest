@@ -1,0 +1,57 @@
+!contents
+
+!define repprefix {kl${SEED}}
+!define oldprefix {kl777}
+
+
+!define SystemName {${repprefix}RepSys}
+!define SystemAddress {10.30.38.252}
+!define SystemPlatform {Linux}
+!define FunctionalAccountName {root3}
+!define FunctionalAccountPassword {!@#$%^&*()}
+
+!define ManagedAccount1Name {${repprefix}RepAcc1}
+!define ManagedAccount1Password {grain41R}
+!define ManagedAccount2Name {${repprefix}RepAcc2}
+!define ManagedAccount2Password {grain41R}
+!define ManagedAccount3Name {${repprefix}RepAcc3}
+!define ManagedAccount3Password {grain41R}
+
+!define FileName {${repprefix}RepFile1}
+
+!define GroupName {${repprefix}RepGroup}
+!define CollectionName {${repprefix}RepCollection}
+
+!define Requestor1Name {${repprefix}RepRequestor1}
+!define Requestor2Name {${repprefix}RepRequestor2}
+!define Requestor3Name {${repprefix}RepRequestor3}
+!define Requestor4Name {${repprefix}RepRequestor4}
+!define Requestor5Name {${repprefix}RepRequestor5}
+!define ApproverName {${repprefix}RepApprover}
+
+!define FilePath {${ProjDir}\Scripts\Ethalons\}
+!define PathToEthalons {${ProjDir}\Scripts\Ethalons\Reports}
+
+!define TicketSystemName {${repprefix}TicketSystem}
+!define TicketSystemEmail {${repprefix}TicketSystemEmail}
+!define TicketNumber {55555}
+!define ReasonCodeName {${PersistentReasonCodeName}}
+
+!define DCSystemName {${repprefix}DomCont}
+!define DCSystemAddress {192.168.77.1}
+!define DCSystemPlatform {Windows Active Dir}
+!define ParFunctAcct {admin}
+!define DomainName {${repprefix}domain.spb.qsft}
+!define NETBIOSDomainName {${repprefix}domain}
+
+!define DepAcc {${repprefix}DepAcc}
+!define DepAccPassword {grain41R}
+
+!define DMSystemName1 {${repprefix}DomMemb1}
+!define DMSystemAddress1 {192.168.77.2}
+!define DMSystemPlatform {Windows}
+!define DMSystemName2 {${repprefix}DomMemb2}
+!define DMSystemAddress2 {192.168.77.3}
+!define DMSystemPlatform {Windows}
+
+

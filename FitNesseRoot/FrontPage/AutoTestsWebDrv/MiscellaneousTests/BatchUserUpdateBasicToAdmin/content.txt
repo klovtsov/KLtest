@@ -1,0 +1,17 @@
+!define userName {${prefix}BaseUser}
+!define userFirstName {George}
+!define userLastName {Harrison}
+!define fileName {user.txt}
+!define PathToBatch {${ProjDir}\Scripts\Batch\}
+
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c >TestSpecific
+
+!|script                          |
+|Create Basic Web User|${userName}|
+|Generate Batch File  |${fileName}|
+|Batch Update User                |
+|List Users by        |${userName}|
+|Delete Batch File    |${fileName}|
+|Delete User          |${userName}|
+

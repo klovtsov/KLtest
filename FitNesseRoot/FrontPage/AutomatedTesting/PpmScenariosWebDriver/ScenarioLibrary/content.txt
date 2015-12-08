@@ -1,0 +1,134 @@
+!| scenario    |Managed System                                           |
+|Create Account on System                                                |
+|Add system    |${SystemName}                                            |
+|Test System   |Success      ||${TestSystemSuccessful}                   |
+|Set Password  |${SystemName}||${FunctAcct}||${FunctAcctWrongPwd}        |
+|Test System   |Fail         ||${TestSystemFailed}                       |
+|Check Password|${SystemName}||${FunctAcct}||Fail||${CheckPasswordFailed}|
+
+
+!| scenario                       |Managed Account                                                           |
+|Add Account                      |${SystemName}||${ManagedAccount}                                          |
+|Reset Password                   |${SystemName}||${ManagedAccount}||Fail        ||${ResetPasswordFailed}    |
+|Schedule Reset Password          |${SystemName}||${ManagedAccount}||Failed                                  |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                   |
+|Restore Func Acc Pwd             |${SystemName}                                                             |
+|Check Password                   |${SystemName}||${ManagedAccount}||FailNotMatch||${CheckPasswordNotMatch}  |
+|Reset Password                   |${SystemName}||${ManagedAccount}||Success     ||${ResetPasswordSuccessful}|
+|Schedule Reset Password          |${SystemName}||${ManagedAccount}||Success                                 |
+
+
+!|scenario     |Account Not there                                       |
+|Add Account   |${SystemName}||AccNotThere                              |
+|Reset Password|${SystemName}||AccNotThere||Fail||${ResetPasswordFailed}|
+|Check Password|${SystemName}||AccNotThere||Fail||${CheckPasswordFailed}|
+
+
+!| scenario          |Request Password and Login                                       |
+|Set User Permissions|${Requestor}||${ManagedAccount}||Requestor                       |
+|Set User Permissions|${Approver} ||${ManagedAccount}||Approver                        |
+|pause               |${ApplyNewPoliciesInterval}                                      |
+|Request Pwd         |${Requestor}||${UserPwd}       ||${SystemName}||${ManagedAccount}|
+|Approve Pwd         |${Approver} ||${UserPwd}       ||${SystemName}||${ManagedAccount}|
+|Get Login                                                                             |
+
+
+!| scenario             |Get Login                                                                                                                                       |
+|$pwd=                  |RunBatchGetOutput|WebDriver\groovy_runner.bat;ppm_GetLogin.groovy;${browser};${Requestor};${UserPwd};${SystemName};${ManagedAccount};${TPAMHost}|
+|Verify_Contain_NOT     |$pwd;;Exception                                                                                                                                 |
+|Login Account to System|$pwd                                                                                                                                            |
+
+
+
+
+
+
+!| scenario        |Set User Permissions|UserName           |          |AccountName          |          |AccessPolicy          |
+|$res=             |GroovyWebDriver     |ppm_setPermissions;${browser};${FrontPageContent};@UserName;@AccountName;@AccessPolicy|
+|Verify_Contain_NOT|$res;;Exception                                                                                            |
+|Verify_Contain_OR |$res;;Access Policy Assignment was successful*                                                             |
+
+
+!| scenario        |Request Pwd              |UserName                |               |UserPwd               |               |SystemName               |               |AccountName               |
+|$res=             |GroovyWebDriver          |ppm_addPwdRequest;${browser};@UserName;@UserPwd;@SystemName;@AccountName;${TPAMHost}                                                                |
+|Verify_Contain_NOT|$res;;Exception                                                                                                                                                               |
+|Verify_Contain_OR |$res;;Password for ${ManagedAccount} requested.*RequestID.*for password release of ${SystemName}.*${ManagedAccount} has been submitted.*The current status is Pending Approval|
+
+!| scenario        |Approve Pwd    |UserName       |       |UserPwd       |       |SystemName      |      |AccountName      |
+|$res=             |GroovyWebDriver|ppm_approvePwdRequest;${browser};@UserName;@UserPwd;@SystemName;@AccountName;${TPAMHost}|
+|Verify_Contain_NOT|$res;;Exception                                                                                         |
+|Verify_Contain_OR |$res;;The response.*was submitted successfully                                                          |
+
+
+
+
+
+#|Managed System script                            |
+#!| scenario        |Managed System script                                                                        |
+#|$res=             |GroovyWebDriver|ManagedSystem;${TPAMHost};${TPAMAdmin};${DefaultPwd};${SystemName};${content}|
+#|Verify_Contain_NOT|$res;;Exception                                                                              |
+
+!| scenario        |Add System       |SystemName                                                             |
+|$res=             |GroovyWebDriver  |ppm_addSystem;${browser};${content};${FrontPageContent};${SystemName}  |
+|Verify_Contain_NOT|$res;;Exception                                                                          |
+|Verify_Contain_OR |$res;;Add System.*Set Connection Tab.*System changes for ${SystemName} saved successfully|
+
+#|Set Connection Tab                               |
+#!| scenario       |Set Connection Tab      |
+#|Verify_Contain_OR|$res;;Set Connection Tab|
+
+!| scenario        |Test System    |ExpectedResult                    |                    |TpamResult                    |
+|$res=             |GroovyWebDriver|ppm_testSystem;${browser};${FrontPageContent};${SystemName};@ExpectedResult;${content}|
+|Verify_Contain_NOT|$res;;Exception                                                                                       |
+|Verify_Contain_OR |$res;;Test System.*Expected result.*@TpamResult                                                       |
+
+!| scenario        |Set Password        |SystemName               |               |AccountName               |             |Password             |
+|$res=             |GroovyWebDriver     |ppm_setPassword;${browser};${FrontPageContent};@SystemName;@AccountName;@Password                       |
+|Verify_Contain_NOT|$res;;Exception                                                                                                              |
+|Verify_Contain_OR |$res;;Set password for @AccountName.*Changes saved successfully for @AccountName.*AccountName=@AccountName Password=@Password|
+
+!| scenario        |Check Password |SystemName         |         |AccountName         |         |ExpectedResult        |        |TpamResult        |
+|$res=             |GroovyWebDriver|ppm_checkResetPassword;${browser};${FrontPageContent};@SystemName;@AccountName;Check;@ExpectedResult;${content}|
+|Verify_Contain_NOT|$res;;Exception                                                                                                                |
+|Verify_Contain_OR |$res;;Check Password for @AccountName.*Expected result.*@TpamResult                                                            |
+
+!| scenario        |Delete System  |SystemName                                                 |
+|$res=             |GroovyWebDriver|ppm_deleteSystem;${browser};${FrontPageContent};@SystemName|
+|Verify_Contain_NOT|$res;;Exception                                                            |
+|Verify_Contain_OR |$res;;has been successfully deleted                                        |
+
+
+!| scenario              |Delete All       |
+|Delete System           |${SystemName}    |
+|Delete Account on System|${ManagedAccount}|
+
+!| scenario        |Reset Password |SystemName         |         |AccountName         |         |ExpectedResult        |        |TpamResult        |
+|$res=             |GroovyWebDriver|ppm_checkResetPassword;${browser};${FrontPageContent};@SystemName;@AccountName;Reset;@ExpectedResult;${content}|
+|Verify_Contain_NOT|$res;;Exception                                                                                                                |
+|Verify_Contain_OR |$res;;Reset Password for @AccountName.*Expected result.*@TpamResult                                                            |
+
+!| scenario        |Schedule Reset Password|SystemName         |         |AccountName        |        |ExpectedResult        |
+|$res=             |GroovyWebDriver        |ppm_ScheduleResetPassword;${browser};${FrontPageContent};@SystemName;@AccountName|
+|Verify_Contain_NOT|$res;;Exception                                                                                          |
+|Verify_Contain_OR |$res;;Scheduled.*@ExpectedResult                                                                         |
+
+!| scenario        |Add Account    |SystemName                    |                   |AccountName                   |
+|$res=             |GroovyWebDriver|ppm_addAccount;${browser};${content};${FrontPageContent};@SystemName;@AccountName|
+|Verify_Contain_NOT|$res;;Exception                                                                                  |
+|Verify_Contain_OR |$res;;successfull                                                                                |
+
+!| scenario        |Restore Func Acc Pwd|SystemName                                                                 |
+|$res=             |GroovyWebDriver     |ppm_RestoreFuncAccPwd;${browser};${content};${FrontPageContent};@SystemName|
+|Verify_Contain_NOT|$res;;Exception                                                                                 |
+|Verify_Contain_OR |$res;;Set password for ${FunctAcct}                                                             |
+
+
+!| scenario        |Add User       |UserName     |     |Password     |    |UserType    |    |FirstName    |    |LastName    |
+|$res=             |GroovyWebDriver|addUser;${browser};${FrontPageContent};@UserName;@Password;@UserType;@FirstName;LastName|
+|Verify_Contain_NOT|$res;;Exception                                                                                         |
+|Verify_Contain_OR |$res;;User added successfully                                                                           |
+
+!| scenario        |Delete User    |UserName                                                   |
+|$res=             |GroovyWebDriver|deleteUser;${TPAMHost};${TPAMAdmin};${DefaultPwd};@UserName|
+|Verify_Contain_NOT|$res;;Exception                                                            |
+

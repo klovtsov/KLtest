@@ -1,0 +1,35 @@
+!contents
+
+
+
+!define OSType {Win}
+!define ProxyType {RDP}
+!define CommandText {%SystemRoot%\system32\cmd.exe /C echo ${AccountNamePlaceholder} ${AccountPasswordPlaceholder} ${UserNamePlaceholder} > ${PCMTestFile}}
+!define WorkingDir {C:\Windows\system32\}
+!define PCMTestFile {kl${SEED}test.txt}
+
+!define AccountNamePlaceholder {:accountname:}
+!define AccountPasswordPlaceholder {:accountpwd:}
+!define UserNamePlaceholder {:myaccount:}
+
+
+
+
+!define SystemName {${prefix}_Windows}
+!define SystemPlatform {Windows Active Dir}
+!define SystemAddress {10.30.46.235}
+!define FunctAcct {Administrator}
+!define FunctAcctPwd {grain41R}
+!define ManagedAccountPwd {grain41R}
+!define DomainName {kltest21.spb.qsft}
+!define NETBIOSDomainName {KLTEST21}
+
+
+!include -c .FrontPage.AutoTestsWebDrv.PcmScenarios.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.PcmScenarios.WindowsLocalHost.PlatformSpecific
+
+
+!|script      |
+|Prepare Test |
+|Run Command |
+|Clear Objects|

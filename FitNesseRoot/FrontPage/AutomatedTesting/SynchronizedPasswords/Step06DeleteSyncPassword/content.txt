@@ -1,0 +1,4 @@
+!include -c <SynchronizedPasswords.ScenarioLibrary
+!|script                                                                            |
+|$res=            |CLI|${CLIBatch} DeleteSyncPass --SyncPassName ${SyncPasswordName}|
+|Verify_Contain_OR|$res;;successfully deleted                                       |

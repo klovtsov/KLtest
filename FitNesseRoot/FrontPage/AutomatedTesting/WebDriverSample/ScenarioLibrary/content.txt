@@ -1,0 +1,4 @@
+!|scenario            |Groovy WebDriver Example|
+|$res=             |GroovyWebDriver|AddAndDeleteManagedSystem;${TPAMHost};${SystemName};${SystemPlatform};${SystemAddress};${FunctAcct};${FunctAcctPwd}|
+|Verify_Contain_OR|$res;;System created.*System deleted|
+

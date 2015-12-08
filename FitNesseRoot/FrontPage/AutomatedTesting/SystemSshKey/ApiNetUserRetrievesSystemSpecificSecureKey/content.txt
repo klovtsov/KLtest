@@ -1,0 +1,11 @@
+!define CreateSystemMethod {Add System with specific key api}
+!define RetrieveKeyMethod {Retrieve System Specific Key by Net User}
+!define keyFormat {SecSSH}
+!define keyFileOrigin {BEGIN SSH2 PUBLIC KEY}
+!define KeyFile {${ProjDir}\Scripts\keys\id_dsa.export}
+!define CommandTimeout {50}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+
+!3 Run the test
+!include <SystemSshKey.RetrieveSystemKeyBaseTest

@@ -1,0 +1,16 @@
+!define SpecValue {sudo}
+!define newSystemAddress {5.4.3.6}
+
+!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+
+!4 Create system, make template from system and create system from template
+!|script                                                                                                                                                                                                                      |
+|Add system          |${SystemName}   |with address   |${SystemAddress}                                                      |platform    |Linux|additional parameters|-functAcct ${FunctAcct} -PlatSpecificValue ${SpecValue}|
+|Make System Template|${TemplateName} |from           |${SystemName}                                                         |with account|${FunctAcct}                                                                       |
+|Try to Add system   |${newSystemName}|with parameters|-systemAddress ${newSystemAddress} -templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully                             |
+
+!4 Check new system properties
+!|script                                                                                                                        |
+|List Systems by|-systemName ${newSystemName}|output params|SystemName,PlatSpecificValue|contain|${newSystemName}\s+${SpecValue}|

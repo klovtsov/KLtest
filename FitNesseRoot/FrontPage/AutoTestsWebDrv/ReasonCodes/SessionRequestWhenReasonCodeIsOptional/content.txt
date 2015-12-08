@@ -1,0 +1,12 @@
+!define SettingMethod {Set Reason Codes settings to}
+!define WithoutMethodName {Request Session without Reason Code}
+!define WithMethodName {Request Session with Reason Code}
+!define RequestReasonCodeSetting {Optional}
+!define RequestWithoutCodeResult {has been submitted}
+!define RequestWithCodeResult {has been submitted}
+!define PolicyName {"Approver-Requestor"}
+!define CancelMethod {Cancel Session Request}
+!define ReqvestorName {${TPAMAdmin}}
+ 
+
+!include -c <ReasonCodes.CommonPwdRequestTest

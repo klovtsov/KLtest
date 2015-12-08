@@ -1,0 +1,10 @@
+#!include -c <FrontPage.DeployProject.ApiCliUserCreation.ScenarioLibrary
+!include -c <AutoTestsWebDrv.FailoverScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.UsersTests.ScenarioLibrary
+
+
+!|script                         |
+|Prepare Environment for IsaUsers|
+|Create Accounts                 |
+|Clear Environment for IsaUsers  |

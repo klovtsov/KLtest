@@ -1,0 +1,16 @@
+!contents
+
+
+
+
+!define newprefix {${prefix}4}
+!define TicketSystemName {${newprefix}TSSystem}
+
+!include -c <AutomatedTesting.TicketSystemScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.TicketSystemScenarios.Test04ManualTicketSystem.ScenarioLibrary
+
+
+
+
+|script             |
+|Manual Ticket System|

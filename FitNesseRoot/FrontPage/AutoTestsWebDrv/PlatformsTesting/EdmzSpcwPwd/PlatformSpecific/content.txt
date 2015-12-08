@@ -1,0 +1,7 @@
+!|scenario            |Set Connection Tab                                 |
+|waitForElementPresent|id=Connection           |                          |
+|click                |id=Connection           |                          |
+|type;                |id=PARFuncAcct          |${ParFunctAcct}           |
+|type;                |id=Timeout              |${SystemTimeout}          |
+|click                |id=bt_Save              |                          |
+|waitForResult        |System changes for ${SystemName} saved successfully|

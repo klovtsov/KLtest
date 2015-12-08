@@ -1,0 +1,17 @@
+!define AuthType {WinAD}
+!define AuthSystem {abSysOne}
+!define AuthID {abc321}
+!note AuthID should be unique.
+
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+
+!4 Create example user, make user template and create a new user from template
+!|script                                                                                                                                  |
+|Add User          |${TestUserName}|with options |-SecondaryAuth ${AuthType} -SecondaryAuthSystem ${AuthSystem} -SecondaryUserID ${AuthID}|
+|Make User Template|${TemplateName}|from         |${TestUserName}     |retain permissions     |false     |retain membership     |false    |
+|Create User       |${newUserName} |from template|${TemplateName} -SecondaryUserID ${AuthID}2                                             |
+
+!4 Check new user properties
+!|script                                                                                                                                            |
+|List properties|secondaryAuthUserID,secondaryAuthType,secondaryAuthSystem|for user|${newUserName}|contains|${AuthID}2\s+${AuthType}\s+${AuthSystem}|

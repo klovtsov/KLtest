@@ -1,0 +1,20 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CacheServerRemoteAccess.ScenarioLibrary
+!|script                                                                                    |
+|Remove Cache Server Permissions              |${RemoteLinuxMachine}                        |
+|Remove Cache Server Permissions              |${DispatcherAddress}                         |
+|Switch Account Assignment To Cache Server                                                  |
+|Switch Client Host Assignment To Cache Server|${RemoteLinuxMachine}                        |
+|Switch Client Host Assignment To Cache Server|${DispatcherAddress}                         |
+|Delete Client Host                           |${RemoteLinuxMachine}                        |
+|Delete Client Host                           |${DispatcherAddress}                         |
+|Delete Account on Cached System                                                            |
+|Delete Cache User                                                                          |
+|Remove Account                                                                             |
+|Remove System                                                                              |
+|runBatch                                     |DeleteFileByMask;;${BrowserDownloadDir}*.p12 |
+|runBatch                                     |DeleteFileByMask;;${BrowserDownloadDir}*.jks |
+|runBatch                                     |DeleteFileByMask;;${BrowserDownloadDir}*.crt |
+|runBatch                                     |DeleteFileByMask;;${BrowserDownloadDir}*.wsdl|
+|stop                                                                                       |
+

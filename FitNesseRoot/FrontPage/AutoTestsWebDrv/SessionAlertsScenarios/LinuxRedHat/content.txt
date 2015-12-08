@@ -1,0 +1,26 @@
+!contents
+
+
+
+!define OSType {Nix}
+!define ProxyType {SSH}
+!define RestrictedCommand {top}
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.LinuxRedHat
+
+!define FunctAcct {root}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {grain41R}
+
+
+
+!include -c .FrontPage.AutoTestsWebDrv.SessionAlertsScenarios.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.SessionAlertsScenarios.LinuxRedHat.PlatformSpecific
+
+
+!|script                                                                   |
+|Prepare Test                                                              |
+|BFER 6574 Batch update for PSM accounts disable the event capture Checkbox|
+|Generate Alerts                                                           |
+|Clear Objects                                                             |
+#

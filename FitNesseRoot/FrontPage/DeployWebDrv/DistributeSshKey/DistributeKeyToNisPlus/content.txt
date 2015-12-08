@@ -1,0 +1,5 @@
+!include -c <FrontPage.AutoTestsWebDrv.PlatformsTesting.NisPlus
+!include -c <FrontPage.DeployWebDrv.ScenarioLibrary
+
+!|Script|
+|Distribute Key to Nis Plus|

@@ -1,0 +1,15 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <FrontPage.AutoTestsWebDrv.SetUp
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+
+!|script                                                                                                                                     |
+|Open                |${TPAMURL}       |             |${TPAMAdmin}        |            |${DefaultPwd}                                        |
+|Create Account on System                                                                                                                    |
+|Add system                                                                                                                                  |
+|Add PPM account     |${ManagedAccount}|with password|${ManagedAccountPwd}|and profiles|${PpmCheckProfile}||${PpmChangeProfile}||${NotFailed}|
+|Set User Permissions|${CLI_user_1}                                                                                                          |
+|Set User Permissions|${CLI_user_2}                                                                                                          |
+|stop                                                                                                                                        |
+!include -c  <MiscellaneousTests.TearDown
+
+#|Add account         |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed} |

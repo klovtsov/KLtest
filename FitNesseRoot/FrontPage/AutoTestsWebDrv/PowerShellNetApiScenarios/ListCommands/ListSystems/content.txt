@@ -1,0 +1,21 @@
+!define systemWithProfiles {${prefix}SysWithProfiles}
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                            |
+|Add System                         |
+|List Systems contains|${SystemName}|
+
+
+!4 Filter by profiles
+!|script                                                                                                                                                                                                                        |
+|Add system     |${systemWithProfiles}                     |with address |${systemWithProfiles}|platform        |Linux|additional parameters|-passwordCheckProfile ${PpmCheckProfile} -passwordChangeProfile ${PpmChangeProfile}|
+|List Systems by|-passwordCheckProfile ${PpmCheckProfile}  |output params|systemName           |contain         |${systemWithProfiles}                                                                                          |
+|List Systems by|-passwordChangeProfile ${PpmChangeProfile}|output params|systemName           |contain         |${systemWithProfiles}                                                                                          |
+|List Systems by|-passwordCheckProfile ${PpmCheckProfile}  |output params|systemName           |does not contain|${SystemName}                                                                                                  |
+|List Systems by|-passwordChangeProfile ${PpmChangeProfile}|output params|systemName           |does not contain|${SystemName}                                                                                                  |
+
+
+!4 Cleanup
+!|script                            |
+|Delete System|${SystemName}        |
+|Delete System|${systemWithProfiles}|

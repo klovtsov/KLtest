@@ -1,0 +1,35 @@
+!define PauseValue {60000}
+!define NewSyncPassword {gr@in41R}
+!include -c <SynchronizedPasswords.ScenarioLibrary
+
+!4 Create Sync Passowrd and subscribe two accounts
+!|script                                                                                                                                            |
+|Add Sync Password|${SyncPasswordName}|with value|${SincPwdInitialValue}|Check Profile|${SyncPwdCheckProfile}|Change Profile|${SyncPwdChangeProfile}|
+|Add Subscriber   |${ManagedAccount}  |from      |${SystemName}                                                                                     |
+|Add Subscriber   |${ManagedAccount}  |from      |${SecSystemName}                                                                                  |
+|pause            |${PauseValue}                                                                                                                    |
+
+!4 Check that account passwords were synchronized. 
+!|script                                                                                                           |
+|Check Sync Password   |${SyncPasswordName}|subscriber   |${ManagedAccount}|from|${SystemName}   |status is|Current|
+|Check Sync Password   |${SyncPasswordName}|subscriber   |${ManagedAccount}|from|${SecSystemName}|status is|Current|
+|Login to first system |${SystemAddress}   |with password|${SincPwdInitialValue}                                   |
+|Login to second system|${SecSystemAddress}|with password|${SincPwdInitialValue}                                   |
+
+!4 List Password and subscribers
+!|script                                                                   |
+|Check Sync Password|${SyncPasswordName}                                   |
+|Check Sync Password|${SyncPasswordName}|contains account|${ManagedAccount}|
+
+!4 Drop subscriber
+!|script                                                                                            |
+|Drop second system account from Sync Password                                                      |
+|Reset Sync Password to                           |${NewSyncPassword}                               |
+|pause                                            |${PauseValue}                                    |
+|Login to first system                            |${SystemAddress}|with password|${NewSyncPassword}|
+|Check Login to second system failed with password|${NewSyncPassword}                               |
+
+!4 Delete subscriber
+!|script                                                                            |
+|$res=            |CLI|${CLIBatch} DeleteSyncPass --SyncPassName ${SyncPasswordName}|
+|Verify_Contain_OR|$res;;successfully deleted                                       |

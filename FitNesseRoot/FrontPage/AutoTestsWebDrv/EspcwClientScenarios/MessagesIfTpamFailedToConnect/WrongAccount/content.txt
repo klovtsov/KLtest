@@ -1,0 +1,18 @@
+!********> Test Description
+If wrong user specified as functional account an warning message should appear in the Test System results
+Two cases are possible: a real user name (user exists) and a nonexisting user is specified.
+**************!
+
+!define NonExistingWrongUser {alibaba}
+!define TestSystemFailed {Verify that the correct functional account is being used.}
+
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                             |
+|Change Functional Account to|${NonExistingWrongUser}|
+|Test System                 |${TestSystemFailed}    |
+|Change Functional Account to|${ManagedAccount}      |
+|Test System                 |${TestSystemFailed}    |
+|Change Functional Account to|${ParFunctAcct}        |
+|Test System                 |${TestSystemSuccessful}|

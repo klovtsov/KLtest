@@ -1,0 +1,12 @@
+%Host% 23
+WAIT "login"
+SEND "%RunningUser%\m"
+WAIT "password"
+SEND "%RunningUserPassword%\m"
+WAIT "MP>"
+SEND "CM\m"
+WAIT "CM>"
+SEND "UC -new %NewUser% -user TestUser -rights e all -mode multiple -enable e -password %NewUserPassword%\m"
+WAIT "Confirm?"
+SEND "Y\m"
+WAIT "Command successful"

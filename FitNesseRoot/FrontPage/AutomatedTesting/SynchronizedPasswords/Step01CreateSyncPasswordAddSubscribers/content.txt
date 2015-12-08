@@ -1,0 +1,8 @@
+!include -c <SynchronizedPasswords.ScenarioLibrary
+!|script|
+|Add Sync Password|${SyncPasswordName}|with value|${SincPwdInitialValue}|
+|Add Subscriber|${ManagedAccount}|from|${SystemName}|
+|Add Subscriber|${ManagedAccount}|from|${SecSystemName}|
+|pause|${PauseValue}|
+|Login to first system|${SystemAddress}|with password|${SincPwdInitialValue}|
+|Login to second system|${SecSystemAddress}|with password|${SincPwdInitialValue}|

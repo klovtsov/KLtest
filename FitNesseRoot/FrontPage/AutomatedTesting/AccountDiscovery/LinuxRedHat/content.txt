@@ -1,0 +1,11 @@
+!contents
+
+!define ProfileName {${SystemName}AccDiscProfile5}
+!include -c <AutomatedTesting.PlatformsTesting.LinuxRedHat
+!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary
+
+!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary.NixScenarioLibrary
+
+!include -c <AutomatedTesting.AccountDiscovery.LinuxRedHat.PlatformSpecific
+
+!define TemplateName {${SystemName}Template}

@@ -1,0 +1,10 @@
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+
+!4 Delete All
+!|script                                              |
+|Delete System|${newSystemName}                       |
+|Delete System|${SystemName}                          |
+|Login        |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Remove system|${TemplateName}                        |
+|Logout Paradmin                                      |

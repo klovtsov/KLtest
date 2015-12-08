@@ -1,0 +1,3 @@
+mkhmcusr -u %1 -a hmcviewer --passwd '%2'
+#
+exit

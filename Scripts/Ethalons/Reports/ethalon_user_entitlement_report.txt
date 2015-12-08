@@ -1,0 +1,5 @@
+kl777RepRequestor4	Ivanov, Ivan	None		kl777RepSys		kl777RepFile1		Requestor	User-File	Yes
+kl777RepRequestor3	Ivanov, Ivan	None		kl777RepSys	kl777RepAcc3			ISA	User-Account	Yes
+kl777RepRequestor2	Ivanov, Ivan	None		kl777RepSys	kl777RepAcc2			Requestor	User-Account	Yes
+kl777RepRequestor1	Ivanov, Ivan	None		kl777RepSys				Requestor	User-System	Yes
+kl777RepApprover	Ivanov, Ivan	None		kl777RepSys				Approver	User-System	Yes

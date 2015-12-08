@@ -1,0 +1,23 @@
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ChangeComObjects.TestSpecific
+
+!define ServiceAccount {${ManagedAccountDomain}\${ManagedAccount}}
+!define SuccessAppStartResult {EXIT 0}
+!define FailAppStartResult {EXIT -2147467238}
+
+!|script                                                                                                                              |
+|Change Account Password on System     |${ManagedAccountPwdNew}                                                                       |
+|Create Com Application which is run by|${ServiceAccount}       |and run under password is|${ManagedAccountPwdNew}|on|${SystemAddress}|
+|Check Checkbox                        |changecomplus           |for user                 |${ManagedAccount}                          |
+|Uncheck Checkbox                      |changecomplus           |for user                 |DEFAULT                                    |
+|Reset Password                        |${ManagedAccount}       |                         |${ResetPasswordSuccessful}                 |
+|Start Com Application                 |${SuccessAppStartResult}|on                       |${SystemAddress}                           |
+|Stop Com Application on               |${SystemAddress}                                                                              |
+|Check Checkbox                        |changecomplus           |for user                 |DEFAULT                                    |
+|Uncheck Checkbox                      |changecomplus           |for user                 |${ManagedAccount}                          |
+|Reset Password                        |${ManagedAccount}       |                         |${ResetPasswordSuccessful}                 |
+|Start Com Application                 |${FailAppStartResult}   |on                       |${SystemAddress}                           |
+|Uncheck Checkbox                      |changecomplus           |for user                 |DEFAULT                                    |
+|Delete Com Application on             |${SystemAddress}                                                                              |

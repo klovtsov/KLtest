@@ -1,0 +1,3 @@
+!|scenario        |Change User Details|propertyList  |to |valueList |by user |userName |with password |pwd |
+|$res=            |GroovyWebDriver    |changeUserDetails;${TPAMHost};@userName;@pwd;@propertyList;@valueList|
+|Verify_Contain_OR|$res;;Successfully                                                                      |

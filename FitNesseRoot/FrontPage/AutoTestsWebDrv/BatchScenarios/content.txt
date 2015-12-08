@@ -1,0 +1,29 @@
+!contents
+
+
+
+!define TPAMAdmin {${prefix}ParAdmin}
+
+!define ApplyNewPoliciesInterval {60000}
+
+!define PathToBatch {${ProjDir}\Scripts\Batch\New}
+!define PathToEthalon {${ProjDir}\Scripts\Ethalons\New}
+
+!define PathToBFERsBatch {${ProjDir}\Scripts\Batch\New\BFERs}
+!define PathToErrorsBatch {${ProjDir}\Scripts\Batch\New\Errors}
+
+!define FileName {klFile9}
+!define FilePath {${ProjDir}\Scripts\Batch\}
+
+!define DOLLAR {!-$-!}
+!define BAR {!-|-!}
+
+!define SystemTemplateName {KLtemplateforbatch}
+!define SystemTemplateWithDomainAccount {KLtempldomacc}
+!define AccountTemplateName {KLacctemplate}
+!define AccountDiscoveryProfileName {KLdiscprofileforbatch}
+!define CustomPlatformName {KLforbatchimport}
+!define PathToCustomPlatformXML {${ProjDir}\Scripts\CustomLinuxPlatform.xml}
+
+!define BatchImportAD {system_import_ad.csv}
+!define BatchImportLinux {system_import_linux.csv}

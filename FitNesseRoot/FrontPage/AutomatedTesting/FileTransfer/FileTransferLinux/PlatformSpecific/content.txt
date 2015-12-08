@@ -1,0 +1,13 @@
+!|scenario        |Create Share                                                                                                     |
+|RunBatchGetOutput|FileTransferLinux;create;${SystemAddress};${ManagedAccount};${ManagedAccountPwd};${shareFolder};${fileToDownload}|
+
+!|scenario        |Delete files on System                                                                         |
+|RunBatchGetOutput|FileTransferLinux;delete;${SystemAddress};${ManagedAccount};${ManagedAccountPwd};${shareFolder}|
+
+!|scenario        |Set psm settings for|account                                                                                                                                               |
+|$res=            |CLI                 |${CLIBatch} Updatepsmaccount --system ${SystemName} --Account @account --EnableFlag Y --ProxyType ${psmProxyType} --MinApprovers 0 --MaxSessionCount 3|
+|Verify_Contain_OR|$res;;PSM Details saved successfully                                                                                                                                       |
+
+!|scenario        |Check file on system|fileToCheck                                                                                                |
+|$res=            |RunBatchGetOutput   |FileTransferLinux;check;${SystemAddress};${ManagedAccount};${ManagedAccountPwd};${shareFolder};@fileToCheck|
+|Verify_Contain_OR|$res;;FileExists                                                                                                                |

@@ -1,0 +1,10 @@
+!include -c <FrontPage.AutomatedTesting.SetUp
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                              |
+|Create Web User       |${Requestor}                                  |
+
+!include -c <PermissionHierarchy.TearDown

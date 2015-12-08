@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.IbmHmc
+!include -c ScenarioLibrary

@@ -1,0 +1,31 @@
+!contents
+
+!| scenario        |Check Stored Report|reportName                                      |
+|$res=             |GroovyWebDriver    |CheckBatchReports;${TPAMHost};@reportName;stored|
+|Verify_Contain_OR |$res;;CSV looks valid;;It's not a day for weekly reports!           |
+|Verify_Contain_OR |$res;;HTM looks valid;;It's not a day for weekly reports!           |
+|Verify_Contain_OR |$res;;XML looks valid;;It's not a day for weekly reports!           |
+|Verify_Contain_NOT|$res;;report not found                                              |
+|Verify_Contain_NOT|$res;;something went wrong                                          |
+
+!| scenario        |Check Archived Report|reportName                                        |
+|$res=             |GroovyWebDriver      |CheckBatchReports;${TPAMHost};@reportName;archived|
+|Verify_Contain_OR |$res;;CSV looks valid;;It's not a day for weekly reports!               |
+|Verify_Contain_OR |$res;;HTM looks valid;;It's not a day for weekly reports!               |
+|Verify_Contain_OR |$res;;XML looks valid;;It's not a day for weekly reports!               |
+|Verify_Contain_NOT|$res;;report not found                                                  |
+|Verify_Contain_NOT|$res;;something went wrong                                              |
+
+
+!| scenario        |Check Emailed Report|reportName                                                                                               |
+|$res=             |GroovyWebDriver     |CheckBatchReports;${TPAMHost};@reportName;emailed;${MailServer};${BatchReportsEmail};${TPAMEMailPassword}|
+|Verify_Contain_OR |$res;;CSV looks valid;;It's not a day for weekly reports!                                                                     |
+|Verify_Contain_OR |$res;;HTM looks valid;;It's not a day for weekly reports!                                                                     |
+|Verify_Contain_OR |$res;;XML looks valid;;It's not a day for weekly reports!                                                                     |
+|Verify_Contain_NOT|$res;;report not found                                                                                                        |
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                    |
+
+!| scenario|Download Reports From Archive Server                                                                                                                                                                                                   |
+|$res=     |runBatch|DownloadArchivedReports.bat;${PersistentArchiveServerAddress};${PersistentArchiveServerRootName};${PersistentArchiveServerRootPassword};/home/${PersistentArchiveServerUserName}/${BatchReportsFolder}/;${PathToStoredReports}|
+
+

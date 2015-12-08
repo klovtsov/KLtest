@@ -1,0 +1,20 @@
+!contents
+
+
+!include -c .FrontPage.AutomatedTesting.AutoDiscovery.ScenarioLibrary
+
+!define newprefix {${prefix}0}
+!define SystemName {${prefix}LDAP2}
+!define SystemPlatform {LDAP}
+!define SystemAddress {10.30.38.252}
+!define FunctAcct {Manager}
+!define FunctAcctPwd {frujiE15}
+!define FunctAcctDescription {cn=Manager,dc=kllinux,dc=spb,dc=qsft}
+!define BadAcctDescription {cn=Manger,dc=kllinux,dc=spb,dc=qsft}
+!define DomainName {kllinux.spb.qsft}
+!define BaseName {dc=kllinux,dc=spb,dc=qsft}
+
+!define LDAPServerName {${newprefix}ExtLDAP}
+!define LDAPServerAddress {10.30.38.252}
+!define AuthTimeout {1}
+!define LDAPPort {389}

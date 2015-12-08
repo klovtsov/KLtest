@@ -1,0 +1,3 @@
+!include <AutomatedTesting.PlatformsTesting.MacOsxFour
+!include -c <DpaScenarios.ScenarioLibrary
+

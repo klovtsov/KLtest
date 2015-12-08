@@ -1,0 +1,3 @@
+!|script                     |
+|Verify_Contain_OR_alnum|1;;1|
+

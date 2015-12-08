@@ -1,0 +1,6 @@
+!define ProfileName {${prefix}PDNAccDiscProfile5}
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ProfileDoNothing.TestSpecific

@@ -1,0 +1,7 @@
+!define ChangeLogResult {Success;;Canceled}
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                                  |
+|Reset Password             |${ManagedAccount}||${ResetPasswordSuccessful}|
+|View Password History for|${ManagedAccount}    |with result|         ${ChangeLogResult}               |

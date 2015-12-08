@@ -1,0 +1,13 @@
+!define SystemName {${prefix}_IbmHMC}
+!define SystemPlatform {IBM HMC}
+!define SystemAddress {10.30.44.62}
+!define FunctAcct {tpamfuncacc2}
+!define FunctAcctPwd {A\)&(d|ef<j>kl1}
+!define ManagedAccountPwd {A\)&(d|ef<j>kl1}
+!define SystemTimeout {61}
+#!define CheckPasswordFailed {The password for .* in .* DOES NOT MATCH the managed system;;account .+ does not exist}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c >PlatformSpecific
+!include -c <PlatformsTesting.MacOsxSix.PlatformSpecific
+!include -c <AutoTestsWebDrv.PlatformsTesting.PlatformSpecific.ManagedAccountCanCheckPassword
+

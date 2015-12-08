@@ -1,0 +1,216 @@
+!contents
+
+!|scenario|Account Discovery                      |
+|Login    |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Create Environment                               |
+|New Account Action                               |
+|Delete Account Action                            |
+|Delete Environment                               |
+
+!|scenario                         |New Account Action                                                                                  |
+|Remove account                    |${AutoDiscoveryAccount1}                                                                            |
+|Set AccDiscovery profile to System|${ProfileName}          ||${SystemName}                                                             |
+|Run AccDiscovery                                                                                                                       |
+|Check results                     |${AutoDiscoveryAccount1}||${SystemName}                                                             |
+|pause                             |600000                                                                                              |
+|Check Mail                        |${MailServer}           ||${NewAccountDiscoveryEmail1}||password||${FromMail}||${AADNAN}||${AADNANb}|
+|Check Mail                        |${MailServer}           ||${SystemEMail}              ||password||${FromMail}||${AADNAN}||${AADNANb}|
+|Check Mail                        |${MailServer}           ||${FuncAccEMail}             ||password||${FromMail}||${AADNAN}||${AADNANb}|
+
+!|scenario               |Delete Account Action                                                                       |
+|Delete Account on System|${ManagedAccount1}                                                                          |
+|Run AccDiscovery                                                                                                     |
+|Choose Account          |${AutoDiscoveryAccount1}                                                                    |
+|click                   |id=Details                                                                                  |
+|$res=                   |isChecked    |id=pwdMgmtNone                                                                |
+|Verify_Contain_OR       |$res;;true                                                                                  |
+|pause                   |600000                                                                                      |
+|Check Mail              |${MailServer}||${DeleteAccountDiscoveryEmail1}||password||${FromMail}||${AADDAN}||${AADDANb}|
+|Check Mail              |${MailServer}||${SystemEMail}                 ||password||${FromMail}||${AADDAN}||${AADDANb}|
+|Check Mail              |${MailServer}||${FuncAccEMail}                ||password||${FromMail}||${AADDAN}||${AADDANb}|
+
+
+#|Check Mail                        |${MailServer}           ||${DeleteAccountDiscoveryEmail1}||password||tpamadmin@tpam.spb.qsft||${AADNAN}||${AADNANb}|
+
+
+!|scenario         |Set AccDiscovery profile to System|ProfileName||SystemName|
+|Choose System     |@SystemName                                               |
+|click             |id=AccountDiscovery                                       |
+|pause             |5000                                                      |
+|select;           |id=AutoDiscoveryProfileID         |label=@ProfileName     |
+|pause             |5000                                                      |
+|click             |id=bt_Save                                                |
+|waitForTextPresent|System changes for * saved successfully                   |
+
+!|scenario            |Run AccDiscovery   |
+|Choose System        |${SystemName}      |
+|click                |id=AccountDiscovery|
+|waitForElementPresent|id=btnRunDiscovery |
+|click                |id=btnRunDiscovery |
+|pause                |55000              |
+|waitForElementPresent|id=btnRefresh      |
+|pause                |60000              |
+
+!|scenario    |Check results|Account||SystemName|
+|Check Account|@Account     |       |@SystemName|
+
+
+!|scenario            |Check Account                                                 |accountName| |SystemName|
+|clickOnLink          |link=Manage Accounts                                                                   |
+|waitForElementPresent|id=SystemNm                                                   |                        |
+|type;                |id=SystemNm                                                   |@SystemName             |
+|click                |id=Listing                                                    |                        |
+|waitForElementPresent|xpath=//table[@id='AccountListing']//td[text()='@accountName']                         |
+|verifyText           |xpath=//table[@id='AccountListing']//td[text()='@accountName']|           |@accountName|
+
+
+!|scenario       |Create Template                                                        |
+|Add system                                                                              |
+|Set Connection Tab                                                                      |
+|Set FuncAccEMail|${FuncAccEMail}                                                        |
+|Add account     |${AutoDiscoveryAccount1}|with password|${AutoDiscoveryAccountPassword1}|
+|Choose System   |${SystemName}                                                          |
+|Set Template                                                                            |
+
+!|scenario         |Set Template                                         |
+|click             |id=Template                                          |
+|pause             |10000                                                |
+|click             |id=cbxTemplateFl                                     |
+|pause             |5000                                                 |
+|click             |id=cbxRetainAccounts                                 |
+|pause             |5000                                                 |
+|click             |id=cb_acct_acctrow_1                                 |
+|pause             |5000                                                 |
+|click             |id=Details                                           |
+|type;             |id=SystemName            |${TemplateName}            |
+|pause             |5000                                                 |
+|click             |id=bt_Save                                           |
+|waitForTextPresent|System changes for ${TemplateName} saved successfully|
+
+
+!|scenario                    |Create Account Discovery Profile                                                                                                                                                    |
+|clickOnLink                  |link=Profile Management                                                                                                                                                             |
+|select;                      |id=ProfileType          |label=Account Discovery                                                                                                                                    |
+|waitForElementPresent        |id=NewButton                                                                                                                                                                        |
+|click                        |id=NewButton                                                                                                                                                                        |
+|type;                        |id=ProfileName          |${ProfileName}                                                                                                                                             |
+|type;                        |id=Description          |Description                                                                                                                                                |
+|Set Delete Account properties|Both (Notify & Turn Off)||${DeleteAccountDiscoveryEmail1},:System:,:Functional:                                                                                                     |
+|Add Detail                   |0                       ||Both (Notify & Create)||${TemplateName}/${AutoDiscoveryAccount1}||${NewAccountDiscoveryEmail1},:System:,:Functional:||||||${AutoDiscoveryAccount1}|||||||||
+|click                        |id=SaveButton                                                                                                                                                                       |
+|waitForTextPresent           |The profile saved successfully                                                                                                                                                      |
+
+!|scenario|Set Delete Account properties|Action||EmailAddresses|
+|select;  |id=DelAcctAction             |label=@Action         |
+|type;    |id=DelAcctEmail              |@EmailAddresses       |
+
+
+
+!|scenario|Add Detail                  |Index||NewAccountAction||TemplateAccount||EmailAddresses||UID||SID||Name||Group||Role||Task||Service|
+|click    |id=btnAddRow                                                                                                                     |
+|select;  |className=autoNewAction     |label=@NewAccountAction                                                                             |
+|select;  |className=autoAcctTemplate  |label=@TemplateAccount                                                                              |
+|type;    |className=autoEmailAddresses|@EmailAddresses                                                                                     |
+|type;    |className=autoUIDFilter     |@UID                                                                                                |
+|type;    |className=autoSIDFilter     |@SID                                                                                                |
+|type;    |className=autoNameFilter    |@Name                                                                                               |
+|type;    |className=autoGroupFilter   |@Group                                                                                              |
+|type;    |className=autoRoleFilter    |@Role                                                                                               |
+
+
+!|scenario               |Create Environment                       |
+|Create Account on System|${ManagedAccount1}                       |
+|Create Mailbox          |${NewAccountDiscoveryEmail1}   ||password|
+|Create Mailbox          |${DeleteAccountDiscoveryEmail1}||password|
+|Create Mailbox          |${SystemEMail}                 ||password|
+|Create Mailbox          |${FuncAccEMail}                ||password|
+|Create Template                                                   |
+|Create Account Discovery Profile                                  |
+
+!|scenario            |Choose system                             |SystemName |
+|clickOnLink          |link=Manage Systems                                   |
+|waitForElementPresent|id=SystemNm                                           |
+|type;                |id=SystemNm                               |@SystemName|
+|click                |id=Listing                                            |
+|waitForElementPresent|xpath=//td[contains(text(),'@SystemName')]            |
+|click                |xpath=//td[contains(text(),'@SystemName')]|           |
+
+
+
+!| scenario             |Check Mail|host ||user||passwd||from||subject||mailbody|
+|$res=                  |CheckMail |@host;@user;@passwd;@from;@subject;@mailbody|
+|Verify_Contain_OR_alnum|$res;;account                                          |
+
+
+!|scenario                         |Delete Environment                                  |
+|Delete Mails                                                                           |
+|Delete Mailbox                    |${NewAccountDiscoveryEmail1}                        |
+|Delete Mailbox                    |${DeleteAccountDiscoveryEmail1}                     |
+|Delete Mailbox                    |${SystemEMail}                                      |
+|Delete Mailbox                    |${FuncAccEMail}                                     |
+|Set AccDiscovery profile to System|No Account Discovery Profile selected||${SystemName}|
+|Remove system                     |${SystemName}                                       |
+|Delete Account Discovery Profile  |${ProfileName}                                      |
+|Remove system                     |${TemplateName}                                     |
+
+#|Delete Mailbox                    |${NewAccountDiscoveryEmail1}                        |
+#|Delete Mailbox                    |${DeleteAccountDiscoveryEmail1}                     |
+
+
+!|scenario         |Remove system   |SystemName  |
+|Choose system     |@SystemName                  |
+|click             |id=bt_Del       |            |
+|getConfirmation                                 |
+|waitForTextPresent|has been successfully deleted|
+
+!|scenario            |Delete Account Discovery Profile|ProfileName            |
+|clickOnLink          |link=Profile Management                                 |
+|select;              |id=ProfileType                  |label=Account Discovery|
+|waitForElementPresent|id=DeleteButton                                         |
+|select;              |id=ProfileID                    |label=@ProfileName     |
+|click                |id=DeleteButton                                         |
+|getConfirmation                                                               |
+|waitForTextPresent   |The profile was deleted successfully                    |
+
+#!|scenario         |Set FuncAccEMail      |eMail          |
+#|Choose Account    |${FunctAcct}                          |
+#|pause             | 5000                                 |
+#|click             |id=Details                            |
+#|pause             | 5000                                 |
+#|type;             |id=RelNotifyEmail     |${FuncAccEMail}|
+#|click             |id=SubmitChangesButton|               |
+#|waitForTextPresent|Changes saved successfully for        |
+
+!|scenario            |Add system                               |
+|clickOnLink          |link=Add System                          |
+|waitForElementPresent|id=SystemName                            |
+|type;                |id=SystemName    |${SystemName}          |
+|type;                |id=NetworkAddress|${SystemAddress}       |
+|type;                |id=PrimaryEmail  |${SystemEMail}         |
+|select;              |id=PlatformID    |label=${SystemPlatform}|
+
+!|scenario        |Set FuncAccEMail|eMail                                                                                                           |
+|$res=            |CLI             |${CLIBatch} UpdateAccount --System ${SystemName} --AccountName ${FunctAcct} --ReleaseNotifyEmail ${FuncAccEMail}|
+|Verify_Contain_OR|$res;;Changes saved successfully                                                                                                 |
+
+!|scenario    |Create Account on System                                     |AccountName                                     |
+|accountAction|${SystemPlatform};;create;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;@AccountName;;${ManagedAccountPwd}|
+
+!|scenario    |Delete Account on System                          |AccountName                          |
+|accountAction|${SystemPlatform};;delete;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;@AccountName|
+
+!| scenario|Delete Mails                                                       |
+|$res=     |ClearMailbox|${MailServer};${NewAccountDiscoveryEmail1};password   |
+|$res=     |ClearMailbox|${MailServer};${DeleteAccountDiscoveryEmail1};password|
+|$res=     |ClearMailbox|${MailServer};${SystemEMail};password                 |
+|$res=     |ClearMailbox|${MailServer};${FuncAccEMail};password                |
+
+!| scenario             |Check No Mail|host ||user||passwd||from||subject||mailbody|
+|$res=                  |CheckMail    |@host;@user;@passwd;@from;@subject;@mailbody|
+|Verify_Contain_OR_alnum|$res;;no messages                                         |
+
+!|scenario        |Check results|accountName             |             |SystemName             |             |
+|$res=            |CLI          |${CLIBatch} ListAccounts --accountname @accountName --systemname @SystemName|
+|Verify_Contain_OR|$res;;@accountName                                                                        |
+
+

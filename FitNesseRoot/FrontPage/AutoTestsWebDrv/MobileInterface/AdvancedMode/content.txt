@@ -1,0 +1,64 @@
+!define RequestorMobileUser {${prefix}ReqMobileUser}
+!define ApproverMobileUser {${prefix}ApprMobileUser}
+!define MobileUserPwd {Password2}
+
+!define SystemName {${prefix}MobileSystem}
+!define AccountName {Account}
+!define AccountPwd {Password42}
+
+!define FilePath {${ProjDir}\Scripts\Temp\}
+!define FileName {${prefix}MobileFile}
+!define FileEmailAddr {${prefix}MobileFile@email.com}
+
+
+
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <AutoTestsWebDrv.MobileInterface.ScenarioLibrary
+                                                                                                                                                       ||${DefaultPwd}                |
+
+!|script                                                                                                                                                                                                                                          |
+|Add User         |${CLIBatch}           ||--UserName ${RequestorMobileUser} --FirstName User --LastName Mobile --Password Password1 --UserType Admin --MobileAllowedFlag Y --Phone 123456 --Email mail@mail.mail  ||successfully                 |
+|Add User         |${CLIBatch}           ||--UserName ${ApproverMobileUser} --FirstName User --LastName Mobile --Password Password1 --UserType Admin --MobileAllowedFlag Y --Phone 654321 --Email email@email.email||successfully                 |
+|Add System       |${CLIBatch}           ||--SystemName ${SystemName} --Platform Windows --NetworkAddress 1.1.1.1                                                                                                  ||successfully                 |
+|Add Account      |${CLIBatch}           ||--SystemName ${SystemName} --AccountName ${AccountName} --Password ${AccountPwd} --ReviewCount 1 --ReviewerType Any                                                     ||successfully                 |
+|Set Access Policy|${CLIBatch}           ||--SystemName ${SystemName} --Action ADD --AccessPolicyNam Requestor --UserName ${RequestorMobileUser}                                                                   ||successfully                 |
+|Set Access Policy|${CLIBatch}           ||--SystemName ${SystemName} --Action ADD --AccessPolicyNam Approver --UserName ${ApproverMobileUser}                                                                     ||successfully                 |
+|pause            |60000                                                                                                                                                                                                                          |
+|Change Pwd       |${RequestorMobileUser}||Password1                                                                                                                                                               ||${MobileUserPwd}             |
+|Change Pwd       |${ApproverMobileUser} ||Password1                                                                                                                                                               ||${MobileUserPwd}             |
+|Create File      |${FilePath}           ||${FileName}                                                                                                                                                                                            |
+|Add File         |${SystemName}         ||${FileName}.txt                                                                                                                                                         ||${FileEmailAddr}||${FilePath}|
+
+
+!|script                                                                                                                                                                |
+|AdvancedMode Add Request|Password                                                                                                                                      |
+|AdvancedMode Verify Passord Request                                                                                                                                    |
+|AdvancedMode Approve Request                                                                                                                                           |
+|AdvancedMode Verify Passord Approve                                                                                                                                    |
+|AdvancedMode Retrieve Password                                                                                                                                         |
+|AdvancedMode Cancel Request                                                                                                                                            |
+|AdvancedMode Verify Passord Cancel Request                                                                                                                             |
+|AdvancedMode Review Request                                                                                                                                            |
+|Update PSM Account      |${CLIBatch}||--System ${SystemName} --Account ${AccountName} --EnableFlag Y --ProxyType \"RDP - Automatic Login Using Password\"||successfully|
+|AdvancedMode Add Request|Session                                                                                                                                       |
+|AdvancedMode Verify Session Request                                                                                                                                    |
+|AdvancedMode Approve Request                                                                                                                                           |
+|AdvancedMode Verify Session Approve                                                                                                                                    |
+|AdvancedMode Cancel Request                                                                                                                                            |
+|AdvancedMode Verify Session Cancel Request                                                                                                                             |
+|AdvancedMode Add Request|File                                                                                                                                          |
+|AdvancedMode Verify File Request                                                                                                                                       |
+|AdvancedMode Approve Request                                                                                                                                           |
+|AdvancedMode Verify File Approve                                                                                                                                       |
+|AdvancedMode Cancel Request                                                                                                                                            |
+|AdvancedMode Verify File Cancel Request                                                                                                                                |
+
+#|$RequestID=             |getEval    |var rstr = "Request number ";var i1 = "$res".indexOf(rstr);var i2 = "$res".substring(i1 + rstr.length);var i3 = i2.indexOf(" ");i4 = i2.substring (0,i3);|
+
+
+
+!|script                                                                   |
+|Delete User  |${CLIBatch}||--UserName ${RequestorMobileUser}||successfully|
+|Delete User  |${CLIBatch}||--UserName ${ApproverMobileUser} ||successfully|
+|Delete System|${CLIBatch}||--SystemName ${SystemName}       ||successfully|

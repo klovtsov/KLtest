@@ -1,0 +1,3 @@
+!|scenario        |Add system|sysname                             |with result                             |expected                            |
+|$res=            |CLI       |${CLIBatch} AddSystem --SystemName @sysname --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\"|
+|Verify_Contain_OR|$res;;@expected                                                                                                              |

@@ -1,0 +1,17 @@
+!contents
+
+
+
+!|script                                                                                  |
+|Login             |${TPAMAdminURL}                ||${TPAMMaster}    |   |${MasterPwd}   |
+|pause             |5000                                                                  |
+|clickAndWait      |link=Daily Maintenance                                                |
+|click             |id=ProcessingLog                                                      |
+|pause             |1000                                                                  |
+|type;             |id=DaysBack                    |1                                     |
+|click             |id=Results                                                            |
+|waitForTextPresent|*meeting filter criteria*                                             |
+|verifyText        |//div[@id='AgentLogResultsTab']||Starting Batch Reports Purging       |
+|verifyText        |//div[@id='AgentLogResultsTab']||Purging report directories older than|
+|verifyText        |//div[@id='AgentLogResultsTab']||Deleting report directory            |
+|verifyText        |//div[@id='AgentLogResultsTab']||Finishing Batch Reports Purging      |

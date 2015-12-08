@@ -1,0 +1,11 @@
+!define ProfileName {${SystemName}AccDiscProfile5}
+!include -c <AutoTestsWebDrv.CliScenarios.WindowsLocalHostEight
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+
+!define HostName {KLvosem}
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary.WinScenarioLibrary
+
+!define TemplateName {${SystemName}Template}

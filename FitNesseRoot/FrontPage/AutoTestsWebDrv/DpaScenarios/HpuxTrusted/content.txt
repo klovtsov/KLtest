@@ -1,0 +1,5 @@
+!define seleniumTimeout {200}
+
+!include <AutoTestsWebDrv.PlatformsTesting.HpuxTrusted
+!include -c <DpaScenarios.ScenarioLibrary
+

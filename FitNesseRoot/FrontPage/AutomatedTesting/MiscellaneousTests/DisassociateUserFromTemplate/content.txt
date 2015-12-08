@@ -1,0 +1,12 @@
+!define UserName {${prefix}DisasUser}
+!define TemplateName {${prefix}DisasTmp}
+!define NewUserName {${prefix}DisasUserNew}
+
+!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+
+!|script                                                                                                                                                                                          |
+|Add User         |${CLIBatch}              |                   |--UserName ${UserName} --FirstName Walter --LastName Sobchak                   |                   |successfully                 |
+|$res=            |GroovyWebDriver          |DisassociateUserFromTemplate;${TPAMHost};${TPAMAdmin};${DefaultPwd};${UserName};${TemplateName};${NewUserName}                                       |
+|Verify_Contain_OR|$res;;User added successfully.*User added successfully.*btnDisassociate exists.*btnDisassociate does not exist.*${TemplateName} has been successfully deleted.*Script finished.|
+|Delete User      |${CLIBatch}              |                   |--UserName ${UserName}                                                         |                   |successfully                 |
+|Delete User      |${CLIBatch}              |                   |--UserName ${NewUserName}                                                      |                   |successfully                 |

@@ -1,0 +1,43 @@
+klbatchsyswithveryverylongname	klbatchacc	DSS Key		1	120	1			SSH - Automatic Login Using DSS Key	Y			Standard				1	Auditor		klsessstart@tpam.spb.qsft		1												
+klbatchsys8	klbatchacc	Local TPAM		2	120	2			Telnet - Automatic Login Using Password	Y							2	Any		klsessstart@tpam.spb.qsft		1												
+klbatchsys7	klbatchacc	Local TPAM		1	120	3			SSH - Interactive Login	Y							1	Auditor		klsessstart@tpam.spb.qsft		1												
+klbatchsys62	klbatchacc	Local TPAM		2	120	1			Telnet - Automatic Login Using Password	Y							1	Any		klsessstart@tpam.spb.qsft		1												
+klbatchsys61	klbatchacc	Local TPAM		1	120	2			RDP - Automatic Login Using Password	Y	8			myshare	Windows File Copy		1	Auditor		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1				Y	Y				PersConnectionProfile			
+klbatchsys60	klbatchacc	Local TPAM		2	120	3			VNC - Interactive Login	Y	0						1	Any		klsessstart@tpam.spb.qsft		1	N		N									
+klbatchsys6	klbatchacc	Local TPAM		1	120	1			SSH - Interactive Login	Y							1	Auditor		klsessstart@tpam.spb.qsft		1												
+klbatchsys58	klbatchacc	Local TPAM		2	120	2			Telnet - Interactive Login	Y							1	Any		klsessstart@tpam.spb.qsft		1	N		N									
+klbatchsys57	klbatchacc	DSS Key		1	120	3			SSH - Automatic Login Using DSS Key	Y			Standard				2	Auditor		klsessstart@tpam.spb.qsft		1												
+klbatchsys53	klbatchacc	Local TPAM		2	120	1			SQL Window - Interactive Login	Y							2	Any		klsessstart@tpam.spb.qsft		1												
+klbatchsys52	klbatchacc	Local TPAM		1	120	2			SSH - Interactive Login	Y							2	Auditor		klsessstart@tpam.spb.qsft		1												
+klbatchsys51	klbatchacc	Local TPAM		2	120	3			VNC Enterprise - Interactive Login	Y							2	Any		klsessstart@tpam.spb.qsft		1												
+klbatchsys50	klbatchacc	Local TPAM		1	120	1			VNC - Interactive Login	Y	1						2	Auditor		klsessstart@tpam.spb.qsft		1												
+klbatchsys5	klbatchacc	Local TPAM		2	120	2			Telnet - Automatic Login Using Password	Y							2	Any		klsessstart@tpam.spb.qsft		1												
+klbatchsys47	klbatchacc	Local TPAM		1	180	3			Telnet - Interactive Login	Y							2	Auditor		klsessstart@tpam.spb.qsft		1												
+klbatchsys44	klbatchacc	Local TPAM		2	150	1			SQLPlus - Interactive Login	Y							2	Any		klsessstart@tpam.spb.qsft		1												
+klbatchsys43	klbatchacc	Local TPAM		1	120	2			Telnet - Interactive Login	Y							2	Auditor		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1												
+klbatchsys41	klbatchacc	DSS Key		2	120	3			SSH - Automatic Login Using DSS Key	Y			Standard				1	Any		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1												
+klbatchsys39	klbatchacc	DSS Key		1	120	1			SSH - Automatic Login Using DSS Key	Y			Standard				1	Auditor		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1												
+klbatchsys37	klbatchacc	Local TPAM		2	120	2			SQL Window - Interactive Login	Y							1	Any		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1												
+klbatchsys36	klbatchacc	Local TPAM		1	90	3			x3270 - Interactive Login Using Password	Y							1	Auditor		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1												
+klbatchsys35	klbatchacc	Local TPAM		2	120	1			x3270 - Interactive Login Using Password	Y							1	Any		klsessstart@tpam.spb.qsft	klsessrevesc@tpam.spb.qsft	1												
+klbatchsys33	klbatchacc	Local TPAM		1	120	2			x3270 - Interactive Login Using Password	Y							1	Auditor			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys32	klbatchacc	Local TPAM		2	120	3			x3270 - Interactive Login Using Password	Y							1	Any			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys31	klbatchacc	Local TPAM		1	120	1			VNC Enterprise - Interactive Login	Y							1	Auditor			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys30	klbatchacc	Local TPAM		2	120	2			SSH - Interactive Login	Y							1	Any			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys29	klbatchacc	Local TPAM		1	120	3			Telnet - Automatic Login Using Password	Y							1	Auditor			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys26	klbatchacc	Local TPAM		2	120	1			Telnet - Interactive Login	Y							1	Any			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys25	klbatchacc	Local TPAM		1	120	2			SSH - Interactive Login	Y							1	Auditor			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys24	klbatchacc	Local TPAM		2	120	3			VNC - Interactive Login	Y	3						1	Any			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys23	klbatchacc	DSS Key		1	120	1			SSH - Automatic Login Using DSS Key	Y			Standard				1	Auditor			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys22	klbatchacc	Local TPAM		2	120	2			Telnet - Interactive Login	Y							1	Any			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys20	klbatchacc	Local TPAM		1	120	3			SSH - Interactive Login	Y							1	Auditor			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys2	klbatchacc	Local TPAM		2	120	1			x5250 - Automatic Login Using Password	Y							1	Any			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys19	klbatchacc	Local TPAM		1	120	2			SSH - Interactive Login	Y							1	Auditor			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys18	klbatchacc	DSS Key		2	120	3			SSH - Automatic Login Using DSS Key	Y			Standard				1	Any			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys17	klbatchacc	Local TPAM		1	120	1			Telnet - Automatic Login Using Password	Y							1	Auditor			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys14	klbatchacc	Local TPAM		2	120	2			VNC Enterprise - Interactive Login	Y							1	Any			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys13	klbatchacc	Local TPAM		1	120	3			Telnet - Interactive Login	Y							1	Auditor			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys12	klbatchacc	Local TPAM		2	120	1			VNC - Interactive Login	Y	0						1	Any			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys11	klbatchacc	Local TPAM		1	120	2			RDP - Interactive Login	Y	8						1	Auditor			klsessrevesc@tpam.spb.qsft	1		Y										
+klbatchsys10	klbatchacc	Local TPAM		2	120	3			SSH - Interactive Login	Y							1	Any			klsessrevesc@tpam.spb.qsft	1												
+klbatchsys1	klbatchacc	DSS Key		1	135	1			SSH - Automatic Login Using DSS Key	Y			Standard				1	Auditor			klsessrevesc@tpam.spb.qsft	1												

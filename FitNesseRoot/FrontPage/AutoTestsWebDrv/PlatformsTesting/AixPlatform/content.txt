@@ -1,0 +1,12 @@
+!define SystemName {${prefix}_AIX}
+!define SystemPlatform {AIX}
+!define SystemAddress {10.30.47.63}
+!define FunctAcct {root2}
+!define FunctAcctPwd {A\)&(d|ef<j>k$l1}
+!define ManagedAccountPwd {A\)&(d|ef<j>k$l1}
+!define SystemTimeout {100}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.AixPlatform.PlatformSpecific
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSix.PlatformSpecific

@@ -1,0 +1,11 @@
+!define EscEmail {escalator@gmail.com}
+!define escaltnTimeValue {3}
+!define accEscEmail {accesc@mail.ru}
+!define accEscaltnTimeValue {6}
+!include -c  <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                                         |
+|Add system             |${SystemName}                                                                                                   |with address|${SystemAddress}|platform    |Linux|additional parameters|-EscalationEmail ${EscEmail} -EscalationTime ${escaltnTimeValue}|
+|Add account            |${ManagedAccount}                                                                                               |on system   |${SystemName}   |with options|-EscalationEmail ${accEscEmail} -EscalationTime ${accEscaltnTimeValue}                      |
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount} -propsToList accountname,EscalationEmail,EscalationTime|contains    |${ManagedAccount}.*${accEscEmail}.*${accEscaltnTimeValue}                                                                 |
+|Delete System          |${SystemName}                                                                                                                                                                                                                                           |

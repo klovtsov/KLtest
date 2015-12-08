@@ -1,0 +1,17 @@
+!define psmProxyType {\"SSH - Automatic Login Using Password\"}
+!define shareFolder {./shared}
+!define fileToDownload {${prefix}test File.txt}
+!define fileToUpload {UploadedFile.txt}
+!define secondFileToUpload {sec ond.txt}
+!define TransferMethod {SCP}
+!note Credentials which are specified at transfer time
+!define FileTransUser {${ManagedAccount}}
+!define  isFileTransfUsrFunctional {N}
+!define AcceptImage {Accept4.png}
+
+!define content {${ATPath}\PlatformsTesting\MacOsxSeven\content.txt}
+!include <AutomatedTesting.PlatformsTesting.MacOsxSeven
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+!include -c FileTransferLinux.PlatformSpecific
+!include CommonFileTransferTest

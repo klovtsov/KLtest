@@ -1,0 +1,30 @@
+!*> Test description
+Password generator can't create a password with nonconsecutive repeating characters.
+The check is case-sensitive, so password of "HiThere" would considered repeating because
+of the "e" characters but not "H" and "h". Whereas "HiThEre" would not be considered repeating.
+Passwords for managed accounts and synchronized passwords are checked.
+Not matched password can't be set to sync password.
+If password matches the rule it will be set successfully. 
+*!
+
+!define checkRegexp {!-.*([a-zA-Z0-9]).+\1.*-!}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SynchronizedPasswords.ScenarioLibrary
+!include -c ScenarioLibrary 
+
+!3 Set the password rule settings.
+!|script                                                          |
+|Login       |${TPAMAdminURL}|        |${TPAMMaster}||${MasterPwd}|
+|Let Off                                                          |
+|Set         |MaxChars       |equal to|20                         |
+|Set         |MinChars       |equal to|16                         |
+|Select value|Not Permitted  |for     |NonconsecutiveRepeat       |
+|click       |id=SubmitChangesButton                              |
+
+!4 Test the Rule
+!|script                                                                                                                               |
+|Test password generator                    |${checkRegexp}     |should present    |N                                                  |
+|Generated account password does not contain|${checkRegexp}                                                                            |
+|Check that Synchronized Password           |${SyncPasswordName}|with Password Rule|${PasswdRuleName}||does not contain||${checkRegexp}|

@@ -1,0 +1,26 @@
+!define OSType {Win}
+!define ProxyType {RDP}
+!define TestPsmLog {${prefix}_drvpsmlog.txt}
+!define Browser {Chrome}
+!define Image {Fake}
+
+
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsLocalhost
+
+!*> Includes
+
+
+!include -c <AutoTestsWebDrv.SessionAlertsScenarios.ScenarioLibrary
+
+!include -c <AutoTestsWebDrv.PsmSmokeTest.ScenarioLibrary
+#!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PsmSmokeTest.GroovyDriver.ScenarioLibrary
+
+*!
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|

@@ -1,0 +1,14 @@
+!* Test description
+Override Individual Accountability flag should be propagated from template.
+*!
+!define ManagedAccount {Individ}
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                         |
+|Add account            |${ManagedAccount}                                                                                           |on system      |${TemplateName}                    |with options|-description "${accDescription}" -OverrideAccountability Y|
+|Add account            |${ManagedAccount}2                                                                                          |on system      |${TemplateName}                    |with options|-description "${accDescription}" -OverrideAccountability N|
+|Try to Add system      |${newSystemName}                                                                                            |with parameters|-templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully    |
+|List Systems by        |-systemName ${newSystemName}                                                                                |output params  |SystemName                         |contain     |${newSystemName}                                          |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount} -propsToList accountname,overrideAccountability |contains       |${ManagedAccount}\s+Y                                                                                      |
+|List Accounts by filter|-systemName ${newSystemName} -AccountName ${ManagedAccount}2 -propsToList accountname,overrideAccountability|contains       |${ManagedAccount}2\s+N                                                                                     |
+|Delete System          |${newSystemName}                                                                                                                                                                                                                        |

@@ -1,0 +1,73 @@
+!contents
+
+!define AT {!-@-!}
+
+
+!define UserName {${prefix}extuser}
+!define UserInitialPassword {grain41R}
+!define UserPassword {frujiE1S}
+
+
+!define NewUserName {${prefix}newuser}
+!define NewUserPassword {grain41R}
+!define NewUserMail {newuser${AT}tpam.spb.qsft}
+
+!define AuthTimeout {1}
+
+!define DefenderName {TestDefender}
+!define DefenderAddress {10.30.38.222}
+!define DefenderPort {1645}
+!define DefenderSecret {secret}
+
+!define DefenderUserName {autodefender}
+!define DefenderUserPassword {grain41R}
+!define DefenderUserADPassword {frujiE15}
+
+
+!define LDAPServerName {TestLDAP}
+!define LDAPServerAddress {10.30.38.252}
+!define LDAPServerAdmin {Manager}
+!define LDAPPort {389}
+!define LDAPServerAdminPwd {frujiE15}
+!define LDAPDomainName {kllinux.spb.qsft}
+!define LDAPBaseName {dc=kllinux,dc=spb,dc=qsft}
+!define LDAPServerAdminDescription {cn=${LDAPServerAdmin},${LDAPBaseName}}
+!define LDAPUserContainerName {${prefix}Users}
+
+!define LDAPUserName {${prefix}ldapuser}
+!define LDAPUserPassword {grain41R}
+
+
+!define RADIUSServerName {TestRadius}
+!define RADIUSServerAddress {10.30.38.210}
+!define RADIUSServerAdmin {root}
+!define RADIUSServerAdminPwd {master}
+!define RADIUSPort {1812}
+!define RADIUSUsersConfigFilePath {/etc/raddb/users}
+!define RADIUSClientsConfigFilePath {/etc/raddb/clients.conf}
+!define RADIUSInitFilePath {/etc/init.d/radiusd}
+!define RADIUSSecret {tpamqcsupersecret}
+
+!define RADIUSUserName {${prefix}radiususer}
+!define RADIUSUserPassword {grain41R}
+
+
+
+!define DCName {TestDC}
+!define DCAddress {10.30.38.59}
+!define ADDomainAdmin {Administrator}
+!define ADDomainAdminPwd {frujiE15}
+!define ADDomainName {kltest16.spb.qsft}
+!define ADBaseName {dc=kltest16,dc=spb,dc=qsft}
+
+!define ADUserName {${prefix}aduser}
+!define ADUserPassword {grain41R}
+
+!define PathToDefenderDesktopToken {${ProjDir}\Scripts\DefenderDesktopToken}
+!define DefenderTokenPassphrase {mypassphrase}
+!define DefenderChallengeResponseTokenUserName {autodefender2}
+!define DefenderChallengeResponseToken {1749600007}
+
+!define DefenderSynchronousTokenUserName {autodefender3}
+!define DefenderSynchronousToken {1749600001}
+

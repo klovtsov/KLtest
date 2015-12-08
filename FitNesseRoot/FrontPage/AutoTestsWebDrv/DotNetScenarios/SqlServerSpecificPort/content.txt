@@ -1,0 +1,14 @@
+!define SystemName {${prefix}SpecificSql}
+!define SystemPlatform {MS SQL Server}
+!define SystemAddress {10.30.39.63}
+!define Port {8484}
+!define FunctAcct {sa}
+!define FunctAcctPwd {T0PsecReT}
+!define ManagedAccount {${prefix}sqlAcc}
+!define ManagedAccountPwd {=1qwerty}
+!define SchedulePasswordResetTimeout {300000}
+
+!define ManAccntCheckPassword {Success}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <DotNetScenarios.ScenarioLibrary
+!include -c >PlatformSpecific

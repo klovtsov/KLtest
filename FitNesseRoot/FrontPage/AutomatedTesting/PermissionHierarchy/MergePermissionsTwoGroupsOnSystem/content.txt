@@ -1,0 +1,34 @@
+!* Test description
+Two groups have permissions for an system.
+Permissions should be merged.
+*!
+
+!define GroupName {${prefix}grp}
+!define GroupName2 {${prefix}grpTwo}
+!define keyFileOrigin {ssh-dss}
+!define KeyFile {${ProjDir}\Scripts\keys\temp.txt}
+
+!*> Include section
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.EmailScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.SystemSshKey.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+
+!|script                                                                                                  |
+|Add Group                   |${GroupName}                                                                |
+|Add Group                   |${GroupName2}                                                               |
+|Add User To Group           |${CLI_user_2}    |             |${GroupName}                                |
+|Add User To Group           |${CLI_user_2}    |             |${GroupName2}                               |
+|Add System with specific key                                                                             |
+|Add account                 |${ManagedAccount}|with password|${ManagedAccountPwd}|         |${NotFailed} |
+|Set policy                  |Requestor        |on system    |${SystemName}       |for group|${GroupName} |
+|Set policy                  |ISA              |on system    |${SystemName}       |for group|${GroupName2}|
+|Request Pwd by              |${CLI_user_2}    |with result  |submitted                                   |
+|Cancel Pwd Request by       |${CLI_user_2}                                                               |
+|Retrieve System Specific Key|OpenSSH          |by           |${CLI_user_2}                               |
+|Remove account              |${ManagedAccount}                                                           |
+|Remove system               |${SystemName}                                                               |
+|Delete Group                |${GroupName}                                                                |
+|Delete Group                |${GroupName2}                                                               |

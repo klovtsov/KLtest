@@ -1,0 +1,28 @@
+!********> Test Description
+This test checks that Dublicate button is working
+**************!
+!define dblUserName {${prefix}Abb}
+
+!note Managed System settings
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSix
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+
+!|script                                                                                             |
+|Open                    |${TPAMURL}            |             |${TPAMAdmin}           ||${DefaultPwd}|
+|Create Account on System                                                                            |
+|Add system                                                                                          |
+|Add account             |${ManagedAccount}     |with password|${ManagedAccountPwdNew}||successfully |
+|Choose Account          |${ManagedAccount}                                                          |
+|click                   |id=DuplicateButton                                                         |
+|waitForElementPresent   |id=AccountName                                                             |
+|type;                   |id=AccountName        |${dblUserName}                                      |
+|type;                   |id=sPswd              |${ManagedAccountPwd}                                |
+|type;                   |id=sConfPswd          |${ManagedAccountPwd}                                |
+|click                   |id=SubmitChangesButton|                                                    |
+|waitForTextPresent      |Changes saved successfully for ${dblUserName}                              |
+|Remove account          |${ManagedAccount}                                                          |
+|Remove account          |${dblUserName}                                                             |
+|Remove system           |${SystemName}                                                              |
+|Delete Account on System|${ManagedAccount}                                                          |

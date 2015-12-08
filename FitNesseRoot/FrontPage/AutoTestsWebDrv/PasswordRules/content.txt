@@ -1,0 +1,14 @@
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsDesktop
+!define NotFailed {successfully}
+!define ManagedAccount {${prefix}kolyan}
+!define SecManAccount {${prefix}vovan}
+!define PasswdRuleName {${prefix}_verifyrule}
+!define SyncPasswordName {${prefix}SyncPass}
+!define SincPwdInitialValue {Sync10Pwd}               
+!define pwdSetSuccess {Synchronized Password Updated successfully}
+!define syncPwdChangeProfile {PpmPasswordChangeProfile}
+!define syncPwdCheckProfile {PpmPasswordCheckProfile}
+!define pwdSetSuccess {Synchronized Password Updated successfully}
+
+
+!contents -R -p -g

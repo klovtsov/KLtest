@@ -1,0 +1,12 @@
+
+CollectionName	SystemName	AccountName	FileName
+klbatch_collection1	klbatchsys1		
+klbatch_collection2	klbatchsys10	klbatchacc	
+klbatch_collection2	klbatchsys2	klbatchacc	
+klbatch_collection2	klbatchsys7		
+klbatch_collection2	klbatchsys8		
+klbatch_collection2	klbatchsyswithveryverylongname		
+klbatch_collection3	klbatchsys3		
+klbatch_collection3	klbatchsys4		
+klbatch_collection3	klbatchsys5		
+klbatch_collection3	klbatchsys6		

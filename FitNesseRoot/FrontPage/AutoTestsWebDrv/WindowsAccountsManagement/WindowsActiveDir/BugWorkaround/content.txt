@@ -1,0 +1,20 @@
+!|scenario            |Add account                           |accountName|with password|accPwd|
+|clickAndWait         |link=Add Account                      |                                |
+|type;                |id=SystemNm                           |${SystemName}                   |
+|click                |id=System                             |                                |
+|waitForElementPresent|//td[contains(text(),'${SystemName}')]|                                |
+|mouseDown            |//td[contains(text(),'${SystemName}')]|                                |
+|click                |//td[contains(text(),'${SystemName}')]|                                |
+|Set password         |@accountName                          |           |@accPwd             |
+|Set description      |${ManagedAccountDescription}          |                                |
+
+!|scenario         |Set password           |accountName||accPwd|
+|click             |id=Details             |                   |
+|type;             |id=AccountName         |@accountName       |
+|type;             |id=sPswd               |@accPwd            |
+|type;             |id=sConfPswd           |@accPwd            |
+|click             |id=cb_ChgSvc           |                   |
+|click             |id=cb_RstSvc           |                   |
+|click             |id=cb_ChgTask          |                   |
+|click             |id=SubmitChangesButton |                   |
+|waitForTextPresent|Changes saved successfully for @accountName|

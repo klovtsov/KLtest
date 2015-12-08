@@ -1,0 +1,17 @@
+!define UserName {${prefix}Test}
+!define ThumbPrint {D44BE9039AAB1047F20943B9E398D5014A593C2E}
+
+!include -c <FrontPage.AutomatedTesting.GroovyJavaApiScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!3 Create new user with Certificate Thumbprint
+!|script                                                                                                    |
+|Add User             |${UserName}|with options|--primaryAuthType=Certificate;--certThumbprint=${ThumbPrint}|
+|Check user thumbprint|${UserName}|            |${ThumbPrint}                                               |
+|Delete User          |${UserName}|                                                                         |
+!3 Update existing user 
+!|script                                                                                         |
+|Add User             |${UserName}2                                                              |
+|Update User          |${UserName}2|with options|--primaryAuthType=Certificate;--certThumbprint=${ThumbPrint}|
+|Check user thumbprint|${UserName}2||${ThumbPrint}                                               |
+|Delete User          |${UserName}2|                                                             |

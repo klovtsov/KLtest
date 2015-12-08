@@ -1,0 +1,12 @@
+!note If test is run out alone the success result will be on a log top. If test is runned out within test suite the log top result will be "canceled"
+
+!define AnotherManagedAccount {${prefix}SecAccount}
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                                                            |
+|Add account              |${AnotherManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed}|
+|Schedule Reset                                                                                     |
+|View Password History for|${ManagedAccount}       |with result  |Success;;Canceled                 |
+|View Password History for|${AnotherManagedAccount}|with result  |Failed                            |
+|Remove account           |${AnotherManagedAccount}                                                 |

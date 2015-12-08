@@ -1,0 +1,3 @@
+!define bfer5604timeout {500000}
+!include <AutoTestsWebDrv.CliScenarios.DellRemoteAccess
+!include -c ScenarioLibrary

@@ -1,0 +1,36 @@
+!include <AutoTestsWebDrv.PlatformsTesting.EdmzSpcw2
+!define SystemDescription {lalala}
+
+!define PolicyName {"PSM Requestor"}
+!define PlaceHolder {:prompt:}
+!define goodProxyType {"RDP - Interactive Login"}
+!define ManagedAccountPwd {P@r0leAA}
+!define pause {40000}
+
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PsmSmokeTest.ScenarioLibrary
+
+!* Prepare environment: Add system, create placeholder account and set permissions
+!|script                                                                                                                                      |
+|Open           |${TPAMURL}          |            |${TPAMAdmin}                   |                             |${DefaultPwd}                |
+|Add System                                                                                                                                   |
+|Add account    |${PlaceHolder}      |on system   |${SystemName}                  |with options                 |-AutoFlag N                  |
+|Enable PSM for |${PlaceHolder}      |with options|-proxyType ${goodProxyType} -minApprovers 1 -maxSessionCount 3 -passwordMethod "Not Stored"|
+|Set Permissions|${PolicyName}       |on  account |${PlaceHolder}                 |for user                     |${Requestor}                 |
+|Set Permissions|${PolicyName}       |on  account |${PlaceHolder}                 |for user                     |${Requestor}2                |
+|Set Permissions|"PSM Approver"      |on  account |${PlaceHolder}                 |for user                     |${API_user_2}                |
+|Set Permissions|"Approver-Requestor"|on  account |${PlaceHolder}                 |for user                     |${API_user_1}                |
+|stop                                                                                                                                         |
+*!
+
+!|script                                                                               |
+|Make first Request Session to |${PlaceHolder}|on system|${SystemName}|by|${Requestor} |
+|Make second Request Session to|${PlaceHolder}|on system|${SystemName}|by|${Requestor}2|
+|Approve Session request with  |$firstReqId   |by       |${API_user_2}                 |
+|Get Session Request with      |$firstReqId   |status   |Active/Approved               |
+|Get Session Request with      |$secReqId     |status   |Pending Approval              |
+
+!*> Remove system and users
+!|script                    |
+|Delete system|${SystemName}|
+*!

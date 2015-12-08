@@ -1,0 +1,40 @@
+!*> Test Description
+This test checks that .exe file uploading is prohibited during new file creation
+*!
+
+!include <AutomatedTesting.PlatformsTesting.WindowsLocalHost
+!define FileName {${ProjDir}\Scripts\blat.exe}
+!define FileUploadReslt {File extension of ".exe" is not allowed for this upload type}
+
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.FileTransfer.ScenarioLibrary
+!include -c >TestSpecific
+!3 File creation upload
+!|script                                                 |
+|Add system                                              |
+|Try Add file |${FileName}|with result|${FileUploadReslt}|
+|Remove system|${SystemName}                             |
+!3 Batch operation upload
+!|script                                                                                             |
+|Try to upload|${FileName}|during operation|ImportUsers               |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|ImportSystems             |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|ImportAccounts            |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|UpdateCollections         |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|UpdateGroups              |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|UpdateCollectionMembership|with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|UpdateGroupMembership     |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|UpdateUsers               |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|UpdateSystems             |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|UpdateAccounts            |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|UpdatePSMAccounts         |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|UpdatePermissions         |with result|${FileUploadReslt}|
+|Try to upload|${FileName}|during operation|UpdateCSPermissions       |with result|${FileUploadReslt}|
+
+!3 Check a case ignoring (i.e. EXE, Exe and so on).
+!|script                                                     |
+|Check uploading file|blat.EXE|with result|File extension of ".EXE" is not allowed for this upload type.|
+|Check uploading file|blit.Exe|with result|File extension of ".Exe" is not allowed for this upload type.|
+|Check uploading file|blet.eXe|with result|File extension of ".eXe" is not allowed for this upload type.|
+|Check uploading file|blet.exE|with result|File extension of ".exE" is not allowed for this upload type.|
+
+

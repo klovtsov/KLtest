@@ -1,0 +1,11 @@
+!|scenario        |CheckConfigInterface|userName             |             |userPwd            |
+|$res=            |GroovyWebDriver     |ConfigInterfaceSmokeTest;${TPAMHost};@userName;@userPwd|
+|Verify_Contain_OR|$res;;${TPAMHost}.*Finished.                                                |
+
+!|scenario        |AddSysAdminUser|userName                   |                   |userPwd                  |
+|$res=            |GroovyWebDriver|AddSysAdminUser;${TPAMHost};${TPAMMaster};${MasterPwd};@userName;@userPwd|
+|Verify_Contain_OR|$res;;User added successfully.*SaveChanges button is disabled.*Finished.                                                 |
+
+!|scenario        |DeleteSysAdminUser|userName                                                           |
+|$res=            |GroovyWebDriver   |DeleteSysAdminUser;${TPAMHost};${TPAMMaster};${MasterPwd};@userName|
+|Verify_Contain_OR|$res;;@userName has been successfully deleted.*Finished.                              |

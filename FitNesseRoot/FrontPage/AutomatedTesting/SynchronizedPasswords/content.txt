@@ -1,0 +1,15 @@
+!define SyncPasswordName {${prefix}Parole}
+!define SincPwdInitialValue {T0PsecreT}
+!define PauseValue {30000}
+!*> First Sub System
+!include <AutomatedTesting.PlatformsTesting.WindowsActiveDir
+*!
+!*> Second Sub System
+!define SecSystemName {${prefix}_MySQL}
+!define SecSystemPlatform {MySQL}
+!define SecSystemAddress {10.30.39.159}
+!define SecFunctAcct {UserMaster}
+!define SecFunctAcctPwd {=1qwerty}
+!define SecConnectionPort {3307}
+*!
+!contents -p -g

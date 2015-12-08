@@ -1,0 +1,10 @@
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                         |
+|${CreateSystemMethod}                           |
+|Create Account on System|${FunctAcct}           |
+|${RetrieveKeyMethod}    |${keyFormat}           |
+|Copy key to system      |${keyFormat}           |
+|Test System             |${TestSystemSuccessful}|
+|Remove All                                      |

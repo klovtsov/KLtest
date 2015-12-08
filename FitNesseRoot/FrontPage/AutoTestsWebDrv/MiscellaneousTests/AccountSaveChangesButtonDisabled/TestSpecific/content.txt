@@ -1,0 +1,25 @@
+!|scenario            |Check Require Multi-Group checkbox and select 3 groups          |
+|Choose Account       |${ManagedAccount}                                               |
+|click                |id=Details                                                      |
+|waitForElementPresent|id=MinApprovers                                                 |
+|type;                |id=MinApprovers                    |3                           |
+|pause                |500                                                             |
+|click                |id=cbxPwdMultiApprovers                                         |
+|select;              |id=PwdMultiApproverGroups          |label=${GroupName1}         |
+|select;              |id=PwdMultiApproverGroups          |label=${GroupName2}         |
+|select;              |id=PwdMultiApproverGroups          |label=${GroupName3}         |
+|pause                |500                                                             |
+|click                |id=SubmitChangesButton                                          |
+|waitForTextPresent   |Changes saved successfully for ${ManagedAccount}                |
+
+!|scenario        |Check Save Changes button is disabled|accountName                                |
+|$res=            |GroovyWebDriver                      |DisabledSaveButton;${TPAMHost};@accountName|
+|Verify_Contain_OR|$res;;SubmitChanges button is disabled!                                          |
+
+
+#|select;              |id=PwdMultiApproverGroups          |label=${GroupName1}         |
+#|click                |//select[@id='PwdMultiApproverGroups']/option[.='${GroupName1}']|
+#|select;              |id=PwdMultiApproverGroups          |label=${GroupName2}         |
+#|click                |//select[@id='PwdMultiApproverGroups']/option[.='${GroupName2}']|
+#|select;              |id=PwdMultiApproverGroups          |label=${GroupName3}         |
+#|click                |//select[@id='PwdMultiApproverGroups']/option[.='${GroupName3}']|

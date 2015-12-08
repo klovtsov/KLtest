@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<properties>
+	<Edit>true</Edit>
+	<Files>true</Files>
+	<Properties>true</Properties>
+	<RecentChanges>true</RecentChanges>
+	<Refactor>true</Refactor>
+	<Search>true</Search>
+	<Suite/>
+	<SymbolicLinks>
+		<CliScenarios>.FrontPage.AutomatedTesting.CliScenarios</CliScenarios>
+		<DotNetScenarios>.FrontPage.AutomatedTesting.DotNetScenarios</DotNetScenarios>
+		<CppScenarios>.FrontPage.AutomatedTesting.CppScenarios</CppScenarios>
+		<JavaApiScenarios>.FrontPage.AutomatedTesting.JavaApiScenarios</JavaApiScenarios>
+		<PerlApiScenarios>.FrontPage.AutomatedTesting.PerlApiScenarios</PerlApiScenarios>
+		<PlatformsTesting>.FrontPage.AutomatedTesting.PlatformsTesting</PlatformsTesting>
+		<BatchScenarios>.FrontPage.AutomatedTesting.BatchScenarios</BatchScenarios>
+		<InternetExplorerScenarios>.FrontPage.AutomatedTesting.InternetExplorerScenarios</InternetExplorerScenarios>
+		<CacheServerRemoteAccess>.FrontPage.AutomatedTesting.CacheServerRemoteAccess</CacheServerRemoteAccess>
+		<EmailScenarios>.FrontPage.AutomatedTesting.EmailScenarios</EmailScenarios>
+		<DpaScenarios>.FrontPage.AutomatedTesting.DpaScenarios</DpaScenarios>
+	</SymbolicLinks>
+	<Versions>true</Versions>
+	<WhereUsed>true</WhereUsed>
+</properties>

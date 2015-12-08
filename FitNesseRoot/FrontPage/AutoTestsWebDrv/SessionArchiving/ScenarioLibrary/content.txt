@@ -1,0 +1,91 @@
+!|scenario         |Create Archive Server                                                                                                                                                             |
+|$res =            |GroovyWebDriver|manageSessionArchiveServers;${TPAMHost};${TPAMAdmin};${DefaultPwd};create;${ArchiveServerName};${ArchiveServerAddress};${ArchiveServerUserName};./${ArchiveFolder}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                                                                        |
+
+
+!|scenario         |Remove Archive Server                                                                                         |
+|$res =            |GroovyWebDriver|manageSessionArchiveServers;${TPAMHost};${TPAMAdmin};${DefaultPwd};remove;${ArchiveServerName}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                    |
+
+!|scenario         |Transfer Archive Server Key                                                                                                                                              |
+|$res =            |GroovyWebDriver               |manageSessionArchiveServers;${TPAMHost};${TPAMAdmin};${DefaultPwd};get2048bitkey;${ArchiveServerName};${BrowserDownloadDir}\              |
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                                                               |
+|runBatch          |UploadPublicSshKey.bat;${ArchiveServerAddress};${ArchiveServerRootName};${ArchiveServerRootPassword};${ArchiveServerUserName};${BrowserDownloadDir};${AuthorizedKeysFile}|
+
+!|scenario         |Test Archive Server                                                                                         |
+|$res =            |GroovyWebDriver|manageSessionArchiveServers;${TPAMHost};${TPAMAdmin};${DefaultPwd};test;${ArchiveServerName}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                  |
+|Verify_Contain_OR |$res;;SUCCESS NOTIFICATION                                                                                  |
+|Verify_Contain_OR |$res;;Archive server is properly configured and ready                                                       |
+
+!|scenario         |Set PSM Affinity|system          |Local Server         |lspriority         |DPA         |dpapriority         |
+|$res =            |GroovyWebDriver |setPsmAffinity;${TPAMHost};${TPAMAdmin};${DefaultPwd};${SystemName};@lspriority;@dpapriority|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                   |
+
+!|scenario         |Set DPA to use archive server|archserver                    |use for replay                    |replay                   |
+|$res =            |GroovyWebDriver              |setDpaPsmArchiveOptions;${TPAMHost};${TPAMAdmin};${DefaultPwd};DPA;true;@archserver;@replay|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                               |
+
+!|scenario         |Set DPA to don't archive sessions                                                       |
+|$res =            |GroovyWebDriver|setDpaPsmArchiveOptions;${TPAMHost};${TPAMAdmin};${DefaultPwd};DPA;false|
+|Verify_Contain_NOT|$res;;something went wrong                                                              |
+
+!|scenario         |Set LocalServer to use archive server|archserver                     |use for replay                    |replay                    |
+|$res =            |GroovyWebDriver                      |setDpaPsmArchiveOptions;${TPAMHost};${TPAMAdmin};${DefaultPwd};local;true;@archserver;@replay|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                         |
+
+!|scenario         |Set LocalServer to don't archive sessions                                                 |
+|$res =            |GroovyWebDriver|setDpaPsmArchiveOptions;${TPAMHost};${TPAMAdmin};${DefaultPwd};local;false|
+|Verify_Contain_NOT|$res;;something went wrong                                                                |
+
+
+!|scenario        |Enable PSM for|psmAccnt             |with proxy             |proxy             |req approvals             |apprCount             |duration             |duration             |Record?             |recFlag            |
+|$res=            |CLI           |${CLIBatch} Updatepsmaccount --System ${SystemName} --Account @psmAccnt --EnableFlag Y --ProxyType @proxy --DefaultSessionDuration @duration --MinApprovers @apprCount --RecordingRequiredFlag @recFlag|
+|Verify_Contain_OR|$res;;PSM Details saved successfully                                                                                                                                                                                  |
+
+!|scenario        |Update PSM session record option|recFlag                            |for                            |psmAccnt                            |
+|$res=            |CLI                             |${CLIBatch} Updatepsmaccount --System ${SystemName} --Account @psmAccnt --RecordingRequiredFlag @recFlag|
+|Verify_Contain_OR|$res;;PSM Details saved successfully                                                                                                     |
+
+
+!|scenario         |Check Session Log for|req |ArchiveServer |ArchServer |Server Path |ArchFolder |Duration |durka |
+|$SessLogRes =     |GroovyWebDriver      |checkSessionArchiving;${TPAMHost};${TPAMAdmin};${DefaultPwd};session;@req|
+|Verify_Contain_NOT|$SessLogRes;;something went wrong                                                              |
+|Verify_Contain_OR |$SessLogRes;;Archive Server: @ArchServer                                                       |
+|Verify_Contain_OR |$SessLogRes;;Archive Folder: @ArchFolder                                                       |
+|Verify_Contain_OR |$SessLogRes;;Duration: @durka                                                                  |
+
+!|scenario         |Check Session Log for|req|ArchiveServer|ArchServer|Server Path|ArchFolder|Duration|durka|File Size|fsize|
+|$SessLogRes =     |GroovyWebDriver      |checkSessionArchiving;${TPAMHost};${TPAMAdmin};${DefaultPwd};session;@req         |
+|Verify_Contain_NOT|$SessLogRes;;something went wrong                                                                       |
+|Verify_Contain_OR |$SessLogRes;;Archive Server: @ArchServer                                                                |
+|Verify_Contain_OR |$SessLogRes;;Archive Folder: @ArchFolder                                                                |
+|Verify_Contain_OR |$SessLogRes;;Duration: @durka                                                                           |
+|Verify_Contain_OR |$SessLogRes;;File Size: @fsize                                                                          |
+
+!|scenario         |Get File Name from Archive Server Log                                                                               |
+|$fname=           |GroovyWebDriver|checkSessionArchiving;${TPAMHost};${TPAMAdmin};${DefaultPwd};server;${ArchiveServerName};$SessLogRes|
+|Verify_Contain_NOT|$fname;;something went wrong                                                                                        |
+
+!|scenario         |Check DPA log for|dpa                  |contains                  |reslt                  |
+|$res =            |GroovyWebDriver  |checkSessionArchiving;${TPAMHost};${TPAMAdmin};${DefaultPwd};DpaLog;@dpa|
+|Verify_Contain_NOT|$res;;something went wrong                                                                |
+|Verify_Contain_OR |$res;;@reslt                                                                              |
+
+!|scenario         |Check files on server                                                                                                                                                  |
+|$res=             |RunBatchGetOutputFull|ArchiveRetention\checkbackup.bat;${ArchiveServerAddress};${ArchiveServerRootName};${ArchiveServerRootPassword};${ArchiveServerFullPath}/$fname;-1|
+|Verify_Contain_NOT|$res;;No such file                                                                                                                                                     |
+|Verify_Contain_OR |$res;;gzenc                                                                                                                                                            |
+
+
+!|scenario         |Check no files on server                                                                                                                                         |
+|$res=             |RunBatchGetOutputFull|ArchiveRetention\checkbackup2.bat;${ArchiveServerAddress};${ArchiveServerRootName};${ArchiveServerRootPassword};${ArchiveServerFullPath};-2|
+|Verify_Contain_NOT|$res;;gzenc                                                                                                                                                      |
+
+!|scenario         |Make archive server as nondefault|srvname                                                                                               |
+|$res =            |GroovyWebDriver                  |manageSessionArchiveServers;${TPAMHost};${TPAMAdmin};${DefaultPwd};makeNonDefault;${ArchiveServerName}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                              |
+
+!|scenario         |Make archive server as default|srvname                                                                                            |
+|$res =            |GroovyWebDriver               |manageSessionArchiveServers;${TPAMHost};${TPAMAdmin};${DefaultPwd};makeDefault;${ArchiveServerName}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                        |

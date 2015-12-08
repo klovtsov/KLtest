@@ -1,0 +1,15 @@
+!contents
+
+
+!include -c .FrontPage.AutoTestsWebDrv.AutoDiscovery.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.AutoDiscovery.LdAp.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.AutoDiscovery.LdAps.ScenarioLibrary
+
+
+
+
+!|script      |
+|Prepare Test |
+|Auto Discovery |
+|Clear Objects|
+

@@ -1,0 +1,16 @@
+!define testUser {${prefix}listUser}
+!define testGroup {${prefix}listGroup}
+!define groupDescription {Test group for list command}
+
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                      |
+|Add User           |${testUser}                                                              |
+|Add Group          |${testGroup}                                                             |
+|Add Member         |${testUser}                            |to group           |${testGroup} |
+|List User by filter|-userName ${testUser}                  |and result contains|${testUser}  |
+|List User by filter|-groupName ${testGroup}                |and result contains|${testUser}  |
+|List User by filter|-userInterface API -userName ${prefix}*|and result contains|${API_user_1}|
+|List User by filter|-userType ADMIN -userName par*         |and result contains|ParAdmin     |
+|Delete User        |${testUser}                                                              |
+|Delete Group       |${testGroup}                                                             |

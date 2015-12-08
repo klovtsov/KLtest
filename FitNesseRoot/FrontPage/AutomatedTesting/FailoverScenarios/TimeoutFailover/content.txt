@@ -1,0 +1,11 @@
+!contents
+
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.FailoverScenarios.ScenarioLibrary
+
+
+!|script            |
+|Prepare Environment|
+|Failover           |
+|Failback           |
+|Clear Environment  |

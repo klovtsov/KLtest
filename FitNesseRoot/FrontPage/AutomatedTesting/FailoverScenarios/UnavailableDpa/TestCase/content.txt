@@ -1,0 +1,11 @@
+!contents
+
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.FailoverScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.FailoverScenarios.UnavailableDpa.TestSpecific
+
+!|script                 |
+|Prepare Environment     |
+|Testing DPA Availability|
+|Clear Environment       |
+#|Set Affinity            |

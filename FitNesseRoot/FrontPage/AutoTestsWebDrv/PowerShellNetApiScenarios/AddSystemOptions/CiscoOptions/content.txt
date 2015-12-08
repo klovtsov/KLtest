@@ -1,0 +1,17 @@
+!include <AutoTestsWebDrv.PlatformsTesting.CiscoRouterSsh
+!define ManagedAccount {${prefix}psAcnt}
+!define lineDefValue {AAA}
+
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!3 Enable Password
+!|script                                                                                                                                                               |
+|Add system   |${SystemName}|with address|${SystemAddress}|platform|"${SystemPlatform}"|managed by|${FunctAcct}|additional parameters|-enablePassword ${EnablePassword}|
+|Delete System|${SystemName}                                                                                                                                           |
+
+!3 lineDef
+!define SystemPlatform2 {Cisco Router (TEL)}
+!|script                                                                                                                                                                                                           |
+|Add system     |${SystemName}2            |with address |${SystemAddress}  |platform|"${SystemPlatform2}"|managed by|${FunctAcct}|additional parameters|-enablePassword ${EnablePassword} -lineDef ${lineDefValue}|
+|List Systems by|-systemName ${SystemName}2|output params|SystemName,lineDef|contain |${SystemName}.*${lineDefValue}                                                                                               |
+|Delete System  |${SystemName}2                                                                                                                                                                                    |

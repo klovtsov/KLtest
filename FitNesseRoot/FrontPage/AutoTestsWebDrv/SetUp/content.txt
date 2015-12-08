@@ -1,0 +1,24 @@
+!|import                |
+|TPAM                   |
+|tpamjavaapi            |
+|cacheserverremoteaccess|
+|FitWebDriver           |
+
+#|selenesse              |
+
+!|Library                                      |
+|tpam|${seleniumBrowser};;${seleniumPort};;fake|
+|tpamjavaapi                                   |
+|cacheserverremoteaccess                       |
+|FitWebDriver                                  |
+
+
+#!|script                                                                                             |
+#|start            |Slim Selenium Driver|${seleniumHost}|${seleniumPort}|${seleniumBrowser}|${baseURL}|
+#|setTimeoutSeconds|${seleniumTimeout}                                                                |
+
+
+
+
+
+

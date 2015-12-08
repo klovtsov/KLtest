@@ -1,0 +1,18 @@
+%Host% 23
+WAIT "Username:"
+SEND "%RunningUser%\m"
+WAIT "Password:"
+SEND "%RunningUserPassword%\m"
+WAIT ">"
+SEND "en\m"
+WAIT "Password:"
+SEND "%EnablePassword%\m"
+WAIT "#"
+SEND "show users\m"
+WAIT "%RunningUser%"
+SEND "conf t\m"
+WAIT "(config)#"
+SEND "exit\m"
+WAIT "#"
+SEND "quit\m"
+

@@ -1,0 +1,7 @@
+!define EthalonFilesPath {${ProjDir}\Scripts\Ethalons\ListOperations\Export}
+!define DefaultPrefix {prefix}
+
+!define ListAdmin {${prefix}ListAuditor}
+!define DefaultPwd {Admin4PAR}
+
+!contents

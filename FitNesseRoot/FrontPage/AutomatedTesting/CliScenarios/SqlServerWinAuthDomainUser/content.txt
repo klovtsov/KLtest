@@ -1,0 +1,23 @@
+!note Active Directory settings
+!define AdSystemName {${prefix}_testad}
+!define AdSystemPlatform {Windows Active Dir}
+!define AdSystemAddress {10.30.38.37}
+!define DomainName {pritchet.spb.qsft}
+!define NETBIOSDomainName {pritchet}
+!define FunctAcct {yasek}
+!define FunctAcctPwd {*7utinaa}
+
+!note SQL server settings
+!define HostSystemAddress {10.30.38.91}
+!define SqlInstanceName {tpamtest}
+!define SystemAddress {${HostSystemAddress}\${SqlInstanceName}}
+!define SystemName {${prefix}_sql}
+!define SystemPlatform {MS SQL Server}
+!define ManagedAccount {${prefix}edAcc}
+!define ManagedAccountPwd {A\)&(d|ef<>$}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <CliScenarios.ScenarioLibrary
+!include -c <CliScenarios.SqlServerWinAuthDomainUser.PlatformSpecific
+
+

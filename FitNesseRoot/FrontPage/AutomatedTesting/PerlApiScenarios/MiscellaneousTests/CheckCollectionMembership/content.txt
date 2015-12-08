@@ -1,0 +1,42 @@
+!define CollectionName {${prefix}PerlCollection1}
+!define CollectionName2 {${prefix}PerlCollection2}
+!define SystemName {${prefix}PerlSystem1}
+!define AccountName {${prefix}PerlAccount1}
+
+!|script                                                                                                                                                                                      |
+|Add Collection|${PerlAPIparams}||--CollectionName=${CollectionName};                                                                            ||The new collection was created successfully|
+|Add System    |${PerlAPIparams}||--SystemName=${SystemName};--PlatformName=Windows;--NetworkAddress=x.x.x.x                                     ||successfull                                |
+|Add Collection|${PerlAPIparams}||--CollectionName=${CollectionName2};                                                                           ||The new collection was created successfully|
+|Add Account   |${PerlAPIparams}||--SystemName=${SystemName};--AccountName=${AccountName};--description=0;--releaseNotifyEmail=releaseNotifyEmail||successfull                                |
+
+!|script                                                                                                                                                                                |
+|Add CollectionMembership|${PerlAPIparams}||--CollectionName=${CollectionName};--SystemName=${SystemName};--AccountName=${AccountName}||Collection Membership changes saved successfully|
+
+!|script                                                                                                                                                                                                     |
+|Add CollectionMembership|${PerlAPIparams}||--CollectionName=${CollectionName};--SystemName=${SystemName}||You cannot add a System to a collection which already contains Accounts or Files from that system.|
+
+!|script                                                                                                                                                    |
+|Add CollectionMembership|${PerlAPIparams}||--CollectionName=${CollectionName2};--SystemName=${SystemName}||Collection Membership changes saved successfully|
+
+!|script                                                                                                                                                                  |
+|List CollectionMembership|${PerlAPIparams}||--CollectionName=${CollectionName}||collectionName: ${CollectionName}.*systemName: ${SystemName}.*accountName: ${AccountName}|
+
+!|script                                                                                                                                |
+|List CollectionMembership|${PerlAPIparams}||--SystemName=${SystemName}||collectionName: ${CollectionName2}.*systemName: ${SystemName}.*|
+
+!|script                                                                                                                                                             |
+|Delete CollectionMember|${PerlAPIparams}||--CollectionName=${CollectionName};--SystemName=${SystemName}||System: ${SystemName} is not a member of ${CollectionName}.|
+
+!|script                                                                                                              |
+|Delete CollectionMember|${PerlAPIparams}||--CollectionName=${CollectionName2};--SystemName=${SystemName}||successfull|
+
+!|script                                                                                                                                          |
+|Delete CollectionMember|${PerlAPIparams}||--CollectionName=${CollectionName};--SystemName=${SystemName};--AccountName=${AccountName}||successfull|
+
+
+
+
+!|script                                                                                                                    |
+|Delete Collection|${PerlAPIparams}||--CollectionName=${CollectionName}                                        ||successfull|
+|Delete Collection|${PerlAPIparams}||--CollectionName=${CollectionName2}                                       ||successfull|
+|Delete System    |${PerlAPIparams}||--SystemName=${SystemName};--PlatformName=Windows;--NetworkAddress=x.x.x.x||successfull|

@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.EdmzSpcwDc2
+!include -c <DotNetScenarios.ScenarioLibrary
+!include -c EdmzSpcw2.PlatformSpecific
+!include -c <DotNetScenarios.EdmzSpcwDc2.PlatformSpecific

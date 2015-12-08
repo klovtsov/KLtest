@@ -1,0 +1,6 @@
+/usr/sbin/pwunconv
+#
+/usr/lbin/tsconvert -r
+#
+exit
+    

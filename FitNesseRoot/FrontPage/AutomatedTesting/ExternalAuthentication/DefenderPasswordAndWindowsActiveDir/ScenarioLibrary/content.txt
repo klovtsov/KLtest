@@ -1,0 +1,14 @@
+!contents
+
+
+
+!| scenario       |Add User|userName                                                                                                                                                                                                                                                                                               |
+|$res=            |CLI     |${CLIBatch} AddUser --UserName @userName --LastName Doe --FirstName John --Password ${UserInitialPassword} --UserType Admin --PrimaryAuthType Defender --PrimaryAuthID ${DefenderUserName} --PrimaryAuthSystem ${DefenderName}  --SecondaryAuth WinAD --SecondaryAuthSystem ${DCName} --SecondaryUserID ${ADUserName}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                                                |
+
+
+
+!|scenario    |Test Login                                               |
+|Double Step Login       |${TPAMURL}    ||${UserName} ||${DefenderUserPassword}    ||${ADUserPassword}|
+|Add New User|${NewUserName}||${NewUserPassword}||${NewUserMail}       |
+

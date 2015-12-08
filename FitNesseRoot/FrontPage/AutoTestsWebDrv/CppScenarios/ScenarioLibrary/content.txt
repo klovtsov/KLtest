@@ -1,0 +1,127 @@
+!| scenario       |Add system                                                                                                                                                           |
+|$res=            |CppAPI                 |${APIBatch} AddSystem ${SystemName} ${SystemAddress} "${SystemPlatform}" "${SystemDescription}" ${SystemTimeout} ${FunctAcct} ${FunctAcctPwd}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                     |
+|Set description  |${FunctAcctDescription}|for                                                               |${FunctAcct}                                                              |
+
+!| scenario       |Test System|testRes                             |
+|$res=            |CppAPI     |${APIBatch} TestSystem ${SystemName}|
+|Verify_Contain_OR|$res;;@testRes                                  |
+
+!| scenario       |Set Password|acc             |             |passwd             |
+|$res=            |CppAPI      |${APIBatch} SetPassword ${SystemName} @acc @passwd|
+|Verify_Contain_OR|$res;;${NotFailed}                                             |
+
+!| scenario       |Check Password|acc           |           |testRes          |
+|$res=            |CppAPI        |${APIBatch} CheckPassword ${SystemName} @acc|
+|Verify_Contain_OR|$res;;@testRes                                             |
+
+!| scenario|Remove account             |accName             |
+|CppAPI    |${APIBatch} RemoveAccount ${SystemName} @accName|
+
+!| scenario       |Remove system|sysName                          |
+|$res=            |CppAPI       |${APIBatch} DeleteSystem @sysName|
+|Verify_Contain_OR|$res;;successful                               |
+
+!| scenario       |Add account                 |acc    |with password   |pwd   |   |testRes   |
+|$res=            |CppAPI                      |${APIBatch} AddAccount ${SystemName} @acc @pwd|
+|Verify_Contain_OR|$res;;@testRes                                                             |
+|Set description  |${ManagedAccountDescription}|for    |${ManagedAccount}                     |
+
+!| scenario       |Add PPM account|accnt |with password |pwd |and profiles |checkProfile | |changeProfile ||testRes|
+|$res=            |CppAPI         |${APIBatch} AddPpmAccount ${SystemName} @accnt @pwd @checkProfile @changeProfile|
+|Verify_Contain_OR|$res;;@testRes                                                                                  |
+
+!| scenario       |Reset Password|acc           |           |testRes          |
+|$res=            |CppAPI        |${APIBatch} ResetPassword ${SystemName} @acc|
+|Verify_Contain_OR|$res;;@testRes                                             |
+
+!|scenario        |Set User Permissions|userName                                                                                        |
+|$res=            |CppAPI              |${APIBatch} SetUserPermission ${SystemName} ${ManagedAccount} "Approver-Requestor" ADD @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                     |
+
+!|scenario        |Revoke User Permissions|userName                                                                                         |
+|$res=            |CppAPI                 |${APIBatch} SetUserPermission ${SystemName} ${ManagedAccount} "Approver-Requestor" DROP @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                         |
+
+!| scenario       |Request Pwd                                                                                 |
+|$res=            |CppAPI       |${APIBatch} RequestPassword ${SystemName} ${ManagedAccount} ${API_user_1} test|
+|Verify_Contain_OR|$res;;submitted                                                                             |
+|$RequestID=      |get_RequestID|$res                                                                          |
+
+!| scenario       |Approve Pwd                                   |
+|$res=            |CppAPI|${APIBatch2} ApprovePassword $RequestID|
+|Verify_Contain_OR|$res;;submitted                               |
+
+!| scenario             |Get Login                                     |
+|$GeneratedPwd=         |CppAPI|${APIBatch} RetrievePassword $RequestID|
+|Login Account to System|$GeneratedPwd                                 |
+
+!| scenario    |Managed System                           |
+|Create Account on System                                |
+|Open          |${TPAMURL}  ||${TPAMAdmin}||${DefaultPwd}|
+|Add system                                              |
+|Test System   |${TestSystemSuccessful}                  |
+|Set password  |${FunctAcct}||${FunctAcctWrongPwd}       |
+|Test System   |${TestSystemFailed}                      |
+|Check Password|${FunctAcct}||${CheckPasswordFailed}     |
+
+!| scenario                       |Managed Account                                                                                                                                           |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PpmCheckProfile}                ||${PpmChangeProfile}                ||${NotFailed}|
+|Reset Password                   |${ManagedAccount}|             |${ResetPasswordFailed}                                                                                                    |
+|pause                            |${CheckPasswordInterval}                                                                                                                                  |
+|Check Password                   |${ManagedAccount}|             |${CheckPasswordFailed}                                                                                                    |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PersistentPasswordCheckProfile1}||${PpmChangeProfile}                ||${NotFailed}|
+|Forced Reset                     |Failed                                                                                                                                                    |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PpmCheckProfile}                ||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Schedule Check Password          |Failed                                                                                                                                                    |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                                                   |
+|Set password                     |${FunctAcct}     |             |${FunctAcctPwd}                                                                                                           |
+|pause                            |${RestoreFunctAcctPasswordTimeout}                                                                                                                        |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PpmCheckProfile}                ||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Schedule Check Password          |Failed                                                                                                                                                    |
+|pause                            |${PpmScheduleTimeWindow}                                                                                                                                  |
+|Check Status                     |Success          |for reason   |Mismatch                                                                                                                  |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PersistentPasswordCheckProfile1}||${PpmChangeProfile}                ||${NotFailed}|
+|Reset Password                   |${ManagedAccount}|             |${ResetPasswordSuccessful}                                                                                                |
+|Check Password                   |${ManagedAccount}|             |${CheckPasswordSuccessful}                                                                                                |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                                                   |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwdNew}|and profiles|${PpmCheckProfile}                ||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Schedule Check Password          |Success                                                                                                                                                   |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PersistentPasswordCheckProfile1}||${PpmChangeProfile}                ||${NotFailed}|
+|Forced Reset                     |Success                                                                                                                                                   |
+
+!| scenario          |Request Password and Login |
+|Set User Permissions|${API_user_1}              |
+|Set User Permissions|${API_user_2}              |
+|pause               |${ApplyNewPoliciesInterval}|
+|Request Pwd                                     |
+|Approve Pwd                                     |
+|Get Login                                       |
+
+!|scenario     |Account Not there                               |
+|Add account   |AccNotThere|with password|master | |${NotFailed}|
+|Reset Password|AccNotThere|             |${ResetPasswordFailed}|
+|pause         |${CheckPasswordInterval}                        |
+|Check Password|AccNotThere|             |${CheckPasswordFailed}|
+
+!|scenario        |System Unreachable                                              |
+|$res=            |CppAPI           |${APIBatch} UpdateSystem ${SystemName} 1.2.3.4|
+|Verify_Contain_OR|$res;;${NotFailed}                                              |
+|Test System      |${TestSystemFailed}                                             |
+|Reset Password   |${ManagedAccount}|            |${ResetPasswordFailed}           |
+|Check Password   |${ManagedAccount}|            |${CheckPasswordFailed}           |
+#|Logout Paradmin                                                                   |
+
+!|scenario        |Set description|accDescrptn                |for                |account                |
+|$res=            |CppAPI         |${APIBatch} SetAccountDescription ${SystemName} @account "@accDescrptn"|
+|Verify_Contain_OR|$res;;${NotFailed}                                                                     |
+
+!|scenario        |Set account DN|accntDN             |for             |account             |
+|$res=            |CppAPI        |${APIBatch} SetAccountDN ${SystemName} @account "@accntDN"|
+|Verify_Contain_OR|$res;;${NotFailed}                                                       |

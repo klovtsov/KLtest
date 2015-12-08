@@ -1,0 +1,8 @@
+!define EscEmail {escalator@gmail.com}
+!define PrimEmail {primac@gmail.com}
+!include -c  <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                        |
+|Add system     |${SystemName}            |with address |${SystemAddress}                       |platform|"${SystemPlatform}"                     |additional parameters|-EscalationEmail ${EscEmail} -PrimaryEmail ${PrimEmail}|
+|List Systems by|-systemName ${SystemName}|output params|SystemName,EscalationEmail,PrimaryEmail|contain |${SystemName}.*${EscEmail}.*${PrimEmail}|                                                                             |
+|Delete System  |${SystemName}                                                                                                                                                                                                  |

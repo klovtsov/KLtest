@@ -1,0 +1,9 @@
+
+MaxSystems =  20000 
+MaxUsers =  1000000 
+MaxCachedAccounts =  1000000 
+MaxCacheServers =  1000 
+MaxDesktops =  20000 
+MaxSessions =  10000 
+MaxSpcwSystems =  10000 
+MaxDPAs =  1000 

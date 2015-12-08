@@ -1,0 +1,277 @@
+
+  =     
+Account Login Control Account Lockout Duration =  15 10 9999 
+Account Login Control Account Lockout Threshold =  5 0 100 
+Account Login Control Account Lockout Window =  10 0 15 
+Account Login Control Allow 1024bit key length for regenerated user key = Yes   No No   
+Account Login Control Allow Multiple Sessions = Yes   No Yes   
+Account Login Control Disable after Inactive for n Days =  365 14 365 
+Account Login Control Inform User of bad password = Yes   No No   
+Account Login Control Inform User of disabled account = Yes   No No   
+Account Login Control Inform User of failed login attempts = Yes   No No   
+Account Login Control Inform User of locked account = Yes   No No   
+Account Login Control Login token lifespan =  300 60 600 
+Account Login Control Maximum Password Age =  42 0 180 
+Account Login Control Minimum Password Age =  0 0 14 
+Account Login Control Password Grace Period =  14 0 30 
+Account Login Control Password History =  5 0 24 
+Account Login Control Session Inactivity Timeout =  2880 10 2880 
+Allow Migration Allow Migration in Config Interface = Yes   No Yes   
+Browser Window Admin Interface default window size = 800 x 600
+1024 x 768
+1152 x 648
+1152 x 864
+1280 x 720
+1280 x 800
+1280 x 960
+1366 x 768
+1400 x 1050
+1440 x 900
+1600 x 1200
+1680 x 1050
+1920 x 1080
+1920 x 1200
+1920 x 1440 
+Browser Window Admin Interface in new window = Yes   No No   
+Browser Window Config Interface default window size = 800 x 600
+1024 x 768
+1152 x 648
+1152 x 864
+1280 x 720
+1280 x 800
+1280 x 960
+1366 x 768
+1400 x 1050
+1440 x 900
+1600 x 1200
+1680 x 1050
+1920 x 1080
+1920 x 1200
+1920 x 1440 
+Browser Window Config Interface in new window = Yes   No No   
+Browser Window Main Interface default window size = 800 x 600
+1024 x 768
+1152 x 648
+1152 x 864
+1280 x 720
+1280 x 800
+1280 x 960
+1366 x 768
+1400 x 1050
+1440 x 900
+1600 x 1200
+1680 x 1050
+1920 x 1080
+1920 x 1200
+1920 x 1440 
+Browser Window Main Interface in new window = Yes   No No   
+Custom Column Names ManagedAccount.AccountCustom1 =  
+Custom Column Names ManagedAccount.AccountCustom2 =  
+Custom Column Names ManagedAccount.AccountCustom3 =  
+Custom Column Names ManagedAccount.AccountCustom4 =  
+Custom Column Names ManagedAccount.AccountCustom5 =  
+Custom Column Names ManagedAccount.AccountCustom6 =  
+Custom Column Names ManagedSystem.SystemCustom1 =  
+Custom Column Names ManagedSystem.SystemCustom2 =  
+Custom Column Names ManagedSystem.SystemCustom3 =  
+Custom Column Names ManagedSystem.SystemCustom4 =  
+Custom Column Names ManagedSystem.SystemCustom5 =  
+Custom Column Names ManagedSystem.SystemCustom6 =  
+Custom Column Names Users.UserCustom1 =  
+Custom Column Names Users.UserCustom2 =  
+Custom Column Names Users.UserCustom3 =  
+Custom Column Names Users.UserCustom4 =  
+Custom Column Names Users.UserCustom5 =  
+Custom Column Names Users.UserCustom6 =  
+Customer Specified Appliance Identity =  
+Customer Specified Hide Retrieved Passwords = Never
+Hide, but allow password to be revealed
+Always hide retrieved password 
+Customer Specified Max Attachment Size (MB, 0=no limit) =  0 0 1024 
+Customer Specified System Date Format = Day/Month/Year hh:mm24
+Month/Day/Year hh:mm AM/PM 
+Global Groups Allow Global Groups to be used for Permissioning = Yes   No No   
+Individual Accountability Allow Account specific override = Yes   No No   
+Mobile Device Allow password retrieval = Yes   No Yes   
+Mobile Device Quick Approve Text =  
+Mobile Device Quick Deny Text =  
+Mobile Device Quick Expire Text =  
+Mobile Device Quick Submit Text =  
+Old Password Retention Failed Password Days =  15 1 90 
+Old Password Retention Minimum Retention Days =  30 1 360 
+Old Password Retention Past Passwords =  5 1 30 
+Old Password Retention Purge Password Batch Size =  10 5 100 
+Online Backups Online Backups =  5 1 10 
+PSM Session Max Session Duration (Hours) =  0 0 168 
+PSM Session Maximum Recording Size =  500 10 800 
+PSM Session Replay all sessions before completing review = Yes   No No   
+PSM Session Session Termination Wait Time =  300 60 3600 
+PSM Session Session Termination Warning Interval =  60 60 3600 
+Replication Database Backup Set Max Incr Usage MB =  1024 256 4096 
+Replication File Resynchronization Interval =  3600 3600 14400 
+Replication Replication Interval =  60 60 14400 
+Request Reasons Detailed Reason Text for ISA Release = Not Allowed
+Optional
+Required 
+Request Reasons Detailed Reason Text for Request = Not Allowed
+Optional
+Required 
+Request Reasons Reason Code for ISA Release = Not Allowed
+Optional
+Required 
+Request Reasons Reason Code for Request = Not Allowed
+Optional
+Required 
+Retention Period Account Discovery Agent Log =  30 1 30 
+Retention Period Activity Log =  90 30 365 
+Retention Period Alerts Log =  30 1 30 
+Retention Period Auto Discovery Agent Log =  30 1 30 
+Retention Period Backup Log =  30 10 365 
+Retention Period Batch Import-Update History (0=Never Delete) =  0 0 999 
+Retention Period Data Extract Log =  30 1 90 
+Retention Period DPA Server Activity Log =  30 1 30 
+Retention Period File Release Log =  90 30 365 
+Retention Period File Release Request =  90 1 365 
+Retention Period Firewall Log =  30 1 90 
+Retention Period ISA Release Log =  90 30 365 
+Retention Period Mail Agent Log =  10 1 365 
+Retention Period Online Batch Reports =  30 1 180 
+Retention Period Password Change Activity Detail =  30 10 90 
+Retention Period Password Change Log =  90 30 365 
+Retention Period Password Release Log =  90 30 365 
+Retention Period Password Test Activity Detail =  30 10 90 
+Retention Period Password Test Results =  30 10 90 
+Retention Period Post Session Processing Log =  10 1 365 
+Retention Period PSM Archive Log =  5 1 30 
+Retention Period Pwd Change Agent Log =  30 10 90 
+Retention Period Pwd Test Agent Log =  30 10 90 
+Retention Period Release Request =  90 10 999 
+Retention Period Security Log =  10 5 90 
+Retention Period Sent Mail Log =  30 1 365 
+Retention Period Session Request =  90 10 999 
+Retention Period Synchronized Password Change Log =  90 30 365 
+Retention Period Sys-Admin Log =  90 30 365 
+Review Notification Immediate Review Notification = Yes   No Yes   
+Review Notification Periodic Review Notification Interval = Disabled
+1x/hour
+12x/day (every 2 hours)
+8x/day (every 3 hours)
+6x/day (every 4 hours)
+4x/day (every 6 hours)
+3x/day (every 8 hours)
+2x/day (every 12 hours)
+1x/day 
+Role Policy Always use cached permission data = No
+Yes
+Not for Password/File retrieval and Session Start 
+Role Policy Default new systems to no assigned ISA policy = Yes   No No   
+Role Policy Ignore Policies includes collection membership = Yes   No No   
+Role Policy Pause Rebuild Policies job during batch operations = Never
+Only for updates triggered by the process itself
+For all updates while a batch is running 
+Role Policy Require System and Account Name filters = Yes   No No   
+Role Policy Restrict ISA System Creation = Yes   No No   
+Trash Cleanup Allow Manual Hard Deletes = Yes   No Yes   
+Trash Cleanup Days in trash (0=Never Delete) =  10 0 999 
+User Control Allow User Timezone Changes = Yes   No Yes   
+User Control Default User Timezone = (UTC-12:00) International Date Line West
+(UTC-11:00) Coordinated Universal Time-11
+(UTC-10:00) Hawaii
+(UTC-09:00) Alaska
+(UTC-08:00) Baja California
+(UTC-08:00) Pacific Time (US & Canada)
+(UTC-07:00) Arizona
+(UTC-07:00) Chihuahua, La Paz, Mazatlan
+(UTC-07:00) Mountain Time (US & Canada)
+(UTC-06:00) Central America
+(UTC-06:00) Central Time (US & Canada)
+(UTC-06:00) Guadalajara, Mexico City, Monterrey
+(UTC-06:00) Saskatchewan
+(UTC-05:00) Bogota, Lima, Quito
+(UTC-05:00) Eastern Time (US & Canada)
+(UTC-05:00) Indiana (East)
+(UTC-04:30) Caracas
+(UTC-04:00) Asuncion
+(UTC-04:00) Atlantic Time (Canada)
+(UTC-04:00) Cuiaba
+(UTC-04:00) Georgetown, La Paz, Manaus, San Juan
+(UTC-04:00) Santiago
+(UTC-03:30) Newfoundland
+(UTC-03:00) Brasilia
+(UTC-03:00) Buenos Aires
+(UTC-03:00) Cayenne, Fortaleza
+(UTC-03:00) Greenland
+(UTC-03:00) Montevideo
+(UTC-03:00) Salvador
+(UTC-02:00) Coordinated Universal Time-02
+(UTC-02:00) Mid-Atlantic
+(UTC-01:00) Azores
+(UTC-01:00) Cape Verde Is.
+(UTC) Casablanca
+(UTC) Coordinated Universal Time
+(UTC) Dublin, Edinburgh, Lisbon, London
+(UTC) Monrovia, Reykjavik
+(UTC+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+(UTC+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague
+(UTC+01:00) Brussels, Copenhagen, Madrid, Paris
+(UTC+01:00) Sarajevo, Skopje, Warsaw, Zagreb
+(UTC+01:00) West Central Africa
+(UTC+01:00) Windhoek
+(UTC+02:00) Amman
+(UTC+02:00) Athens, Bucharest
+(UTC+02:00) Beirut
+(UTC+02:00) Cairo
+(UTC+02:00) Damascus
+(UTC+02:00) Harare, Pretoria
+(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius
+(UTC+02:00) Istanbul
+(UTC+02:00) Jerusalem
+(UTC+02:00) Nicosia
+(UTC+03:00) Baghdad
+(UTC+03:00) Kaliningrad, Minsk
+(UTC+03:00) Kuwait, Riyadh
+(UTC+03:00) Nairobi
+(UTC+03:30) Tehran
+(UTC+04:00) Abu Dhabi, Muscat
+(UTC+04:00) Baku
+(UTC+04:00) Moscow, St. Petersburg, Volgograd
+(UTC+04:00) Port Louis
+(UTC+04:00) Tbilisi
+(UTC+04:00) Yerevan
+(UTC+04:30) Kabul
+(UTC+05:00) Islamabad, Karachi
+(UTC+05:00) Tashkent
+(UTC+05:30) Chennai, Kolkata, Mumbai, New Delhi
+(UTC+05:30) Sri Jayawardenepura
+(UTC+05:45) Kathmandu
+(UTC+06:00) Astana
+(UTC+06:00) Dhaka
+(UTC+06:00) Ekaterinburg
+(UTC+06:30) Yangon (Rangoon)
+(UTC+07:00) Bangkok, Hanoi, Jakarta
+(UTC+07:00) Novosibirsk
+(UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi
+(UTC+08:00) Krasnoyarsk
+(UTC+08:00) Kuala Lumpur, Singapore
+(UTC+08:00) Perth
+(UTC+08:00) Taipei
+(UTC+08:00) Ulaanbaatar
+(UTC+09:00) Irkutsk
+(UTC+09:00) Osaka, Sapporo, Tokyo
+(UTC+09:00) Seoul
+(UTC+09:30) Adelaide
+(UTC+09:30) Darwin
+(UTC+10:00) Brisbane
+(UTC+10:00) Canberra, Melbourne, Sydney
+(UTC+10:00) Guam, Port Moresby
+(UTC+10:00) Hobart
+(UTC+10:00) Yakutsk
+(UTC+11:00) Solomon Is., New Caledonia
+(UTC+11:00) Vladivostok
+(UTC+12:00) Auckland, Wellington
+(UTC+12:00) Coordinated Universal Time+12
+(UTC+12:00) Fiji
+(UTC+12:00) Magadan
+(UTC+12:00) Petropavlovsk-Kamchatsky - Old
+(UTC+13:00) Nuku'alofa
+(UTC+13:00) Samoa 

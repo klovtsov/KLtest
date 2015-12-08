@@ -1,0 +1,3 @@
+!include <AutoTestsWebDrv.PlatformsTesting.UnixWare7 
+!include -c <JavaApiScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.JavaApiScenarios.UnixWare7.PlatformSpecific

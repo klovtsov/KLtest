@@ -1,0 +1,20 @@
+!define checkRegexp {!-.*[A-Z].*-!}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SynchronizedPasswords.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                                  |
+|Login               |${TPAMAdminURL}|        |${TPAMMaster}||${MasterPwd}|
+|Select Password Rule|${PasswdRuleName}                                   |
+|Set                 |MaxChars       |equal to|10                         |
+|Set                 |MinChars       |equal to|8                          |
+|Select value        |Not Permitted  |for     |ReqUpper                   |
+|click               |id=SubmitChangesButton                              |
+
+!3 Test the Rule
+!|script                                                                                                                               |
+|Test password generator                    |${checkRegexp}     |should present    |N                                                  |
+|Generated account password does not contain|${checkRegexp}                                                                            |
+|Check that Synchronized Password           |${SyncPasswordName}|with Password Rule|${PasswdRuleName}||does not contain||${checkRegexp}|

@@ -1,0 +1,26 @@
+
+
+<table border="1" width="900px">
+  <thead>
+      <tr>
+        <td bgcolor="#C0C0C0" colspan="4">
+        <p align="center"><font size="4"><b>Listing of Collection Membership</b></font></td>
+      </tr>
+    <tr>
+      <td bgcolor="#C0C0C0" width="250px"><b>Collection Name</b></td>
+      <td bgcolor="#C0C0C0" width="250px"><b>System Name</b></td>
+      <td bgcolor="#C0C0C0" width="250px"><b>Account Name</b></td>
+      <td bgcolor="#C0C0C0" width="250px"><b>File Name</b></td>
+    </tr>
+  </thead>
+  <tbody>
+	
+		<tr>
+			<td>prefixListCollection12</td>
+			<td>prefixListSystem12</td>
+			<td></td>
+			<td></td>
+		</tr>
+	
+  </tbody>
+</table>

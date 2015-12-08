@@ -1,0 +1,7 @@
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script |
+|Delete files on System|
+|Delete Account on System|${ManagedAccount}|
+|Remove system           |${SystemName}    |

@@ -1,0 +1,29 @@
+!*> Includes
+''System''
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+''Libraries''
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <PasswordProfiles.ScenarioLibrary
+*!
+
+!|script                                                                       |
+|Open                   |${TPAMURL} ||${TPAMAdmin}              ||${DefaultPwd}|
+|Delete System          |${CLIBatch}||--SystemName ${SystemName}||successfully |
+|Delete Account on System                                                      |
+|Delete Password Profile|Change     ||${ChangeProfile1FailureDoNothing}        |
+|Delete Password Profile|Change     ||${ChangeProfile2FailureDisable}          |
+|Delete Password Profile|Change     ||${ChangeProfile3FailureLock}             |
+|Delete Password Profile|Change     ||${ChangeProfile4TestPort}                |
+|Delete Password Profile|Change     ||${NoSchedule}                            |
+|Delete Password Profile|Change     ||${DailySchedule}                         |
+|Delete Password Profile|Change     ||${Weekly1Schedule}                       |
+|Delete Password Profile|Change     ||${Weekly2Schedule}                       |
+|Delete Password Profile|Change     ||${Weekly3Schedule}                       |
+|Delete Password Profile|Change     ||${Weekly4Schedule}                       |
+|Delete Password Profile|Change     ||${EverySchedule}                         |
+|Delete Password Profile|Change     ||${MonthlyFirstSchedule}                  |
+|Delete Password Profile|Change     ||${MonthlyLastSchedule}                   |
+|Delete Password Profile|Change     ||${MonthlyDaysOfSchedule}                 |
+|Delete Password Profile|Change     ||${ChangeProfile5DoNotChange}             |
+|Delete Mailbox         |${SystemEMail}                                        |
+|stop                                                                          |

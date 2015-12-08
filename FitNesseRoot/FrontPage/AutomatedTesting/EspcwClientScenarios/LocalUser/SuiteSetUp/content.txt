@@ -1,0 +1,14 @@
+!include -c <FrontPage.AutomatedTesting.SetUp
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.EdmzSpcw2.PlatformSpecific
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+
+!|script                                                                       |
+|Create Account on System                                                      |
+|Add system                                                                    |
+|Test System     |${TestSystemSuccessful}                                      |
+|Add account     |${ManagedAccount}|with password|${ManagedAccountPwd}||successfully|
+|Uncheck Checkbox|useoldpass       |for user     |DEFAULT                      |
+
+!include -c <EspcwClientScenarios.TearDown

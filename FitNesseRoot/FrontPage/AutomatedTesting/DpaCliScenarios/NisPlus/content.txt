@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.NisPlus
+!include -c ScenarioLibrary

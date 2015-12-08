@@ -1,0 +1,12 @@
+!define AuthType {WinAD}
+!define AuthSystem {abSysOne}
+!define AuthID {abc123}
+
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                    |
+|Create fake external auth system|${AuthSystem}                                                                                                                             |
+|Add User                        |${TestUserName}                       |with options|-PrimaryAuthType ${AuthType} -PrimaryAuthSystem ${AuthSystem} -PrimaryAuthID ${AuthID}|
+|List properties                 |primAuthID,primAuthType,primAuthSystem|for user    |${TestUserName}        |contains        |${AuthID}.*${AuthType}.*${AuthSystem}        |
+|Delete User                     |${TestUserName}                                                                                                                           |
+|Delete fake external auth system|${AuthSystem}                                                                                                                             |

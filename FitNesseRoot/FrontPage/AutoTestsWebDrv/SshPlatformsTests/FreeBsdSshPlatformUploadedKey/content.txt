@@ -1,0 +1,12 @@
+!contents
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.FreeBsd
+
+!define FunctAcct {klroot}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {frujiE13}
+!define AuthorizedKeysFile {authorized_keys}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.FreeBsd.PlatformSpecific
+!include -c <AutoTestsWebDrv.SshPlatformsTests.FreeBsdSshPlatformUploadedKey.PlatformSpecific

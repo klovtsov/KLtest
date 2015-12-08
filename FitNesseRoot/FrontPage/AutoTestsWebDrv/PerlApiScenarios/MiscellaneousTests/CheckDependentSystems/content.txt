@@ -1,0 +1,32 @@
+!define SystemName {${prefix}PerlSystem1}
+!define ADSystemName {${prefix}PerlADSystem1}
+!define ADAccountName {${prefix}PerlADAccount1}
+
+!|script                                                                                                                                                                         |
+|Add System |${PerlAPIparams}||--SystemName=${SystemName};--PlatformName=Windows;--NetworkAddress=x.x.x.x                                                           ||successfull|
+|Add System |${PerlAPIparams}||--SystemName=${ADSystemName};--PlatformName=Windows Active Dir;--NetworkAddress=x.x.x.x;--DomainName=Domain.name;--NetBIOSName=domain||successfull|
+|Add Account|${PerlAPIparams}||--SystemName=${ADSystemName};--AccountName=${ADAccountName}                                                                          ||successfull|
+
+
+!|script                                                                                                                                                                    |
+|Update Dependent Systems|${PerlAPIparams}||--SystemName=${ADSystemName};--AccountName=${ADAccountName};--assign=${SystemName}||Dependent Systems changes saved successfully|
+
+!|script                                                                                                                                                      |
+|Update Dependent Systems|${PerlAPIparams}||--SystemName=${ADSystemName}2;--AccountName=${ADAccountName}||Assignment list and Unassignment list are both empty|
+
+!|script                                                                                                                                                                                                     |
+|List Dependent Systems|${PerlAPIparams}||--SystemName=${ADSystemName};--AccountName=${ADAccountName};--dependentStatus=Dependent;--dependentName=${SystemName}||systemName: ${SystemName}.*status: Dependent|
+
+#;--dependentStatus=assign;--dependentName=${SystemName}
+
+!|script                                                                                                                                                                      |
+|Update Dependent Systems|${PerlAPIparams}||--SystemName=${ADSystemName};--AccountName=${ADAccountName};--unassign=${SystemName}||Dependent Systems changes saved successfully|
+
+!|script                                                                                                                                                |
+|Update Dependent Systems|${PerlAPIparams}||--SystemName=${ADSystemName}2;--AccountName=${ADAccountName};--unassign=${SystemName}||System Name not found|
+
+
+
+!|script                                                                  |
+|Delete System|${PerlAPIparams}||--SystemName=${SystemName}  ||successfull|
+|Delete System|${PerlAPIparams}||--SystemName=${ADSystemName}||successfull|

@@ -1,0 +1,19 @@
+!contents
+
+!define EmailReceiver {${prefix}_email_receiver}
+!define ReceiverEmail {${EmailReceiver}@${TPAMEMailDomain}}
+!define ReceiverEmailPassword {grain41R}
+
+!define SystemName {${prefix}EnBefore}
+!define ManagedAccount1 {${prefix}DisAcc1}
+!define ManagedAccount2 {${prefix}DisAcc2}
+!define ManagedAccount3 {${prefix}DisAcc3}
+!define NonManagedAccount {${prefix}NonManAcc}
+!define ManualAccount {${prefix}ManualAcc}
+!define ManagedAccountPassword {frujiE15}
+
+!define SyncPwdName {${prefix}SyncPwd}
+!define SyncPwdSubscriber {${prefix}SyncAcc}
+
+!define Requestor {${prefix}Requestor}
+!define ISA {${prefix}ISA}

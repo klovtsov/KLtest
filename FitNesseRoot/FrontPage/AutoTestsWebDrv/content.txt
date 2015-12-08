@@ -1,0 +1,5 @@
+!define TPAMURL {${baseURL}/tpam/main.asp}
+!define TPAMAdminURL {${baseURL}/admin/main.asp}
+!define ATPath {${ProjDir}\FitNesseRoot\FrontPage\AutoTestsWebDrv}
+
+!contents

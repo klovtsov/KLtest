@@ -1,0 +1,28 @@
+!|scenario        |Change Functional Account to|funcAccount                                                                         |
+|$res=            |CLI                         |${CLIBatch} UpdateSystem --SystemName ${SystemName} --FunctionalAccount @funcAccount|
+|Verify_Contain_OR|$res;;${NotFailed}                                                                                               |
+
+!|scenario        |Remove a host from client config                                      |host                                     |
+|RunBatchGetOutput|eSPCWtestexes\ChangeClientConfig.bat;removehost;${SystemAddress};${FunctAcct};${FunctAcctPwd};${PathtoKey};@host|
+
+!|scenario        |Remove the key file                                                                                   |
+|RunBatchGetOutput|eSPCWtestexes\ChangeClientConfig.bat;remove;${SystemAddress};${FunctAcct};${FunctAcctPwd};${PathtoKey}|
+
+!|scenario        |Restore the client config                                                                              |
+|RunBatchGetOutput|eSPCWtestexes\ChangeClientConfig.bat;restore;${SystemAddress};${FunctAcct};${FunctAcctPwd};${PathtoKey}|
+
+!|scenario            |Set Local Appliance|
+|Choose system        |${SystemName}      |
+|click                |id=Affinity        |
+|waitForElementPresent|id=rbPARAffinityAny|
+|click                |id=bt_Save         |
+
+!|scenario            |Get DPA address                                                 |
+|Login                |${TPAMURL}|       |${TPAMAdmin}      |      |${DefaultPwd}      |
+|pause                |6000                                                            |
+|clickAndWait         |link=DPAs                                                       |
+|pause                |3000                                                            |
+|waitForElementPresent|//table[@id='serversTable']//td[text()='Up']                    |
+|$DPAName=            |getText   |//table[@id='serversTable']//td[text()='Up']/../td[2]|
+|Verify_Contain_OR    |$DPAName;;10                                                    |
+

@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.VmwareVsphere
+!include -c ScenarioLibrary

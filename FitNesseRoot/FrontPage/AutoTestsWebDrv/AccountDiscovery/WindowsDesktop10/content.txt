@@ -1,0 +1,13 @@
+!define ProfileName {${SystemName}AccDiscProfile5}
+#!include -c <AutomatedTesting.PlatformsTesting.WindowsDesktop10
+!include -c <AutoTestsWebDrv.CliScenarios.WindowsLocalHostTen
+!include -c <AutoTestsWebDrv.ScenarioLibrary.
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+
+!define HostName {ykwin10}
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary.WinScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.WindowsLocalHostTen.TestSpecific
+!include -c >TestSpecific
+
+!define TemplateName {${SystemName}Template}

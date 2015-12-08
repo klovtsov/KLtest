@@ -1,0 +1,22 @@
+!define LogonHours {07:00-12:00;18:00-23:59}
+!define LogonDays {.XXX.X.}
+!define UserMobile {78123320300}
+
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+!3 Logon hours flag - allowed
+!|script                                                                                                                                                    |
+|Add User       |${TestUserName}                         |with options|-LogonHoursFlag A -LogonHours ${LogonHours} -LogonDays ${LogonDays}                  |
+|List properties|logonHoursSelection,logonHours,logonDays|for user    |${TestUserName}|contains|A.*[0-2][0-9]:[0-5][0-9]\-[0-2][0-9]:[0-5][0-9].*[\-MTWF]{7}|
+|Delete User    |${TestUserName}                                                                                                                            |
+
+!3 Logon hours flag - prohibited
+!|script                                                                                                                                                     |
+|Add User       |${TestUserName}2                        |with options|-LogonHoursFlag P -LogonHours ${LogonHours} -LogonDays ${LogonDays}                   |
+|List properties|logonHoursSelection,logonHours,logonDays|for user    |${TestUserName}2|contains|P.*[0-2][0-9]:[0-5][0-9]\-[0-2][0-9]:[0-5][0-9].*[\-MTWF]{7}|
+|Delete User    |${TestUserName}2                                                                                                                            |
+
+!3 Wrong flag
+!define wrongFlagValue {W}
+!define wrongFlagMessage {Invalid value for LogonHoursFL}
+!|script                                                                                                                                                        |
+|Try to Add User|${TestUserName}Tst|with options|-LogonHoursFlag ${wrongFlagValue} -LogonHours ${LogonHours} -LogonDays ${LogonDays}|and result|${wrongFlagMessage}|

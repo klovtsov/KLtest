@@ -1,0 +1,33 @@
+!| scenario |Managed System                         |
+|Generate System Standard 1024-bit DSS Key          |
+|Login      |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Add system                                         |
+|Set Connection Tab                                 |
+|Test System|${TestSystemSuccessful}                |
+|Empty Authorized Keys File                         |
+|Test System|${TestSystemFailed}                    |
+|Download Standard Key                              |
+
+
+
+!|scenario                          |Generate System Standard 1024-bit DSS Key          |
+|Login                              |${TPAMAdminURL}       ||${TPAMMaster}||${MasterPwd}|
+|pause                              |5000                                               |
+|clickOnLink                       |link=Manage SSH Keys                               |
+|click                              |id=AddKeyButton                                    |
+|pause                              |1000                                               |
+|type;                              |id=KeyFileName        |${NewKeyName}               |
+|type;                              |id=Comments           |${NewKeyName} comments      |
+|type;                              |id=StartDt            |1/1/2013                    |
+|type;                              |id=EndDt              |1/1/2019                    |
+|click                              |id=btnGenKey1                                      |
+|pause                              |1000                                               |
+|click                              |id=SubmitChanges                                   |
+|waitForTextPresent                 |Key successfully saved                             |
+|Check And Delete File on Dispatcher|${BrowserDownloadDir}\||${NewKeyName}.pub          |
+|pause                              |2000                                               |
+|click                              |id=GetOpenSSHKeyButton                             |
+|pause                              |15000                                              |
+|Upload Generated Key                                                                   |
+|Logout                                                                       |
+|pause                              |15000                                              |

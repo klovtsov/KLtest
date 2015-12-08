@@ -1,0 +1,277 @@
+!| scenario       |Add Account      |PerlAPIparams       |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;AddAccount.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                  |
+
+!| scenario       |Add Collection   |PerlAPIparams       |       |options       |       |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;AddCollection.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                     |
+
+!| scenario       |Add CollectionMembership|PerlAPIparams        |        |options        |        |result        |
+|$res=            |RunBatchGetOutput       |PerlAPI\perl_runner.bat;AddCollectionMember.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                  |
+
+!| scenario       |Add Group        |PerlAPIparams      |      |options      |      |result     |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;AddGroup.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                |
+
+!| scenario       |Add GroupMembership|PerlAPIparams       |       |options       |       |result       |
+|$res=            |RunBatchGetOutput  |PerlAPI\perl_runner.bat;AddGroupMember.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                        |
+
+!| scenario       |Add System       |PerlAPIparams      |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;AddSystem.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                 |
+
+!| scenario       |Add SyncPass     |PerlAPIparams       |       |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;AddSyncPass.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                   |
+
+!| scenario       |Add SyncPwdSub   |PerlAPIparams       |       |options       |       |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;AddSyncPwdSub.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                     |
+
+!|scenario        |Add User         |uname                                                                                                                                                       |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;addUser.pl;--keyFileName=${authFile};--apiuserName=${API_user_1};--host=${TPAMHost};--userName=@uname;--lastName=Last;--firstName=Fm|
+|Verify_Contain_OR|$res;;User added successfully                                                                                                                                                 |
+
+!|scenario        |Add User         |uname                                               |with options                                              |options                                              |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;addUser.pl;--keyFileName=${authFile};--apiuserName=${API_user_1};--host=${TPAMHost};--userName=@uname;--lastName=Last;--firstName=Fm;@options|
+|Verify_Contain_OR|$res;;User added successfully                                                                                                                                                          |
+
+
+
+!| scenario       |Change User Password|PerlAPIparams        |        |options        |        |result       |
+|$res=            |RunBatchGetOutput   |PerlAPI\perl_runner.bat;changeUserPassword.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                             |
+
+
+
+!| scenario       |Delete Account   |PerlAPIparams       |       |options       |       |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;DeleteAccount.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                     |
+
+!| scenario       |Delete Collection|PerlAPIparams       |       |options       |       |result       |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;DropCollection.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                      |
+
+!| scenario       |Delete CollectionMember|PerlAPIparams         |        |options        |        |result        |
+|$res=            |RunBatchGetOutput      |PerlAPI\perl_runner.bat;DropCollectionMember.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                  |
+
+!| scenario       |Delete Group     |PerlAPIparams      |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;DropGroup.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                 |
+
+!| scenario       |Delete GroupMember|PerlAPIparams        |       |options       |       |result       |
+|$res=            |RunBatchGetOutput |PerlAPI\perl_runner.bat;DropGroupMember.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                        |
+
+!| scenario       |Delete SyncPass  |PerlAPIparams       |       |options       |       |result       |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;DeleteSyncPass.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                      |
+
+!| scenario       |Delete SyncPwdSub|PerlAPIparams       |       |options       |       |result       |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;DropSyncPwdSub.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                      |
+
+!| scenario       |Delete System    |PerlAPIparams       |       |options       |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;DeleteSystem.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                    |
+
+!|scenario        |Delete User      |uname                                                                                                                           |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;deleteUser.pl;--keyFileName=${authFile};--apiuserName=${API_user_1};--host=${TPAMHost};--userName=@uname|
+|Verify_Contain_OR|$res;;@uname has been successfully deleted                                                                                                        |
+
+
+
+!| scenario       |List Accounts    |PerlAPIparams       |       |options       |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;ListAccounts.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                    |
+
+!| scenario       |List Collections |PerlAPIparams        |       |options       |       |result       |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;ListCollections.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                       |
+
+!| scenario       |List CollectionMembership|PerlAPIparams         |         |options         |         |result         |
+|$res=            |RunBatchGetOutput        |PerlAPI\perl_runner.bat;ListCollectionMembership.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                        |
+
+!| scenario       |List Dependent Systems|PerlAPIparams         |        |options        |        |result        |
+|$res=            |RunBatchGetOutput     |PerlAPI\perl_runner.bat;listDependentSystems.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                 |
+
+!| scenario       |List Group       |PerlAPIparams       |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;ListGroups.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                  |
+
+!| scenario       |List GroupMembership|PerlAPIparams        |        |options        |        |result        |
+|$res=            |RunBatchGetOutput   |PerlAPI\perl_runner.bat;ListGroupMembership.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                              |
+
+!| scenario       |List SyncPass    |PerlAPIparams          |         |options         |         |result         |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;ListSynchronizedPasswords.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                 |
+
+!| scenario       |List SyncPwdSub  |PerlAPIparams         |         |options         |        |result        |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;ListSyncPwdSubscribers.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                              |
+
+!| scenario       |List Systems     |PerlAPIparams       |       |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;ListSystems.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                   |
+
+!| scenario       |List User        |PerlAPIparams      |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;ListUsers.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                 |
+
+!| scenario       |List Users       |PerlAPIparams      |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;ListUsers.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                 |
+
+
+!| scenario       |NewAddUser       |PerlAPIparams      |      |options      |     |result     |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;AddUser.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                               |
+
+!| scenario       |NewListUsers     |PerlAPIparams      |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;ListUsers.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                 |
+
+!| scenario       |NewDeleteUser    |PerlAPIparams       |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;DeleteUser.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                  |
+
+
+
+!| scenario       |Set Access Policy|PerlAPIparams        |       |options       |       |result       |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;SetAccessPolicy.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                       |
+
+
+!| scenario       |Update Dependent Systems|PerlAPIparams         |         |options         |        |result        |
+|$res=            |RunBatchGetOutput       |PerlAPI\perl_runner.bat;updateDependentSystems.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                     |
+
+!|scenario        |Update User      |uname                                     |with options                                     |options                                     |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;updateUser.pl;--keyFileName=${authFile};--apiuserName=${API_user_1};--host=${TPAMHost};--userName=@uname;@options|
+|Verify_Contain_OR|$res;; User updated successfully                                                                                                                           |
+
+
+
+
+!| scenario       |Update Account   |PerlAPIparams       |       |options       |       |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;UpdateAccount.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                     |
+
+!| scenario       |List PSM Accounts|PerlAPIparams        |       |options       |       |result       |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;ListPSMAccounts.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                       |
+
+!| scenario       |Update PSM Account|PerlAPIparams        |        |options       |       |result       |
+|$res=            |RunBatchGetOutput |PerlAPI\perl_runner.bat;UpdatePSMAccount.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                         |
+
+!| scenario       |Update System    |PerlAPIparams       |       |options       |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;UpdateSystem.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                    |
+
+!| scenario       |NewUpdateUser    |PerlAPIparams       |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;UpdateUser.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                  |
+
+!| scenario       |Test System      |PerlAPIparams       |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;TestSystem.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                  |
+
+!| scenario       |SyncPass ForceReset|PerlAPIparams        |        |options        |        |result       |
+|$res=            |RunBatchGetOutput  |PerlAPI\perl_runner.bat;SyncPassForceReset.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                            |
+
+checkPassword, forceReset
+
+!| scenario       |Check Password   |PerlAPIparams       |       |options       |       |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;checkPassword.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                     |
+
+!| scenario       |Force Reset      |PerlAPIparams       |      |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;forceReset.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                  |
+
+
+addPwdRequest, approve, cancel, getPwdRequest, listAcctsForPwdRequest, listRequest, listRequestDetails, retrieve
+
+!| scenario       |Add Pwd Request  |PerlAPIparams       |       |options       |       |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;addPwdRequest.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                     |
+|$RequestID=      |get_RequestID    |$res                                                            |
+
+!| scenario       |Approve          |PerlAPIparams      |      |options      |     |result     |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;approve.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                               |
+
+!| scenario       |Cancel           |PerlAPIparams      |      |options     |     |result     |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;cancel.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                              |
+
+!| scenario       |Get Pwd Request  |PerlAPIparams       |       |options       |       |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;getPwdRequest.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                     |
+
+!| scenario       |List Accts For Pwd Request|PerlAPIparams         |         |options         |        |result        |
+|$res=            |RunBatchGetOutput         |PerlAPI\perl_runner.bat;listAcctsForPwdRequest.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                       |
+
+!| scenario       |List Request     |PerlAPIparams       |       |options      |      |result      |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;listRequest.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                   |
+
+!| scenario       |List Request Details|PerlAPIparams        |        |options        |        |result       |
+|$res=            |RunBatchGetOutput   |PerlAPI\perl_runner.bat;listRequestDetails.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                             |
+
+!| scenario       |Retrieve         |PerlAPIparams      |      |options      |      |result     |
+|$res=            |RunBatchGetOutput|PerlAPI\perl_runner.bat;retrieve.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                |
+
+
+addSessionRequest, approveSessionRequest, cancelSessionRequest, getSessionRequest, listAcctsForSessionRequest, listSessionRequest, listSessionRequestDetails
+
+!| scenario       |Add Session Request|PerlAPIparams        |        |options        |       |result       |
+|$res=            |RunBatchGetOutput  |PerlAPI\perl_runner.bat;addSessionRequest.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                           |
+|$RequestID=      |get_RequestID      |$res                                                                |
+
+!| scenario       |Approve Session Request|PerlAPIparams         |         |options        |        |result        |
+|$res=            |RunBatchGetOutput      |PerlAPI\perl_runner.bat;approveSessionRequest.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                   |
+
+!| scenario       |Cancel Session Request|PerlAPIparams         |        |options        |        |result        |
+|$res=            |RunBatchGetOutput     |PerlAPI\perl_runner.bat;cancelSessionRequest.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                 |
+
+!| scenario       |Get Session Request|PerlAPIparams        |        |options        |       |result       |
+|$res=            |RunBatchGetOutput  |PerlAPI\perl_runner.bat;getSessionRequest.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                           |
+
+!| scenario       |List Accts For Session Request|PerlAPIparams          |          |options         |         |result         |
+|$res=            |RunBatchGetOutput             |PerlAPI\perl_runner.bat;listAcctsForSessionRequest.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                               |
+
+!| scenario       |List Session Request|PerlAPIparams        |        |options        |        |result       |
+|$res=            |RunBatchGetOutput   |PerlAPI\perl_runner.bat;listSessionRequest.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                             |
+
+
+!| scenario       |List Session Request Details|PerlAPIparams          |         |options         |         |result         |
+|$res=            |RunBatchGetOutput           |PerlAPI\perl_runner.bat;listSessionRequestDetails.pl;@PerlAPIparams;@options|
+|Verify_Contain_OR|$res;;@result                                                                                            |
+
+!| scenario|Force Reset manual password                                                                                                           |
+|$clires=  |RunBatchGetOutput|PerlAPI\perl_runner.bat;ForceResetManual.pl;${PerlAPIparams};--systemName=${SystemName};--accountName=${AccountName}|
+|$pwdID=   |PowerShellScript |getPwdId.ps1 "$clires"                                                                                              |
+
+!| scenario       |Confirm Manual Password reset with status|status                        |and result is                        |expected                       |
+|$res=            |RunBatchGetOutput                        |PerlAPI\perl_runner.bat;ManualPasswordReset.pl;${PerlAPIparams};--passwordID=$pwdID;--status=@status|
+|Verify_Contain_OR|$res;;@expected                                                                                                                               |
+
+

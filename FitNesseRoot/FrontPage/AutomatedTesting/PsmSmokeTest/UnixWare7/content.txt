@@ -1,0 +1,17 @@
+!define OSType {Aix}
+!define ProxyType {SSH}
+
+!include -c <AutomatedTesting.SessionAlertsScenarios
+!include -c <AutomatedTesting.PlatformsTesting.UnixWare7 
+
+!include -c <AutomatedTesting.SessionAlertsScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.SessionAlertsScenarios.WindowsEight.PlatformSpecific
+!include -c <AutomatedTesting.PsmSmokeTest.ScenarioLibrary
+!include -c <AutomatedTesting.PsmSmokeTest.LinuxRedHat.PlatformSpecific
+!include -c <AutomatedTesting.PsmSmokeTest.FreeBsd.PlatformSpecific
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|

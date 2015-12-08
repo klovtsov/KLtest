@@ -1,0 +1,3 @@
+!include <AutomatedTesting.PlatformsTesting.SolarisNine
+!include -c <DpaScenarios.ScenarioLibrary
+

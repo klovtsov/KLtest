@@ -1,0 +1,13 @@
+klbatchuser1~D~Doe~John~klbatchuser@tpam.spb.qsft~111~222~Basic~~N~~~desc~A~09:00-18:00~~Local~~Local~N~Server~~~~~~~~~~
+klbatchuser10~D~Doe~Jane~klbatchuser@tpam.spb.qsft~111~222~User Admin~~N~~~desc~A~09:00-18:01~~Local~~Local~N~Server~~~~~~~~~~
+klbatchuser11~D~Doe~John~klbatchuser@tpam.spb.qsft~111~222~User Admin~~N/A~~~desc~A~09:00-18:02~~Local~~Local~N~Server~~~~~~~~~~
+klbatchuser12~D~Doe~Jane~klbatchuser@tpam.spb.qsft~111~222~User Admin~~N/A~~~desc~A~09:00-18:03~~Local~~Local~N~Server~~~~~~~~~~
+klbatchuser2~D~Doe~John~klbatchuser@tpam.spb.qsft~111~222~Basic~~N/A~~~desc~A~09:00-18:04~~Local~~Local~N~Server~~~~~~~~~~
+klbatchuser3~D~Doe~Jane~klbatchuser@tpam.spb.qsft~111~222~Basic~~N/A~~~desc~A~09:00-18:05~~Local~~Local~N~Server~~~~~~~~~~
+klbatchuser4~D~Doe~John~klbatchuser@tpam.spb.qsft~111~222~Administrator~~N~~~desc~A~00:00-23:59~~Local~~Local~Y~(UTC-07:00) Arizona~N~XX-----~~~~~~~~
+klbatchuser5~D~Doe~Jane~klbatchuser@tpam.spb.qsft~111~222~Administrator~~N/A~~~desc~N~~~Local~~Local~N~Server~~~~~~~~~~
+klbatchuser6~D~Doe~John~klbatchuser@tpam.spb.qsft~111~222~Administrator~~N/A~~~desc~N~~~Local~~Local~N~Server~~~~~~~~~~
+klbatchuser7~D~Doe~Jane~klbatchuser@tpam.spb.qsft~111~222~Auditor~~N~~~desc~N~~~Local~~Local~N~Server~~~~~~~~~~
+klbatchuser8~D~Doe~John~klbatchuser@tpam.spb.qsft~111~222~Auditor~~N/A~~~desc~N~~~Local~~Local~N~Server~~~~~~~~~~
+klbatchuser9~D~Doe~Jane~klbatchuser@tpam.spb.qsft~111~222~Auditor~~N/A~~~desc~N~~~Local~~Local~N~Server~~~~~~~~~~
+klbatchusercache~D~Doe~John~klbatchuser@tpam.spb.qsft~111~~Cache~~~~~desc~~~~~~~~~~~~~~~~~~

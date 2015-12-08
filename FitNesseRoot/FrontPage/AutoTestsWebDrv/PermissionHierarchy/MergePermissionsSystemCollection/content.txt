@@ -1,0 +1,43 @@
+!* Test description
+User has permissions on two collections. The System is a member of both collections. Permission should be combined. 
+*!
+!define CollectionName {${prefix}SysColtn}
+!define CollectionName2 {${prefix}SecSysColtn}
+
+!*> Include section
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+
+!*> Create Environment
+!|script                                                                                    |
+|Add system                                                                                 |
+|Add account             |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed}|
+|Add Collection          |${CollectionName}                                                 |
+|Add Collection          |${CollectionName2}                                                |
+|Add System To Collection|${SystemName}    |             |${CollectionName}                 |
+|Add System To Collection|${SystemName}    |             |${CollectionName2}                |
+|Change User Type        |Basic            |for user     |${CLI_user_2}                     |
+*!
+
+!|script                                                                                          |
+|Set policy             |\"PPM Requestor\"|on collection|${CollectionName} |for user|${CLI_user_1}|
+|Set policy             |\"PPM Requestor\"|on collection|${CollectionName} |for user|${CLI_user_2}|
+|Set policy             |\"PPM Approver\" |on collection|${CollectionName2}|for user|${CLI_user_2}|
+|pause                  |${ApplyNewPoliciesInterval}                                              |
+|Request Pwd by         |${CLI_user_2}    |with result  |submitted                                |
+|Cancel Pwd Request by  |${CLI_user_2}                                                            |
+|Request Pwd by         |${CLI_user_1}    |with result  |submitted                                |
+|Approve Pwd request by |${CLI_user_2}    |with result  |submitted                                |
+|Retrieve Pwd request by|${CLI_user_1}                                                            |
+
+!*> Clear Environment
+!|script                                       |
+|Change User Type |Admin|for user|${CLI_user_2}|
+|Remove account   |${ManagedAccount}           |
+|Remove system    |${SystemName}               |
+|Delete Collection|${CollectionName}           |
+|Delete Collection|${CollectionName2}          |
+*!!contents

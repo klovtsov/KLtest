@@ -1,0 +1,7 @@
+!|scenario        |Create Account on System|accountName                                                                                                  |
+|$res=            |PowerShellScript        |manageLOCALusers.ps1 create ${SystemAddress} ${FunctAcct} ${FunctAcctPwd} @accountName "${ManagedAccountPwd}"|
+|Verify_Contain_OR|$res;;successful                                                                                                                      |
+
+!|scenario        |Delete Account on System|accountName                                                                           |
+|$res=            |PowerShellScript        |manageLOCALusers.ps1 delete ${SystemAddress} ${FunctAcct} ${FunctAcctPwd} @accountName|
+|Verify_Contain_OR|$res;;successful                                                                                               |

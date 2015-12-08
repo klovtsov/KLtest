@@ -1,0 +1,3 @@
+!include <AutomatedTesting.PlatformsTesting.NovellNds
+!include -c <DpaScenarios.ScenarioLibrary
+

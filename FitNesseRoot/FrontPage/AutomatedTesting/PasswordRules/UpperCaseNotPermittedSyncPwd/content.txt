@@ -1,0 +1,32 @@
+!define SyncPasswordName {${prefix}Password}
+!define SincPwdInitialValue {fqfH87iy}
+!define wrongPwd {7yUt8ur1s}
+!define rightPwd {7yut8ur1s}
+!define setSyncPwdFailure {Password cannot contain any uppercase characters}
+!define setSyncPwdSuccess {Synchronized Password Updated successfully}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+!include -c <AutomatedTesting.SynchronizedPasswords.ScenarioLibrary
+
+!|script                                                                                     |
+|Add Sync Password          |${SyncPasswordName}|with value      |${SincPwdInitialValue}     |
+|Add Subscriber             |${ManagedAccount}  |from            |${SystemName}              |
+|Login                      |${TPAMAdminURL}    |                |${TPAMMaster}||${MasterPwd}|
+|pause                      |5000                                                            |
+|Select Password Rule       |${PasswdRuleName}                                               |
+|Set                        |MaxChars           |equal to        |10                         |
+|Set                        |MinChars           |equal to        |8                          |
+|Select value               |Permitted          |for             |ReqLower                   |
+|Select value               |Permitted          |for             |ReqNum                     |
+|Select value               |Permitted          |for             |ReqNonAN                   |
+|Select value               |Not Permitted      |for             |ReqUpper                   |
+|pause                      |5000                                                            |
+|click                      |id=SubmitChangesButton                                          |
+|Assign Password Rule       |${PasswdRuleName}  |to Sync Password|${SyncPasswordName}        |
+|Set new Sync Password value|${wrongPwd}        |                |${setSyncPwdFailure}       |
+|Set new Sync Password value|${rightPwd}        |                |${setSyncPwdSuccess}       |
+|Drop subscriber            |${ManagedAccount}  |from            |${SyncPasswordName}        |
+|Delete Sync Password       |${SyncPasswordName}                                             |
+#|Logout                                                                                      |

@@ -1,0 +1,19 @@
+!contents
+
+!include -c <AutoTestsWebDrv.EmailScenarios
+
+
+!define ArchiveServerName {${prefix}ArchiveServer}
+!define ArchiveServerPlatform {Linux}
+!define ArchiveServerAddress {10.30.38.252}
+!define ArchiveServerPort {22}
+!define ArchiveServerRootName {root}
+!define ArchiveServerRootPassword {frujiE15}
+!define ArchiveServerUserName {${prefix}ASUser}
+!define ArchiveFolder {data}
+!define ArchivePath {/home/${ArchiveServerUserName}/${ArchiveFolder}}
+
+!define ScheduleName {Schedule6}
+!define NotifyEMail {DataExtract@${TPAMEMailDomain}}
+
+

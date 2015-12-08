@@ -1,0 +1,6 @@
+!contents
+
+!|script      |
+|Prepare Test |
+|Run Test     |
+|Clear Objects|

@@ -1,0 +1,2 @@
+!include <AutoTestsWebDrv.CliScenarios.NisPlus
+!include -c ScenarioLibrary

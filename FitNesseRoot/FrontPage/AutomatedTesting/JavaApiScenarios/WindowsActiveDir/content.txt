@@ -1,0 +1,6 @@
+!include <AutomatedTesting.PlatformsTesting.WindowsActiveDir
+!include -c <JavaApiScenarios.ScenarioLibrary
+!include -c <JavaApiScenarios.WindowsActiveDir.PlatformSpecific
+!include -c <JavaApiScenarios.WindowsActiveDir.BugWorkaround
+
+

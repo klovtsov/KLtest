@@ -1,0 +1,10 @@
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                             |
+|Delete User         |${TestUserName}|
+|Delete User         |${newUserName} |
+|Delete User Template|${TemplateName}|
+|stop                                |
+|finalize                            |
+

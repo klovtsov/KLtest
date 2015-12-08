@@ -1,0 +1,11 @@
+!| scenario       |Add system                                                                                                                                                                         |
+|$res=            |CppAPI                 |${APIBatch} AddSystem ${SystemName} ${SystemAddress} "${SystemPlatform}" "${SystemDescription}" ${SystemTimeout} ${FunctAcct} ${FunctAcctPwd} ${DomainName}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                   |
+|Set description  |${FunctAcctDescription}|for                                                                      |${FunctAcct}                                                                     |
+
+
+!|scenario      |Account Not there                                             |
+|Add account    |AccNotThere              |with password|master | |${NotFailed}|
+|Set description|cn=AccNotThere,${Context}|for          |AccNotThere           |
+|Reset Password |AccNotThere              |             |${ResetPasswordFailed}|
+|Check Password |AccNotThere              |             |${CheckPasswordFailed}|

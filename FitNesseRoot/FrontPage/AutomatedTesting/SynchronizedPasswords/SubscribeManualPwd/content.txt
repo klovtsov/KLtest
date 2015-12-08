@@ -1,0 +1,17 @@
+!include -c <SynchronizedPasswords.ScenarioLibrary
+!* Create Environment 
+!|script                                                                        |
+|Add Sync Password        |${SyncPasswordName}|with value|${SincPwdInitialValue}|
+|Set manual management for|${ManagedAccount}  |from      |${SystemName}         |
+|Add Subscriber           |${ManagedAccount}  |from      |${SystemName}         |
+|Add Subscriber           |${ManagedAccount}  |from      |${SecSystemName}      |
+*!
+
+!|script                                                    |
+|Unsubscribe manual pwd|${ManagedAccount}|from|${SystemName}|
+|Subscribe manual pwd  |${ManagedAccount}|from|${SystemName}|
+
+!* Delete All
+!|script                                 |
+|Delete Sync Password|${SyncPasswordName}|
+*!

@@ -1,0 +1,153 @@
+!contents
+
+!|scenario|Generate Plink Key|KeyName|
+|runBatch |puttygen;@KeyName         |
+|pause    |5000                      |
+|SWait    |ok.png                    |
+|SClick   |ok.png                    |
+|pause    |5000                      |
+|SWait    |SavePrivKey.png           |
+|SClick   |SavePrivKey.png           |
+|pause    |5000                      |
+|SWait    |yes.png                   |
+|SClick   |yes.png                   |
+|pause    |5000                      |
+|SType    |@KeyName                  |
+|pause    |5000                      |
+|SWait    |Save.png                  |
+|SClick   |Save.png                  |
+|pause    |5000                      |
+|keytype  |\4                        |
+
+!|scenario            |Add API User      |UserName                                      |
+|Open                 |${TPAMURL}        |     |${TPAMAdmin}     |    |${DefaultPwd}    |
+|clickAndWait         |link=Add UserID                                                  |
+|waitForElementPresent|id=UserName                                                      |
+|type;                |id=UserName       |@UserName                                     |
+|type;                |id=FirstName      |Shlomo                                        |
+|type;                |id=LastName       |Gardner                                       |
+|select;              |id=UType          |label=Administrator                           |
+|select;              |id=UInterface     |label=API                                     |
+|click                |id=SubmitChanges                                                 |
+|waitForTextPresent   |*User added successfully*                                        |
+|click                |id=GetKey                                                        |
+|pause                |20000                                                            |
+|windowMaximize                                                                         |
+|pause                |5000                                                             |
+|keytype              |\n                                                               |
+|pause                |10000                                                            |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}${API_user_key}|
+
+
+
+!|scenario|Update Firefox Profile                                    |
+|open     |${TPAMURL}                                                |
+|windowFocus                                                         |
+|windowMaximize                                                      |
+|pause    |10000                                                     |
+|SWait    |IUnderstandt.png                                          |
+|SClick   |IUnderstandt.png                                          |
+|SWait    |AddExceptiun.png                                          |
+|SClick   |AddExceptiun.png                                          |
+|SWait    |1341232085013.png                                         |
+|SClick   |1341232085013.png                                         |
+|pause    |10000                                                     |
+|runBatch |copycert8.vbs;${ProjDir};${BrowserDownloadDir};${TPAMHost}|
+
+!|scenario|Create Firefox Profile                              |
+|runBatch |createffprofile.vbs;${ProjDir};${BrowserDownloadDir}|
+
+#|$res=    |RunBatchGetOutput|changeffprofile.bat;${ProjDir}\ff4s_profile\prefs.js;${BrowserDownloadDir}|
+
+!|scenario            |Add API User 000    |UserName                                    |
+|Open                 |${TPAMURL}          |    |${TPAMAdmin}    |    |${DefaultPwd}    |
+|clickAndWait         |link=Add UserID                                                  |
+|waitForElementPresent|id=UserName                                                      |
+|type;                |id=UserName         |@UserName                                   |
+|type;                |id=FirstName        |Shlomo                                      |
+|type;                |id=LastName         |Gardner                                     |
+|select;              |id=UType            |label=Administrator                         |
+|select;              |id=UInterface       |label=API                                   |
+|click                |id=SubmitChanges                                                 |
+|waitForTextPresent   |*User added successfully*                                        |
+|click                |id=GetKey                                                        |
+|pause                |10000                                                            |
+|selectWindow         |Opening id_dsa                                                   |
+|pause                |10000                                                            |
+|windowFocus                                                                            |
+|pause                |10000                                                            |
+|keytype              |\n                                                               |
+|pause                |10000                                                            |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}${API_user_key}|
+
+
+!|scenario            |Add API User  111    |UserName                                   |
+|Open                 |${TPAMURL}           |    |${TPAMAdmin}    |    |${DefaultPwd}   |
+|clickAndWait         |link=Add UserID                                                  |
+|waitForElementPresent|id=UserName                                                      |
+|type;                |id=UserName          |@UserName                                  |
+|type;                |id=FirstName         |Shlomo                                     |
+|type;                |id=LastName          |Gardner                                    |
+|select;              |id=UType             |label=Administrator                        |
+|select;              |id=UInterface        |label=API                                  |
+|click                |id=SubmitChanges                                                 |
+|waitForTextPresent   |*User added successfully*                                        |
+|click                |id=GetKey                                                        |
+|pause                |10000                                                            |
+|selectWindow         |Quest Software TPAM                                              |
+|windowFocus                                                                            |
+|pause                |10000                                                            |
+|SWait                |ok.png                                                           |
+|SClick               |ok.png                                                           |
+|pause                |10000                                                            |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}${API_user_key}|
+
+
+
+
+
+!|scenario            |Add API User 22|UserName                    |
+|Open                 |${TPAMURL}     ||${TPAMAdmin}||${DefaultPwd}|
+|clickAndWait         |link=Add UserID                             |
+|waitForElementPresent|id=UserName                                 |
+|type;                |id=UserName    |@UserName                   |
+|type;                |id=FirstName   |Vasily                      |
+|type;                |id=LastName    |Pupkin                      |
+|select;              |id=UType       |label=Administrator         |
+|select;              |id=UInterface  |label=API                   |
+|click                |id=SubmitChanges                            |
+|waitForTextPresent   |*User added successfully*                   |
+|click                |id=GetKey                                   |
+|pause                |10000                                       |
+#|keytype | \a|
+|pause   |10000                                                         |
+|SClick  |OK.PNG                                                        |
+|pause   |10000                                                         |
+|runBatch|movekey;C:\IODMain\reports\id_dsa;${PathToKeys}${API_user_key}|
+
+
+#!|scenario        |Delete User|UserName                                         |
+#|$res=            |CLI         |${CLIBatch} DeleteUser @UserName|
+#|Verify_Contain_OR|$res;;successful                                               |
+
+!|scenario            |Get Open SSH key                                           |
+|runBatch             |removekey;${BrowserDownloadDir}id_dsa.pub;emptyPar;emptyPar|
+|Open                 |${TPAMURL}          |   |${TPAMAdmin}   |  |${DefaultPwd}  |
+|waitForElementPresent|link=Add System                                            |
+|clickAndWait         |link=Add System                                            |
+|waitForElementPresent|id=SystemName                                              |
+|type;                |id=SystemName       |ExampleSystem                         |
+|type;                |id=NetworkAddress   |1.2.3.4                               |
+|select;              |id=PlatformID       |label=NIS Plus                        |
+|waitForElementPresent|id=Connection       |                                      |
+|click                |id=Connection       |                                      |
+|waitForElementPresent|id=PARFuncAcct                                             |
+|type;                |id=PARFuncAcct      |root                                  |
+|click                |id=btDnldStdOpenSSH                                        |
+|pause                |3000                                                       |
+
+!|scenario|Distribute Key to NisPlus                                                                          |
+|runBatch |movekey2;${SystemAddress};${FunctAcct};${FunctAcctPwd};${BrowserDownloadDir}id_dsa.pub;${PathtoKey}|
+
+!|scenario|Distribute Key to SPCW                                                               |System                                                              |
+|runBatch |moveKeySPCW;${BrowserDownloadDir}id_dsa.pub;${BrowserDownloadDir}authorized_keys;${TPAMHost};$DPAAddress;@System;${FunctAcct};${FunctAcctPwd};${PathtoKey}|

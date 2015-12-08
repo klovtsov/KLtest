@@ -1,0 +1,17 @@
+!|scenario         |Try Add file   |file                  |with result                  |rslt                 |
+|$res =            |GroovyWebDriver|tryToCreateFile;${TPAMHost};${TPAMAdmin};${DefaultPwd};${SystemName};@file|
+|Verify_Contain_NOT|$res;;something went wrong                                                                |
+|Verify_Contain_OR |$res;;@rslt                                                                               |
+
+!|scenario         |Try to upload  |file    |during operation    |batchOperation   |with result   |result   |
+|$res =            |GroovyWebDriver|tryUpldFile;${TPAMHost};${TPAMAdmin};${DefaultPwd};@batchOperation;@file|
+|Verify_Contain_NOT|$res;;something went wrong                                                              |
+|Verify_Contain_OR |$res;;@result                                                                           |
+
+!|scenario|Delete File |filepath||filename|
+|runBatch |DeleteFile2;@filepath;@filename|
+
+!|scenario                |Check uploading file|fname           |with result|rslt             |
+|Create file for uploading|@fname              |in directory    |${ProjDir}\                  |
+|Try to upload            |${ProjDir}\@fname   |during operation|ImportUsers|with result|@rslt|
+|Delete File              |${ProjDir}\         |                |@fname                       |

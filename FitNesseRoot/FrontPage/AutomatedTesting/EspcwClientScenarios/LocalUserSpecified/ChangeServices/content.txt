@@ -1,0 +1,23 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ChangeServices.TestSpecific
+
+#!define ServiceAccount {${ManagedAccountDomain}\${ManagedAccount}}
+!define SuccessServiceStartResult {RUNNING;;START_PENDING}
+!define FailServiceStartResult {Error starting}
+
+!|script                                                                                                                             |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                           |
+|Create Service which is run by   |${ManagedAccount}           |and run under password is|${ManagedAccountPwdNew}|on|${SystemAddress}|
+|Check Checkbox                   |changesvcs                  |for user                 |${ManagedAccount}                          |
+|Uncheck Checkbox                 |changesvcs                  |for user                 |DEFAULT                                    |
+|Reset Password                   |${ManagedAccount}           |                         |${ResetPasswordSuccessful}                 |
+|Start Service                    |${SuccessServiceStartResult}|on                       |${SystemAddress}                           |
+|Stop Service on                  |${SystemAddress}                                                                                  |
+|Uncheck Checkbox                 |changesvcs                  |for user                 |${ManagedAccount}                          |
+|Check Checkbox                   |changesvcs                  |for user                 |DEFAULT                                    |
+|Reset Password                   |${ManagedAccount}           |                         |${ResetPasswordSuccessful}                 |
+|Start Service                    |${FailServiceStartResult}   |on                       |${SystemAddress}                           |
+|Uncheck Checkbox                 |changesvcs                  |for user                 |DEFAULT                                    |
+|Delete Service on                |${SystemAddress}                                                                                  |

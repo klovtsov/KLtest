@@ -1,0 +1,2 @@
+"kl777RepRequestor4"	"Ivanov Ivan"	"Requestor"	"File"	"Retrieve File"	"0"	"kl777RepSys/kl777RepFile1"
+"kl777RepRequestor4"	"Ivanov Ivan"	"Requestor"	"File"	"File Request Release"	"0"	"kl777RepSys/kl777RepFile1"

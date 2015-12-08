@@ -1,0 +1,24 @@
+!contents
+
+
+!include -c .FrontPage.AutomatedTesting.AutoDiscovery.ScenarioLibrary
+
+!define newprefix {${prefix}5}
+!define DatabaseName {HR}
+
+!define SystemName {${prefix}ORACLE}
+!define SystemPlatform {Oracle}
+!define SystemAddress {10.30.46.234}
+!define Port {1521}
+!define SID {ora}
+!define FunctAcct {KLUSER}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccount {${prefix}Acc}
+!define ManagedAccountPwd {frujiE15}
+
+
+!define SelectUserQuery {SELECT * FROM ${DatabaseName}.${UserTableName}}
+!define SelectComputerQuery {SELECT * FROM ${DatabaseName}.${ComputerTableName}}
+
+
+

@@ -1,0 +1,27 @@
+SystemName	AccountName	PasswordMethod	ParCliUser	MinApprovers	AcctLockFl	DefaultSessionDuration	MaxSessionCnt	NotifyThresh	NotifyFreq	ProxyDesc	EnableFl	ColorDepth	DomainAccountName	DSSKeyType	FileTransPath	FileTransType	FileTransAuthMethod	ReviewCnt	ReviewerTypeDesc	ReviewerDesc	SessionStartNotifyEmail 	EscalationEmail	EscalationTime	ClipboardFl	ConsoleFl	RecordingRequiredFl	FileTransUpFl	FileTransDownFl	CLISystemName	CLIAccountName	CLIDomainName	ConnectionProfile	PostSessionProfile
+klbatchsys30	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys31	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys32	klbatchacc	Local TPAM		1	N	120	1	0	0	x3270 - Automatic Login	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys33	klbatchacc	Local TPAM		10	N	120	1	0	0	x3270 - Automatic Login	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys35	klbatchacc	Local TPAM		1	N	180	1	0	0	x3270 - Automatic Login	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys36	klbatchacc	Local TPAM		1	N	120	15	0	0	x3270 - Automatic Login	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys37	klbatchacc	Local TPAM		1	N	120	1	0	0	SQL Window - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys39	klbatchacc	Local TPAM		3	N	120	1	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys41	klbatchacc	Local TPAM		3	N	120	1	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys43	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys44	klbatchacc	Local TPAM		1	N	120	1	0	0	SQLPlus - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys47	klbatchacc	Local TPAM		3	N	120	1	0	0	Telnet - Interactive Login	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys5	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys50	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys51	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys52	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys53	klbatchacc	Local TPAM		1	N	120	1	0	0	SQL Window - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys57	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys58	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys6	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys60	klbatchacc	Local TPAM		2	N	1440	3	60	120	RDP - Automatic Login Using Password	Y	16			\\share	Windows File Copy	Prompt	1	Auditor		sess.start@mail	sess.escalate@mail	3	Y	N	N	Y	Y				PersConnectionProfile	PersPostSessionProfile
+klbatchsys61	klbatchacc	Local TPAM		1	N	120	1	0	0	RDP - Automatic Login Using Password	Y	8				File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					PersPostSessionProfile
+klbatchsys62	klbatchacc	Local TPAM		1	N	120	1	0	0	RDP - Automatic Login Using Password	Y	8				File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys7	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Automatic Login Using Password	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys8	klbatchacc	Local TPAM		2	N	120	1	0	0	Telnet - Interactive Login	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					
+klbatchsys9	klbatchacc	Local TPAM		1	N	120	1	0	0	SSH - Interactive Login	Y					File Transfer Disabled	Same	0	None				0	Y	N	Y	N	N					

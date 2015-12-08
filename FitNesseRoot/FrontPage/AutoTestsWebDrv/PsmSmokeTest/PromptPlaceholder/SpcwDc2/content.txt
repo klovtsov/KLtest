@@ -1,0 +1,22 @@
+!define PolicyName {Approver-Requestor}
+!define PlaceHolder {:prompt:}
+!define goodProxyType {RDP - Interactive Login}
+!define wrongProxyType {RDP - Automatic Login Using Password}
+!*> Messages
+!define AcntCanNotBeManagedMessage {This account cannot be managed }
+!define InteactiveAuthRequired {Interactive authentication is required when configuring this account}
+*!
+
+!include <AutoTestsWebDrv.PlatformsTesting.EdmzSpcwDc2
+!define ManagedAccountPwd {P@r0leAA}
+!define pause {60000}
+!define expectedImageOnScreen {psmRecycleBin.png,psmSrvrMngr.png} 
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.EdmzSpcwDc2.PlatformSpecific
+!include -c <AutoTestsWebDrv.PermissionHierarchy.ScenarioLibrary
+!include -c <AutoTestsWebDrv.FileTransfer.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PsmSmokeTest.ScenarioLibrary
+
+!include CommonTest

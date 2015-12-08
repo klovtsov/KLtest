@@ -1,0 +1,8 @@
+!include -c <FrontPage.AutoTestsWebDrv.CliScenarios.EdmzSpcwDc2Twelwe
+
+!include -c <FrontPage.AutoTestsWebDrv.FailoverScenarios.ScenarioLibrary
+!include -c <FrontPage.DeployWebDrv.ScenarioLibrary
+
+!|Script                                |
+|Get DPA Name and IP Address            |
+|Distribute Key to SPCW|${SystemAddress}|

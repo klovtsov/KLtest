@@ -1,0 +1,13 @@
+%Host% 23
+
+WAIT "login"
+SEND "%RunningUser%\m"
+WAIT "assword"
+SEND "qwerty\m"
+WAIT "$"
+SEND "keylogin\m"
+WAIT "assword"
+SEND "%RunningUserPassword%\m"
+WAIT "$"
+SEND "exit\m"
+WAIT "$"

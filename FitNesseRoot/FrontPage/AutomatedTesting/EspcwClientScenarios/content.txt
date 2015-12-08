@@ -1,0 +1,15 @@
+!define ClientInstallationDrive {C}
+!define ClientInstallationPath {${ClientInstallationDrive}:\Program Files (x86)\Quest Software\SPCW}
+!define ClientLogPath {${ClientInstallationPath}\edmzsshd\bin\eDMZClientW.log}
+!define ClientSettingsPath {${ClientInstallationPath}\edmzsshd\bin\eDMZClientW.xml}
+!define IisConfigPath {Windows\System32\inetsrv\config\applicationHost.config}
+
+#!define CLI_user_1 {autotest_user_cli}
+#!define CLI_user_1 {abcliadmin}
+#!define CLIBatch {-i ${CLI_user_1}.ppk -C ${CLI_user_1}@${TPAMHost}}
+!define NotFailed {successfully}
+!define SystemTimeout {90}
+
+!define ResetPasswordFailed {Permission denied;;Host Unreachable;;password change failed;;Unable to connect to;;Failure;;error occurred;;timed out}
+
+!contents -p

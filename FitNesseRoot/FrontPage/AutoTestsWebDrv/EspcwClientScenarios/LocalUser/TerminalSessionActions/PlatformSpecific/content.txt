@@ -1,0 +1,22 @@
+!|scenario|Set Terminal Session Action        |Action        |for user        |user        |on       |System       |
+|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;termsrvaction;@Action;${ClientSettingsPath};@user|
+
+!|scenario|Create Terminal Session for|Account|with password|Password|on|System|
+|runBatch |ManageTermServ.bat;create;@System;@Account;@Password                |
+
+!|scenario            |Check Terminal session is|status          |for          |Account          |on          |System          |
+|$res=                |RunBatchGetOutput        |ManageTermServ.bat;check;@System;${FunctAcct};${FunctAcctPwd};@Account;@status|
+|Verify_Contain_OR_exp|$res;;EXIT 0                                                                                            |
+
+!|scenario            |Add              |account         |to the group         |group         |on         |System         |
+|$res=                |RunBatchGetOutput|eSPCWtestexes\AddToGroup.bat;@System;${FunctAcct};${FunctAcctPwd};@account;@group|
+|Verify_Contain_OR_exp|$res;;EXIT 0                                                                                       |
+
+!|scenario|TSDisconnectionConfirmation|
+|SWait    |RemoteDeskEnd.png          |
+|SClick   |Ok_Selected.png            |
+
+!|scenario|TSLogoffConfirmation|
+|SWait    |RemoteDeskLogoff.png|
+|SClick   |Ok_Selected.png     |
+

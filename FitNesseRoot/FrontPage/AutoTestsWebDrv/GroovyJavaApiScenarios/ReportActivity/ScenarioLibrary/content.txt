@@ -1,0 +1,50 @@
+!contents
+
+#!|scenario        |Add System       |SystemName                                                                                                                                                                                                                                                                           |
+#|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;addSystem.groovy;SystemName=@SystemName;NetworkAddress=${SystemAddress};FunctionalAccount=${FunctAcct};FunctionalAcctCredentials=${FunctAcctPwd};PlatformName=${SystemPlatform};authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost}|
+#|Verify_Contain_OR|$res;;successfully                                                                                                                                                                                                                                                                          |
+
+!| scenario        |Report Activity  |Target           |           |Operation           |           |ObjectType           |           |UserName           |           |GroupName           |           |Role           |           |Sort           |           |Direction           |           |MaxRows           |
+|$res=             |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;ReportActivity.groovy;Target=@Target;Operation=@Operation;ObjectType=@ObjectType;UserName=@UserName;GroupName=@GroupName;Role=@Role;Sort=@Sort;Direction=@Direction;MaxRows=@MaxRows;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost}|
+|Verify_Contain_OR |$res;;${SystemName}                                                                                                                                                                                                                                                                            |
+|Verify_Contain_NOT|$res;;${SystemName2}                                                                                                                                                                                                                                                                           |
+
+!| scenario        |Single Day                                                                                                                                                                                                  |
+|$res=             |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;ReportActivity.groovy;UserName=${CLI_user_1};Operation=Add;ObjectType=System;Target=${SystemName};authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost}|
+|Verify_Contain_OR |$res;;${SystemName}                                                                                                                                                                                         |
+|Verify_Contain_NOT|$res;;${SystemName2}                                                                                                                                                                                        |
+
+!| scenario        |Date Range                                                                                                                                                                                                  |
+|$res=             |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;ReportActivity.groovy;UserName=${CLI_user_1};Operation=Add;ObjectType=System;Target=${SystemName};authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};EndDate=$Years,$Months,$Days|
+|Verify_Contain_OR |$res;;${SystemName}                                                                                                                                                                                         |
+|Verify_Contain_NOT|$res;;${SystemName2}                                                                                                                                                                                        |
+
+
+!| scenario       |Roles                                                                                                                                                           |
+|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;ReportActivity.groovy;UserName=${CLI_user_1};Role=REQ;Target=${SystemName}/${ManagedAccount};authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost}|
+|Verify_Contain_OR|$res;;Requestor                                                                                                                                                 |
+|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;ReportActivity.groovy;UserName=${CLI_user_2};Role=APR;Target=${SystemName}/${ManagedAccount};authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost}|
+|Verify_Contain_OR|$res;;Approver                                                                                                                                                  |
+
+!| scenario        |MaxRows4                                                                                                                                                                                                                              |
+|$res=             |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;ReportActivity.groovy;UserName=${CLI_user_1};Operation=Add;ObjectType=System;MaxRows=4;Direction=Desc;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost}|
+|Verify_Contain_OR |$res;;.*${SystemName5}.*${SystemName4}.*${SystemName3}.*${SystemName2}.*                                                                                                                                                              |
+|Verify_Contain_NOT|$res;;"${SystemName}"                                                                                                                                                                                                                 |
+
+#;Target=${SystemName}*
+
+!|scenario        |Group                                                                                                                                                                                         |
+|$res=            |CLI              |${CLIBatch} AddGroup --GroupName "ReportActivityGroup"                                                                                                                      |
+|Verify_Contain_OR|$res;;successfully                                                                                                                                                                            |
+|$res=            |CLI              |${CLIBatch} AddGroupMember --GroupName "ReportActivityGroup"  --UserName ${CLI_user_1}                                                                                      |
+|Verify_Contain_OR|$res;;successfully                                                                                                                                                                            |
+|pause            |${ApplyNewPoliciesInterval}                                                                                                                                                                   |
+|$res=            |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;ReportActivity.groovy;GroupName=ReportActivityGroup;Operation=Add;ObjectType=System;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost};Target=${prefix}SystemName[2-5]|
+|Verify_Contain_OR|$res;;.*${SystemName2}.*${SystemName3}.*${SystemName4}.*${SystemName5}.*                                                                                                       |
+|$res=            |CLI              |${CLIBatch} DropGroup --GroupName "ReportActivityGroup"                                                                                                                     |
+|Verify_Contain_OR|$res;;successfully                                                                                                                                                                            |
+
+
+!|scenario        |Sort                                                                                                                                                                                   |
+|$res=             |RunBatchGetOutput|GroovyJavaAPI\groovy_runner.bat;ReportActivity.groovy;Target=${SystemName}/${ManagedAccount};Sort=UserName;Direction=Desc;authFile=${authFile};apiUser=${apiUser};TPAM=${TPAMHost}|
+|Verify_Contain_OR|$res;;.*${CLI_user_2}.*${CLI_user_1}.*                                                                                                                                                 |

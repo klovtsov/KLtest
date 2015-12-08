@@ -1,0 +1,30 @@
+!contents
+
+!|scenario|Open Browser and Login to TPAM         |
+|Open     |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+
+!|scenario|Close Browser|
+|stop                   |
+|pause    |5000         |
+
+!|scenario         |Add File                                                                                                                                    |
+|$res =            |GroovyWebDriver|tryToCreateFile;${TPAMHost};${TPAMAdmin};${DefaultPwd};${SystemName};${FilePath}${FileName}.txt;${FileName};${FileEmailAddr}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                                  |
+|Verify_Contain_OR |$res;;File created successfully                                                                                                             |
+
+!|scenario            |Remove File          |FileName          |
+|pause                |10000                                   |
+|clickOnLink          |link=Manage Files                       |
+|waitForElementPresent|id=FileNm                               |
+|type;                |id=FileNm            |@FileName         |
+|click                |id=Listing                              |
+|click                |xpath=//td[contains(text(),'@FileName')]|
+|click                |id=Delete                               |
+|getConfirmation                                               |
+|waitForTextPresent   |@FileName has been successfully deleted |
+
+!|scenario|Create File|filepath||filename|
+|runBatch |CreateFile;@filepath;@filename|
+
+!|scenario|Delete File|filepath||filename|
+|runBatch |DeleteFile;@filepath;@filename|

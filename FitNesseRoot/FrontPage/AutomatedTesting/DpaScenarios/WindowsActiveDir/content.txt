@@ -1,0 +1,8 @@
+!include <AutomatedTesting.PlatformsTesting.WindowsActiveDir
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <DpaScenarios.ScenarioLibrary
+!include -c <DpaScenarios.WindowsActiveDir.PlatformSpecific
+
+
+
+

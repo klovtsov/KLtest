@@ -1,0 +1,58 @@
+!contents
+
+
+
+!|scenario                       |Manual Ticket System                                  |
+|Create Manual Ticket System     |${TicketSystemName}                                   |
+|Request File with Invalid Ticket Failed                                                |
+|Request File with Valid Ticket Successful                                              |
+|Request Password without Any Ticket Failed                                             |
+|Request Password with Invalid Ticket Failed                                            |
+|Request Password with Valid Ticket Successful                                          |
+|Ticket Required for CLI Password Release                                               |
+|Ticket Required for ISA Password Release                                               |
+|Request Session without Any Ticket Failed                                              |
+|Request Session with Invalid Ticket Failed                                             |
+|Request Session with Valid Ticket Successful                                           |
+|Enable Account Ticket Validation|${ManagedAccount}||!Any||${TicketNotifyEmail}||N||N||N|
+|Delete Ticket System            |${TicketSystemName}                                   |
+#|Ticket Required for API Password Release                                                               |
+#|Enable Account Ticket Validation|${ManagedAccount} ||${TicketSystemName}||${TicketNotifyEmail}||N||N||N|
+#|Enable Account Ticket Validation|${ManagedAccount2}||${TicketSystemName}||${TicketNotifyEmail}||N||N||N|
+
+
+!|scenario        |Create Manual Ticket System|systemName                                      |
+|$res=            |GroovyWebDriver            |CreateManualTicketSystem;${TPAMHost};@systemName|
+|Verify_Contain_OR|$res;;System created                                                        |
+
+
+
+#!|scenario            |Create Manual Ticket System|systemName                           |
+#|Login                |${TPAMAdminURL}            |   |${TPAMMaster}  |  |${MasterPwd}  |
+#|pause                |15000                                                            |
+#|clickAndWait         |link=Ticket Systems        |                                     |
+#|click                |id=AddTicketSystem         |                                     |
+#|waitForElementPresent|id=TSName                                                        |
+#|type;                |id=TSName                  |@systemName                          |
+#|type;                |id=TSDescription           |@systemName description              |
+#|click                |id=EnableFL                                                      |
+#|click                |id=ManualFL                                                      |
+#|waitForElementPresent|id=valQuickSel                                                   |
+#|select;              |id=valQuickSel             |label=Custom Expression (enter below)|
+#|type;                |id=ValidationExpr          |[0-8]{5}                             |
+#|pause                |2000                                                             |
+#|click                |id=SubmitChanges                                                 |
+#|pause                |10000                                                            |
+
+
+!|scenario                   |Request Password with Invalid Ticket Failed                                      |
+|Request Password with Ticket|${ManagedAccount}||${InvalidTicketNumber}||Ticket Number failed manual validation|
+
+
+!|scenario                  |Request Session with Invalid Ticket Failed                                       |
+|Request Session with Ticket|${ManagedAccount}||${InvalidTicketNumber}||Ticket Number failed manual validation|
+
+
+!|scenario   |Request File with Invalid Ticket Failed                                                               |
+|Request File|${SystemName}||${FileName}||${WebUser}||${InvalidTicketNumber}||Ticket Number failed manual validation|
+

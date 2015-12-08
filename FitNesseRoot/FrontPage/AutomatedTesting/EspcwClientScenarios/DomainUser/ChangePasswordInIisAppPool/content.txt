@@ -1,0 +1,20 @@
+!define AppPoolName {TpamAppPool}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.DomainUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ChangePasswordInIisMetabase.PlatformSpecific
+
+!|script                                                                                                                                                                            |
+|Create Application Pool          |${AppPoolName}   |on      |${DMSystemAddress}|with identity           |${ManagedAccountDomain}\${ManagedAccount}|password|${ManagedAccountPwdNew}|
+|Uncheck Checkbox                 |changemeta       |for user|DEFAULT                                                                                                               |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                                          |
+|Check Password                   |${ManagedAccount}|        |${CheckPasswordNotMatch}                                                                                              |
+|pause                            |${ExecDelay}                                                                                                                                     |
+|Check Application Pool           |${AppPoolName}   |on      |${DMSystemAddress}|password is equal to    |${ManagedAccountPwdNew}                                                   |
+|Check Checkbox                   |changemeta       |for user|DEFAULT                                                                                                               |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                                          |
+|Check Password                   |${ManagedAccount}|        |${CheckPasswordNotMatch}                                                                                              |
+|pause                            |${ExecDelay}                                                                                                                                     |
+|Check Application Pool           |${AppPoolName}   |on      |${DMSystemAddress}|password is NOT equal to|${ManagedAccountPwdNew}                                                   |
+|Uncheck Checkbox                 |changemeta       |for user|DEFAULT                                                                                                               |
+|Remove Application Pool          |${AppPoolName}   |on      |${DMSystemAddress}                                                                                                    |

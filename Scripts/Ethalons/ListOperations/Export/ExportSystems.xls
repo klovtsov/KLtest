@@ -1,0 +1,208 @@
+
+<table border="1" width="9500px">
+  <thead>
+      <tr>
+        <td colspan="63" bgcolor="#C0C0C0" align="center"><font size="5"><b>Listing of Systems</b></font></td>
+      </tr>
+    <tr>
+      <td bgcolor="#C0C0C0" width="200px"><b>System Name</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Network Address</b></td>
+      <td bgcolor="#C0C0C0" width="300px"><b>Primary Email</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Platform Name</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Change Frequency</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Release Duration</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Auto Change?</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Functional Account</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Account Credential</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Use Specific DSSKey</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Change Time</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Password Rule</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Port Number</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Enable Password</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Alternate Net Addr</b></td>
+      <td bgcolor="#C0C0C0" width="400px"><b>Description</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Domain Account ID</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Domain Platform</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Line Definition</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Timeout (seconds)</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Domain Name</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Oracle Type</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Oracle SIDSN</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Check Password</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Reset Password</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Change After Release</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>NetBIOS Domain Name</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Non-Priv Functional Account</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Use SSL Flag</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Allow Function Release</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Escalation Time</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Escalation Email</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Max Release Duration</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>PSM Only</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Platform Specific</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Ticket System</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Ticket for Request</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Ticket for ISA Retrieve</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Ticket for CLI Retrieve</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Ticket for API Retrieve</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Ticket Notification Email</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>SystemCustom1</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>SystemCustom2</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>SystemCustom3</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>SystemCustom4</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>SystemCustom5</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>SystemCustom6</b></td>
+      <td bgcolor="#C0C0C0" width="150px"><b>Allow ISA Duration</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Use SSH Flag</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>SSH Account</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>SSH Port</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>SSH Key</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Account Discovery Profile</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Account Discovery Exclude List</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Account Discovery Timeout</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>PSM DPA Affinity</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>PPM DPA Affinity</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Password Change Profile</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Password Check Profile</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Profile Certificate Type</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Profile Notification Thumbprint</b></td>
+      <td bgcolor="#C0C0C0" width="100px"><b>Funct Acct DN</b></td>
+      <td bgcolor="#C0C0C0" width="200px"><b>Require Ticket for PSM Request</b></td>
+    </tr>
+  </thead>
+  <tbody>
+	
+		<tr>
+			<td>prefixListSystem1</td>
+			<td>1.1.1.1</td>
+			<td></td> 
+			<td>Windows</td>
+			<td></td> 
+			<td>120</td> 
+			<td>Y</td>
+			<td>funcacct</td>
+			<td></td> 
+			<td>N</td> 
+			<td></td> 
+			<td>Default Password Rule</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td>        20</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td>
+			<td></td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td>0</td> 
+			<td></td> 
+			<td>10080</td>
+         <td>N</td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+         <td>N</td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td>Any</td>
+         <td>Local</td>
+         <td>First of Month</td>
+         <td>Check and Reset</td>
+         <td>N</td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+		</tr>
+	
+		<tr>
+			<td>prefixListSystem12</td>
+			<td>1.2.2.2</td>
+			<td></td> 
+			<td>AIX</td>
+			<td></td> 
+			<td>120</td> 
+			<td>Y</td>
+			<td>funcacct</td>
+			<td></td> 
+			<td>N</td> 
+			<td></td> 
+			<td>Default Password Rule</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td>        20</td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td> 
+			<td></td>
+			<td></td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td>N</td> 
+			<td>0</td> 
+			<td></td> 
+			<td>10080</td>
+         <td>N</td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+         <td>N</td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td>Any</td>
+         <td>Local</td>
+         <td>First of Month</td>
+         <td>Check and Reset</td>
+         <td>N</td>
+         <td></td>
+         <td></td>
+         <td>N</td>
+		</tr>
+	
+  </tbody>
+</table>

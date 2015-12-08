@@ -1,0 +1,2 @@
+!| scenario|Add system                                                                                                                                                                                                            |
+|CLI       |${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --FunctionalAccount ${FunctAcct} --FuncAcctCred ${FunctAcctPwd} --PortNumber ${ConnectionPort}|

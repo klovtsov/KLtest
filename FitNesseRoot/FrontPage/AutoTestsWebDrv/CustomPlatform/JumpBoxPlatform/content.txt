@@ -1,0 +1,63 @@
+!contents
+
+
+
+!define SystemName {${prefix}CustSys}
+!define SystemAddress {KLapache}
+!define SystemDescription {Custom Platform-based System}
+!define SystemPort {389}
+!define SystemTimeout {60}
+!define FuncAcct {Manager}
+!define FuncAcctPassword {frujiE15}
+!define FuncAcctDescription {functional account description}
+!define FuncAcctDN {cn=Manager,dc=kllinux,dc=spb,dc=qsft}
+!define PlatformSpecificValue {${prefix}Specific}
+!define ManagedAccount {${prefix}custom}
+!define ManagedAccountPassword {frujiE15}
+!define ManagedAccountPwdNew {grain42R}
+!define ManagedAccountDescription {managed account description}
+!define ManagedAccountDN {uid=${ManagedAccount},ou=${UserContainerName},${BaseName}}
+!define UserContainerName {${prefix}Users}
+!define BaseName {dc=kllinux,dc=spb,dc=qsft}
+!define Context {ou=${UserContainerName},${BaseName}}
+!define EnablePassword {grain41R}
+!define DomainName {kllinux.spb.qsft}
+!define NetBIOSDomainName {KLLINUX}
+
+!define CommandTimeout {60}
+
+!define SystemPlatform {LDAP}
+!define SystemIPAddress {10.30.38.252}
+
+!define CustomPlatformName {${prefix}CP13}
+!define CustomPlatformType {Jump Box}
+!define WrongCustomPLatformPort {390}
+!define PlatformSpecificLabel {DN}
+
+!define JumpBoxName {${prefix}JumpBox13}
+!define JumpBoxAddress {10.30.38.252}
+!define JumpBoxAccount {klremote}
+!define JumpBoxRoot {root}
+!define JumpBoxRootPassword {frujiE15}
+!define JumpBoxScript {JBLdapScript}
+!define JumpBoxPort {22}
+!define JumpBoxTimeout {30}
+!define JumpBoxDescription {JB Description}
+
+!define PathToLog {/home/${JumpBoxAccount}/kllog}
+
+#!define SchedulePasswordResetTimeout {900000}
+
+!include -c .FrontPage.AutoTestsWebDrv.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.CustomPlatform.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.CustomPlatform.JumpBoxPlatform.ScenarioLibrary
+
+
+!|script                           |
+|Create Jump Box Environment       |
+|Test UI Custom Platform           |
+|Remove Jump Box Environment       |
+#|Test CLI Custom Platform          |
+#|Check Automation Inactive Platform|
+#|Check API Calls                   |
+

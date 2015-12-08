@@ -1,0 +1,849 @@
+!contents
+
+
+!|scenario                                 |Failover                                                                                                                                                                                                                                         |
+|Shutdown Primary Appiance                                                                                                                                                                                                                                                                   |
+|pause                                     |1500000                                                                                                                                                                                                                                          |
+|Reset Password                            |${ManagedAccount}     ||Connection timed out                                                                                                                                                                                                     |
+|Reset Replica Password                    |${ManagedAccount}     ||success                                                                                                                                                                                                                  |
+|Check Replica IP-restricted CLI User Logon|${SystemName}                                                                                                                                                                                                                                    |
+|Start Mail Agent on Replica                                                                                                                                                                                                                                                                 |
+|Request Pwd Failed                                                                                                                                                                                                                                                                          |
+|Check Mail                                |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Moderate Error Notification||$ReplicaName ($TPAMReplica) detected that cluster member $TPAMName (${TPAMHost}) has failed                                                                           |
+|Check Mail                                |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Moderate Error Notification||$ReplicaName ($TPAMReplica) has failed over: This replica now considers the authoritative primary $TPAMName (${TPAMHost}) to have been failed for at least 600 seconds|
+|Delete Mails                              |${AlertsReceiverEMail}                                                                                                                                                                                                                           |
+|Request Replica Pwd                                                                                                                                                                                                                                                                         |
+|Approve Replica Pwd                                                                                                                                                                                                                                                                         |
+|Cancel Replica Password Request                                                                                                                                                                                                                                                             |
+|Request Session Failed                                                                                                                                                                                                                                                                      |
+|Request Replica Session                                                                                                                                                                                                                                                                     |
+|Approve Replica Session                                                                                                                                                                                                                                                                     |
+|Open Replica Session                                                                                                                                                                                                                                                                        |
+|Cancel Replica Session Request                                                                                                                                                                                                                                                              |
+|Administrative Activity Failed on Replica                                                                                                                                                                                                                                                   |
+
+
+!|scenario                                  |Failback                                                                                                                                                                                                                                         |
+|Start Primary Appiance                                                                                                                                                                                                                                                                       |
+|pause                                      |900000                                                                                                                                                                                                                                           |
+|Check Mail                                 |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Informational Message   ||$ReplicaName ($TPAMReplica) is starting failback: This replica now considers the authoritative primary Healthy (Operational) to have been running for at least 60 seconds|
+|Check Mail                                 |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Minor Error Notification||$TPAMName (${TPAMHost}) processed failback data from replica $ReplicaName ($TPAMReplica)                                                                                 |
+|Delete Mails                               |${AlertsReceiverEMail}                                                                                                                                                                                                                           |
+|Check Replica Password Log Entry on Primary|$RequestID                                                                                                                                                                                                                                       |
+|Check Replica Session Log Entry on Primary |$SessionRequestID                                                                                                                                                                                                                                |
+|Reset Password                             |${ManagedAccount}     ||success                                                                                                                                                                                                                  |
+|Check IP-restricted CLI User Logon         |${SystemName}                                                                                                                                                                                                                                    |
+|Request Pwd                                                                                                                                                                                                                                                                                  |
+|Approve Pwd                                                                                                                                                                                                                                                                                  |
+|Cancel Password Request                                                                                                                                                                                                                                                                      |
+|Request Session                                                                                                                                                                                                                                                                              |
+|Approve Session                                                                                                                                                                                                                                                                              |
+|Cancel Session Request                                                                                                                                                                                                                                                                       |
+#|Check Mail                                 |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Minor Error Notification||$ReplicaName ($TPAMReplica) completed failback: Successfully delivered failback data to the authoritative primary                                                        |
+
+
+!|scenario                                               |Force Failover                                                                                                                                                                |
+|UI Force Failover                                                                                                                                                                                                                      |
+|pause                                                   |900000                                                                                                                                                                        |
+|Reset Password                                          |${ManagedAccount}     ||success                                                                                                                                               |
+|Reset Replica Password                                  |${ManagedAccount}     ||success                                                                                                                                               |
+|Check Replica IP-restricted CLI User Logon              |${SystemName}                                                                                                                                                                 |
+|Start Mail Agent on Replica                                                                                                                                                                                                            |
+|BFER 5565 Check Data Extract Details Save Shanges Button|Submit Changes Button Disabled                                                                                                                                                |
+|Request Pwd                                                                                                                                                                                                                            |
+|Approve Pwd                                                                                                                                                                                                                            |
+|Cancel Password Request                                                                                                                                                                                                                |
+|Check Mail                                              |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Moderate Error Notification||$ReplicaName ($TPAMReplica) has failed over: This replica was manually forced into a failover state|
+|Delete Mails                                            |${AlertsReceiverEMail}                                                                                                                                                        |
+|Request Replica Pwd                                                                                                                                                                                                                    |
+|Approve Replica Pwd                                                                                                                                                                                                                    |
+|Cancel Replica Password Request                                                                                                                                                                                                        |
+|Request Session                                                                                                                                                                                                                        |
+|Approve Session                                                                                                                                                                                                                        |
+|Cancel Session Request                                                                                                                                                                                                                 |
+|Request Replica Session                                                                                                                                                                                                                |
+|Approve Replica Session                                                                                                                                                                                                                |
+|Open Replica Session                                                                                                                                                                                                                   |
+|Cancel Replica Session Request                                                                                                                                                                                                         |
+|Administrative Activity Failed on Replica                                                                                                                                                                                              |
+
+
+
+!|scenario                                  |Un-Force Failover                                                                                                                                                                                                                                                       |
+|UI Un-Force Failover                                                                                                                                                                                                                                                                                                |
+|pause                                      |600000                                                                                                                                                                                                                                                                  |
+|Check Mail                                 |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Informational Message   ||$ReplicaName ($TPAMReplica) is starting failback: After failover was unforced this replica found that the authoritative primary $TPAMName (${TPAMHost}) has been running for at least 60 seconds|
+|Check Mail                                 |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Minor Error Notification||$TPAMName (${TPAMHost}) processed failback data from replica $ReplicaName ($TPAMReplica)                                                                                                        |
+|Delete Mails                               |${AlertsReceiverEMail}                                                                                                                                                                                                                                                  |
+|Check Replica Password Log Entry on Primary|$RequestID                                                                                                                                                                                                                                                              |
+|Check Replica Session Log Entry on Primary |$SessionRequestID                                                                                                                                                                                                                                                       |
+|Reset Replica Password                     |${ManagedAccount}     ||failure                                                                                                                                                                                                                                         |
+|Reset Password                             |${ManagedAccount}     ||success                                                                                                                                                                                                                                         |
+|Check IP-restricted CLI User Logon         |${SystemName}                                                                                                                                                                                                                                                           |
+|Request Replica Pwd Failed                                                                                                                                                                                                                                                                                          |
+|Request Pwd                                                                                                                                                                                                                                                                                                         |
+|Approve Pwd                                                                                                                                                                                                                                                                                                         |
+|Cancel Password Request                                                                                                                                                                                                                                                                                             |
+|Request Replica Session Failed                                                                                                                                                                                                                                                                                      |
+|Request Session                                                                                                                                                                                                                                                                                                     |
+|Approve Session                                                                                                                                                                                                                                                                                                     |
+|Cancel Session Request                                                                                                                                                                                                                                                                                              |
+
+
+!|scenario                                               |CLI Force Failover                                                                                                                                                            |
+|Force Failover by CLI                                                                                                                                                                                                                  |
+|pause                                                   |900000                                                                                                                                                                        |
+|Reset Password                                          |${ManagedAccount}     ||success                                                                                                                                               |
+|Reset Replica Password                                  |${ManagedAccount}     ||success                                                                                                                                               |
+|Check Replica IP-restricted CLI User Logon              |${SystemName}                                                                                                                                                                 |
+|BFER 5565 Check Data Extract Details Save Shanges Button|Submit Changes Button Disabled                                                                                                                                                |
+|Start Mail Agent on Replica                                                                                                                                                                                                            |
+|Request Pwd                                                                                                                                                                                                                            |
+|Approve Pwd                                                                                                                                                                                                                            |
+|Cancel Password Request                                                                                                                                                                                                                |
+|Check Mail                                              |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Moderate Error Notification||$ReplicaName ($TPAMReplica) has failed over: This replica was manually forced into a failover state|
+|Delete Mails                                            |${AlertsReceiverEMail}                                                                                                                                                        |
+|Request Replica Pwd                                                                                                                                                                                                                    |
+|Approve Replica Pwd                                                                                                                                                                                                                    |
+|Cancel Replica Password Request                                                                                                                                                                                                        |
+|Request Session                                                                                                                                                                                                                        |
+|Approve Session                                                                                                                                                                                                                        |
+|Cancel Session Request                                                                                                                                                                                                                 |
+|Request Replica Session                                                                                                                                                                                                                |
+|Approve Replica Session                                                                                                                                                                                                                |
+|Open Replica Session                                                                                                                                                                                                                   |
+|Cancel Replica Session Request                                                                                                                                                                                                         |
+|Administrative Activity Failed on Replica                                                                                                                                                                                              |
+
+
+
+!|scenario                                  |CLI Un-Force Failover                                                                                                                                                                                                                                                   |
+|Un-Force Failover by CLI                                                                                                                                                                                                                                                                                            |
+|pause                                      |600000                                                                                                                                                                                                                                                                  |
+|Check Mail                                 |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Informational Message   ||$ReplicaName ($TPAMReplica) is starting failback: After failover was unforced this replica found that the authoritative primary $TPAMName (${TPAMHost}) has been running for at least 60 seconds|
+|Check Mail                                 |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Minor Error Notification||$TPAMName (${TPAMHost}) processed failback data from replica $ReplicaName ($TPAMReplica)                                                                                                        |
+|Delete Mails                               |${AlertsReceiverEMail}                                                                                                                                                                                                                                                  |
+|Check Replica Password Log Entry on Primary|$RequestID                                                                                                                                                                                                                                                              |
+|Check Replica Session Log Entry on Primary |$SessionRequestID                                                                                                                                                                                                                                                       |
+|Reset Replica Password                     |${ManagedAccount}     ||failure                                                                                                                                                                                                                                         |
+|Reset Password                             |${ManagedAccount}     ||success                                                                                                                                                                                                                                         |
+|Check IP-restricted CLI User Logon         |${SystemName}                                                                                                                                                                                                                                                           |
+|Request Replica Pwd Failed                                                                                                                                                                                                                                                                                          |
+|Request Pwd                                                                                                                                                                                                                                                                                                         |
+|Approve Pwd                                                                                                                                                                                                                                                                                                         |
+|Cancel Password Request                                                                                                                                                                                                                                                                                             |
+|Request Replica Session Failed                                                                                                                                                                                                                                                                                      |
+|Request Session                                                                                                                                                                                                                                                                                                     |
+|Approve Session                                                                                                                                                                                                                                                                                                     |
+|Cancel Session Request                                                                                                                                                                                                                                                                                              |
+
+
+
+!|scenario                                 |DPA Failover                                                                                                                                                                                                                                     |
+|Shutdown Primary Appiance                                                                                                                                                                                                                                                                   |
+|pause                                     |1200000                                                                                                                                                                                                                                          |
+|Replica Login                             |${TPAMURL}            ||${TPAMAdmin}                                     ||${DefaultPwd}                                                                                                                                                         |
+|Check Affinity                                                                                                                                                                                                                                                                              |
+|BFER 4900 Check DPA Status                                                                                                                                                                                                                                                                  |
+|Reset Password                            |${ManagedAccount}     ||Connection timed out                                                                                                                                                                                                     |
+|Reset Replica Password                    |${ManagedAccount}     ||DPA.*success                                                                                                                                                                                                             |
+|Check Replica IP-restricted CLI User Logon|${SystemName}                                                                                                                                                                                                                                    |
+|Start Mail Agent on Replica                                                                                                                                                                                                                                                                 |
+|Request Pwd Failed                                                                                                                                                                                                                                                                          |
+|Check Mail                                |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Moderate Error Notification||$ReplicaName ($TPAMReplica) detected that cluster member $TPAMName (${TPAMHost}) has failed                                                                           |
+|Check Mail                                |${AlertsReceiverEMail}||TPAM Alert[Cluster] - Moderate Error Notification||$ReplicaName ($TPAMReplica) has failed over: This replica now considers the authoritative primary $TPAMName (${TPAMHost}) to have been failed for at least 600 seconds|
+|Delete Mails                              |${AlertsReceiverEMail}                                                                                                                                                                                                                           |
+|Request Replica Pwd                                                                                                                                                                                                                                                                         |
+|Approve Replica Pwd                                                                                                                                                                                                                                                                         |
+|Cancel Replica Password Request                                                                                                                                                                                                                                                             |
+|Request Session Failed                                                                                                                                                                                                                                                                      |
+|Request Replica Session                                                                                                                                                                                                                                                                     |
+|Approve Replica Session                                                                                                                                                                                                                                                                     |
+|Open Replica Session                                                                                                                                                                                                                                                                        |
+|Check IP Address Connected                |$DPAAddress                                                                                                                                                                                                                                      |
+|Cancel Replica Session Request                                                                                                                                                                                                                                                              |
+|Administrative Activity Failed on Replica                                                                                                                                                                                                                                                   |
+
+
+
+
+!|scenario                          |Prepare Environment with SSH Authenticated System and Account      |
+|Get Cluster Member Names and IP Addresses                                                              |
+|pause                              |5000                                                               |
+|Login                              |${TPAMURL}       |             |${TPAMAdmin}        ||${DefaultPwd}|
+|pause                              |10000                                                              |
+|Add CLI User                       |${CLI_user_1}                                                      |
+|Add IP-restricted CLI User         |${CLI_user_2}                                                      |
+|Add Web User                       |${Web_user}      |             |${WebUserEmail}     ||Basic        |
+|Add System With SSH Key                                                                                |
+|Create Account on System                                                                               |
+|Add account                        |${ManagedAccount}|with password|${ManagedAccountPwd}||successfully |
+|Enable PSM Authenticated by SSH Key|${ManagedAccount}                                                  |
+|Set User Permissions               |${CLI_user_1}                                                      |
+|Set User Permissions               |${CLI_user_2}                                                      |
+|Set User Permissions               |${Web_user}                                                        |
+|Add Web-disabled Sys-Admin User    |${SysAdmin}                                                        |
+|Create Email Receiver              |${AlertsReceiver}|             |${AlertsReceiverEMail}             |
+|pause                              |600000                                                             |
+|Check IP-restricted CLI User Logon |${SystemName}                                                      |
+
+
+
+!|scenario                         |Prepare Environment                                                |
+|Get Cluster Member Names and IP Addresses                                                             |
+|pause                             |5000                                                               |
+|Login                             |${TPAMURL}       |             |${TPAMAdmin}        ||${DefaultPwd}|
+|pause                             |10000                                                              |
+|Add CLI User                      |${CLI_user_1}                                                      |
+|Add IP-restricted CLI User        |${CLI_user_2}                                                      |
+|Add Web User                      |${Web_user}      |             |${WebUserEmail}     ||Basic        |
+|Add system                                                                                            |
+|Create Account on System                                                                              |
+|Add account                       |${ManagedAccount}|with password|${ManagedAccountPwd}||successfully |
+|Enable PSM                        |${ManagedAccount}                                                  |
+|Set User Permissions              |${CLI_user_1}                                                      |
+|Set User Permissions              |${CLI_user_2}                                                      |
+|Set User Permissions              |${Web_user}                                                        |
+|Add Web-disabled Sys-Admin User   |${SysAdmin}                                                        |
+|Create Email Receiver             |${AlertsReceiver}|             |${AlertsReceiverEMail}             |
+|pause                             |600000                                                             |
+|Check IP-restricted CLI User Logon|${SystemName}                                                      |
+
+
+!|scenario               |Clear Environment                             |
+|Revoke User Permissions |${CLI_user_1}                                 |
+|Revoke User Permissions |${CLI_user_2}                                 |
+|Revoke User Permissions |${Web_user}                                   |
+|Remove account          |${ManagedAccount}                             |
+|Remove system           |${SystemName}                                 |
+|Delete Account on System|${ManagedAccount}                             |
+|Open Expired            |${TPAMURL}       ||${TPAMAdmin}||${DefaultPwd}|
+|pause                   |120000                                        |
+|Remove User             |${Web_user}                                   |
+|Remove CLI Users        |${CLI_user_1}    ||${CLI_user_2}              |
+|Remove Keys                                                            |
+|Delete Mailbox          |${SessionStartNotifyEmail}                    |
+|Delete Mailbox          |${WebUserEmail}                               |
+|Delete Sys-Admin User   |${SysAdmin}                                   |
+|Delete Email Receiver   |${AlertsReceiver}||${AlertsReceiverEMail}     |
+
+
+!|scenario         |Add Web-disabled Sys-Admin User |userName                      |
+|Login             |${TPAMAdminURL}                 | |${TPAMMaster} ||${MasterPwd}|
+|pause             |5000                                                           |
+|clickAndWait      |link=Add Sys-Admin UserID                                      |
+|pause             |5000                                                           |
+|type;             |id=UserName                     |@userName                     |
+|pause             |1000                                                           |
+|type;             |id=LastName                     |L                             |
+|pause             |1000                                                           |
+|type;             |id=FirstName                    |K                             |
+|pause             |1000                                                           |
+|click             |id=cb_WebAccess                                                |
+|pause             |1000                                                           |
+|click             |id=KeyBased                                                    |
+|pause             |1000                                                           |
+|pause             |1000                                                           |
+|click             |id=cb_CliAccess                                                |
+|pause             |1000                                                           |
+|click             |id=SubmitChanges                                               |
+|waitForTextPresent|User added successfully                                        |
+|pause             |1000                                                           |
+|click             |id=GetCliaKey                                                  |
+|pause             |5000                                                           |
+|runBatch          |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}@userName.ppk|
+|Generate Plink Key|@userName                                                      |
+
+
+
+!|scenario            |Delete Sys-Admin User|userName                    |
+|pause                |60000                                             |
+|Login                |${TPAMAdminURL}      ||${TPAMMaster}||${MasterPwd}|
+|clickAndWait         |link=Manage Sys-Admin UserIDs                     |
+|waitForElementPresent|id=UsrNm                                          |
+|type;                |id=UsrNm             |@userName                   |
+|click                |id=Listing                                        |
+|waitForElementPresent|//td[contains(text(),'@userName')]                |
+|mouseDown            |//td[contains(text(),'@userName')]                |
+|click                |//td[contains(text(),'@userName')]                |
+|click                |id=Delete                                         |
+|getConfirmation                                                         |
+|waitForTextPresent   |has been successfully deleted                     |
+
+
+!|scenario        |Administrative Activity Failed on Replica                                                                                     |
+|$res=            |CLI|${CLIBatchReplica} AddUser --UserName ${prefix}fake --LastName Doe --FirstName John                                       |
+|Verify_Contain_OR|$res;;not available on a failed over replica                                                                                  |
+|$res=            |CLI|${CLIBatchReplica} ListUsers --UserName ${prefix}fake                                                                     |
+|Verify_Contain_OR|$res;;No Users to list                                                                                                        |
+|$res=            |CLI|${CLIBatchReplica} AddSystem --SystemName ${prefix}fake --NetworkAddress 1.1.1.1 --PlatformName Windows                   |
+|Verify_Contain_OR|$res;;not available on a failed over replica                                                                                  |
+|$res=            |CLI|${CLIBatchReplica} ListSystems --SystemName ${prefix}fake                                                                 |
+|Verify_Contain_OR|$res;;No Systems to list                                                                                                      |
+|$res=            |CLI|${CLIBatchReplica} DeleteSystem --SystemName ${SystemName}                                                                |
+|Verify_Contain_OR|$res;;not available on a failed over replica                                                                                  |
+|$res=            |CLI|${CLIBatchReplica} ListSystems --SystemName ${SystemName}                                                                 |
+|Verify_Contain_OR|$res;;${SystemName}                                                                                                           |
+|$res=            |CLI|${CLIBatchReplica} AddCollection --CollectionName ${prefix}fake                                                           |
+|Verify_Contain_OR|$res;;not available on a failed over replica                                                                                  |
+|$res=            |CLI|${CLIBatchReplica} ListCollections --CollectionName ${prefix}fake                                                         |
+|Verify_Contain_OR|$res;;No Collections to list                                                                                                  |
+|$res=            |CLI|${CLIBatchReplica} AddGroupMember --GroupName \"Global ISA Group\" --UserName ${CLI_user_2}                               |
+|Verify_Contain_OR|$res;;not available on a failed over replica                                                                                  |
+|$res=            |CLI|${CLIBatchReplica} ListGroupMembership --GroupName \"Global ISA Group\" --UserName ${CLI_user_2}                          |
+|Verify_Contain_OR|$res;;No Group Memberships to list                                                                                            |
+|$res=            |CLI|${CLIBatchReplica} AddGroup --GroupName ${prefix}fake                                                                     |
+|Verify_Contain_OR|$res;;not available on a failed over replica                                                                                  |
+|$res=            |CLI|${CLIBatchReplica} ListGroups --GroupName ${prefix}fake                                                                   |
+|Verify_Contain_OR|$res;;No Groups to list                                                                                                       |
+|$res=            |CLI|${CLIBatchReplica} SetAccessPolicy --AccessPolicyName ISA --Action ADD --SystemName ${SystemName} --UserName ${CLI_user_2}|
+|Verify_Contain_OR|$res;;not available on a failed over replica                                                                                  |
+|$res=            |CLI|${CLIBatchReplica} ListAssignedPolicies --AccessPolicyName ISA --UserName ${CLI_user_2}                                   |
+|Verify_Contain_OR|$res;;No Permissions to list                                                                                                  |
+|$res=            |CLI|${CLIBatchReplica} AddAccount --SystemName ${SystemName} --AccountName ${prefix}fake                                      |
+|Verify_Contain_OR|$res;;not available on a failed over replica                                                                                  |
+|$res=            |CLI|${CLIBatchReplica} ListAccounts --AccountName ${prefix}fake                                                               |
+|Verify_Contain_OR|$res;;No Accounts to list                                                                                                     |
+
+
+!|scenario|Generate Plink Key                                           |keyName                                          |
+|runBatch |AutoIt3.exe;${ProjDir}\Scripts\generate_putty_key.au3;${ProjDir}\Scripts\puttygen.exe;${PathToKeys}@keyName.ppk|
+
+
+
+##################Password Management##########################################
+
+
+!| scenario       |Request Pwd Failed                                                                                          |
+|$res=            |CLI|${CLIBatch} AddPwdRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --RequestNotes test|
+|Verify_Contain_OR|$res;;Connection timed out                                                                                  |
+
+
+
+!| scenario       |Request Replica Pwd                                                                                                            |
+|$res=            |CLI            |${CLIBatchReplica} AddPwdRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --RequestNotes test|
+|Verify_Contain_OR|$res;;submitted                                                                                                                |
+|$RequestID=      |get_RequestID  |$res                                                                                                           |
+|pause            |180000                                                                                                                         |
+|Check Mail       |${WebUserEmail}|                  |Release Request Notification                  |                 |$RequestID                 |
+|Delete Mails     |${WebUserEmail}                                                                                                                |
+
+
+
+
+
+!| scenario       |Request Replica Pwd Failed                                                                                         |
+|$res=            |CLI|${CLIBatchReplica} AddPwdRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --RequestNotes test|
+|Verify_Contain_OR|$res;;failure                                                                                                      |
+
+
+
+!| scenario       |Approve Replica Pwd                                                            |
+|$res=            |CLI            |${CLIBatchReplica2} Approve --RequestID $RequestID --Comment OK|
+|Verify_Contain_OR|$res;;submitted                                                                |
+|pause            |180000                                                                         |
+|Check Mail       |${WebUserEmail}|    |Release Request Response notification   |   |$RequestID   |
+|Delete Mails     |${WebUserEmail}                                                                |
+
+
+
+
+!| scenario             |Get Replica Login                                     |
+|$GeneratedPwd=         |CLI|${CLIBatchReplica} Retrieve --RequestID $RequestID|
+|Login Account to System|$GeneratedPwd                                         |
+
+
+!|scenario        |Cancel Password Request                                     |
+|$res=            |CLI|${CLIBatch} Cancel --RequestID $RequestID --Comment test|
+|Verify_Contain_OR|$res;;successfully;;Terminat;;                              |
+
+!|scenario        |Cancel Replica Password Request                                    |
+|$res=            |CLI|${CLIBatchReplica} Cancel --RequestID $RequestID --Comment test|
+|Verify_Contain_OR|$res;;successfully;;Terminat;;                                     |
+
+
+!| scenario       |Reset Replica Password|acc            |            |testRes            |
+|$res=            |CLI                   |${CLIBatchReplica} ForceReset ${SystemName},@acc|
+|Verify_Contain_OR|$res;;@testRes                                                         |
+
+
+########################Session Mangement###################################################
+
+!| scenario       |Request Session Failed                                                                                                                    |
+|$res=            |CLI|${CLIBatch} AddSessionRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --ForUserName ${Web_user} --RequestNotes test|
+|Verify_Contain_OR|$res;;Connection timed out                                                                                                                |
+
+!| scenario        |Request Session                                                                                                                                     |
+|$res=             |CLI          |${CLIBatch} AddSessionRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --ForUserName ${Web_user} --RequestNotes test|
+|Verify_Contain_OR |$res;;submitted                                                                                                                                     |
+|$SessionRequestID=|get_RequestID|$res                                                                                                                                  |
+
+
+
+!| scenario        |Request Replica Session                                                                                                                                      |
+|$res=             |CLI            |${CLIBatchReplica} AddSessionRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --ForUserName ${Web_user} --RequestNotes test|
+|Verify_Contain_OR |$res;;submitted                                                                                                                                              |
+|$SessionRequestID=|get_RequestID  |$res                                                                                                                                         |
+|pause             |180000                                                                                                                                                       |
+|Check Mail        |${WebUserEmail}|                        |Session Request Notification                       |                       |$SessionRequestID                       |
+|Delete Mails      |${WebUserEmail}                                                                                                                                              |
+
+
+
+!| scenario       |Request Replica Session Failed                                                                                                                   |
+|$res=            |CLI|${CLIBatchReplica} AddSessionRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --ForUserName ${Web_user} --RequestNotes test|
+|Verify_Contain_OR|$res;;failure                                                                                                                                    |
+
+
+!| scenario       |Approve Session                                                                  |
+|$res=            |CLI|${CLIBatch2} ApproveSessionRequest --RequestID $SessionRequestID --Comment OK|
+|Verify_Contain_OR|$res;;submitted                                                                  |
+
+
+
+!| scenario       |Approve Replica Session                                                                             |
+|$res=            |CLI            |${CLIBatchReplica2} ApproveSessionRequest --RequestID $SessionRequestID --Comment OK|
+|Verify_Contain_OR|$res;;submitted                                                                                     |
+|pause            |180000                                                                                              |
+|Check Mail       |${WebUserEmail}|       |Session Request Response Notification       |       |$SessionRequestID      |
+|Delete Mails     |${WebUserEmail}                                                                                     |
+
+
+
+
+!|scenario        |Cancel Session Request                                                           |
+|$res=            |CLI|${CLIBatch} CancelSessionRequest --RequestID $SessionRequestID --Comment test|
+|Verify_Contain_OR|$res;;successfully;;Terminat;;                                                   |
+
+!|scenario        |Cancel Replica Session Request                                                          |
+|$res=            |CLI|${CLIBatchReplica} CancelSessionRequest --RequestID $SessionRequestID --Comment test|
+|Verify_Contain_OR|$res;;successfully;;Terminat;;                                                          |
+
+
+
+############################################################################################
+
+
+#!| scenario       |Shutdown Primary Appiance                |
+#|$res=            |CLI|${CLISysAdmBatch} Shutdown --NoReboot|
+#|Verify_Contain_OR|$res;;Shutdown will occur soon           |
+
+
+!| scenario|Shutdown Primary Appiance                                                                                                 |
+|$res=     |runBatch|VMwareAction;${PrimaryVMwareHost};${PrimaryVMwareAdmin};${PrimaryVMwarePassword};${PrimaryVMwareMachineName};stop|
+
+
+!| scenario|Start Primary Appiance                                                                                                     |
+|$res=     |runBatch|VMwareAction;${PrimaryVMwareHost};${PrimaryVMwareAdmin};${PrimaryVMwarePassword};${PrimaryVMwareMachineName};start|
+
+!| scenario|Shutdown DPA                                                                                              |
+|$res=     |runBatch|VMwareAction;${DPAVMwareHost};${DPAVMwareAdmin};${DPAVMwarePassword};${DPAVMwareMachineName};stop|
+#|pause     |1800000                                                                                       |
+
+!| scenario|Start DPA                                                                                                  |
+|$res=     |runBatch|VMwareAction;${DPAVMwareHost};${DPAVMwareAdmin};${DPAVMwarePassword};${DPAVMwareMachineName};start|
+#|pause     |900000                                                                                         |
+
+!| scenario|Reboot DPA                                                                                                  |
+|$res=     |runBatch|VMwareAction;${DPAVMwareHost};${DPAVMwareAdmin};${DPAVMwarePassword};${DPAVMwareMachineName};reboot|
+
+
+!| scenario       |Enable PSM                |accountName                                                                                                                                                                                        |
+|$res=            |CLI                       |${CLIBatch} UpdatePSMAccount --System ${SystemName} --Account @accountName --EnableFlag Y --ProxyType \"SSH - Automatic Login Using Password\" --SessionStartNotifyEmail ${SessionStartNotifyEmail}|
+|Verify_Contain_OR|$res;;successfully                                                                                                                                                                                                            |
+|Create Mailbox   |${SessionStartNotifyEmail}|                                                                                       |${TPAMEMailPassword}                                                                                       |
+#--MinApprovers 1
+
+
+!|scenario            |Open Replica Session                                                                                            |
+|Replica Login        |${TPAMURL}                |          |${Web_user}                         |          |${UserPwd}                |
+|pause                |20000                                                                                                           |
+|click                |id=CurrentRequests                                                                                              |
+|waitForElementPresent|link=$SessionRequestID                                                                                          |
+|clickAndWait         |link=$SessionRequestID                                                                                          |
+|waitForElementPresent|id=StartSessionButton                                                                                           |
+|click                |id=StartSessionButton                                                                                           |
+|pause                |30000                                                                                                           |
+|selectWindow         |Quest Software PSM Session (${SystemName}/${ManagedAccount}/$SessionRequestID)                                  |
+|windowMaximize                                                                                                                        |
+|windowFocus                                                                                                                           |
+|pause                |10000                                                                                                           |
+|SWaitMultiple        |Accept2.png;Accept3.png                                                                                         |
+|SClickMultiple       |Accept2.png;Accept3.png                                                                                         |
+|pause                |50000                                                                                                           |
+|$res=                |RunBatchGetOutput         |CheckAccountLogin.bat;${SystemAddress};${FunctAcct};${FunctAcctPwd};${ManagedAccount}|
+|Verify_Contain_OR    |$res;;1                                                                                                         |
+|pause                |100000                                                                                                          |
+|Check Mail           |${SessionStartNotifyEmail}|          |Session Start Notification          |          |$SessionRequestID         |
+|Delete Mails         |${SessionStartNotifyEmail}                                                                                      |
+
+
+
+!|scenario            |Add CLI User                |userName                          |
+|clickAndWait         |link=Add UserID                                                |
+|pause                |5000                                                           |
+|waitForElementPresent|id=UserName                                                    |
+|type;                |id=UserName                 |@userName                         |
+|type;                |id=FirstName                |L                                 |
+|type;                |id=LastName                 |K                                 |
+|select;              |id=UType                    |label=Administrator               |
+|click                |id=cb_WebAccess                                                |
+|click                |id=KeyBased                                                    |
+|click                |id=cb_CliAccess                                                |
+|click                |id=SubmitChanges                                               |
+|waitForTextPresent   |*User added successfully*                                      |
+|Choose User          |@userName                                                      |
+|click                |id=KeyBased                                                    |
+|click                |id=GenCliKey                                                   |
+|pause                |10000                                                          |
+|click                |id=GetCliKey                                                   |
+|pause                |5000                                                           |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}@userName.ppk|
+|Generate Plink Key   |@userName                                                      |
+
+
+!|scenario            |Add IP-restricted CLI User |userName                           |
+|clickAndWait         |link=Add UserID                                                |
+|pause                |5000                                                           |
+|waitForElementPresent|id=UserName                                                    |
+|type;                |id=UserName                |@userName                          |
+|type;                |id=FirstName               |L                                  |
+|type;                |id=LastName                |K                                  |
+|select;              |id=UType                   |label=Administrator                |
+|click                |id=cb_WebAccess                                                |
+|click                |id=KeyBased                                                    |
+|click                |id=cb_CliAccess                                                |
+|pause                |1000                                                           |
+|type;                |id=RestrictedIP            |${DispatcherAddress},192.168.77.77 |
+|click                |id=SubmitChanges                                               |
+|waitForTextPresent   |*User added successfully*                                      |
+|Choose User          |@userName                                                      |
+|click                |id=KeyBased                                                    |
+|click                |id=GenCliKey                                                   |
+|pause                |10000                                                          |
+|click                |id=GetCliKey                                                   |
+|pause                |5000                                                           |
+|runBatch             |movekey;${BrowserDownloadDir}\id_dsa;${PathToKeys}@userName.ppk|
+|Generate Plink Key   |@userName                                                      |
+
+!|scenario        |Check IP-restricted CLI User Logon|result                                             |
+|$res=            |CLI                               |${CLIBatch2} ListSystems --SystemName ${SystemName}|
+|Verify_Contain_OR|$res;;@result                                                                         |
+
+!|scenario        |Check Replica IP-restricted CLI User Logon|result                                                    |
+|$res=            |CLI                                       |${CLIBatchReplica2} ListSystems --SystemName ${SystemName}|
+|Verify_Contain_OR|$res;;@result                                                                                        |
+  
+
+!|scenario        |Add Web User|UserName                     |                                  |EMail                     |                      |UserType                    |
+|$res=            |CLI         |${CLIBatch} AddUser --UserName @UserName --FirstName Testfirst --LastName Testlast --Password ${DefaultPwd} --Email @EMail --UserType @UserType|
+|Verify_Contain_OR|$res;;successful                                                                                                                                            |
+|Create Mailbox   |@EMail      |                             |${TPAMEMailPassword}                                                                                             |
+|Change Pwd       |@UserName   |                             |${DefaultPwd}                     |                          |${UserPwd}                                         |
+
+
+
+!|scenario        |Remove User|userName                        |
+|$res=            |CLI        |${CLIBatch} DeleteUser @userName|
+|Verify_Contain_OR|$res;;successful                            |
+
+
+
+!|scenario         |Remove CLI Users|userName1|            |userName2     |
+|pause             |20000                                                 |
+|Login             |${TPAMURL}      |         |${TPAMAdmin}||${DefaultPwd}|
+|pause             |40000                                                 |
+|Choose User       |@userName1                                            |
+|click             |id=Delete                                             |
+|getConfirmation                                                          |
+|waitForTextPresent|has been successfully deleted                         |
+|pause             |10000                                                 |
+|Choose User       |@userName2                                            |
+|click             |id=Delete                                             |
+|getConfirmation                                                          |
+|waitForTextPresent|has been successfully deleted                         |
+|Logout Paradmin                                                          |
+
+
+
+!|scenario        |Check Replica Password Log Entry on Primary|reqID                                                                                                                                                               |
+|$res=            |CLI                                        |${CLIBatch} ReportActivity --Direction Desc --UserName ${CLI_user_2} --ObjectType Password --Operation Approved --Target ${SystemName}/${ManagedAccount} --MaxRows 2|
+|Verify_Contain_OR|$res;;@reqID                                                                                                                                                                                                    |
+
+
+!|scenario        |Check Replica Session Log Entry on Primary|reqID                                                                                                                                                              |
+|$res=            |CLI                                       |${CLIBatch} ReportActivity --Direction Desc --UserName ${CLI_user_2} --ObjectType Session --Operation Approved --Target ${SystemName}/${ManagedAccount} --MaxRows 2|
+|Verify_Contain_OR|$res;;@reqID                                                                                                                                                                                                  |
+
+
+
+!| scenario             |Check Mail|user          |          |subject          |         |body         |
+|$res=                  |CheckMail |${MailServer};@user;${TPAMEMailPassword};${FromMail};@subject;@body|
+|Verify_Contain_OR_alnum|$res;;@body                                                                   |
+
+
+!| scenario             |Delete Mails|user                                    |
+|$res=                  |ClearMailbox|${MailServer};@user;${TPAMEMailPassword}|
+|Verify_Contain_OR_alnum|$res;;Messages deleted                               |
+
+
+
+
+!|scenario             |UI Force Failover                                                |
+|Login                 |${TPAMAdminURL}      |    |${TPAMMaster}    |    |${MasterPwd}   |
+|Reset Replica Password|${ManagedAccount}    |    |failure                               |
+|pause                 |10000                                                            |
+|clickAndWait          |link=Cluster Management                                          |
+|pause                 |10000                                                            |
+|waitForElementPresent |//table[@id='ApplianceList']//td[contains(text(),'$TPAMReplica')]|
+|mouseDown             |//table[@id='ApplianceList']//td[contains(text(),'$TPAMReplica')]|
+|click                 |//table[@id='ApplianceList']//td[contains(text(),'$TPAMReplica')]|
+|pause                 |5000                                                             |
+|click                 |id=btnForceFailover                                              |
+|pause                 |5000                                                             |
+|click                 |id=btnWarning1                                                   |
+|waitForTextPresent    |has successfully been forced into failover                       |
+
+
+!|scenario            |UI Un-Force Failover                                             |
+|Login                |${TPAMAdminURL}     |    |${TPAMMaster}    |    |${MasterPwd}    |
+|pause                |10000                                                            |
+|clickAndWait         |link=Cluster Management                                          |
+|pause                |10000                                                            |
+|waitForElementPresent|//table[@id='ApplianceList']//td[contains(text(),'$TPAMReplica')]|
+|mouseDown            |//table[@id='ApplianceList']//td[contains(text(),'$TPAMReplica')]|
+|click                |//table[@id='ApplianceList']//td[contains(text(),'$TPAMReplica')]|
+|pause                |5000                                                             |
+|click                |id=btnUnforceFailover                                            |
+|pause                |5000                                                             |
+|click                |id=btnWarning1                                                   |
+|waitForTextPresent   |has successfully been unforced from failover                     |
+
+
+!|scenario        |Force Failover by CLI                                                 |
+|$res=            |CLI|${CLISysAdmBatch} ForceFailover --Force --ReplicaName $ReplicaName|
+|Verify_Contain_OR|$res;;Success                                                         |
+
+
+!|scenario        |Un-Force Failover by CLI                            |
+|$res=            |CLI|${CLISysAdmBatchReplica} ForceFailover --Unforce|
+|Verify_Contain_OR|$res;;Success                                       |
+
+
+
+!|scenario|Remove Keys                                  |
+|runBatch |DeleteFileByMask;${PathToKeys}${prefix}*;fake|
+
+
+!|scenario         |Start Mail Agent on Replica                 |
+|Replica Login     |${TPAMAdminURL}||${TPAMMaster}||${MasterPwd}|
+|pause             |10000                                       |
+|clickAndWait      |css=#MailAgent > li > a                     |
+|pause             |5000                                        |
+|click             |id=StartButton                              |
+|waitForTextPresent|The Mail Agent has started                  |
+|Logout ParMaster                                               |
+
+
+!|scenario        |Replica Login       |URL            |               |userName          |        |uPwd       |
+|stop                                                                                                          |
+|pause            |5000                                                                                        |
+|start            |Slim Selenium Driver|${seleniumHost}|${seleniumPort}|${seleniumBrowser}|https://$TPAMReplica|
+|setTimeoutSeconds|${seleniumTimeout}                                                                          |
+|pause            |5000                                                                                        |
+|Open             |@URL                |               |@userName      |                  |@uPwd               |
+
+
+
+!|scenario   |Logout ParMaster|
+|click       |link=ParMaster  |
+|clickAndWait|link=Logout     |
+|click       |id=B1           |
+
+
+!|scenario   |Open Expired|URL||uName||uPassword|
+|open        |@URL                              |
+|selectWindow|Quest Software TPAM               |
+|windowFocus                                    |
+|windowMaximize                                 |
+
+
+!|scenario            |Set Affinity                                                                                    |
+|Login                |${TPAMURL}                                                         ||${TPAMAdmin}||${DefaultPwd}|
+|pause                |10000                                                                                           |
+|Choose system        |${SystemName}                                                                                   |
+|click                |id=Affinity                                                                                     |
+|waitForElementPresent|id=rbEGPAffinitySelected                                                                        |
+|click                |id=rbEGPAffinitySelected                                                                        |
+|type;                |//table[@id='tblEGPDPAAffinity']//td[text()='$TPAMDPA']/../td/input|1                           |
+|waitForElementPresent|id=rbPARAffinitySelected                                                                        |
+|click                |id=rbPARAffinitySelected                                                                        |
+|type;                |//table[@id='tblPARDPAAffinity']//input                            |1                           |
+|click                |id=bt_Save                                                                                      |
+|waitForTextPresent   |System changes for * saved successfully                                                         |
+|pause                |600000                                                                                          |
+|Check Affinity                                                                                                        |
+#|Get DPA Name and IP Address                                                                |
+
+!|scenario            |Check Affinity                                                               |
+|pause                |20000                                                                        |
+|Choose system        |${SystemName}                                                                |
+|click                |id=Affinity                                                                  |
+|waitForElementPresent|id=rbEGPAffinitySelected                                                     |
+|$res=                |isChecked|id=rbEGPAffinitySelected                                           |
+|Verify_Contain_OR    |$res;;true                                                                   |
+|$res=                |isChecked|id=rbPARAffinitySelected                                           |
+|Verify_Contain_OR    |$res;;true                                                                   |
+|$res=                |getValue |//table[@id='tblEGPDPAAffinity']//td[text()='$TPAMDPA']/../td/input|
+|Verify_Contain_OR    |$res;;1                                                                      |
+|$res=                |getValue |//table[@id='tblPARDPAAffinity']//input                            |
+|Verify_Contain_OR    |$res;;1                                                                      |
+
+
+!|scenario         |Create Email Receiver|receiverName|             |receiverEmail|
+|Create Mailbox    |@receiverEmail       |            |grain41R                   |
+|Login             |${TPAMAdminURL}      |            |${TPAMMaster}||${MasterPwd}|
+|pause             |1000                                                          |
+|clickAndWait      |link=Receivers                                                |
+|click             |id=AddAlertReceiver                                           |
+|pause             |1000                                                          |
+|type;             |id=ReceiverName      |@receiverName                           |
+|type;             |id=Comment           |@receiverName description               |
+|select;           |id=RecvType          |label=E-Mail                            |
+|type;             |id=EmailAddress      |@receiverEmail                          |
+|type;             |id=MaxRetries        |0                                       |
+|click             |id=SubmitChanges                                              |
+|waitForTextPresent|Receiver added successfully                                   |
+|pause             |1000                                                          |
+|click             |id=Alerts                                                     |
+|pause             |1000                                                          |
+|click             |name=cbxAlert_L1_24                                           |
+|click             |id=SubmitChanges                                              |
+|waitForTextPresent|Subscriptions successfully saved                              |
+
+
+!|scenario            |Delete Email Receiver                                   |receiverName|             |receiverEmail|
+|Delete Mailbox       |@receiverEmail                                                                                   |
+|Login                |${TPAMAdminURL}                                         |            |${TPAMMaster}||${MasterPwd}|
+|pause                |3000                                                                                             |
+|waitForElementPresent|link=Receivers                                                                                   |
+|clickAndWait         |link=Receivers                                                                                   |
+|type;                |//input[@id='ReceiverNm']                               |@receiverName                           |
+|click                |id=Listing                                                                                       |
+|waitForElementPresent|//table[@id='receiverTable']//td[text()='@receiverName']|                                        |
+|mouseDown            |//table[@id='receiverTable']//td[text()='@receiverName']|                                        |
+|click                |//table[@id='receiverTable']//td[text()='@receiverName']|                                        |
+|pause                |1000                                                                                             |
+|click                |id=DeleteAlertReceiver                                                                           |
+|getConfirmation                                                                                                        |
+|waitForTextPresent   |Alert Receiver successfully deleted                                                              |
+
+
+!|scenario            |Get DPA Name and IP Address                                           |
+|Login                |${TPAMURL}|        |${TPAMAdmin}        |        |${DefaultPwd}       |
+|pause                |6000                                                                  |
+|clickAndWait         |link=DPAs                                                             |
+|pause                |3000                                                                  |
+|waitForElementPresent|//table[@id='serversTable']//td[text()='Up']                          |
+|$TPAMDPA=            |getText   |//table[@id='serversTable']//td[text()='Up']/../td[1]      |
+|Verify_Contain_OR    |$TPAMDPA;;DPA                                                         |
+|$DPAAddress=         |getText   |//table[@id='serversTable']//td[text()='$TPAMDPA']/../td[2]|
+
+
+!|scenario            |Get Cluster Member Names and IP Addresses                                       |
+|Login                |${TPAMAdminURL}|         |${TPAMMaster}         |         |${MasterPwd}         |
+|pause                |6000                                                                            |
+|clickAndWait         |link=Cluster Management                                                         |
+|pause                |3000                                                                            |
+|waitForElementPresent|//table[@id='ApplianceList']//td[text()='D']                                    |
+|$TPAMDPA=            |getText        |//table[@id='ApplianceList']//td[text()='D']/../td[3]           |
+|Verify_Contain_OR    |$TPAMDPA;;DPA                                                                   |
+|$DPAAddress=         |getText        |//table[@id='ApplianceList']//td[text()='$TPAMDPA']/../td[4]    |
+|$TPAMName=           |getText        |//table[@id='ApplianceList']//td[text()='${TPAMHost}']/../td[3] |
+|$ReplicaName=        |getText        |//table[@id='ApplianceList']//td[text()='R']/../td[3]           |
+|$TPAMReplica=        |getText        |//table[@id='ApplianceList']//td[text()='$ReplicaName']/../td[4]|
+#|$TPAMHost=           |getText        |//table[@id='ApplianceList']//td[text()='$TPAMName']/../td[4]   |
+
+
+
+!| scenario       |Check IP Address Connected|ipAddress                                                                           |
+|$res=            |RunBatchGetOutput         |CheckIPAddressConnected.bat;${SystemAddress};${FunctAcct};${FunctAcctPwd};@ipAddress|
+|Verify_Contain_OR|$res;;1                                                                                                        |
+
+
+!| scenario                                  |Enable PSM Authenticated by SSH Key|accountName                                                                                                                                                                                                                                          |
+|$res=                                       |CLI                                |${CLIBatch} UpdatePSMAccount --System ${SystemName} --Account @accountName --EnableFlag Y --ProxyType \"SSH - Automatic Login Using DSS Key\" --PasswordMethod \"DSS Key\" --DSSKeyType Specific --SessionStartNotifyEmail ${SessionStartNotifyEmail}|
+|Verify_Contain_OR                           |$res;;successfully                                                                                                                                                                                                                                                                       |
+|Create Mailbox                              |${SessionStartNotifyEmail}         |                                                                                                                |${TPAMEMailPassword}                                                                                                                |
+|Regenerate and Retrieve Account Specific Key|@accountName                                                                                                                                                                                                                                                                             |
+|Upload Account Public Key                   |@accountName                                                                                                                                                                                                                                                                             |
+
+
+!| scenario           |Add System With SSH Key                       |
+|Login                |${TPAMURL}       ||${TPAMAdmin}||${DefaultPwd}|
+|pause                |5000                                          |
+|waitForElementPresent|link=Add System                               |
+|clickAndWait         |link=Add System                               |
+|waitForElementPresent|id=SystemName                                 |
+|type;                |id=SystemName    |${SystemName}               |
+|type;                |id=NetworkAddress|${SystemAddress}            |
+|select;              |id=PlatformID    |label=${SystemPlatform}     |
+|pause                |1000                                          |
+|click                |id=Connection    |                            |
+|waitForElementPresent|id=rb_DSS                                     |
+|type;                |id=PARFuncAcct   |${FunctAcct}                |
+|click                |id=rb_DSS                                     |
+|pause                |1000                                          |
+|click                |id=rb_Specific                                |
+|pause                |1000                                          |
+|click                |id=btGeneratePair0                            |
+|waitForTextPresent   |Successfully*generated*key pair               |
+|click                |id=btDnldSpcOpenSSH                           |
+|pause                |10000                                         |
+|Upload System Public Key                                            |
+|click                |id=bt_Save                                    |
+|waitForTextPresent   |System changes for * saved successfully       |
+
+!| scenario       |Assign ISA Permission on System for User|userName                                                                                                       |
+|$res=            |CLI                                     |${CLIBatch} SetAccessPolicy --AccessPolicyName ISA --Action ADD --SystemName ${SystemName} --UserName @userName|
+|Verify_Contain_OR|$res;;successfully                                                                                                                                      |
+
+
+!|scenario|Upload System Public Key                                                                                                       |
+|runBatch |UploadRootPublicSshKey.bat;${SystemAddress};${FunctAcct};${FunctAcctPwd};${BrowserDownloadDir};${AuthorizedKeysFile};id_dsa.pub|
+
+|scenario|Upload Account Public Key                                            |accountName                                            |
+|runBatch|UploadPublicSSHKey.bat;${SystemAddress};${FunctAcct};${FunctAcctPwd};@accountName;${BrowserDownloadDir};${AuthorizedKeysFile}|
+
+!|scenario                               |Regenerate and Retrieve Account Specific Key                          |accountName                         |
+|Assign ISA Permission on System for User|${CLI_user_1}                                                                                              |
+|CLItoFile                               |${CLIBatch} SSHKey --SystemName ${SystemName} --AccountName @accountName --KeyFormat OpenSSH --Regenerate Y|
+|runBatch                                |CheckOutputFile;"ssh-dss";${ProjDir}\cliout.tmp                                                            |
+|runBatch                                |movekey;${ProjDir}\cliout.tmp;${KeyFile}                                                                   |
+
+
+!|scenario        |Check Logon                                                                                            |
+|$res=            |RunBatchGetOutput|CheckAccountLogin.bat;${SystemAddress};${FunctAcct};${FunctAcctPwd};${ManagedAccount}|
+|Verify_Contain_OR|$res;;1                                                                                                |
+
+!|scenario       |BFER 4900 Check DPA Status|
+|Check DPA Status|Y   |   |Online   |  |Up  |
+
+
+!|scenario            |Check DPA Status|activeFlag     |     |currentStatus     |     |dpaStatus    |
+|pause                |6000                                                                         |
+|clickAndWait         |link=DPAs                                                                    |
+|pause                |3000                                                                         |
+|waitForElementPresent|//table[@id='serversTable']//td[text()='$TPAMDPA']                           |
+|$res=                |getText         |//table[@id='serversTable']//td[text()='$TPAMDPA']/../td[4] |
+|Verify_Contain_OR    |$res;;@activeFlag                                                            |
+|$res=                |getText         |//table[@id='serversTable']//td[text()='$TPAMDPA']/../td[11]|
+|Verify_Contain_OR    |$res;;@currentStatus                                                         |
+|$res=                |getText         |//table[@id='serversTable']//td[text()='$TPAMDPA']/../td[14]|
+|Verify_Contain_OR    |$res;;@dpaStatus                                                             |
+
+
+
+!| scenario       |BFER 5565 Check Data Extract Details Save Shanges Button|result                                                                                |
+|$res=            |GroovyWebDriver                                         |DataExtractDetailsSaveChangesButton;$TPAMReplica;${TPAMAdmin};${DefaultPwd};Schedule15|
+|Verify_Contain_OR|$res;;@result                                                                                                                                  |

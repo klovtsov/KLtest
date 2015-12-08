@@ -1,0 +1,36 @@
+!|import          |
+|fitnesse.fixtures|
+
+!|Library    |
+|page driver |
+|echo fixture|
+
+!define FirstAccount {${ManagedAccount}}
+!define SecondAccount {${prefix}AccSeconda}
+
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+!3 Case 1: User has permissions on few accounts on system
+!|script                                                                                   |
+|Open           |${TPAMURL}      |             |${TPAMAdmin}        |        |${DefaultPwd}|
+|Add System                                                                                |
+|Add account    |${FirstAccount} |with password|${ManagedAccountPwd}|        |successfully |
+|Add account    |${SecondAccount}|with password|${ManagedAccountPwd}|        |successfully |
+|Add Permissions|ISA             |on account   |${FirstAccount}     |for user|${CLI_user_2}|
+|Add Permissions|ISA             |on account   |${SecondAccount}    |for user|${CLI_user_2}|
+|pause          |${ApplyNewPoliciesInterval}                                               |
+|Check System do not doubles                                                               |
+|stop                                                                                      |
+
+!3 Case 2: User has permissions on few files on system
+!|script                                                                          |
+|Create File       |${FilePath}|          |${FileName}                            |
+|Open              |${TPAMURL} |          |${TPAMAdmin}    |        |${DefaultPwd}|
+|Add File                                                                         |
+|Remove Permissions|ISA        |on account|${FirstAccount} |for user|${CLI_user_2}|
+|Remove Permissions|ISA        |on account|${SecondAccount}|for user|${CLI_user_2}|
+|Add Permissions   |ISA        |on        |${SystemName}   |for user|${CLI_user_2}|
+|pause             |${ApplyNewPoliciesInterval}                                   |
+|Check System do not doubles                                                      |
+|Remove system     |${SystemName}                                                 |

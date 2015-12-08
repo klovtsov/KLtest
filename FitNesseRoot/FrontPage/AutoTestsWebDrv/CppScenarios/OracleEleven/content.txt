@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.OracleEleven
+!include -c <CppScenarios.ScenarioLibrary
+!include -c <CppScenarios.OraclePlatform.PlatformSpecific
+

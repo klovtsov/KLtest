@@ -1,0 +1,11 @@
+BFER 6314
+
+
+!|script                                                                            |
+|Login             |${TPAMURL}      ||${TPAMAdmin}       |      |${DefaultPwd}      |
+|Add user          |${prefix}delUser||Password1          |      |fake               |
+|pause             |2000                                                            |
+|click             |id=Delete                                                       |
+|getConfirmation                                                                    |
+|waitForTextPresent|has been successfully deleted                                   |
+|verifyText        |id=ResultsDiv   ||${prefix}delUser has been successfully deleted|

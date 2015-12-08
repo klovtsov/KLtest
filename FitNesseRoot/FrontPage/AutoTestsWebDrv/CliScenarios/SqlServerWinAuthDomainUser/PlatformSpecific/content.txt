@@ -1,0 +1,51 @@
+!| scenario                    |Managed System                           |
+|Create Account on System                                                |
+|Open                          |${TPAMURL}  ||${TPAMAdmin}||${DefaultPwd}|
+|Add Active Directory system                                             |
+|Add system                                                              |
+|Set this account as Functional|${DomainName}\${FunctAcct}               |
+|Test System                   |${TestSystemSuccessful}                  |
+|Set password                  |${FunctAcct}||${FunctAcctWrongPwd}       |
+|Test System                   |${TestSystemFailed}                      |
+|Check Password                |${FunctAcct}||${CheckPasswordFailed}     |
+
+
+!|scenario    |Set this account as Functional   |account          |
+|Choose System                                                    |
+|click        |id=Details                                         |
+|click        |id=Connection                                      |
+|click        |id=cb_funcacct_domain                              |
+|select;      |id=DAID                          |label=@account   |
+|click        |id=bt_Save                       |                 |
+|waitForResult|System changes for ${SystemName} saved successfully|
+
+!|scenario        |Add Active Directory system                                                                                                                                                                                                                                                               |
+|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${AdSystemName} --NetworkAddress ${AdSystemAddress} --PlatformName \"${AdSystemPlatform}\" --DomainName ${DomainName} --NetBiosName ${NETBIOSDomainName} --FunctionalAccount ${FunctAcct} --FuncAcctCred ${FunctAcctPwd} --Timeout ${SystemTimeout}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                          |
+
+!| scenario       |Add system                                                                                                                                                                                                                |
+|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --Timeout ${SystemTimeout}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                          |
+
+
+!| scenario       |Set Password|acc                           |                           |passwd                           |
+|$res=            |CLI         |${CLIBatch} UpdateAccount --System ${AdSystemName} --AccountName @acc --Password \"@passwd\"|
+|Verify_Contain_OR|$res;;successful                                                                                         |
+
+!|scenario    |Create Account on System                                                                                                                                   |
+|accountAction|MSSQLwinAuth;;create;;${HostSystemAddress};;${NETBIOSDomainName}\${FunctAcct};;${FunctAcctPwd};;${SqlInstanceName};;${ManagedAccount};;${ManagedAccountPwd}|
+
+!|scenario    |Change Account Password on System                                                    |NewPwd                                                    |
+|accountAction|MSSQLwinAuth;;password;;${HostSystemAddress};;${NETBIOSDomainName}\${FunctAcct};;${FunctAcctPwd};;${SqlInstanceName};;${ManagedAccount};;@NewPwd|
+
+!|scenario    |Delete Account on System                                                                                                             |
+|accountAction|MSSQLwinAuth;;delete;;${HostSystemAddress};;${NETBIOSDomainName}\${FunctAcct};;${FunctAcctPwd};;${SqlInstanceName};;${ManagedAccount}|
+
+!| scenario              |Delete All                 |
+|Revoke User Permissions |${CLI_user_1}              |
+|Revoke User Permissions |${CLI_user_2}              |
+|pause                   |${ApplyNewPoliciesInterval}|
+|Remove account          |${ManagedAccount}          |
+|Remove system           |${SystemName}              |
+|Remove system           |${AdSystemName}            |
+|Delete Account on System|${ManagedAccount}          |

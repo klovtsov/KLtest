@@ -1,0 +1,626 @@
+!contents
+
+!|scenario                        |Prepare Environment                                                                                                      |
+|Add System                       |${SystemName}     |               |${SystemAddress}|             |${SystemPlatform}|         |${FunctAcct}||${FuncAccPwd}|
+|Add User To Group                |${CLI_user_1}     |               |\"Global Requestor Group\"                                                            |
+|Prepare Account                  |${ManagedAccount1}|               |${SystemName}   |             |${SystemAddress}                                       |
+|Prepare Account                  |${ManagedAccount2}|               |${SystemName}   |             |${SystemAddress}                                       |
+|Prepare Account                  |${ManagedAccount3}|               |${SystemName}   |             |${SystemAddress}                                       |
+|Prepare User                     |${Requestor}      |with first name|${Requestor}    |and last name|Smith            |with type|Basic                      |
+|Prepare User                     |${ISA}            |with first name|${ISA}          |and last name|Smith            |with type|Basic                      |
+|Set User Permissions System Level|${Requestor}      |               |Requestor                                                                             |
+|Set User Permissions System Level|${ISA}            |               |ISA                                                                                   |
+|Create Email Receiver            |${EmailReceiver}  |               |${ReceiverEmail}                                                                      |
+
+
+!|scenario                        |Check Password Released and Account Enabled         |
+|Set UI Enable Before Release Flag|${ManagedAccount1}                                  |
+|Check Forced Account Settings    |${ManagedAccount1}                                  |
+|Is Account Enabled               |${ManagedAccount1}||False                           |
+|Request Password                 |${SystemName}     ||${ManagedAccount1}||${Requestor}|
+|Retrieve Password                |${Requestor}                                        |
+|Is Account Enabled               |${ManagedAccount1}||True                            |
+|Login Account to System          |${ManagedAccount1}||$GeneratedPwd                   |
+|Cancel Password Request          |${Requestor}                                        |
+|Is Account Enabled               |${ManagedAccount1}||False                           |
+|Check Post Release Reset         |${ManagedAccount1}                                  |
+
+
+!|scenario                         |Check ISA Password Retrieved and Account Enabled|
+|Set CLI Enable Before Release Flag|${ManagedAccount2}                              |
+|Check Forced Account Settings     |${ManagedAccount2}                              |
+|Is Account Enabled                |${ManagedAccount2}     |     |False             |
+|ISA Release Password              |${ManagedAccount2}                              |
+|Is Account Enabled                |${ManagedAccount2}     |     |True              |
+|Login Account to System           |${ManagedAccount2}     |     |$GeneratedPwd     |
+|pause                             |960000                                          |
+|Is Account Enabled                |${ManagedAccount2}     |     |False             |
+|Check Post Release Reset          |${ManagedAccount2}                              |
+
+
+
+
+!|scenario                        |Check Session Opened and Account Enabled            |
+|Set UI Enable Before Release Flag|${ManagedAccount3}                                  |
+|Check Forced Account Settings    |${ManagedAccount3}                                  |
+|Update PSM Details               |${ManagedAccount3}                                  |
+|Is Account Enabled               |${ManagedAccount3}||False                           |
+|Request Session                  |${SystemName}     ||${ManagedAccount3}||${Requestor}|
+|Open Session                     |${Requestor}                                        |
+|Is Account Enabled               |${ManagedAccount3}||True                            |
+|Cancel Session Request           |${Requestor}                                        |
+|Is Account Enabled               |${ManagedAccount3}||False                           |
+|Check Post Release Reset         |${ManagedAccount3}                                  |
+
+
+!|scenario               |Clear Objects                                |
+|Login                   |${TPAMURL}      ||${TPAMAdmin}||${DefaultPwd}|
+|Remove User From Group  |${CLI_user_1}   ||\"Global Requestor Group\" |
+|Remove System           |${SystemName}                                |
+|Session Cleanup         |${ManagedAccount3}                           |
+|Delete Account on System|${ManagedAccount1}                           |
+|Delete Account on System|${ManagedAccount2}                           |
+|Delete Account on System|${ManagedAccount3}                           |
+|Hard-Delete System      |${SystemName}                                |
+|Remove User             |${Requestor}                                 |
+|Remove User             |${ISA}                                       |
+|Logout                                                                |
+|Delete Email Receiver   |${EmailReceiver}||${ReceiverEmail}           |
+
+
+
+
+!|scenario                      |Prepare Account|accountName  |                         |systemName||systemAddress|
+|Add Account                    |@accountName                                                                     |
+|pause                          |3000                                                                             |
+|Create Account on System       |@accountName   |with password|${ManagedAccountPassword}|on system |@systemAddress|
+|pause                          |1000                                                                             |
+|Manage Account Status on System|@accountName   |             |disable                                            |
+|pause                          |1000                                                                             |
+|Is Account Enabled             |@accountName   |             |False                                              |
+
+
+
+!| scenario       |Add Account|accountName                                                                                                                                                                                                                                                                                                                        |
+|$res=            |CLI        |${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName @accountName --Password ${ManagedAccountPassword} --PasswordChangeProfile ${PpmChangeProfile} --PasswordCheckProfile ${PpmCheckProfile}  --ChangeServiceFlag Y --RestartServiceFlag Y --ChangeTaskFlag Y --UseSelfFlag Y --ReleaseChangeFlag N --MinimumApprovers 0|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                                                                               |
+#--ReleaseChangeFlag N 
+
+
+!| scenario       |Add Non-Managed Account|accountName                                                                                                                    |
+|$res=            |CLI                    |${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName @accountName --Password ${ManagedAccountPassword}  --AutoFlag N|
+|Verify_Contain_OR|$res;;successful                                                                                                                                       |
+
+
+!| scenario       |Add Manual Account|accountName                                                                                                                    |
+|$res=            |CLI               |${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName @accountName --Password ${ManagedAccountPassword}  --AutoFlag M|
+|Verify_Contain_OR|$res;;successful                                                                                                                                  |
+
+
+!| scenario       |Update Account|accountName                    |ISA Release Duration                    |releaseDuration                   |
+|$res=            |CLI           |${CLIBatch} UpdateAccount --System ${SystemName} --Account @accountName  --ReleaseDuration @releaseDuration|
+|Verify_Contain_OR|$res;;successful                                                                                                          |
+
+!| scenario        |Update ISA Duration|accountName                 |
+|Login             |${TPAMURL}         ||${TPAMAdmin}||${DefaultPwd}|
+|Choose Account    |@accountName                                    |
+|click             |id=Details                                      |
+|pause             |1000                                            |
+|click             |id=Management                                   |
+|pause             |1000                                            |
+|select;           |id=DurationQtrHrs  |label=15                    |
+|select;           |id=DurationHrs     |label=0                     |
+|pause             |1000                                            |
+|click             |id=SubmitChangesButton                          |
+|waitForTextPresent|*Changes saved successfully for*                |
+|Logout                                                             |
+
+!| scenario       |Update PSM Details|accountName                                                                                                                                                                                  |
+|$res=            |CLI               |${CLIBatch} UpdatePSMAccount --System ${SystemName} --Account @accountName  --ProxyType \"RDP - Automatic Login Using Password\" --DefaultSessionDuration 15 --EnableFlag Y  --MinApprovers 0|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                |
+
+
+!|scenario        |Set User Permissions System Level|userName                                 |                                 |userPermission                                 |
+|$res=            |CLI                              |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action ADD --SystemName ${SystemName} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                             |
+
+
+!|scenario    |Create Account on System  |accountName  |with password  |pwd  |on system  |systemAddress  |
+|accountAction|${SystemPlatform};;create;;@systemAddress;;${FunctAcct};;${FuncAccPwd};;@accountName;;@pwd|
+
+
+!|scenario    |Login Account to System      |accountName      |     |ManPwd     |
+|accountAction|${SystemPlatform};;login;;${SystemAddress};;@accountName;;@ManPwd|
+
+
+!|scenario    |Delete Account on System                         |accountName                         |
+|accountAction|${SystemPlatform};;delete;;${SystemAddress};;${FunctAcct};;${FuncAccPwd};;@accountName|
+
+!|scenario    |Change Account Password on System           |accountName           |           |NewPwd           |
+|accountAction|${SystemPlatform};;password;;${SystemAddress};;${FunctAcct};;${FuncAccPwd};;@accountName;;@NewPwd|
+
+
+
+!|scenario |Prepare User|userName|with first name|firstName|and last name|lastName|with type|userType  |
+|Add User  |@userName   |        |${DefaultPwd}  |         |@firstName   |        |@lastName||@userType|
+|pause     |5000                                                                                       |
+|Change Pwd|@userName   |        |${DefaultPwd}  |         |${UserPwd}                                 |
+
+
+
+!|scenario        |Add User|userName         |         |password         |         |firstName         |        |lastName        |        |userType        |
+|$res=            |CLI     |${CLIBatch} AddUser --UserName @userName --FirstName @firstName --LastName @lastName --Password @password --UserType @userType|
+|Verify_Contain_OR|$res;;successful                                                                                                                       |
+
+
+!|scenario        |Add User To Group|UserName          |         |GroupName         |
+|$res=            |CLI              |${CLIBatch} AddGroupMember @UserName,@GroupName|
+|Verify_Contain_OR|$res;;successful                                                 |
+
+
+!|scenario        |Remove User From Group|UserName          |          |GroupName         |
+|$res=            |CLI                   |${CLIBatch} DropGroupMember @UserName,@GroupName|
+|Verify_Contain_OR|$res;;successful                                                       |
+
+
+!| scenario       |Remove System|sysName                          |
+|$res=            |CLI          |${CLIBatch} DeleteSystem @sysName|
+|Verify_Contain_OR|$res;;successful                               |
+
+
+!| scenario       |Remove User|userName                        |
+|$res=            |CLI        |${CLIBatch} DeleteUser @userName|
+|Verify_Contain_OR|$res;;successful                            |
+
+!|scenario        |Add Sync Password|Name                                            |with value                                            |value                                           |
+|$res=            |CLI              |${CLIBatch} AddSyncPass --SyncPassName @Name --Password \"@value\" --PasswordChangeProfile ${PpmChangeProfile} --PasswordCheckProfile ${PpmCheckProfile}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                          |
+
+!|scenario        |Add Subscriber|account                           |from                           |system                          |
+|$res=            |CLI           |${CLIBatch} AddSyncPwdSub --SyncPassName ${SyncPwdName} --Systemname @system --AccountName @account|
+|Verify_Contain_OR|$res;;successful                                                                                                  |
+
+!| scenario       |Delete Sync Password|pwdName                                           |
+|$res=            |CLI                 |${CLIBatch} DeleteSyncPass --SyncPassName @pwdName|
+|Verify_Contain_OR|$res;;successfully deleted                                             |
+
+
+
+!|scenario   |Check Email Alert|message                             |
+|Check Mail  |${ReceiverEmail} ||Password Change Processes||@message|
+|Delete Mails|${ReceiverEmail}                                      |
+
+!|scenario                                 |Create Email Receiver|receiverName|             |receiverEmail|
+|Create Mailbox                            |@receiverEmail       |            |${ReceiverEmailPassword}   |
+|Login                                     |${TPAMAdminURL}      |            |${TPAMMaster}||${MasterPwd}|
+|pause                                     |10000                                                         |
+|clickOnLink                               |link=Receivers                                                |
+|click                                     |id=AddAlertReceiver                                           |
+|pause                                     |1000                                                          |
+|type;                                     |id=ReceiverName      |@receiverName                           |
+|type;                                     |id=Comment           |@receiverName description               |
+|select;                                   |id=RecvType          |label=E-Mail                            |
+|type;                                     |id=EmailAddress      |@receiverEmail                          |
+|type;                                     |id=MaxRetries        |0                                       |
+|click                                     |id=SubmitChanges                                              |
+|waitForTextPresent                        |Receiver added successfully                                   |
+|Subscribe For Cannot Disable Account Alert|@receiverName                                                 |
+|Logout                                                                                                   |
+
+!|scenario  |Select Receiver                                               |receiverName |
+|clickOnLink|link=Receivers                                                              |
+|type;      |xpath=//input[@id='ReceiverNm']                               |@receiverName|
+|click      |id=Listing                                                                  |
+|click      |xpath=//table[@id='receiverTable']//td[text()='@receiverName']|             |
+
+
+!|scenario         |Delete Email Receiver|receiverName|             |receiverEmail|
+|Delete Mailbox    |@receiverEmail                                                |
+|Login             |${TPAMAdminURL}      |            |${TPAMMaster}||${MasterPwd}|
+|pause             |10000                                                         |
+|Select Receiver   |@receiverName                                                 |
+|click             |id=DeleteAlertReceiver                                        |
+|getConfirmation                                                                  |
+|waitForTextPresent|Alert Receiver successfully deleted                           |
+|Logout                                                                           |
+
+!|scenario         |Subscribe For Cannot Disable Account Alert|receiverName|
+|Select Receiver   |@receiverName                                          |
+|click             |id=Alerts                                              |
+|pause             |1000                                                   |
+|click             |name=cbxAlert_L1_2                                     |
+|pause             |1000                                                   |
+|click             |id=SubmitChanges                                       |
+|waitForTextPresent|Subscriptions successfully saved                       |
+
+
+!| scenario             |Check Mail|user           |           |subject          |          |body          |
+|$res=                  |CheckMail |${MailServer};@user;${ReceiverEmailPassword};${FromMail};@subject;@body|
+|Verify_Contain_OR_alnum|$res;;@body;;too many messages                                                    |
+
+
+
+!| scenario             |Delete Mails|user                                        |
+|$res=                  |ClearMailbox|${MailServer};@user;${ReceiverEmailPassword}|
+|Verify_Contain_OR_alnum|$res;;Messages deleted                                   |
+
+
+
+!| scenario       |Reset Password|acc                   |                   |testRes                  |
+|$res=            |CLI           |${CLIBatch} ForceReset --SystemName ${SystemName} --AccountName @acc|
+|Verify_Contain_OR|$res;;@testRes                                                                     |
+
+
+!|scenario        |Request Password|systemName                      |                      |accountName                      |                      |requestorName                     |
+|$res=            |CLI             |${CLIBatch} AddPwdRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --ReleaseDuration 15 --RequestNotes test|
+|Verify_Contain_OR|$res;;submitted                                                                                                                                                     |
+|$RequestID=      |get_RequestID   |$res                                                                                                                                               |
+
+!|scenario        |Release Password                              |
+|Request Password |${SystemName}||${ManagedAccount}||${Requestor}|
+|Retrieve Password|${Requestor}                                  |
+|Cancel Password Request                                         |
+
+
+!|scenario            |Retrieve Password|requestorName                        |
+|Login                |${TPAMURL}       |   |@requestorName   |  |${UserPwd}  |
+|pause                |10000                                                  |
+|click                |id=CurrentRequests                                     |
+|click                |link=$RequestID                                        |
+|click                |id=Password                                            |
+|pause                |10000                                                  |
+|waitForElementPresent|xpath=//div[@class='displayPassword']                  |
+|$passwordstr=        |getText          |xpath=//div[@class='displayPassword']|
+|$GeneratedPwd=       |get_password     |$passwordstr                         |
+|Logout                                                                       |
+
+!|scenario            |Failed Retrieve Password|requestorName                 |
+|Login                |${TPAMURL}              | |@requestorName | |${UserPwd}|
+|pause                |10000                                                  |
+|click                |id=CurrentRequests                                     |
+|clickOnLink          |link=$RequestID                                        |
+|click                |id=Password                                            |
+|pause                |10000                                                  |
+|waitForElementPresent|xpath=//div[@id='passwordTab']                         |
+|$res=                |getText                 |xpath=//div[@id='passwordTab']|
+|Verify_Contain_OR    |$res;;Enable Account Failed                            |
+|Logout                                                                       |
+
+
+!| scenario        |Cancel Password Request   |requestor                          |
+|Login             |${TPAMURL}                |   |@requestor   |   |${UserPwd}   |
+|pause             |10000                                                         |
+|click             |id=CurrentRequests        |                                   |
+|click             |xpath=//table[@id='requestsTable']//tr[contains(@id,'P')]/td/a|
+|type;             |id=ResponseComment        |Decline                            |
+|click             |id=SubmitChanges                                              |
+|waitForTextPresent|*The response* was submitted successfully*                    |
+|pause             |40000                                                         |
+|Logout                                                                           |
+
+!|scenario     |ISA Release Password|accountName                          |
+|Login         |${TPAMURL}          |     |${ISA}     |    |${UserPwd}    |
+|Choose Account|@accountName                                              |
+|pause         |2000                                                      |
+|click         |id=Passwords                                              |
+|pause         |2000                                                      |
+|type;         |id=ReleaseReasonText|${ISA} pwd release                   |
+|click         |id=Password                                               |
+|pause         |5000                                                      |
+|waitForElementPresent|xpath=//div[@class='displayPassword']                  |
+|$passwordstr= |getText             |xpath=//div[@class='displayPassword']|
+|$GeneratedPwd=|get_password        |$passwordstr                         |
+|pause         |15000                                                     |
+|Logout                                                                   |
+#|Update Account       |@accountName        |ISA Release Duration|15                |
+#|Update ISA Duration  |@accountName                                        |
+
+
+!| scenario       |Request Session      |System                   |                   |Account                   |                   |ForUser                  |
+|$res=            |CLI                  |${CLIBatch} AddSessionRequest --SystemName @System --AccountName @Account --ForUserName @ForUser --RequestNotes "test"|
+|Verify_Contain_OR|$res;;submitted                                                                                                                             |
+|$RequestID=      |get_session_RequestID|$res                                                                                                                  |
+
+!|scenario   |Open Session|requestorName              |
+|Login       |${TPAMURL}  ||@requestorName||${UserPwd}|
+|pause       |10000                                   |
+|click       |id=CurrentRequests                      |
+|clickOnLink |link=$RequestID                         |
+|click       |id=StartSessionButton                   |
+|pause       |60000                                   |
+|selectWindow|Quest Software PSM Session              |
+|pause       |5000                                    |
+|SWait       |${ImageToWait}                          |
+|stop                                                 |
+|selectWindow|Quest Software TPAM                     |
+|stop                                                 |
+
+
+!|scenario   |Failed Open Session|requestorName              |
+|Login       |${TPAMURL}         ||@requestorName||${UserPwd}|
+|pause       |10000                                          |
+|click       |id=CurrentRequests                             |
+|clickOnLink |link=$RequestID                                |
+|click       |id=StartSessionButton                          |
+|pause       |30000                                          |
+|SWait       |enable_account_failed.png                      |
+|stop                                                        |
+|selectWindow|                                               |
+|stop                                                        |
+
+
+!|scenario         |Cancel Session Request|requestorName              |
+|Login             |${TPAMURL}            ||@requestorName||${UserPwd}|
+|pause             |10000                                             |
+|click             |id=CurrentRequests                                |
+|click             |link=$RequestID                                   |
+|type;             |id=ResponseComment    |cancel                     |
+|pause             |2000                                              |
+|click             |id=SubmitChanges                                  |
+|waitForTextPresent|The response * was submitted successfully         |
+|pause             |100000                                            |
+|Logout                                                               |
+
+!|scenario|Session Cleanup  |accountName                                                            |
+|$res=    |RunBatchGetOutput|CleanupSession;${SystemAddress};${FunctAcct};${FuncAccPwd};@accountName|
+
+!|scenario         |Set Affinity to DPA                                                       |
+|Login             |${TPAMURL}                                   ||${TPAMAdmin}||${DefaultPwd}|
+|pause             |20000                                                                     |
+|Choose system     |${SystemName}                                                             |
+|click             |id=Affinity                                                               |
+|click             |id=rbPARAffinitySelected                                                  |
+|type;             |xpath=//table[@id='tblPARDPAAffinity']//input|1                           |
+|click             |id=bt_Save                                                                |
+|waitForTextPresent|System changes for * saved successfully                                   |
+|pause             |10000                                                                     |
+|Check Affinity                                                                               |
+|Logout                                                                                       |
+
+!|scenario        |Check Affinity                                         |
+|pause            |10000                                                  |
+|Choose system    |${SystemName}                                          |
+|click            |id=Affinity                                            |
+|$res=            |isChecked|id=rbPARAffinitySelected                     |
+|Verify_Contain_OR|$res;;true                                             |
+|$res=            |getValue |xpath=//table[@id='tblPARDPAAffinity']//input|
+|Verify_Contain_OR|$res;;1                                                |
+
+!|scenario         |Hard-Delete System                        |systemName |
+|pause             |5000                                                  |
+|clickOnLink       |link=Deleted Systems                                  |
+|type;             |id=SystemNm                               |@systemName|
+|click             |id=Listing                                |           |
+|click             |xpath=//td[contains(text(),'@systemName')]|           |
+|pause             |1000                                                  |
+|click             |id=HardDeleteButton                       |           |
+|getConfirmation                                                          |
+|waitForTextPresent|has been successfully deleted                         |
+
+!|scenario         |Schedule Reset Password|accountName                            |                                        |testResult                                                                     |
+|Login             |${TPAMURL}             |                                       |${TPAMAdmin}                            |                                      |${DefaultPwd}                           |
+|Choose Account    |@accountName                                                                                                                                                                            |
+|click             |id=Details                                                                                                                                                                              |
+|pause             |1000                                                                                                                                                                                    |
+|click             |id=Management                                                                                                                                                                           |
+|$Hours=           |getEval                |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);var s = d.getUTCHours();if ((s + "").length == 1) { s = "0" + s } else { s = d.getUTCHours()}; return s;|
+|$Minutes=         |getEval                |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);var s = d.getUTCMinutes();if ((s + "").length == 1) { s = "0" + s } else { d.getUTCMinutes()}; return s;|
+|$Months=          |getEval                |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);var s = d.getUTCMonth()+1;if ((s + "").length == 1) { s = "0" + s } else { d.getUTCMonth()+1}; return s;|
+|$Days=            |getEval                |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);var s = d.getUTCDate();if ((s + "").length == 1) { s = "0" + s } else { d.getUTCDate()}; return s;      |
+|$Years=           |getEval                |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);var s = d.getUTCFullYear(); return s;                                                                   |
+|type;             |id=Hr                  |$Hours                                                                                                                                                          |
+|type;             |id=Min                 |$Minutes                                                                                                                                                        |
+|type;             |id=Mon                 |$Months                                                                                                                                                         |
+|type;             |id=DayNumber           |$Days                                                                                                                                                           |
+|type;             |id=YearNumber          |$Years                                                                                                                                                          |
+|pause             |1000                                                                                                                                                                                    |
+|click             |id=SubmitChangesButton |                                                                                                                                                                |
+|waitForTextPresent|*Changes saved successfully for*                                                                                                                                                        |
+|pause             |${SchedulePasswordResetTimeout}                                                                                                                                                         |
+|Logout                                                                                                                                                                                                     |
+|Check Status      |@accountName           |                                       |@testResult                             |for reason                            |Scheduled                               |
+
+
+!|scenario         |Manual Reset Password             |accountName|            |testResult    |
+|Login             |${TPAMURL}                        |           |${TPAMAdmin}||${DefaultPwd}|
+|Choose Account    |@accountName                                                              |
+|click             |id=Details                                                                |
+|pause             |2000                                                                      |
+|click             |id=ResetPassButton                                                        |
+|waitForTextPresent|*Results from the*                                                        |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']|           |@testResult                |
+|pause             |30000                                                                     |
+|Logout                                                                                       |
+
+!|scenario         |Manual Check Password             |accountName|            |testResult    |
+|Login             |${TPAMURL}                        |           |${TPAMAdmin}||${DefaultPwd}|
+|Choose Account    |@accountName                                                              |
+|click             |id=Details                                                                |
+|pause             |2000                                                                      |
+|click             |id=CheckPassButton                                                        |
+|waitForTextPresent|*Results from the*                                                        |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']|           |@testResult                |
+|pause             |300000                                                                    |
+|Logout                                                                                       |
+
+
+!|scenario     |Check Status                                         |accountName|            |testResult|for reason|testReason|
+|Login         |${TPAMURL}                                           |           |${TPAMAdmin}|          |${DefaultPwd}        |
+|Choose Account|@accountName                                                                                                   |
+|click         |id=Logs                                                                                                        |
+|click         |id=rb_LogsDtAll                                                                                                |
+|click         |id=ChangeLog                                                                                                   |
+|verifyText    |xpath=//table[@id='changeLogTable']/tbody/tr[@id='0']|           |@testReason.*@testResult                     |
+|Logout                                                                                                                        |
+
+
+!|scenario     |Check Test Log                                     |accountName|            |testResult    |
+|Login         |${TPAMURL}                                         |           |${TPAMAdmin}||${DefaultPwd}|
+|Choose Account|@accountName                                                                               |
+|click         |id=Logs                                                                                    |
+|click         |id=rb_LogsDtAll                                                                            |
+|click         |id=TestLog                                                                                 |
+|verifyText    |xpath=//table[@id='testLogTable']/tbody/tr[@id='0']|           |@testResult                |
+|Logout                                                                                                    |
+
+!|scenario   |Check Post Release Reset|account                               |
+|Check Status|@account                ||Success|for reason|Post Release Reset|
+
+
+!|scenario         |Change Account Password|accountName|            |newPassword   |
+|Login             |${TPAMURL}             |           |${TPAMAdmin}||${DefaultPwd}|
+|Choose Account    |@accountName                                                   |
+|pause             |3000                                                           |
+|click             |id=Details                                                     |
+|type;             |id=sPswd               |@newPassword                           |
+|type;             |id=sConfPswd           |@newPassword                           |
+|pause             |1000                                                           |
+|click             |id=SubmitChangesButton                                         |
+|waitForTextPresent|Changes saved successfully for @accountName                    |
+|Logout                                                                            |
+
+
+
+!|scenario  |Choose Account                                                |accountName  |
+|pause      |10000                                                                       |
+|clickOnLink|link=Manage Accounts                                          |             |
+|pause      |6000                                                                        |
+|type;      |id=SystemNm                                                   |${SystemName}|
+|click      |id=Listing                                                    |             |
+|click      |xpath=//table[@id='AccountListing']//td[text()='@accountName']|             |
+
+
+!|scenario         |Set UI Enable Before Release Flag|accountName                 |
+|Login             |${TPAMURL}                       ||${TPAMAdmin}||${DefaultPwd}|
+|Choose Account    |@accountName                                                  |
+|pause             |3000                                                          |
+|click             |id=Details                                                    |
+|pause             |1000                                                          |
+|click             |id=cb_EnableBeforeReleaseFl                                   |
+|pause             |1000                                                          |
+|click             |id=SubmitChangesButton                                        |
+|waitForTextPresent|Changes saved successfully for                                |
+|Logout                                                                           |
+
+
+!|scenario         |Unset UI Enable Before Release Flag|accountName                 |
+|Login             |${TPAMURL}                         ||${TPAMAdmin}||${DefaultPwd}|
+|Choose Account    |@accountName                                                    |
+|pause             |3000                                                            |
+|click             |id=Details                                                      |
+|pause             |1000                                                            |
+|click             |id=cb_EnableBeforeReleaseFl                                     |
+|pause             |1000                                                            |
+|click             |id=SubmitChangesButton                                          |
+|waitForTextPresent|Changes saved successfully for                                  |
+|Logout                                                                             |
+
+!|scenario        |Set CLI Enable Before Release Flag|accountName                                                                                                 |
+|$res=            |CLI                               |${CLIBatch} UpdateAccount --SystemName ${SystemName} --AccountName @accountName --ChangeServiceFlag N --RestartServiceFlag N --ChangeTaskFlag N --UseSelfFlag N --ReleaseChangeFlag Y --EnableBeforeReleaseFlag Y|
+|Verify_Contain_OR|$res;;successful                                                                                                                               |
+
+
+!|scenario        |Unset CLI Enable Before Release Flag|accountName                                                                                                 |
+|$res=            |CLI                                 |${CLIBatch} UpdateAccount --SystemName ${SystemName} --AccountName @accountName  --EnableBeforeReleaseFlag N|
+|Verify_Contain_OR|$res;;successful                                                                                                                                 |
+
+
+
+
+!|scenario        |Check Forced Account Settings|accountName                                                        |
+|$res=            |GroovyWebDriver              |CheckAccountControlsForEnableBeforeRelease;${TPAMHost};@accountName|
+|Verify_Contain_OR|$res;;All controls are fine                                                                      |
+
+
+!|scenario        |Check EnableBeforeReleaseFlag Checkbox|accountName                  |                 |result                 |
+|$res=            |GroovyWebDriver                       |CheckEnableBeforeReleaseCheckBox;${TPAMHost};${SystemName};@accountName|
+|Verify_Contain_OR|$res;;@result                                                                                                 |
+
+!|scenario                             |Checkbox is not Present for Sync Pwd Subscriber                                        |
+|Add Account                           |${SyncPwdSubscriber}                                                                   |
+|Add Sync Password                     |${SyncPwdName}      |with value|grain41R                                               |
+|Add Subscriber                        |${SyncPwdSubscriber}|from      |${SystemName}                                          |
+|Check EnableBeforeReleaseFlag Checkbox|${SyncPwdSubscriber}|          |Enable Account before Release checkbox is not dispalyed|
+|Delete Sync Password                  |${SyncPwdName}                                                                         |
+
+!|scenario                             |Checkbox is Disabled for Non-Auto Accounts                                            |
+|Add Non-Managed Account               |${NonManagedAccount}                                                                  |
+|Check EnableBeforeReleaseFlag Checkbox|${NonManagedAccount}||Enable Account before Release checkbox is displayed and disabled|
+|Add Manual Account                    |${ManualAccount}                                                                      |
+|Check EnableBeforeReleaseFlag Checkbox|${ManualAccount}    ||Enable Account before Release checkbox is displayed and disabled|
+
+!|scenario                             |Checkbox is not Present for Functional Account                       |
+|Check EnableBeforeReleaseFlag Checkbox|${FunctAcct}||Enable Account before Release checkbox is not dispalyed|
+
+!|scenario|Check that EnableBeforeReleaseFlag Checkbox is not present or is disabled|
+|Checkbox is Disabled for Non-Auto Accounts                                         |
+|Checkbox is not Present for Functional Account                                     |
+|Checkbox is not Present for Sync Pwd Subscriber                                    |
+
+
+
+!|scenario               |Password Cannot Be Released If Account Cannot Be Enabled|
+|Change Account Password |${FunctAcct}       | |B4DdPa$$                          |
+|Request Password        |${SystemName}      | |${ManagedAccount1} | |${Requestor}|
+|Failed Retrieve Password|${Requestor}                                            |
+|pause                   |30000                                                   |
+|Is Account Enabled      |${ManagedAccount1} | |False                             |
+|Cancel Password Request |${Requestor}                                            |
+|Change Account Password |${FunctAcct}       | |${FuncAccPwd}                     |
+
+
+!|scenario              |Session Cannot Be Opened If Account Cannot Be Enabled|
+|Change Account Password|${FunctAcct}       ||B4DdPa$$                        |
+|Request Session        |${SystemName}      ||${ManagedAccount3}||${Requestor}|
+|Failed Open Session    |${Requestor}                                         |
+|pause                  |30000                                                |
+|Is Account Enabled     |${ManagedAccount3} ||False                           |
+|Cancel Session Request |${Requestor}                                         |
+|Change Account Password|${FunctAcct}       ||${FuncAccPwd}                   |
+
+!|scenario                      |Account Disabled by Scheduled Password Reset                                                                                                                                                                                                                |
+|Manage Account Status on System|${ManagedAccount1}|                                                                                                                 |enable                                                                                                                 |
+|Is Account Enabled             |${ManagedAccount1}|                                                                                                                 |True                                                                                                                   |
+|$res=                          |CLI               |${CLIBatch} DeleteAccount --SystemName ${SystemName} --AccountName ${ManagedAccount1}                                                                                                                                                    |
+|Verify_Contain_OR              |$res;;successful                                                                                                                                                                                                                                            |
+|$res=                          |CLI               |${CLIBatch} AddAccount --System ${SystemName} --AccountName ${ManagedAccount1} --Password \"${ManagedAccountPassword}\" --PasswordCheckProfile ${PpmCheckProfile} --PasswordChangeProfile ${PpmChangeProfile} --EnableBeforeReleaseFlag Y|
+|Verify_Contain_OR              |$res;;successfully                                                                                                                                                                                                                                          |
+|pause                          |240000                                                                                                                                                                                                                                                      |
+|Is Account Enabled             |${ManagedAccount1}|                                                                                                                 |False                                                                                                                  |
+
+
+
+
+!|scenario                      |Account Disabled by Manual Password Reset                                                                        |
+|Manage Account Status on System|${ManagedAccount3}||enable                                                                                       |
+|Is Account Enabled             |${ManagedAccount3}||True                                                                                         |
+|Manual Reset Password          |${ManagedAccount3}||Disabling Account based on specific account policies.*The password .*was successfully changed|
+|Is Account Enabled             |${ManagedAccount3}||False                                                                                        |
+
+
+!|scenario                                                 |Account Disabled and Password Reset by Manual Password Check|
+|Manage Account Status on System                           |${ManagedAccount1} ||enable                                 |
+|Is Account Enabled                                        |${ManagedAccount1} ||True                                   |
+|Manual Check Password                                     |${ManagedAccount1} ||The password .*was checked successfully|
+|Password Reset If Account Enabled Even If Check Successful|${ManagedAccount1}                                          |
+|Is Account Enabled                                        |${ManagedAccount1} ||False                                  |
+
+!|scenario            |Manual Check of Disabled Account                                 |
+|Manual Check Password|${ManagedAccount1}||Account is DISABLED;;The account was disabled|
+
+!|scenario     |Password Reset If Account Enabled Even If Check Successful|accountName                     |
+|Check Test Log|@accountName                                              ||Successful                     |
+|Check Status  |@accountName                                              ||Success|for reason|Forced Reset|
+
+
+!|scenario               |Check That Password Is Not Reset If Currently In Use And Account Is Not Disabled|
+|Is Account Enabled      |${ManagedAccount2}     |    |False                                              |
+|Request Password        |${SystemName}          |    |${ManagedAccount2}       |      |${Requestor}      |
+|Retrieve Password       |${Requestor}                                                                    |
+|Is Account Enabled      |${ManagedAccount2}     |    |True                                               |
+|Login Account to System |${ManagedAccount2}     |    |$GeneratedPwd                                      |
+|Manual Check Password   |${ManagedAccount2}     |    |The password .*was checked successfully            |
+|Is Account Enabled      |${ManagedAccount2}     |    |True                                               |
+|Login Account to System |${ManagedAccount2}     |    |$GeneratedPwd                                      |
+|Cancel Password Request |${Requestor}                                                                    |
+|Check Post Release Reset|${ManagedAccount2}                                                              |

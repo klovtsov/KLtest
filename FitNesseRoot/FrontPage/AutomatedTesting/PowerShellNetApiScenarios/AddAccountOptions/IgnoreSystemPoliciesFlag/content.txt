@@ -1,0 +1,116 @@
+!* Test description
+When the flag is set on an account, no System-level permission assignments should be honored.
+Global Setting "Ignore Policies includes collection membership" should be switched off (It checked by test). 
+So "collection of accounts" or "collection of systems" from further down the hierarchy should still be respected.
+*!
+!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${API_user_1} -apiUser ${API_user_1}}
+!define SystemDescription {Test system for powershell}
+!define collDescription {Test collection}
+!define groupDescription {Test group}
+!define FunctAcctPwd {T0PSecret}
+!define NonPolicyAccount {${prefix}_indep}
+!define underPolicyAccount {${prefix}_depin}
+!define CollectionName {${prefix}AccntCollctn}
+!define CollectionName2 {${prefix}SystemCollctn}
+!define testGroup {${prefix}PermGroup}
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+
+!*> Create System, accounts and collections
+!|script                                                                                                            |
+|Add System                                                                                                         |
+|Add account    |${NonPolicyAccount}  |on system    |${SystemName}        |with options |-IgnoreSystemPoliciesFlag Y|
+|Add account    |${underPolicyAccount}|on system    |${SystemName}        |with options |-IgnoreSystemPoliciesFlag N|
+|Add Collection |${CollectionName}                                                                                  |
+|Add Collection |${CollectionName2}                                                                                 |
+|Add System     |${SystemName}        |to collection|${CollectionName2}                                             |
+|Add Account    |${underPolicyAccount}|from system  |${SystemName}        |to collection|${CollectionName}          |
+|Add Account    |${NonPolicyAccount}  |from system  |${SystemName}        |to collection|${CollectionName}          |
+|Add Group      |${testGroup}                                                                                       |
+|Add Member     |${API_user_2}        |to group     |${testGroup}                                                   |
+|Set Permissions|Approver             |on account   |${underPolicyAccount}|for user     |${API_user_1}              |
+|Set Permissions|Approver             |on account   |${NonPolicyAccount}  |for user     |${API_user_1}              |
+*!
+!|script                    |
+|Check Global Setting is|OFF|
+
+!3 System-level Access Policies are ignored. Account-level policies are used for permissions
+!note System Level permissions
+!|script                                                                                                                            |
+|Set Permissions   |Requestor            |on system  |${SystemName}      |for user   |${API_user_2}                                 |
+|Try to Request Pwd|${NonPolicyAccount}  |by user    |${API_user_2}      |with result|You are not authorized to request the password|
+|Try to Request Pwd|${underPolicyAccount}|by user    |${API_user_2}      |with result|submitted                                     |
+|$RequestID=       |get_RequestID        |$res                                                                                      |
+|Cancel Request by |${API_user_2}                                                                                                   |
+|Set Permissions   |Requestor            |on  account|${NonPolicyAccount}|for user   |${API_user_2}                                 |
+|Try to Request Pwd|${NonPolicyAccount}  |by user    |${API_user_2}      |with result|submitted                                     |
+|$RequestID=       |get_RequestID        |$res                                                                                      |
+|Cancel Request by |${API_user_2}                                                                                                   |
+|Revoke Permissions|Requestor            |on  account|${NonPolicyAccount}|for user   |${API_user_2}                                 |
+|Revoke Permissions|Requestor            |on  system |${SystemName}      |for user   |${API_user_2}                                 |
+
+!note The permissions are propagated by an account collection membership.
+!|script                                                                                           |
+|Set Permissions   |Requestor            |on collection|${CollectionName}|for user   |${API_user_2}|
+|Try to Request Pwd|${underPolicyAccount}|by user      |${API_user_2}    |with result|submitted    |
+|$RequestID=       |get_RequestID        |$res                                                     |
+|Cancel Request by |${API_user_2}                                                                  |
+|Try to Request Pwd|${NonPolicyAccount}  |by user      |${API_user_2}    |with result|submitted    |
+|$RequestID=       |get_RequestID        |$res                                                     |
+|Cancel Request by |${API_user_2}                                                                  |
+|Revoke Permissions|Requestor            |on collection|${CollectionName}|for user   |${API_user_2}|
+
+!note The permissions are propagated by an system collection membership.
+!|script                                                                                            |
+|Set Permissions   |Requestor            |on collection|${CollectionName2}|for user   |${API_user_2}|
+|Try to Request Pwd|${underPolicyAccount}|by user      |${API_user_2}     |with result|submitted    |
+|$RequestID=       |get_RequestID        |$res                                                      |
+|Cancel Request by |${API_user_2}                                                                   |
+|Try to Request Pwd|${NonPolicyAccount}  |by user      |${API_user_2}     |with result|submitted    |
+|$RequestID=       |get_RequestID        |$res                                                      |
+|Cancel Request by |${API_user_2}                                                                   |
+|Revoke Permissions|Requestor            |on collection|${CollectionName2}|for user   |${API_user_2}|
+
+!3 Permission are assigned for Groups 
+!note System Level Permissions
+!|script                                                                                                                            |
+|Set Permissions   |Requestor            |on system  |${SystemName}      |for group  |${testGroup}                                  |
+|Try to Request Pwd|${NonPolicyAccount}  |by user    |${API_user_2}      |with result|You are not authorized to request the password|
+|Try to Request Pwd|${underPolicyAccount}|by user    |${API_user_2}      |with result|submitted                                     |
+|$RequestID=       |get_RequestID        |$res                                                                                      |
+|Cancel Request by |${API_user_2}                                                                                                   |
+|Set Permissions   |Requestor            |on  account|${NonPolicyAccount}|for group  |${testGroup}                                  |
+|Try to Request Pwd|${NonPolicyAccount}  |by user    |${API_user_2}      |with result|submitted                                     |
+|$RequestID=       |get_RequestID        |$res                                                                                      |
+|Cancel Request by |${API_user_2}                                                                                                   |
+|Revoke Permissions|Requestor            |on  account|${NonPolicyAccount}|for group  |${testGroup}                                  |
+|Revoke Permissions|Requestor            |on  system |${SystemName}      |for group  |${testGroup}                                  |
+
+!note Account collection level
+!|script                                                                                          |
+|Set Permissions   |Requestor            |on collection|${CollectionName}|for group  |${testGroup}|
+|Try to Request Pwd|${underPolicyAccount}|by user      |${API_user_2}    |with result|submitted   |
+|$RequestID=       |get_RequestID        |$res                                                    |
+|Cancel Request by |${API_user_2}                                                                 |
+|Try to Request Pwd|${NonPolicyAccount}  |by user      |${API_user_2}    |with result|submitted   |
+|$RequestID=       |get_RequestID        |$res                                                    |
+|Cancel Request by |${API_user_2}                                                                 |
+|Revoke Permissions|Requestor            |on collection|${CollectionName}|for group  |${testGroup}|
+
+!note System collection level
+!|script                                                                                           |
+|Set Permissions   |Requestor            |on collection|${CollectionName2}|for group  |${testGroup}|
+|Try to Request Pwd|${underPolicyAccount}|by user      |${API_user_2}     |with result|submitted   |
+|$RequestID=       |get_RequestID        |$res                                                     |
+|Cancel Request by |${API_user_2}                                                                  |
+|Try to Request Pwd|${NonPolicyAccount}  |by user      |${API_user_2}     |with result|submitted   |
+|$RequestID=       |get_RequestID        |$res                                                     |
+|Cancel Request by |${API_user_2}                                                                  |
+|Revoke Permissions|Requestor            |on collection|${CollectionName} |for group  |${testGroup}|
+
+!*> Removing section
+!|script                             |
+|Delete Collection|${CollectionName} |
+|Delete Collection|${CollectionName2}|
+|Delete Group     |${testGroup}      |
+|Delete System    |${SystemName}     |
+*!

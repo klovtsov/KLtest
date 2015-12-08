@@ -1,0 +1,3 @@
+!include <AutomatedTesting.PlatformsTesting.MacOsxSix
+!include -c <DpaScenarios.ScenarioLibrary
+

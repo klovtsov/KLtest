@@ -1,0 +1,13 @@
+!|scenario            |Add system       |systemName||systemAddress||systemPlatform||functAcct||functionalAccountPassword|
+|pause                |1000                                                                                             |
+|clickAndWait         |link=Add System                                                                                  |
+|waitForElementPresent|id=SystemName                                                                                    |
+|type;                |id=SystemName    |@systemName                                                                    |
+|type;                |id=NetworkAddress|@systemAddress                                                                 |
+|select;              |id=PlatformID    |label=@systemPlatform                                                          |
+|pause                |1000                                                                                             |
+|click                |id=Connection    |                                                                               |
+|type;                |id=PARFuncAcct   |${ParFunctAcct}                                                                |
+|type;                |id=EGPFuncAcct   |${PsmFunctAcct}                                                                |
+|click                |id=bt_Save       |                                                                               |
+|waitForTextPresent   |System changes for * saved successfully                                                          |

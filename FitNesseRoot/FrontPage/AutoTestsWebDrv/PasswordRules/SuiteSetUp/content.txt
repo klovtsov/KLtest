@@ -1,0 +1,30 @@
+!include -c <AutoTestsWebDrv.SetUp
+
+!|import          |
+|fitnesse.fixtures|
+
+!|Library    |
+|page driver |
+|echo fixture|
+
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SynchronizedPasswords.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                                                                   |
+|Create Account on System                                                                                  |
+|Login                           |${TPAMAdminURL}  |                |${TPAMMaster}       |   |${MasterPwd} |
+|Create Password Rule            |${PasswdRuleName}                                                        |
+|Add system                                                                                                |
+|Create Another Account on System|${SecManAccount}                                                         |
+|Add account                     |${ManagedAccount}|with password   |${ManagedAccountPwd}|   |${NotFailed} |
+|Add account                     |${SecManAccount} |without password|${NotFailed}                          |
+|Set requests auto-approved for  |${ManagedAccount}                                                        |
+|Set requests auto-approved for          |${SecManAccount}                                                                                                                                                          |
+|Set ISA Permissions             |${CLI_user_1}    |on              |${ManagedAccount}                     |
+|Set User Permissions on         |${SecManAccount} |from            |${SystemName}       |for|${CLI_user_1}|
+|Assign Password Rule            |${PasswdRuleName}|to account      |${ManagedAccount}                     |
+|pause                           |${ApplyNewPoliciesInterval}                                              |
+|stop                                                                                                      |

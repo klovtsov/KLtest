@@ -1,0 +1,3 @@
+!|scenario        |Connect        |userName               |               |userPwd               |               |accountName               |               |requestID               |
+|$res=            |GroovyWebDriver|psmwebaccess;TPAMaddress=${TPAMHost};UserName=@userName;UserPassword=@userPwd;Image1=${Image1};Image2=${Image2};Url=${NewUrl};RequestID=@requestID|
+|Verify_Contain_OR|$res;;Allow Navigate Image2 OK                                                                                                                                    |

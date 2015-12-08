@@ -1,0 +1,6 @@
+!|scenario                        |Attempt to change password                         |
+|Change Account Password on System|${ManagedAccountPwdNew}                            |
+|Check Checkbox                   |useoldpass       |for user|${ManagedAccount}       |
+|Check Password                   |${ManagedAccount}|        |${CheckPasswordNotMatch}|
+|pause                            |40000                                              |
+|Uncheck Checkbox                 |useoldpass       |for user|${ManagedAccount}       |

@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.OracleEleven
+!include -c ScenarioLibrary

@@ -1,0 +1,19 @@
+!contents
+
+
+!| scenario       |Add System|systemName               |               |systemAddress              |              |systemPlatform              |              |functAcct              |              |funcAccPwd              |
+|$res=            |CLI       |${CLIBatch} AddSystem --SystemName @systemName --NetworkAddress @systemAddress --PlatformName \"@systemPlatform\" --FunctionalAccount @functAcct --FuncAcctCred @funcAccPwd --ReleaseDuration 15|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                           |
+
+
+!| scenario       |Update PSM Details|accountName                                                                                                                                                                                  |
+|$res=            |CLI               |${CLIBatch} UpdatePSMAccount --System ${SystemName} --Account @accountName  --ProxyType \"RDP - Interactive Login\" --DefaultSessionDuration 15 --EnableFlag Y  --MinApprovers 0|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                |
+
+
+!|scenario       |Manage Account Status on System             |accountName            |            |operation            |
+|PowerShellScript|manageEnabledLocalAccountStatus.ps1 @operation ${SystemAddress} ${FunctAcct} ${FuncAccPwd} @accountName|
+
+!|scenario        |Is Account Enabled|accountName                           |                           |result                          |
+|$res=            |PowerShellScript  |manageEnabledLocalAccountStatus.ps1 status ${SystemAddress} ${FunctAcct} ${FuncAccPwd} @accountName|
+|Verify_Contain_OR|$res;;@result                                                                                                         |

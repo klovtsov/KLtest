@@ -1,0 +1,20 @@
+!********> Test Description
+If DPA is not specified on client an warning message should appear in the Test System results
+**************!
+
+#!define dpaAddress {10.30.44.96}
+!define TestSystemFailed {Connections not allowed from}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                      |
+|Get DPA address                                              |
+|Set Affinity                                                 |
+|Remove a host from client config|$DPAName                    |
+|Test System                     |${TestSystemFailed} $DPAName|
+|Restore the client config                                    |
+|Test System                     |${TestSystemSuccessful}     |
+|Set Local Appliance                                          |
+|Logout                                                       |

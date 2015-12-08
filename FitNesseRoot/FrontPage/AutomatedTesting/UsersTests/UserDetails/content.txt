@@ -1,0 +1,17 @@
+!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${API_user_1} -apiUser ${API_user_1}}
+!define testUser {${prefix}testUser}
+!define newUserPwd {yHRa02HV}
+!define UserPhone {1112233}
+!define UserEmail {${testUser}@somecompany.com}
+!define newDescription {Test User}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c >TestSpecific
+
+!|script                                                                                                                                                         |
+|Add User           |${testUser}                   |usertype|Basic                                      |with password|${UserPwd}                                |
+|Change Pwd         |${testUser}                   |        |${UserPwd}                                 |             |${newUserPwd}                             |
+|Change User Details|phone,email,description       |to      |${UserPhone},${UserEmail},${newDescription}|by user      |${testUser} |with password |${newUserPwd} |
+|List properties    |emailAddress,phone,description|for user|${testUser}                                |contains     |${UserEmail}.*${UserPhone}.*${newDescription}|
+|Delete User        |${testUser}                                                                                                                                 |

@@ -1,0 +1,12 @@
+!contents
+
+
+!include -c <AutomatedTesting.SimultaneousRequest.ScenarioLibrary
+
+
+!|script            |
+|Clear Environment  |
+#|Execute Requests |75    |
+#|Prepare Environment|
+#|Execute Requests |3    |
+#|Clear Environment  |

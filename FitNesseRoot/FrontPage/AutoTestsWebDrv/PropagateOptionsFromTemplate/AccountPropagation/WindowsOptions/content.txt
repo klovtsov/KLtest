@@ -1,0 +1,47 @@
+!* Test description
+This test checks how windows specific account options are propagated from template.
+*!
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+!define ManagedAccount {beforeReleaseEnabled}
+!define ManagedAccount2 {acntWithServices}
+!define WinTemplateName {${prefix}WinTemple}
+!define WinNewSystemName {${prefix}winNewSystem}
+!define checkBoxSuccessResult {All controls are fine}
+!define checkBoxClearResult {Enable Account before Release checkbox is not checked!}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EnableBeforeReleaseFlag.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+
+!3 Create windows system and template from it (Account with checked checkbox Enable Account before Release is also created)
+!|script                                                                                                                                                                                                             |
+|Add system                       |${SystemName}     |with address|${SystemAddress}|platform     |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-ChangeFrequency 0 -description "${sysDescription}"|
+|Add Account                      |${ManagedAccount} |on          |${SystemName}   |with password|Ab$0lUTly                                                                                                          |
+|Set UI Enable Before Release Flag|${ManagedAccount}                                                                                                                                                                 |
+|Make System Template             |${WinTemplateName}|from        |${SystemName}   |with account |${ManagedAccount}                                                                                                  |
+
+!note Change pwd for Services and Tasks flags
+!|script                                                                                                                                                                                                                                                                                      |
+|Add account            |${ManagedAccount2}                                                                                                                  |on system      |${WinTemplateName}                    |with options|-ChangeServiceFlag Y -restartServiceFlag Y -changeTaskFlag Y|
+|Add account            |${ManagedAccount2}2                                                                                                                 |on system      |${WinTemplateName}                    |with options|-ChangeServiceFlag N -restartServiceFlag N -changeTaskFlag N|
+|Try to Add system      |${WinNewSystemName}                                                                                                                 |with parameters|-templateSystemName ${WinTemplateName}|with result |System changes for ${WinNewSystemName} saved successfully   |
+|List Systems by        |-systemName ${WinNewSystemName}                                                                                                     |output params  |SystemName                            |contain     |${WinNewSystemName}                                         |
+|List Accounts by filter|-systemName ${WinNewSystemName} -AccountName ${ManagedAccount2} -propsToList accountname,chgSvcFl,restartServiceFlag,changeTaskFlag |contains       |${ManagedAccount2}\s+Y\s+Y\s+Y                                                                                  |
+|List Accounts by filter|-systemName ${WinNewSystemName} -AccountName ${ManagedAccount2}2 -propsToList accountname,chgSvcFl,restartServiceFlag,changeTaskFlag|contains       |${ManagedAccount2}2\s+N\s+N\s+N                                                                                 |
+
+
+!note Check Enable Account before Release
+!|script                                                                              |
+|Check EnableBeforeReleaseFlag|${ManagedAccount} |with result|${checkBoxSuccessResult}|
+|Check EnableBeforeReleaseFlag|${ManagedAccount2}|with result|${checkBoxClearResult}  |
+|Delete System                |${WinNewSystemName}                                    |
+
+!3 Remove windows system and template
+!|script                                              |
+|Delete System|${SystemName}                          |
+|Open         |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Remove system|${WinTemplateName}                     |
+|Logout Paradmin                                      |
+

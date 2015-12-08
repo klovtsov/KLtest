@@ -1,0 +1,3 @@
+if [ -e '%1/%2' ]; then echo rm -R '%1/%2'; else echo FileNotExist 1>&2; exit 1; fi
+#
+exit

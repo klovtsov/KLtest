@@ -1,0 +1,7 @@
+!define MaxReleaseDuration {10080}
+!include -c  <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                             |
+|Add system     |${SystemName}            |with address |${SystemAddress}             |platform|Linux|additional parameters|-MaxReleaseDuration ${MaxReleaseDuration}|
+|List Systems by|-systemName ${SystemName}|output params|SystemName,MaxReleaseDuration|contain |${SystemName}.*${MaxReleaseDuration}                                 |
+|Delete System  |${SystemName}                                                                                                                                       |

@@ -1,0 +1,5 @@
+!include -c <SynchronizedPasswords.ScenarioLibrary
+
+!|script|
+|Check Sync Password|${SyncPasswordName}|
+|Check Sync Password|${SyncPasswordName}|contains account|${ManagedAccount}|

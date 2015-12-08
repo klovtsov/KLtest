@@ -1,0 +1,163 @@
+!| scenario     |Managed System                                             |
+|Create Account on System                                                   |
+|Open           |${TPAMURL}                 |   |${TPAMAdmin}||${DefaultPwd}|
+|Add system                                                                 |
+|Set description|\"${FunctAcctDescription}\"|for|${FunctAcct}               |
+|Test System    |${TestSystemSuccessful}                                    |
+|Set password   |${FunctAcct}               |   |${FunctAcctWrongPwd}       |
+|Test System    |${TestSystemFailed}                                        |
+|Check Password |${FunctAcct}               |   |${CheckPasswordFailed}     |
+
+
+!| scenario                       |Managed Account                                                                                                                                           |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PersistentPasswordCheckProfile1}||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Reset Password                   |${ManagedAccount}|             |${ResetPasswordFailed}                                                                                                    |
+|Check Password                   |${ManagedAccount}|             |${CheckPasswordFailed}                                                                                                    |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PersistentPasswordCheckProfile1}||${PpmChangeProfile}                ||${NotFailed}|
+|Forced Reset                     |Failed                                                                                                                                                    |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PpmCheckProfile}                ||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Schedule Check Password          |Failed                                                                                                                                                    |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                                                   |
+|Set password                     |${FunctAcct}     |             |${FunctAcctPwd}                                                                                                           |
+|pause                            |${RestoreFunctAcctPasswordTimeout}                                                                                                                        |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PpmCheckProfile}                ||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Schedule Check Password          |Failed                                                                                                                                                    |
+|pause                            |${PpmScheduleTimeWindow}                                                                                                                                  |
+|Check Status                     |Success          |for reason   |Mismatch                                                                                                                  |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PersistentPasswordCheckProfile1}||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Reset Password                   |${ManagedAccount}|             |${ResetPasswordSuccessful}                                                                                                |
+|Check Password                   |${ManagedAccount}|             |${CheckPasswordSuccessful}                                                                                                |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                                                   |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwdNew}|and profiles|${PpmCheckProfile}                ||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Schedule Check Password          |Success                                                                                                                                                   |
+|Remove account                   |${ManagedAccount}                                                                                                                                         |
+|Add PPM account                  |${ManagedAccount}|with password|${ManagedAccountPwd}   |and profiles|${PersistentPasswordCheckProfile1}||${PpmChangeProfile}                ||${NotFailed}|
+|Forced Reset                     |Success                                                                                                                                                   |
+                                                                                                                   
+
+!| scenario       |Add system                                                                                                                                                                                                                |
+|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --Timeout ${SystemTimeout}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                          |
+                              
+!| scenario       |Add account|acc                            |with password                            |pwd                            |                            |testRes                           |
+|$Months=         |getEval    |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+1); d.setUTCDate(d.getUTCDate()+1);var s = d.getUTCMonth()+1;if ((s + "").length == 1) s = "0" + s;return s;        |
+|$Days=           |getEval    |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+1); d.setUTCDate(d.getUTCDate()+1);var s = d.getUTCDate(); if ((s + "").length == 1) s = "0" + s;return s;          |
+|$Years=          |getEval    |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+1); d.setUTCDate(d.getUTCDate()+1);return d.getUTCFullYear();                                                       |
+|$res=            |CLI        |${CLIBatch} AddAccount --System ${SystemName} --AccountName @acc --Password \"@pwd\" --Description \"${ManagedAccountDescription}\" --NextChangeDate $Months/$Days/$Years|
+|Verify_Contain_OR|$res;;@testRes                                                                                                                                                                       |
+
+!| scenario       |Test System|testRes                             |
+|$res=            |CLI        |${CLIBatch} TestSystem ${SystemName}|
+|Verify_Contain_OR|$res;;@testRes                                  |
+
+!| scenario       |Set Password|acc                           |                          |passwd                          |
+|$res=            |CLI         |${CLIBatch} UpdateAccount --System ${SystemName} --AccountName @acc --Password \"@passwd\"|
+|Verify_Contain_OR|$res;;successful                                                                                       |
+
+
+!| scenario       |Reset Password|acc          |          |testRes         |
+|$res=            |CLI           |${CLIBatch} ForceReset ${SystemName},@acc|
+|Verify_Contain_OR|$res;;@testRes                                          |
+
+
+#!|scenario     |Schedule Reset Password|testResult                                                                                                                       |
+#|$Hours=       |getEval                |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+1);var s = d.getUTCHours();if ((s + "").length == 1) s = "0" + s;return s;  |
+#|$Minutes=     |getEval                |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+1);var s = d.getUTCMinutes();if ((s + "").length == 1) s = "0" + s;return s;|
+#|$Months=      |getEval                |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+1);var s = d.getUTCMonth()+1;if ((s + "").length == 1) s = "0" + s;return s;|
+#|$Days=        |getEval                |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+1);var s = d.getUTCDate();if ((s + "").length == 1) s = "0" + s;return s;   |
+#|$Years=       |getEval                |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+1);return d.getUTCFullYear();                                               |
+#|CLI           |${CLIBatch} UpdateAccount --SystemName ${SystemName} --AccountName ${ManagedAccount} --ChangeTime $Hours:$Minutes --NextChangeDate $Months/$Days/$Years  |
+#|pause         |240000                                                                                                                                                   |
+#|Choose Account|${ManagedAccount}                                                                                                                                        |
+#|Check Status  |@testResult            |for reason                                                       |Scheduled                                                      |
+
+
+
+!| scenario       |Check Password|acc           |           |testRes          |
+|$res=            |CLI           |${CLIBatch} CheckPassword ${SystemName},@acc|
+|Verify_Contain_OR|$res;;@testRes                                             |
+
+
+!| scenario       |Remove account|accName                                         |
+|$res=            |CLI           |${CLIBatch} DeleteAccount ${SystemName},@accName|
+|Verify_Contain_OR|$res;;successful                                               |
+
+
+
+!| scenario       |Remove system|sysName                          |
+|$res=            |CLI          |${CLIBatch} DeleteSystem @sysName|
+|Verify_Contain_OR|$res;;successful                               |
+
+!|scenario     |Account Not there                               |
+|Add PPM account                  |AccNotThere|with password|master   |and profiles|${PersistentPasswordCheckProfile1}||${PersistentPasswordChangeProfile1}||${NotFailed}|
+|Reset Password|AccNotThere|             |${ResetPasswordFailed}|
+|Check Password|AccNotThere|             |${CheckPasswordFailed}|
+#|Add account   |AccNotThere|with password|master | |${NotFailed}|
+#|pause         |${CheckPasswordInterval}                        |
+
+
+!|scenario        |System Unreachable                                                                            |
+|$res=            |CLI              |${CLIBatch} UpdateSystem --SystemName ${SystemName} --NetworkAddress 1.2.3.4|
+|Verify_Contain_OR|$res;;${NotFailed}                                                                            |
+|Test System      |${TestSystemFailed}                                                                           |
+|Reset Password   |${ManagedAccount}|                           |${ResetPasswordFailed}                          |
+|Check Password   |${ManagedAccount}|                           |${CheckPasswordFailed}                          |
+
+!| scenario          |Request Password and Login |
+|Set User Permissions|${CLI_user_1}              |
+|Set User Permissions|${CLI_user_2}              |
+|pause               |${ApplyNewPoliciesInterval}|
+|Request Pwd                                     |
+|Approve Pwd                                     |
+|Get Login                                       |
+
+!|scenario        |Set User Permissions|userName                                                                                                                                                        |
+|$res=            |CLI                 |${CLIBatch} SetAccessPolicy --AccessPolicyName "Approver-Requestor" --Action ADD --SystemName ${SystemName} --AccountName ${ManagedAccount} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                     |
+
+!|scenario        |Revoke User Permissions|userName                                                                                                                                                         |
+|$res=            |CLI                    |${CLIBatch} SetAccessPolicy --AccessPolicyName "Approver-Requestor" --Action DROP --SystemName ${SystemName} --AccountName ${ManagedAccount} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                         |
+
+!| scenario       |Request Pwd                                                                                                           |
+|$res=            |CLI          |${CLIBatch} AddPwdRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --RequestNotes test|
+|Verify_Contain_OR|$res;;submitted                                                                                                       |
+|$RequestID=      |get_RequestID|$res                                                                                                    |
+#|$res=            |CLI          |${CLIBatch} AddPwdRequest --SystemName ${SystemName} --AccountName ${ManagedAccount} --ForUserName ${Requestor} --RequestNotes test|
+
+!| scenario       |Approve Pwd                                                 |
+|$res=            |CLI|${CLIBatch2} Approve --RequestID $RequestID --Comment OK|
+|Verify_Contain_OR|$res;;submitted                                             |
+
+!| scenario             |Get Login                                      |
+|$GeneratedPwd=         |CLI|${CLIBatch} Retrieve --RequestID $RequestID|
+|Login Account to System|$GeneratedPwd                                  |
+#|$GeneratedPwd=         |CLI|${CLIBatch} Retrieve --SystemName ${SystemName} --AccountName ${ManagedAccount}|
+#|Login Account to System|$GeneratedPwd                                                                      |
+
+!| scenario              |Delete All       |
+|Revoke User Permissions |${CLI_user_1}    |
+|Revoke User Permissions |${CLI_user_2}    |
+|Remove account          |${ManagedAccount}|
+|Remove system           |${SystemName}    |
+|Delete Account on System|${ManagedAccount}|
+|Logout Paradmin                           |
+
+!|scenario|Set description               |accDescrptn               |for               |account              |
+|CLI      |${CLIBatch} UpdateAccount --System ${SystemName} --AccountName @account --Description @accDescrptn|
+
+!|scenario        |Delete User|username                                   |
+|$res=            |CLI        |${CLIBatch} DeleteUser --UserName @username|
+|Verify_Contain_OR|$res;;@username has been successfully deleted          |
+
+
+!| scenario       |Add PPM account|acc                |with password               |pwd               |and profiles               |checkProfile               |               |changeProfile               |               |testRes               |
+|$res=            |CLI            |${CLIBatch} AddAccount --System ${SystemName} --AccountName @acc --Password \"@pwd\" --Description \"${ManagedAccountDescription}\" --PasswordCheckProfile @checkProfile --PasswordChangeProfile @changeProfile|
+|Verify_Contain_OR|$res;;@testRes                                                                                                                                                                                                                 |
+
+

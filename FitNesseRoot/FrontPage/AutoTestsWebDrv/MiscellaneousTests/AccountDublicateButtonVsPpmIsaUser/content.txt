@@ -1,0 +1,35 @@
+!********> Test Description
+This test checks that Dublicate button is disabled when user has PPM ISA policy on system and account PSM enabled.
+**************!
+
+!define PpmIsaUserName {${prefix}ppmisauser}
+
+
+!note Managed System settings
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSix
+
+!********> includes
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.GroovyJavaApiScenarios
+!include -c <AutoTestsWebDrv.GroovyJavaApiScenarios.ListCommands.ScenarioLibrary
+!include -c <AutoTestsWebDrv.MiscellaneousTests.AccountDublicateButtonVsPpmIsaUser.TestSpecific
+*********!
+
+
+!|script                                                                                                                                                                               |
+|Open                              |${TPAMURL}                      |        |${TPAMAdmin}             |        |${DefaultPwd}                                                         |
+|Add system                        |SystemName=${SystemName};NetworkAddress=${SystemAddress};FunctionalAccount=${FunctAcct};FuncAcctCred=${FunctAcctPwd};PlatformName=${SystemPlatform}|
+|Add Account                       |${ManagedAccount}               |        |${SystemName}                                                                                            |
+|Update PSM Details                |${SystemName}                   |        |${ManagedAccount}        |        |EnableFlag=Y;ProxyType=SSH - Interactive Login                        |
+|Add User with options             |${PpmIsaUserName}               |        |FirstName=test;LastName=test;Password=Password1                                                          |
+|Set Policy on object              |SystemName=${SystemName}        |        |PPM ISA                  |        |ADD                |                |${PpmIsaUserName}                |
+|pause                             |60000                                                                                                                                              |
+|Change Pwd                        |${PpmIsaUserName}               |        |Password1                |        |NPasword1                                                             |
+|Check Duplicate button is disabled|${ManagedAccount}                                                                                                                                  |
+|Remove account                    |${ManagedAccount}                                                                                                                                  |
+|Remove system                     |${SystemName}                                                                                                                                      |
+|Remove User                       |${PpmIsaUserName}                                                                                                                                  |
+
+
+

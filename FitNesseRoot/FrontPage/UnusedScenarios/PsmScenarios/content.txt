@@ -1,0 +1,9 @@
+!contents
+
+!define SystemName {ykpsm1}
+!define ManagedAccount {yk}
+!define RequestID {3886}
+!define PsmWindowName {Quest Software PSM Session (${SystemName}/${ManagedAccount}/${RequestID})}
+!define PsmFileDir {E:\YK\}
+!define PsmFileName {testpsm.txt}
+!define PsmPathToFile {${PsmFileDir}${PsmFileName}}

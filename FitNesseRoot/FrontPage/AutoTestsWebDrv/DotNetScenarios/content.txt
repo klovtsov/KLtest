@@ -1,0 +1,15 @@
+!define SystemDescription {Test System}
+!define CommandTimeout {100}
+
+!define NotFailed {successfully}
+!define TestSystemFailed {failed;;.does not exist;;imed out;;Invalid password;;Host Unreachable;;Failure}
+!define TestSystemSuccessful {Success}
+!define ResetPasswordFailed {rror;;imed out;;Host Unreachable;;Failure}
+!define ResetPasswordSuccessful {successful;;Success}
+!define CheckPasswordSuccessful {checked successfully;;matches the managed system;;Success}
+!define CheckPasswordNotMatch {Failure;;imed out}
+!define CheckPasswordFailed {failed;;does not exist;;invalid user;;NOT MATCH;;error occurred;;imed out;;no listener;;Host Unreachable;;Failure}
+!define PpmScheduleTimeWindow {90000}
+!define ManAccntCheckPassword {${CheckPasswordFailed}}
+
+!contents -R

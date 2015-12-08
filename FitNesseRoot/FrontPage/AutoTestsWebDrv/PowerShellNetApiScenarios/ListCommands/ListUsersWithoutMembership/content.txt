@@ -1,0 +1,25 @@
+!define UserName {${prefix}usrTolist}
+!define UserName2 {${prefix}lstUser}
+!define testGroup {${prefix}listGroup}
+!define groupDescription {Test group for list command}
+
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!4 Create users and groups
+!|script                                     |
+|Add User  |${UserName}                      |
+|Add User  |${UserName2}                     |
+|Add Group |${testGroup}                     |
+|Add Member|${UserName}|to group|${testGroup}|
+
+!4 List users by API
+!|script                                                                                       |
+|List User by filter|-userName ${prefix}* -groupName !|and result contains        |${UserName2}|
+|List User by filter|-userName ${prefix}* -groupName !|and result does not contain|${UserName} |
+
+!4 Remove All
+!|script                  |
+|Delete User |${UserName} |
+|Delete User |${UserName2}|
+|Delete Group|${testGroup}|
+

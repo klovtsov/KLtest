@@ -1,0 +1,16 @@
+!contents
+
+
+
+
+
+!include -c .FrontPage.AutoTestsWebDrv.ExternalAuthentication.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.ExternalAuthentication.RadiusLinuxAndWindowsActiveDir.ScenarioLibrary
+
+
+
+
+!|script     |
+|Prepare Test|
+|Test Login  |
+|Clear Test  |

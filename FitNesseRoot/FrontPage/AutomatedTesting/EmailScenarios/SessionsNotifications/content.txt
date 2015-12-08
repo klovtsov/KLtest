@@ -1,0 +1,35 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <EmailScenarios.ScenarioLibrary
+!include -c <EmailScenarios.SessionsNotifications.ScenarioLibrary
+!include -c <AutomatedTesting.KnownIssues
+!include -c <EmailScenarios.SessionsNotifications.BugWorkaround
+
+
+
+!|script                                                                                                              |
+|Prepare Environment                                                                                                  |
+|Check Periodic Review Notifications|${UserSystemRequestor}    ||${GroupSystemApprover}    ||${UserCollectionReviewer}|
+|Post-Session Notification                                                                                            |
+|Session Notifications              |${UserAccountRequestor}   ||${GroupCollectionApprover}||${GlobalGroupReviewer}   |
+|Review Session                     |${GlobalGroupReviewer}                                                           |
+|Session Notifications              |${UserCollectionRequestor}||${UserCollectionApprover} ||${UserCollectionReviewer}|
+|Review Session                     |${UserCollectionReviewer}                                                        |
+|Session Notifications              |${GlobalGroupRequestor}   ||${GlobalGroupApprover}    ||${GlobalGroupReviewer}   |
+|Overdue Session Review Requirement                                                                                   |
+|Review Session                     |${GlobalGroupReviewer}                                                           |
+|Not Enough Approvers                                                                                                 |
+|Primary Account EMail Changed                                                                                        |
+|Clear Environment                                                                                                    |
+
+
+
+#|Check Periodic Review Notifications|${UserAccountRequestor}    ||${UserAccountApprover}    ||${UserAccountReviewer}    |
+#|Session Notifications              |${UserAccountRequestor}    ||${UserAccountApprover}    ||${UserAccountReviewer}    |
+#|Session Notifications              |${UserSystemRequestor}     ||${UserSystemApprover}     ||${UserSystemReviewer}     |
+#|Session Notifications              |${UserCollectionRequestor} ||${UserCollectionApprover} ||${UserCollectionReviewer} |
+#|Session Notifications              |${GroupAccountRequestor}   ||${GroupAccountApprover}   ||${GroupAccountReviewer}   |
+#|Session Notifications              |${GroupSystemRequestor}    ||${GroupSystemApprover}    ||${GroupSystemReviewer}    |
+#|Session Notifications              |${GroupCollectionRequestor}||${GroupCollectionApprover}||${GroupCollectionReviewer}|
+#|Session Notifications              |${GlobalGroupRequestor}    ||${GlobalGroupApprover}    ||${GlobalGroupReviewer}    |
+#|Primary Account EMail Changed                                                                                          |

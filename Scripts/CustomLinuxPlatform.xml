@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<platform>
+  <verboseOutput>1</verboseOutput>
+  <checkSystem>
+    <variables></variables>
+    <commandType>SSH</commandType>
+    <SSHParms>
+      <userName>%FUNCACCT%</userName>
+      <ttyFlag></ttyFlag>
+      <version>2</version>
+      <command>grep -w %FUNCACCT% /etc/shadow</command>
+    </SSHParms>
+    <expectBefore></expectBefore>
+    <expectAfter>
+      <match>
+        <matchType>lcpattern</matchType>
+        <pattern>permission denied</pattern>
+        <feedback>Unable to connect to the remote system, permission denied</feedback>
+        <action>exit</action>
+        <returnCode>1</returnCode>
+      </match>
+      <match>
+        <matchType>condition</matchType>
+        <condition>timeout</condition>
+        <feedback>A timeout occurred waiting for a response from the system</feedback>
+        <action>exit</action>
+        <returnCode>2</returnCode>
+      </match>
+      <match>
+        <matchType>condition</matchType>
+        <condition>eof</condition>
+        <feedback>Unexpected disconnect from the remote system</feedback>
+        <action>exit</action>
+        <returnCode>2</returnCode>
+      </match>
+    </expectAfter>
+    <dialog>
+      <expect>
+        <conditional>%PASSWORDAUTHONLY%</conditional>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>password:</pattern>
+          <feedback></feedback>
+          <action>sendString</action>
+          <sendString>%FUNCACCTPWD%\r</sendString>
+        </match>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>password: </pattern>
+          <feedback></feedback>
+          <action>sendString</action>
+          <sendString>%FUNCACCTPWD%\r</sendString>
+        </match>
+      </expect>
+      <expect>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>expired</pattern>
+          <feedback>Possible functional account password expiration</feedback>
+          <action>exit</action>
+          <returnCode>-1</returnCode>
+        </match>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>%NETADDR%'s password:</pattern>
+          <feedback>Invalid  password or key</feedback>
+          <action>exit</action>
+          <returnCode>-2</returnCode>
+        </match>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>you are not authorized to log on</pattern>
+          <feedback>Not Authorized</feedback>
+          <action>exit</action>
+          <returnCode>-2</returnCode>
+        </match>
+        <match>
+          <matchType>pattern</matchType>
+          <pattern>%FUNCACCT%:</pattern>
+          <feedback></feedback>
+          <action>exit</action>
+          <returnCode>0</returnCode>
+        </match>
+        <match>
+          <matchType>condition</matchType>
+          <condition>eof</condition>
+          <feedback></feedback>
+          <action>exit</action>
+          <returnCode>0</returnCode>
+        </match>
+      </expect>
+    </dialog>
+    <processResults>
+      <processType>checkRC</processType>
+      <successValue>0</successValue>
+    </processResults>
+  </checkSystem>
+  <checkPassword>
+    <method>
+      <accountList></accountList>
+      <variables></variables>
+      <commandType>SSH</commandType>
+      <SSHParms>
+        <userName>%FUNCACCT%</userName>
+        <ttyFlag></ttyFlag>
+        <version>2</version>
+        <command>grep -w %ACCTNAME% /etc/shadow</command>
+      </SSHParms>
+      <expectBefore></expectBefore>
+      <expectAfter>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>permission denied</pattern>
+          <feedback>Unable to connect to the remote system, permission denied</feedback>
+          <action>exit</action>
+          <returnCode>-1</returnCode>
+        </match>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>access denied</pattern>
+          <feedback>Unable to connect to the remote system, permission denied</feedback>
+          <action>exit</action>
+          <returnCode>-1</returnCode>
+        </match>
+        <match>
+          <matchType>condition</matchType>
+          <condition>timeout</condition>
+          <feedback>A timeout occurred waiting for a response from the system</feedback>
+          <action>exit</action>
+          <returnCode>-1</returnCode>
+        </match>
+      </expectAfter>
+      <dialog>
+        <expect>
+          <conditional>%PASSWORDAUTHONLY%</conditional>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password:</pattern>
+            <feedback></feedback>
+            <action>sendString</action>
+            <sendString>%FUNCACCTPWD%\r</sendString>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password: </pattern>
+            <feedback></feedback>
+            <action>sendString</action>
+            <sendString>%FUNCACCTPWD%\r</sendString>
+          </match>
+        </expect>
+        <expect>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>expired</pattern>
+            <feedback>Possible functional account password expiration</feedback>
+            <action>exit</action>
+            <returnCode>-1</returnCode>
+          </match>
+          <match>
+            <matchType>pattern</matchType>
+            <pattern>%NETADDR%'s password:</pattern>
+            <feedback>Invalid password</feedback>
+            <action>exit</action>
+            <returnCode>-2</returnCode>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>you are not authorized to log on</pattern>
+            <feedback>Not Authorized</feedback>
+            <action>exit</action>
+            <returnCode>-2</returnCode>
+          </match>
+          <match>
+            <matchType>pattern</matchType>
+            <pattern>%ACCTNAME%:</pattern>
+            <feedback></feedback>
+            <action>exit</action>
+            <returnCode>0</returnCode>
+          </match>
+          <match>
+            <matchType>condition</matchType>
+            <condition>eof</condition>
+            <feedback></feedback>
+            <action>exit</action>
+            <returnCode>0</returnCode>
+          </match>
+        </expect>
+      </dialog>
+      <processResults>
+        <processType>compareHash</processType>
+        <parseOutput>pattern</parseOutput>
+        <pattern>%ACCTNAME%:\$</pattern>
+        <cut>
+          <delimiter>:</delimiter>
+          <column>2</column>
+        </cut>
+      </processResults>
+    </method>
+  </checkPassword>
+  <changePassword>
+    <method>
+      <accountList></accountList>
+      <variables></variables>
+      <commandType>SSH</commandType>
+      <SSHParms>
+        <userName>%FUNCACCT%</userName>
+        <ttyFlag>tt</ttyFlag>
+        <version>2</version>
+        <command>passwd %ACCTNAME%</command>
+      </SSHParms>
+      <expectBefore></expectBefore>
+      <expectAfter>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>permission denied</pattern>
+          <feedback>Unable to connect to the remote system, permission denied</feedback>
+          <action>exit</action>
+          <returnCode>-1</returnCode>
+        </match>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>access denied</pattern>
+          <feedback>Unable to connect to the remote system, permission denied</feedback>
+          <action>exit</action>
+          <returnCode>-1</returnCode>
+        </match>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>bad password</pattern>
+          <feedback>Failed to set the new password - invalid password used</feedback>
+          <action>exit</action>
+          <returnCode>-1</returnCode>
+        </match>
+        <match>
+          <matchType>lcpattern</matchType>
+          <pattern>no space</pattern>
+          <feedback>Failed to set the new password - filesystem full</feedback>
+          <action>exit</action>
+          <returnCode>-1</returnCode>
+        </match>
+        <match>
+          <matchType>condition</matchType>
+          <condition>timeout</condition>
+          <feedback>A timeout occurred waiting for a response from the system</feedback>
+          <action>exit</action>
+          <returnCode>-2</returnCode>
+        </match>
+      </expectAfter>
+      <dialog>
+        <expect>
+          <conditional>%PASSWORDAUTHONLY%</conditional>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password:</pattern>
+            <feedback></feedback>
+            <action>sendString</action>
+            <sendString>%FUNCACCTPWD%\r</sendString>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password :</pattern>
+            <feedback></feedback>
+            <action>sendString</action>
+            <sendString>%FUNCACCTPWD%\r</sendString>
+          </match>
+        </expect>
+        <expect>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>expired</pattern>
+            <feedback>Possible functional account password expiration</feedback>
+            <action>exit</action>
+            <returnCode>-1</returnCode>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>%NETADDR%'s password:</pattern>
+            <feedback>Invalid password</feedback>
+            <action>exit</action>
+            <returnCode>-2</returnCode>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>you are not authorized to log on</pattern>
+            <feedback>Not Authorized</feedback>
+            <action>exit</action>
+            <returnCode>-2</returnCode>
+          </match>
+          <match>
+            <matchType>condition</matchType>
+            <condition>eof</condition>
+            <feedback>Host unreachable or invalid account name</feedback>
+            <action>exit</action>
+            <returnCode>-1</returnCode>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password: </pattern>
+            <feedback></feedback>
+            <action>sendString</action>
+            <sendString>%NEWACCTPWD%\r</sendString>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password:</pattern>
+            <feedback></feedback>
+            <action>sendString</action>
+            <sendString>%NEWACCTPWD%\r</sendString>
+          </match>
+        </expect>
+        <expect>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password: </pattern>
+            <feedback></feedback>
+            <action>sendString</action>
+            <sendString>%NEWACCTPWD%\r</sendString>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password:</pattern>
+            <feedback></feedback>
+            <action>sendString</action>
+            <sendString>%NEWACCTPWD%\r</sendString>
+          </match>
+        </expect>
+        <expect>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password not changed</pattern>
+            <feedback>Error changing password</feedback>
+            <action>exit</action>
+            <returnCode>-1</returnCode>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>cannot lock password file</pattern>
+            <feedback>Cannot Lock password file</feedback>
+            <action>exit</action>
+            <returnCode>-1</returnCode>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>authentication token lock busy</pattern>
+            <feedback>Authentication lock busy</feedback>
+            <action>exit</action>
+            <returnCode>-1</returnCode>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password: </pattern>
+            <feedback>Error changing password</feedback>
+            <action>exit</action>
+            <returnCode>-1</returnCode>
+          </match>
+          <match>
+            <matchType>lcpattern</matchType>
+            <pattern>password:</pattern>
+            <feedback>Error changing password</feedback>
+            <action>exit</action>
+            <returnCode>-1</returnCode>
+          </match>
+          <match>
+            <matchType>condition</matchType>
+            <condition>eof</condition>
+            <feedback></feedback>
+            <action>exit</action>
+            <returnCode>0</returnCode>
+          </match>
+        </expect>
+      </dialog>
+      <processResults>
+        <processType>checkRC</processType>
+        <successValue>0</successValue>
+      </processResults>
+    </method>
+  </changePassword>
+</platform>

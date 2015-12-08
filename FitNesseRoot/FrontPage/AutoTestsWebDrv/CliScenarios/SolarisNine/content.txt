@@ -1,0 +1,3 @@
+!include <AutoTestsWebDrv.PlatformsTesting.SolarisNine
+!include -c <CliScenarios.ScenarioLibrary
+!include -c >PlatformSpecific

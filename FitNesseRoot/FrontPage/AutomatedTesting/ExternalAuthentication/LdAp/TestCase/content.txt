@@ -1,0 +1,13 @@
+!contents
+
+
+!include -c .FrontPage.AutomatedTesting.ExternalAuthentication.ScenarioLibrary
+!include -c .FrontPage.AutomatedTesting.ExternalAuthentication.LdAp.ScenarioLibrary
+
+
+
+
+!|script     |
+|Prepare Test|
+|Test Login  |
+|Clear Test  |

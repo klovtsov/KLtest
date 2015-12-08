@@ -1,0 +1,5 @@
+!define content {${ATPath}\PlatformsTesting\MySql\content.txt}
+
+
+!include -c <AutomatedTesting.PlatformsTesting.MySql 
+!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.MacOsxFour
+!include -c ScenarioLibrary

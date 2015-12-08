@@ -1,0 +1,23 @@
+!| scenario                       |Managed Account                                     |
+|Add account                      |${ManagedAccount}|with password|${ManagedAccountPwd}|
+|BFER3767                                                                              |
+|Change Account Password on System|${ManagedAccountPwdNew}                             |
+|Choose Account                   |${FunctAcct}                                        |
+|Set password                     |${FunctAcct}     |             |${FunctAcctPwd}     |
+|Choose Account                   |${ManagedAccount}                                   |
+|Check Password                   |${CheckPasswordNotMatch}                            |
+|pause                            |${RestoreFunctAcctPasswordTimeout}                  |
+|Check Status                     |Success          |for reason   |Mismatch            |
+|Reset Password                   |${ResetPasswordSuccessful}                          |
+|Schedule Reset Password          |Success                                             |
+
+!|scenario         |System Unreachable                                 |
+|Choose System     |${SystemName}                                      |
+|click             |id=Details                                         |
+|type;             |id=NetworkAddress             |1.2.3.4             |
+|click             |id=bt_Save                                         |
+|waitForTextPresent|System changes for ${SystemName} saved successfully|
+|Test System       |${TestSystemFailed}                                |
+|Choose Account    |${ManagedAccount}                                  |
+|BFER3767                                                              |
+|Check Password    |${CheckPasswordFailed}                             |

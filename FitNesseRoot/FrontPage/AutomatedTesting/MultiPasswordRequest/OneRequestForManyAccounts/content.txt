@@ -1,0 +1,34 @@
+!define ThirdSystemName {${prefix}ThirdSystem}
+!define ThirdManagedAcct {${prefix}Balda}
+!define ThManagedAcctPwd {SeCrEtt12}
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!3 Preparing stage
+!*> Create systems, accounts and set permissions
+!|script                                                                                                                                                                                          |
+|Add system     |${FirstSystemName} |with address|${FirstSystemAddress}|platform     |${FirstSystemPlatform}|managed by|${FirstFunctAcct}|additional parameters|-functAcctPwd ${FirstFunctAcctPwd}|
+|Add system     |${SecSystemName}   |with address|${SecSystemAddress}  |platform     |${SecSystemPlatform}  |managed by|${SecFunctAcct}  |additional parameters|-functAcctPwd ${SecFunctAcctPwd}  |
+|Add system     |${ThirdSystemName} |with address|10.30.56.45          |platform     |${SecSystemPlatform}  |managed by|${SecFunctAcct}  |additional parameters|-functAcctPwd ${SecFunctAcctPwd}  |
+|Add Account    |${FirstManagedAcct}|on          |${FirstSystemName}   |with password|${FirstManagedAcctPwd}                                                                                      |
+|Add Account    |${SecManagedAcct}  |on          |${SecSystemName}     |with password|${SecManagedAcctPwd}                                                                                        |
+|Add Account    |${ThirdManagedAcct}|on          |${ThirdSystemName}   |with password|${ThManagedAcctPwd}                                                                                         |
+|Set Permissions|"PPM Requestor"    |on system   |${FirstSystemName}   |for user     |${Requestor}                                                                                                |
+|Set Permissions|"PPM Requestor"    |on system   |${SecSystemName}     |for user     |${Requestor}                                                                                                |
+|Set Permissions|"PPM Requestor"    |on system   |${ThirdSystemName}   |for user     |${Requestor}                                                                                                |
+|Set Permissions|"PPM Approver"     |on system   |${FirstSystemName}   |for user     |${Approver}                                                                                                 |
+|Set Permissions|"PPM Approver"     |on system   |${SecSystemName}     |for user     |${Approver}                                                                                                 |
+|Set Permissions|"PPM Approver"     |on system   |${ThirdSystemName}   |for user     |${Approver}                                                                                                 |
+*!
+!3 Create, approve and release  multi-account request
+!|script                                                                                                             |
+|Create request for accounts by|${Requestor}       |using filter|${prefix}*                                          |
+|Approve multi-request by      |${Approver}                                                                          |
+|Release password for          |${FirstManagedAcct}|by          |${Requestor}|and compare with|${FirstManagedAcctPwd}|
+|Release password for          |${SecManagedAcct}  |by          |${Requestor}|and compare with|${SecManagedAcctPwd}  |
+|Release password for          |${ThirdManagedAcct}|by          |${Requestor}|and compare with|${ThManagedAcctPwd}   |
+
+!*> Remove All
+!|script                          |
+|Delete System|${FirstSystemName} |
+|Delete System|${SecSystemName}   |
+|Delete System|${ThirdSystemName}|
+*!

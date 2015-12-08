@@ -1,0 +1,14 @@
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsDesktop
+!define ManagedAccount {${prefix}psAcnt}
+!define flagReqValue {Y}
+!define flagNewValue {N}
+
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                        |
+|Add System                                                                                                                                                                                                     |
+|Add account            |${ManagedAccount}                                                                                        |on system|${SystemName}|with options|-EnableBeforeReleaseFlag ${flagReqValue}|
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount} -propsToList accountname,enableBeforeReleaseFlag|contains |${ManagedAccount}\s+${flagReqValue}                                |
+|Update Account         |${ManagedAccount}                                                                                        |         |-EnableBeforeReleaseFlag ${flagNewValue}                           |
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount} -propsToList accountname,enableBeforeReleaseFlag|contains |${ManagedAccount}\s+${flagNewValue}                                |
+|Delete System          |${SystemName}                                                                                                                                                                          |

@@ -1,0 +1,7 @@
+!| scenario    |Managed System                                              |
+|Create Account on System                                                   |
+|Add system    |${SystemName}                                               |
+|Test System   |Success      ||${TestSystemSuccessful}                      |
+|Set Password  |${SystemName}||${FunctAcct}   ||${FunctAcctWrongPwd}        |
+|Test System   |Fail         ||${TestSystemFailed}                          |
+|Check Password|${SystemName}||${ParFunctAcct}||Fail||${CheckPasswordFailed}|

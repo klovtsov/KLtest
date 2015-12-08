@@ -1,0 +1,5 @@
+!define content {${ATPath}\PlatformsTesting\SybasePlatform\content.txt}
+
+
+!include -c <AutomatedTesting.PlatformsTesting.SybasePlatform 
+!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

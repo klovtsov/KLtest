@@ -1,0 +1,8 @@
+!include -c <FrontPage.AutoTestsWebDrv.SetUp
+!include -c <FrontPage.AutoTestsWebDrv.ScenarioLibrary
+!include -c <FrontPage.DeployWebDrv.ScenarioLibrary
+
+!|script         |
+|Get Open SSH key|
+
+!include <FrontPage.DeployWebDrv.TearDown

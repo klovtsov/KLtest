@@ -1,0 +1,443 @@
+!contents
+
+!|scenario                        |Prepare Environment                                                                                                                     |
+|Create Post-Session Profile                                                                                                                                               |
+|Add System                       |${SystemName}     |               |${SystemAddress}|             |${SystemPlatform}|         |${FunctAcct}|         |${FuncAccPwd}      |
+|Add User To Group                |${CLI_user_1}     |               |\"Global Requestor Group\"                                                                           |
+|Prepare Account                  |${ManagedAccount1}|               |${SystemName}   |             |${SystemAddress}                                                      |
+|Prepare Account                  |${ManagedAccount2}|               |${SystemName}   |             |${SystemAddress}                                                      |
+|Prepare Account                  |${ManagedAccount3}|               |${SystemName}   |             |${SystemAddress}                                                      |
+|Prepare User                     |${Requestor}      |with first name|${Requestor}    |and last name|Smith            |with type|Basic       |and email|${RequestorEmail}  |
+|Prepare User                     |${Approver}       |with first name|${Approver}     |and last name|Smith            |with type|Basic       |and email|${ApproverEmail}   |
+|Prepare User                     |${Approver2}      |with first name|${Approver2}    |and last name|Smith            |with type|Basic       |and email|${Approver2Email}  |
+|Prepare User                     |${Reviewer}       |with first name|${Reviewer}     |and last name|Smith            |with type|Basic       |and email|${ReviewerEmail}   |
+|Prepare User                     |${GroupMember}    |with first name|${GroupMember}  |and last name|Smith            |with type|Basic       |and email|${GroupMemberEmail}|
+|Add Group                        |${NotificationGroup}                                                                                                                    |
+|Add User To Group                |${GroupMember}    |               |${NotificationGroup}                                                                                 |
+|Set User Permissions System Level|${Reviewer}       |               |Reviewer                                                                                             |
+|Set User Permissions System Level|${Requestor}      |               |Requestor                                                                                            |
+|Set User Permissions System Level|${Approver}       |               |Approver                                                                                             |
+|Set User Permissions System Level|${Approver2}      |               |Approver                                                                                             |
+|Create Mailboxes                                                                                                                                                          |
+
+
+
+!|scenario                        |Session Expired Early                                                              |
+|Change Account Password on System|${ManagedAccount2}               ||WrongP4$$                                       |
+|Request Session                  |${SystemName}                    ||${ManagedAccount1}               ||${Requestor} |
+|Approve Session                  |${Approver}                                                                        |
+|Open Sessions                    |${Requestor}                                                                       |
+|Cancel Sessions                  |${ManagedAccount1}               ||${Requestor}                                    |
+|Login                            |${TPAMURL}                       ||${TPAMAdmin}                     ||${DefaultPwd}|
+|pause                            |360000                                                                             |
+|Check Mismatch Reset             |${ManagedAccount2}                                                                 |
+|Check Post-Session Reset         |${ManagedAccount1}                                                                 |
+|Check Test Log                   |${ManagedAccount1}               ||Successful                                      |
+|Check Test Log                   |${ManagedAccount2}               ||Failed - Password Mismatch                      |
+|Check Test Log                   |${ManagedAccount3}               ||Successful                                      |
+|Check Mail                       |${PrimarySystemEMail}            ||Session Post-Request Notification||$RequestID   |
+|Check Mail                       |${PostSessionProfileEMail}       ||Session Post-Request Notification||$RequestID   |
+|Check Mail                       |${ApproverEmail}                 ||Session Post-Request Notification||$RequestID   |
+|Delete Mails                     |${PrimarySystemEMail}                                                              |
+|Delete Mails                     |${PostSessionProfileEMail}                                                         |
+|Delete Mails                     |${ApproverEmail}                                                                   |
+|Check All Mailboxes No Mail      |Session Post-Request Notification||$RequestID                                      |
+|Logout                                                                                                               |
+
+!|scenario                                 |Session Completed                                                                  |
+|Update Post-Session Notification Receivers|:Account:;:RelNotify:                                                              |
+|Change Account Password on System         |${ManagedAccount1}               ||WrongP4$$                                       |
+|Request Session                           |${SystemName}                    ||${ManagedAccount2}               ||${Requestor} |
+|Approve Session                           |${Approver}                                                                        |
+|Open Sessions                             |${Requestor}                                                                       |
+|pause                                     |900000                                                                             |
+|Login                                     |${TPAMURL}                       ||${TPAMAdmin}                     ||${DefaultPwd}|
+|pause                                     |360000                                                                             |
+|Check Mismatch Reset                      |${ManagedAccount1}                                                                 |
+|Check Post-Session Reset                  |${ManagedAccount2}                                                                 |
+|Check Test Log                            |${ManagedAccount1}               ||Failed - Password Mismatch                      |
+|Check Test Log                            |${ManagedAccount2}               ||Successful                                      |
+|Check Test Log                            |${ManagedAccount3}               ||Successful                                      |
+|Check Mail                                |${PrimarySystemEMail}            ||Session Post-Request Notification||$RequestID   |
+|Check Mail                                |${SessionStartEmail}             ||Session Post-Request Notification||$RequestID   |
+|Check Mail                                |${RelNotifyEmail}                ||Session Post-Request Notification||$RequestID   |
+|Delete Mails                              |${PrimarySystemEMail}                                                              |
+|Delete Mails                              |${SessionStartEmail}                                                               |
+|Delete Mails                              |${RelNotifyEmail}                                                                  |
+|Check All Mailboxes No Mail               |Session Post-Request Notification||$RequestID                                      |
+|Logout                                                                                                                        |
+
+!|scenario                                 |Session Request Denied                                                             |
+|Update Post-Session Notification Receivers|:AllApprovers:;:Group=${NotificationGroup}:                                        |
+|Change Account Password on System         |${ManagedAccount2}               ||WrongP4$$                                       |
+|Request Session                           |${SystemName}                    ||${ManagedAccount3}               ||${Requestor} |
+|Approve Session                           |${Approver}                                                                        |
+|Open Sessions                             |${Requestor}                                                                       |
+|pause                                     |120000                                                                             |
+|Deny Session                              |${Approver}                                                                        |
+|pause                                     |900000                                                                             |
+|Login                                     |${TPAMURL}                       ||${TPAMAdmin}                     ||${DefaultPwd}|
+|pause                                     |360000                                                                             |
+|Check Mismatch Reset                      |${ManagedAccount2}                                                                 |
+|Check Post-Session Reset                  |${ManagedAccount3}                                                                 |
+|Check Test Log                            |${ManagedAccount1}               ||Successful                                      |
+|Check Test Log                            |${ManagedAccount2}               ||Failed - Password Mismatch                      |
+|Check Test Log                            |${ManagedAccount3}               ||Successful                                      |
+|Check Mail                                |${PrimarySystemEMail}            ||Session Post-Request Notification||$RequestID   |
+|Check Mail                                |${ApproverEmail}                 ||Session Post-Request Notification||$RequestID   |
+|Check Mail                                |${Approver2Email}                ||Session Post-Request Notification||$RequestID   |
+|Check Mail                                |${GroupMemberEmail}              ||Session Post-Request Notification||$RequestID   |
+|Delete Mails                              |${PrimarySystemEMail}                                                              |
+|Delete Mails                              |${ApproverEmail}                                                                   |
+|Delete Mails                              |${Approver2Email}                                                                  |
+|Delete Mails                              |${GroupMemberEmail}                                                                |
+|Check All Mailboxes No Mail               |Session Post-Request Notification||$RequestID                                      |
+|Logout                                                                                                                        |
+
+
+!|scenario               |Clear Objects                             |
+|Login                   |${TPAMURL}   ||${TPAMAdmin}||${DefaultPwd}|
+|Remove User From Group  |${CLI_user_1}||\"Global Requestor Group\" |
+|Remove System           |${SystemName}                             |
+|Session Cleanup         |${ManagedAccount1}                        |
+|Session Cleanup         |${ManagedAccount2}                        |
+|Session Cleanup         |${ManagedAccount3}                        |
+|Delete Account on System|${ManagedAccount1}                        |
+|Delete Account on System|${ManagedAccount2}                        |
+|Delete Account on System|${ManagedAccount3}                        |
+|Hard-Delete System      |${SystemName}                             |
+|Remove User             |${Requestor}                              |
+|Remove User             |${Approver}                               |
+|Remove User             |${Approver2}                              |
+|Remove User             |${Reviewer}                               |
+|Remove User             |${GroupMember}                            |
+|Delete Group            |${NotificationGroup}                      |
+|Delete Post-Session Profile                                        |
+|Delete Mailboxes                                                   |
+|Logout                                                             |
+
+
+!|scenario        |Replay And Complete Review|reviewerName                              |                              |requestID                              |
+|$res=            |GroovyWebDriver           |ReplayLogAndCompleteReview;${TPAMHost};@reviewerName;${UserPwd};@requestID;This review completed by @reviewerName|
+|Verify_Contain_OR|$res;;Need to replay session log                                                                                                            |
+|Verify_Contain_OR|$res;;Review completed                                                                                                                      |
+|Verify_Contain_OR|$res;;Smith, @reviewerName.*Y.*This review completed by @reviewerName                                                                       |
+
+
+
+!|scenario               |Prepare Account|accountName  |                         |systemName  |                  |systemAddress       |
+|Login                   |${TPAMURL}     |             |${TPAMAdmin}             |            |${DefaultPwd}                          |
+|Add PPM account         |@accountName   |with password|${ManagedAccountPassword}|and profiles|${PpmCheckProfile}||${PpmChangeProfile}|
+|Logout                                                                                                                               |
+|Update PSM Details      |@accountName                                                                                                |
+|Create Account on System|@accountName   |with password|${ManagedAccountPassword}|on system   |@systemAddress                         |
+
+
+!|scenario            |Add PPM account                             |accountName|with password|accPwd|and profiles|checkProfile||changeProfile|
+|clickOnLink          |link=Add Account                                                                                                      |
+|type;                |id=SystemNm                                 |${SystemName}                                                            |
+|click                |id=System                                   |                                                                         |
+|waitForElementPresent|xpath=//td[contains(text(),'${SystemName}')]|                                                                         |
+|click                |xpath=//td[contains(text(),'${SystemName}')]|                                                                         |
+|click                |id=Details                                  |                                                                         |
+|type;                |id=AccountName                              |@accountName                                                             |
+|type;                |id=sPswd                                    |@accPwd                                                                  |
+|type;                |id=sConfPswd                                |@accPwd                                                                  |
+|type;                |id=RelNotifyEmail                           |${RelNotifyEmail}                                                        |
+|click                |id=Management                                                                                                         |
+|select;              |id=PasswordCheckProfileID                   |label=@checkProfile                                                      |
+|select;              |id=PasswordChangeProfileID                  |label=@changeProfile                                                     |
+|click                |id=SubmitChangesButton                      |                                                                         |
+|waitForTextPresent   |Changes saved successfully for                                                                                        |
+|Set description      |${ManagedAccountDescription}                |                                                                         |
+
+
+
+!| scenario       |Add System|systemName                       |                       |systemAddress                       |                       |systemPlatform                       |                       |functAcct                       |                       |funcAccPwd                      |
+|$res=            |CLI       |${CLIBatch} AddSystem --SystemName @systemName --NetworkAddress @systemAddress --PlatformName \"@systemPlatform\" --FunctionalAccount @functAcct --FuncAcctCred @funcAccPwd --DomainName ${DomainName} --NetBiosName ${NETBIOSDomainName} --PrimaryEmail ${PrimarySystemEMail}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                         |
+
+
+!| scenario       |Add Account|accountName                                                                                                                                                                                            |
+|$res=            |CLI        |${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName @accountName --Password ${ManagedAccountPassword}  --Description \"@accountName description\" --MinimumApprovers 0 --ReleaseDuration 15|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                   |
+
+
+!| scenario       |Update Account|accountName            |Reset on Mismatch            |resetFlag            |Reset after Release           |releaseFlag           |
+|$res=            |CLI           |${CLIBatch} UpdateAccount --System ${SystemName} --Account @accountName  --ResetFlag @resetFlag  --ReleaseChangeFlag @releaseFlag|
+|Verify_Contain_OR|$res;;successful                                                                                                                                |
+#--RecordingRequiredFlag Y
+
+!| scenario       |Update PSM Details|accountName                                                                                                                                                                                                                                                                                                       |
+|$res=            |CLI               |${CLIBatch} UpdatePSMAccount --SystemName ${SystemName} --AccountName @accountName  --ProxyType \"RDP - Automatic Login Using Password\" --ColorDepth 8 --DefaultSessionDuration 15 --EnableFlag Y  --MinApprovers 1 --PostSessionProfile ${PostSessionProfileName} --SessionStartNotifyEmail ${SessionStartEmail}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                                                                     |
+#--RecordingRequiredFlag Y
+
+!| scenario       |Enable-Disable Session Recording|accountName                                                                       |enabled                                                                       |enable                                                                      |
+|$res=            |CLI                             |${CLIBatch} UpdateEGPAccount --System ${SystemName} --Account @accountName  --ProxyType \"RDP - Automatic Login Using Password\" --ColorDepth 16 --DefaultSessionDuration 120 --EnableFlag Y  --MinApprovers 0 --RecordingRequiredFlag @enable|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                               |
+#--RecordingRequiredFlag Y
+
+
+
+!| scenario       |Change PSM Reviewer Type|accountName          |on system          |systemName          |to type         |type         |
+|$res=            |CLI                     |${CLIBatch} UpdatePSMAccount --System @systemName --Account @accountName --ReviewerType @type|
+|Verify_Contain_OR|$res;;successful                                                                                                      |
+
+
+!|scenario        |Set User Permissions System Level|userName                                 |                                 |userPermission                                 |
+|$res=            |CLI                              |${CLIBatch} SetAccessPolicy --AccessPolicyName @userPermission --Action ADD --SystemName ${SystemName} --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                                                                                                                             |
+
+
+!|scenario    |Create Account on System  |accountName  |with password  |pwd  |on system  |systemAddress  |
+|accountAction|${SystemPlatform};;create;;@systemAddress;;${FunctAcct};;${FuncAccPwd};;@accountName;;@pwd|
+
+!|scenario    |Delete Account on System                         |accountName                         |
+|accountAction|${SystemPlatform};;delete;;${SystemAddress};;${FunctAcct};;${FuncAccPwd};;@accountName|
+
+!|scenario    |Change Account Password on System           |accountName           |           |NewPwd           |
+|accountAction|${SystemPlatform};;password;;${SystemAddress};;${FunctAcct};;${FuncAccPwd};;@accountName;;@NewPwd|
+
+
+
+!|scenario |Prepare User|userName|with first name|firstName|and last name|lastName|with type|userType|and email|email  |
+|Add User  |@userName   |        |${DefaultPwd}  |         |@firstName   |        |@lastName|        |@userType||@email|
+|pause     |5000                                                                                                       |
+|Change Pwd|@userName   |        |${DefaultPwd}  |         |${UserPwd}                                                 |
+
+
+
+!|scenario        |Add User|userName        |        |password        |        |firstName        |        |lastName        |        |userType       |       |email       |
+|$res=            |CLI     |${CLIBatch} AddUser --UserName @userName --FirstName @firstName --LastName @lastName --Password @password --UserType @userType --Email @email|
+|Verify_Contain_OR|$res;;successful                                                                                                                                      |
+
+!|scenario        |Add Group|GroupName                                                                  |
+|$res=            |CLI      |${CLIBatch} AddGroup --GroupName @GroupName --Description "TPAM Test Group"|
+|Verify_Contain_OR|$res;;successful                                                                     |
+
+!|scenario        |Delete Group|GroupName                                   |
+|$res=            |CLI         |${CLIBatch} DropGroup --GroupName @GroupName|
+|Verify_Contain_OR|$res;;successful                                         |
+
+
+!|scenario        |Add User To Group|UserName          |         |GroupName         |
+|$res=            |CLI              |${CLIBatch} AddGroupMember @UserName,@GroupName|
+|Verify_Contain_OR|$res;;successful                                                 |
+
+
+!|scenario        |Remove User From Group|UserName          |          |GroupName         |
+|$res=            |CLI                   |${CLIBatch} DropGroupMember @UserName,@GroupName|
+|Verify_Contain_OR|$res;;successful                                                       |
+
+
+!| scenario       |Remove System|sysName                          |
+|$res=            |CLI          |${CLIBatch} DeleteSystem @sysName|
+|Verify_Contain_OR|$res;;successful                               |
+|Delete Mailbox   |${PrimarySystemEMail}                          |
+
+
+!| scenario       |Remove User|userName                        |
+|$res=            |CLI        |${CLIBatch} DeleteUser @userName|
+|Verify_Contain_OR|$res;;successful                            |
+
+
+!|scenario        |Request Password|systemName                  |                  |accountName                  |                 |requestorName                 |
+|$res=            |CLI             |${CLIBatch} AddPwdRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+|Verify_Contain_OR|$res;;submitted                                                                                                                                |
+|$RequestID=      |get_RequestID   |$res                                                                                                                          |
+
+
+
+!|scenario        |Request Session      |systemName                   |                   |accountName                  |                  |requestorName                  |
+|$res=            |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+|Verify_Contain_OR|$res;;submitted                                                                                                                                         |
+|$RequestID=      |get_session_RequestID|$res                                                                                                                              |
+
+
+!|scenario         |Approve Session   |approverName              |
+|Login             |${TPAMURL}        ||@approverName||${UserPwd}|
+|pause             |20000                                        |
+|click             |id=Approvals                                 |
+|click             |link=$RequestID                              |
+|type;             |id=ResponseComment|ok to approve             |
+|click             |id=ApproveReq                                |
+|waitForTextPresent|*The response * was submitted successfully*  |
+|Logout                                                          |
+
+!|scenario         |Deny Session      |approverName              |
+|Login             |${TPAMURL}        ||@approverName||${UserPwd}|
+|pause             |20000                                        |
+|click             |id=Approvals                                 |
+|click             |link=$RequestID                              |
+|type;             |id=ResponseComment|it's not your business    |
+|click             |id=DenyReq                                   |
+|waitForTextPresent|*The response * was submitted successfully*  |
+|Logout                                                          |
+
+!|scenario   |Open Sessions|requestorName              |
+|Login       |${TPAMURL}   ||@requestorName||${UserPwd}|
+|pause       |20000                                    |
+|click       |id=CurrentRequests                       |
+|click       |link=$RequestID                          |
+|click       |id=StartSessionButton                    |
+|pause       |60000                                    |
+|Logout                                                |
+|selectWindow|Quest Software PSM                       |
+|stop                                                  |
+
+!|scenario         |Cancel Sessions   |accountName|              |requestorName|
+|Login             |${TPAMURL}        |           |@requestorName| |${UserPwd} |
+|pause             |10000                                                      |
+|click             |id=CurrentRequests                                         |
+|click             |link=Sess(@accountName)                                    |
+|click             |xpath=//td[contains(text(),'@accountName')]                |
+|click             |id=Details                                                 |
+|type;             |id=ResponseComment|cancel                                  |
+|click             |id=SubmitChanges                                           |
+|waitForTextPresent|*The response * was submitted successfully*                |
+|Logout                                                                        |
+
+
+!|scenario  |Replay Sessions|systemName|             |reviewerName|
+|Login      |${TPAMURL}     |          |@reviewerName| |${UserPwd}|
+|pause      |10000                                                |
+|clickOnLink|link=Session Logs                                    |
+|type;      |id=SystemNm    |@systemName                          |
+|type;      |id=AccountNm   |${prefix}remote0                     |
+|click      |id=Listing                                           |
+|pause      |10000                                                |
+|click      |xpath=//td[contains(text(),'${prefix}remote0')]      |
+|pause      |2000                                                 |
+|click      |id=ReplayButton                                      |
+|pause      |30000                                                |
+|click      |id=homeButton                                        |
+|pause      |5000                                                 |
+|Logout                                                           |
+
+
+!|scenario         |Hard-Delete System                        |systemName |
+|pause             |5000                                                  |
+|clickOnLink       |link=Deleted Systems                                  |
+|type;             |id=SystemNm                               |@systemName|
+|click             |id=Listing                                |           |
+|click             |xpath=//td[contains(text(),'@systemName')]|           |
+|pause             |1000                                                  |
+|click             |id=HardDeleteButton                       |           |
+|getConfirmation                                                          |
+|waitForTextPresent|has been successfully deleted                         |
+
+!| scenario             |Check Mail|user          |          |subject          |         |body         |
+|$res=                  |CheckMail |${MailServer};@user;${TPAMEMailPassword};${FromMail};@subject;@body|
+|Verify_Contain_OR_alnum|$res;;@body                                                                   |
+
+!| scenario             |Check No Mail|user          |          |subject          |         |body         |
+|$res=                  |CheckMail    |${MailServer};@user;${TPAMEMailPassword};${FromMail};@subject;@body|
+|Verify_Contain_OR_alnum|$res;;no messages                                                                |
+
+!| scenario             |Delete Mails|user                                    |
+|$res=                  |ClearMailbox|${MailServer};@user;${TPAMEMailPassword}|
+|Verify_Contain_OR_alnum|$res;;Messages deleted                               |
+
+!| scenario   |Check All Mailboxes No Mail|subject|        |body  |
+|Check No Mail|${SessionStartEmail}       |       |@subject||@body|
+|Check No Mail|${PostSessionProfileEMail} |       |@subject||@body|
+|Check No Mail|${PrimarySystemEMail}      |       |@subject||@body|
+|Check No Mail|${GroupMemberEmail}        |       |@subject||@body|
+|Check No Mail|${RelNotifyEmail}          |       |@subject||@body|
+|Check No Mail|${ApproverEmail}           |       |@subject||@body|
+|Check No Mail|${Approver2Email}          |       |@subject||@body|
+
+
+
+
+!|scenario         |Create Post-Session Profile                                    |
+|Login             |${TPAMURL}              |   |${TPAMAdmin}   |  |${DefaultPwd}  |
+|pause             |5000                                                           |
+|clickOnLink       |link=Profile Management |                                      |
+|select;           |id=ProfileType          |label=Post Session Processing         |
+|click             |id=NewButton            |                                      |
+|type;             |id=ProfileName          |${PostSessionProfileName}             |
+|click             |id=PostPasswordCheckFl  |                                      |
+|click             |id=PostPasswordChangeFl |                                      |
+|click             |id=PostEmailPrimaryFl   |                                      |
+|type;             |id=PostEmailNotification|${PostSessionProfileEMail};:Approvers:|
+|click             |id=SaveButton           |                                      |
+|waitForTextPresent|The profile saved successfully                                 |
+|Logout                                                                            |
+
+
+!|scenario         |Update Post-Session Notification Receivers|receiversList                  |
+|Login             |${TPAMURL}                                | |${TPAMAdmin} | |${DefaultPwd}|
+|pause             |5000                                                                      |
+|clickOnLink       |link=Profile Management                   |                               |
+|select;           |id=ProfileType                            |label=Post Session Processing  |
+|select;           |id=ProfileID                              |label=${PostSessionProfileName}|
+|type;             |id=PostEmailNotification                  |@receiversList                 |
+|click             |id=SaveButton                             |                               |
+|waitForTextPresent|The profile updated successfully                                          |
+|Logout                                                                                       |
+
+
+
+!|scenario     |Create Mailboxes                                |
+|Create Mailbox|${PrimarySystemEMail}     ||${TPAMEMailPassword}|
+|Create Mailbox|${PostSessionProfileEMail}||${TPAMEMailPassword}|
+|Create Mailbox|${RequestorEmail}         ||${TPAMEMailPassword}|
+|Create Mailbox|${ApproverEmail}          ||${TPAMEMailPassword}|
+|Create Mailbox|${Approver2Email}         ||${TPAMEMailPassword}|
+|Create Mailbox|${ReviewerEmail}          ||${TPAMEMailPassword}|
+|Create Mailbox|${GroupMemberEmail}       ||${TPAMEMailPassword}|
+|Create Mailbox|${SessionStartEmail}      ||${TPAMEMailPassword}|
+|Create Mailbox|${RelNotifyEmail}         ||${TPAMEMailPassword}|
+
+
+!|scenario     |Delete Mailboxes          |
+|Delete Mailbox|${PrimarySystemEMail}     |
+|Delete Mailbox|${PostSessionProfileEMail}|
+|Delete Mailbox|${RequestorEmail}         |
+|Delete Mailbox|${ApproverEmail}          |
+|Delete Mailbox|${Approver2Email}         |
+|Delete Mailbox|${ReviewerEmail}          |
+|Delete Mailbox|${GroupMemberEmail}       |
+|Delete Mailbox|${SessionStartEmail}      |
+|Delete Mailbox|${RelNotifyEmail}         |
+
+
+
+!|scenario         |Delete Post-Session Profile                            |
+|clickOnLink       |link=Profile Management|                               |
+|select;           |id=ProfileType         |label=Post Session Processing  |
+|select;           |id=ProfileID           |label=${PostSessionProfileName}|
+|click             |id=DeleteButton        |                               |
+|getConfirmation                                                           |
+|waitForTextPresent|The profile was deleted successfully                   |
+
+
+
+!|scenario     |Check Status                                         |accountName||testResult|for reason|testReason|
+|Choose Account|@accountName                                                                                       |
+|click         |id=Logs                                                                                            |
+|click         |id=rb_LogsDtAll                                                                                    |
+|click         |id=ChangeLog                                                                                       |
+|verifyText    |xpath=//table[@id='changeLogTable']/tbody/tr[@id='0']|           |@testReason.*@testResult         |
+
+!|scenario     |Check Test Log                                     |accountName||testResult|
+|Choose Account|@accountName                                                               |
+|click         |id=Logs                                                                    |
+|click         |id=rb_LogsDtAll                                                            |
+|click         |id=TestLog                                                                 |
+|verifyText    |xpath=//table[@id='testLogTable']/tbody/tr[@id='0']|           |@testResult|
+
+
+
+!|scenario   |Check Mismatch Reset|account                     |
+|Check Status|@account            ||Success|for reason|Mismatch|
+
+!|scenario   |Check Post-Session Reset|account                               |
+|Check Status|@account                ||Success|for reason|Post Release Reset|
+
+
+!|scenario|Session Cleanup  |accountName                                                            |
+|$res=    |RunBatchGetOutput|CleanupSession;${SystemAddress};${FunctAcct};${FuncAccPwd};@accountName|
+#|Verify_Contain_OR|$res;;testsuccessfully                                                                         |

@@ -1,0 +1,4 @@
+!include <AutomatedTesting.PlatformsTesting.MySql
+!include -c <DpaScenarios.ScenarioLibrary
+
+

@@ -1,0 +1,72 @@
+!|scenario        |Set password change frequency|freq                                                                                                        |
+|$res=            |CLI                          |${CLIBatch} UpdateAccount --accountname ${ManagedAccount} --systemname ${SystemName} --ChangeFrequency @freq|
+|Verify_Contain_OR|$res;;Changes saved successfully                                                                                                          |
+
+!|scenario        |Check password change frequency|result                                                                                                  |
+|$res=            |GroovyWebDriver                |managePasswords;${TPAMHost};${TPAMAdmin};${DefaultPwd};checkFreq;${SystemName};${ManagedAccount};@result|
+|Verify_Contain_OR|$res;;Successfully                                                                                                                      |
+
+!|scenario        |Check Last Change Date                                                                                                  |
+|$Months=         |getEval        |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);d.getUTCMonth()+1;                              |
+|$Days=           |getEval        |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);d.getUTCDate();                                 |
+|$Years=          |getEval        |var d = new Date();d.setUTCMinutes(d.getUTCMinutes()+3);d.getUTCFullYear();                             |
+|$res=            |GroovyWebDriver|managePasswords;${TPAMHost};${TPAMAdmin};${DefaultPwd};getLastChangeDate;${SystemName};${ManagedAccount}|
+|Verify_Contain_OR|$res;;$Months/$Days/$Years                                                                                              |
+
+!|scenario        |Reset Password Individual|expectedResult                                                                                              |
+|$res=            |GroovyWebDriver          |managePasswords;${TPAMHost};${TPAMAdmin};${DefaultPwd};reset;${SystemName};${ManagedAccount};@expectedResult|
+|Verify_Contain_OR|$res;;Successfully                                                                                                                    |
+
+!|scenario         |Reset Non Managed Password  with alert                                                                                        |
+|$res=             |GroovyWebDriver|managePasswords;${TPAMHost};${TPAMAdmin};${DefaultPwd};reset;${SystemName};${ManagedAccount};${expectedResult}|
+|Verify_Contain_NOT|something went wrong                                                                                                          |
+|Verify_Contain_OR |$res;;Alert has appeared                                                                                                      |
+
+
+!|scenario        |Schedule Reset                                                                                              |
+|$res=            |GroovyWebDriver|managePasswords;${TPAMHost};${TPAMAdmin};${DefaultPwd};ScheduleReset;${SystemName};${prefix}|
+|Verify_Contain_OR|$res;;Successfully                                                                                          |
+
+!|scenario        |Get Last Released Password                                                                                                             |
+|$res=            |GroovyWebDriver|managePasswords;${TPAMHost};${TPAMAdmin};${DefaultPwd};getLastReleasedPwd;${SystemName};${ManagedAccount};${CLI_user_1}|
+|Verify_Contain_OR|$res;;Successfully                                                                                                                     |
+
+!|scenario|Get Pwd                                    |
+|CLI      |${CLIBatch} Retrieve --RequestID $RequestID|
+
+!|scenario        |View Password History for|account                   |with result                  |expectedResult                  |
+|$res=            |GroovyWebDriver          |managePasswords;${TPAMHost};${TPAMAdmin};${DefaultPwd};viewHistory;${SystemName};@account|
+|Verify_Contain_OR|$res;;@expectedResult                                                                                              |
+
+!|scenario        |Make account nonmanaged                                                                              |
+|$res=            |CLI|${CLIBatch} UpdateAccount --accountname ${ManagedAccount} --systemname ${SystemName} --AutoFlag N|
+|Verify_Contain_OR|$res;;Changes saved successfully                                                                     |
+
+!|scenario        |Make account automanaged                                                                             |
+|$res=            |CLI|${CLIBatch} UpdateAccount --accountname ${ManagedAccount} --systemname ${SystemName} --AutoFlag Y|
+|Verify_Contain_OR|$res;;Changes saved successfully                                                                     |
+
+!|scenario        |Add account|accnt                    |with auto flag                    |aflag                    |                   |
+|$res=            |CLI        |${CLIBatch} AddAccount --System ${SystemName} --AccountName @accnt  --Password T0PsecReT --AutoFlag @aflag|
+|Verify_Contain_OR|$res;;successfully                                                                                                    |
+
+!|scenario         |Set password default filter|sysFilter            |account            |accntFilter            |pwd management            |pwdMngmtSetting           |
+|$res=             |GroovyWebDriver            |setPasswordManagementDefaultFilter;${TPAMHost};${TPAMAdmin};${DefaultPwd};save;@sysFilter;@accntFilter;@pwdMngmtSetting|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                                                         |
+
+!|scenario         |Clear password default filter                                                                  |
+|$res=             |GroovyWebDriver|setPasswordManagementDefaultFilter;${TPAMHost};${TPAMAdmin};${DefaultPwd};clear|
+|Verify_Contain_NOT|$res;;something went wrong                                                                     |
+
+!|scenario         |Check password listing|expected                                                             |
+|$res=             |GroovyWebDriver       |listPasswordsWithDefaultFilter;${TPAMHost};${TPAMAdmin};${DefaultPwd}|
+|Verify_Contain_NOT|$res;;something went wrong                                                                  |
+|Verify_Contain_OR |$res;;@expected                                                                             |
+
+!|scenario        |ForceReset for manual managed account|accnt     |from     |system     |results in     |expectation    |
+|$res=            |CLI                                  |${CLIBatch} ForceReset --SystemName @system --AccountName @accnt|
+|Verify_Contain_OR|$res;;@expectation                                                                                    |
+
+!|scenario        |Get help for command|CliCommand     |     |help    |
+|$res=            |CLI                 |${CLIBatch} @CliCommand --Help|
+|Verify_Contain_OR|$res;;@help                                        |

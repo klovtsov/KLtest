@@ -1,0 +1,10 @@
+!include -c <AutomatedTesting.SetUp
+
+!include -c <AutomatedTesting.CliScenarios
+#!include -c <AutomatedTesting.PlatformsTesting.LinuxRedHat
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EmailScenarios.SessionsNotifications.ScenarioLibrary
+!include -c <AutomatedTesting.CommandRestriction.ScenarioLibrary
+

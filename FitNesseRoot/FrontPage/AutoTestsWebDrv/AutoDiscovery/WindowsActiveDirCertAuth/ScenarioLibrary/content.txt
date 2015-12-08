@@ -1,0 +1,216 @@
+!contents
+
+
+!|scenario           |Prepare Test                                      |
+|Login               |${TPAMURL}           ||${TPAMAdmin}||${DefaultPwd}|
+|Add Group           |${TemplateGroupName}                              |
+|Add Collection      |${TemplateCollectionName}                         |
+|Add System                                                             |
+|Create OUs                                                             |
+|Create Mailbox      |${AutoDiscoveryEMail}||${TPAMEMailPassword}       |
+|Create User Template|${UserTemplateName}                               |
+|Create LDAP User Mapping                                               |
+|Prepare Batch                                                          |
+
+!|scenario|Create OUs                                                                                |
+|runBatch |adou;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${UserContainerName};${BaseName}|
+
+!|scenario|Create User in AD                                               |userName                                              |
+|runBatch |aduser;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};@userName;ou=${UserContainerName},${BaseName};${DomainName}|
+
+!|scenario|Delete OUs                                                                                |
+|runBatch |adou;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${UserContainerName};${BaseName}|
+
+!|scenario|Delete User in AD                                        |userName                                       |
+|runBatch |aduser;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};@userName;ou=${UserContainerName},${BaseName}|
+
+
+!| scenario       |Prepare File         |path    |    |changeFrom   |   |changeTo   |
+|$res=            |RunBatchGetOutputFull|PrepareEthalons;@path;@changeFrom;@changeTo|
+|Verify_Contain_OR|$res;;write.*changes                                             |
+
+!| scenario  |Prepare Batch                                                 |
+|Prepare File|${PathToBatch}||USERNAMEPLACEHOLDER ||${DiscoveredUserName}   |
+|Prepare File|${PathToBatch}||CERTTHUMBPLACEHOLDER||${CertificateThumbprint}|
+
+!| scenario  |Rollback Batch                                                |
+|Prepare File|${PathToBatch}||${DiscoveredUserName}   ||USERNAMEPLACEHOLDER |
+|Prepare File|${PathToBatch}||${CertificateThumbprint}||CERTTHUMBPLACEHOLDER|
+
+
+
+
+!|scenario                                         |Auto Discovery                                                                                        |
+|Create User in AD                                 |${DiscoveredUserName}                                                                                 |
+|Run Discovery for                                 |${GroupName}                                                                                          |
+|pause                                             |180000                                                                                                |
+|Batch Update User Certificate Thumbprint          |${BatchName}                                                                                          |
+|Check User                                        |${DiscoveredUserName}||Ivan                                        ||Ivanov | |${DiscoveredUserEmail} |
+|BFER 6708 User Inherited Template Group Membership|${DiscoveredUserName}                                                                                 |
+|Check Mail                                        |${AutoDiscoveryEMail}||TPAM LDAP Integration for group ${GroupName}||Adding user ${DiscoveredUserName}|
+|Delete Mails                                      |${AutoDiscoveryEMail}                                                                                 |
+|BFER 5843 Changing User Type Keeps Group Permissionable Flag Up To Date                                                                                  |
+
+
+!|scenario         |Create LDAP User Mapping                                  |
+|clickOnLink       |link=LDAP Directory                                       |
+|click             |id=AddUsersButton                                         |
+|select;           |id=SystemID           |label=${SystemName}                |
+|click             |id=btnDNAdd                                               |
+|pause             |3000                                                      |
+|type;             |id=DistinguishedName  |ou=${UserContainerName},${BaseName}|
+|select;           |id=AutoUpdFreq_Minutes|label=15                           |
+|select;           |id=NotifyType         |label=All                          |
+|type;             |id=NotifyEmail        |${AutoDiscoveryEMail}              |
+|select;           |id=MissingDN          |label=Report as Error              |
+|select;           |id=ExistingDN         |label=Create Unique TPAM User      |
+|select;           |id=DeletedSource      |label=Disable User in TPAM         |
+|type;             |id=PARGroupName       |${GroupName}                       |
+|select;           |id=TemplateID         |label=${UserTemplateName} [Basic]  |
+|click             |id=btnValidateDN                                          |
+|pause             |20000                                                      |
+|waitForTextPresent|The Distinguished name is valid                           |
+|pause             |1000                                                      |
+|click             |id=SaveButton                                             |
+|waitForTextPresent|New Auto Discovery mapping saved successfully             |
+|waitForTextPresent|User Distinguished Name Filter * saved successfully       |
+|pause             |10000                                                     |
+
+
+
+
+!|scenario           |Clear Objects            |
+|Delete Mailbox      |${AutoDiscoveryEMail}    |
+|Delete User in AD   |${DiscoveredUserName}    |
+|Delete OUs                                    |
+|Delete LDAP User Mapping                      |
+|Remove User         |${DiscoveredUserName}    |
+|Remove System       |${SystemName}            |
+|Delete Group        |${GroupName}             |
+|Delete User Template|${UserTemplateName}      |
+|Rollback Batch                                |
+|Delete Group        |${TemplateGroupName}     |
+|Delete Collection   |${TemplateCollectionName}|
+|Logout                                        |
+
+
+
+
+!|scenario            |Create User Template|templateName                    |
+|clickOnLink          |link=Add User Template                               |
+|pause                |5000                                                 |
+|waitForElementPresent|id=UserName                                          |
+|type;                |id=UserName         |@templateName                   |
+|type;                |id=FirstName        |John                            |
+|type;                |id=LastName         |Doe                             |
+|type;                |id=Phone            |777-777-777                     |
+|type;                |id=Pager            |888-888-888                     |
+|type;                |id=EmailID          |@templateName@${TPAMEMailDomain}|
+|type;                |id=Comment          |@templateName description       |
+|select;              |id=UType            |label=Basic                     |
+|click                |id=cbxMobile                                         |
+|select;              |id=PrimAuthType     |label=Certificate               |
+|pause                |1000                                                 |
+|click                |id=SubmitChanges                                     |
+|waitForTextPresent   |User added successfully                              |
+|Add User To Group    |@templateName       |      |${TemplateGroupName}     |
+
+
+
+!|scenario            |Check User      |userName||firstName||lastName||eMail|
+|clickOnLink          |link=Manage UserIDs                                  |
+|waitForElementPresent|id=UsrNm                                             |
+|type;                |id=UsrNm        |@userName                           |
+|click                |id=Listing                                           |
+|click                |xpath=//td[contains(text(),'@userName')]             |
+|click                |id=Details      |                                    |
+|waitForElementPresent|id=cbxMobile                                         |
+|pause                |5000                                                 |
+|$res=                |isChecked       |id=Disabled                         |
+|Verify_Contain_OR    |$res;;false                                          |
+|$res=                |getValue        |xpath=//input[@id='LastName']       |
+|Verify_Contain_OR    |$res;;@lastName                                      |
+|$res=                |getValue        |xpath=//input[@id='FirstName']      |
+|Verify_Contain_OR    |$res;;@firstName                                     |
+|$res=                |getValue        |xpath=//input[@id='Phone']          |
+|Verify_Contain_OR    |$res;;777-777-777                                    |
+|$res=                |getValue        |xpath=//input[@id='Pager']          |
+|Verify_Contain_OR    |$res;;888-888-888                                    |
+|$res=                |getValue        |xpath=//input[@id='EmailID']        |
+|Verify_Contain_OR    |$res;;@eMail                                         |
+|$res=                |getValue        |xpath=//textarea[@id='Comment']     |
+|Verify_Contain_OR    |$res;;some words from AD                             |
+|$res=                |getSelectedLabel|id=UType                            |
+|Verify_Contain_OR    |$res;;Basic                                          |
+|$res=                |isChecked       |id=cb_WebAccess                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxMobile                        |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |getSelectedLabel|id=PrimAuthType                     |
+|Verify_Contain_OR    |$res;;Certificate                                    |
+|$res=                |getValue        |xpath=//input[@id='CertThumbprint'] |
+|Verify_Contain_OR    |$res;;${CertificateThumbprint}                       |
+
+
+
+
+!|scenario            |Batch Update User Certificate Thumbprint|filename                                     |
+|clickOnLink          |link=Update UserIDs                     |                                             |
+|pause                |2000                                                                                  |
+|click                |id=PAMUploadBtnSelect                                                                 |
+|SWait                |browse.PNG                                                                            |
+|SClick               |browse.PNG                                                                            |
+|pause                |1500                                                                                  |
+|SType                |${PathToBatch}\@filename                                                              |
+|pause                |1500                                                                                  |
+|SWait                |open.PNG                                                                              |
+|SClick               |open.PNG                                                                              |
+|pause                |2000                                                                                  |
+|SWait                |upload_small.PNG                                                                      |
+|SClick               |upload_small.PNG                                                                      |
+|pause                |2000                                                                                  |
+|type;                |id=Comment2                             |update user's certificate thumbprint         |
+|click                |id=btnProcessFile                       |                                             |
+|pause                |1500                                                                                  |
+|waitForElementPresent|xpath=//tr[@id='5']                                                                   |
+|pause                |20000                                                                                 |
+|verifyText           |xpath=//div[@id='divBatchResults']/table||Updated thumbprint for ${DiscoveredUserName}|
+
+
+!|scenario        |Change User Type|userName                |               |userType               |
+|$res=            |CLI             |${CLIBatch} UpdateUser --UserName @userName --UserType @userType|
+|Verify_Contain_OR|$res;;successfully                                                               |
+
+
+!|scenario             |Check Group Not Permissionable        |result                               |
+|pause                 |30000                                                                       |
+|clickOnLink           |link=Manage Groups                                                          |
+|type;                 |id=GroupNm                            |${GroupName}                         |
+|click                 |id=Listing                                                                  |
+|click                 |xpath=//td[contains(text(),'${GroupName}')]                                 |
+|pause                 |1000                                                                        |
+|click                 |id=Details                                                                  |
+|pause                 |1000                                                                        |
+|waitForElementPresent |xpath=//div[@id='DetailsTab']                                               |
+|$res=                 |getText                               |xpath=//div[@id='DetailsTab']        |
+|Verify_Contain_@result|$res;;Permission assignment and Duplication has been disabled for this group|
+
+
+!|scenario                     |BFER 5843 Changing User Type Keeps Group Permissionable Flag Up To Date|
+|Change User Type              |${DiscoveredUserName}             |             |Auditor               |
+|Check Group Not Permissionable|OR                                                                     |
+|Create User in AD             |${NewUserName}                                                         |
+|Run Discovery for             |${GroupName}                                                           |
+|pause                         |180000                                                                 |
+|Check Group Not Permissionable|OR                                                                     |
+|Change User Type              |${DiscoveredUserName}             |             |Admin                 |
+|Check Group Not Permissionable|NOT                                                                    |
+|Change User Type              |${DiscoveredUserName}             |             |UserAdmin             |
+|Check Group Not Permissionable|OR                                                                     |
+|Change User Type              |${DiscoveredUserName}             |             |Basic                 |
+|Check Group Not Permissionable|NOT                                                                    |
+|Delete User in AD             |${NewUserName}                                                         |
+|Remove User                   |${NewUserName}                                                         |
+
+
+

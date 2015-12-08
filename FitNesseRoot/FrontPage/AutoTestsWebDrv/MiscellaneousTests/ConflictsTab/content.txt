@@ -1,0 +1,43 @@
+!* Test description
+Approver can see if any other pending requests for this password overlap with the same release duration.
+*!
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSix
+
+!define NotFailed {successfully}
+!define reqstResult {has been submitted}
+ 
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PermissionHierarchy.ScenarioLibrary
+
+!3 Create account and make pwd requests
+!|script                                                                                 |
+|Login               |${TPAMURL}       |             |${TPAMAdmin}        ||${DefaultPwd}|
+|Add system                                                                              |
+|Add account         |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed} |
+|Set User Permissions|${CLI_user_1}                                                      |
+|Set User Permissions|${CLI_user_2}                                                      |
+|Set User Permissions|${TPAMAdmin}                                                       |
+|Request Pwd by      |${CLI_user_1}    |with result  |${reqstResult}                     |
+|Request Pwd by      |${CLI_user_2}    |with result  |${reqstResult}                     |
+|Logout                                                                                  |
+
+
+!3 Approver opens Conflicts tab and should see an entry.
+!|script                                                                                                       |
+|Login                |${TPAMURL}                                                 ||${TPAMAdmin}||${DefaultPwd}|
+|pause                |5000                                                                                    |
+|clickOnLink          |link=Password Requests Pending Approval                                                 |
+|waitForElementPresent|xpath=//td[.='$RequestID']                                                              |
+|click                |xpath=//td[.='$RequestID']                                                              |
+|click                |id=Conflicts                                                                            |
+|waitForElementPresent|xpath=//table[@id='conflictsTable']                                                     |
+|verifyText           |xpath=//table[@id='conflictsTable']/tbody/tr[@id='0']/td[2]||${CLI_user_1}              |
+|Logout                                                                                                        |
+
+!3 Clean up
+!|script                         |
+|Remove account|${ManagedAccount}|
+|Remove system |${SystemName}    |
+

@@ -1,0 +1,60 @@
+!contents
+
+!include -c <AutomatedTesting.AccessPolicies.ScenarioLibrary
+!include -c <AutomatedTesting.AccessPolicies.FilePolicies.ScenarioLibrary
+
+
+
+!|script                                                                              |
+|Prepare Environment                                                                  |
+|File Access Approved           |${UserFileRequestor}      ||${GroupSystemApprover}   |
+|File Access Approved           |${UserSystemRequestor}    ||${UserCollectionApprover}|
+|File Access ISA                |${UserCollectionIsa}                                 |
+|File Access Privileged         |${GlobalGroupPpmPac}                                 |
+|File Access Denied             |${UserCollectionRequestor}||File                     |
+|File Access Without Permissions|${UserWithoutPermissions} ||System                   |
+|Clear Environment                                                                    |
+
+
+
+#!|script                                                                                       |
+#|Prepare Environment                                                                           |
+#|File Access Approved                  |${UserFileRequestor}       ||${UserFileApprover}       |
+#|File Access Approved                  |${UserSystemRequestor}     ||${UserSystemApprover}     |
+#|File Access Approved                  |${UserCollectionRequestor} ||${UserCollectionApprover} |
+#|File Access Approved                  |${GroupFileRequestor}      ||${GroupFileApprover}      |
+#|File Access Approved                  |${GroupSystemRequestor}    ||${GroupSystemApprover}    |
+#|File Access Approved                  |${GroupCollectionRequestor}||${GroupCollectionApprover}|
+#|File Access Approved                  |${GlobalGroupPpmRequestor} ||${GlobalGroupPpmApprover} |
+#|File Access ISA                       |${UserFileIsa}                                         |
+#|File Access ISA                       |${UserSystemIsa}                                       |
+#|File Access ISA                       |${UserCollectionIsa}                                   |
+#|File Access ISA                       |${GroupFileIsa}                                        |
+#|File Access ISA                       |${GroupSystemIsa}                                      |
+#|File Access ISA                       |${GroupCollectionIsa}                                  |
+#|File Access ISA                       |${GlobalGroupPpmIsa}                                   |
+#|File Access Privileged                |${UserFilePac}                                         |
+#|File Access Privileged                |${UserSystemPac}                                       |
+#|File Access Privileged                |${UserCollectionPac}                                   |
+#|File Access Privileged                |${GroupFilePac}                                        |
+#|File Access Privileged                |${GroupSystemPac}                                      |
+#|File Access Privileged                |${GroupCollectionPac}                                  |
+#|File Access Privileged                |${GlobalGroupPpmPac}                                   |
+#|File Access Denied                    |${UserSystemRequestor}     ||File                      |
+#|File Access Denied                    |${UserCollectionRequestor} ||File                      |
+#|File Access Denied                    |${GroupSystemRequestor}    ||File                      |
+#|File Access Denied                    |${GroupCollectionRequestor}||File                      |
+#|File Access Denied                    |${GlobalGroupPpmRequestor} ||File                      |
+#|File Access Denied                    |${UserFileRequestor}       ||System                    |
+#|File Access Denied                    |${UserCollectionRequestor} ||System                    |
+#|File Access Denied                    |${GroupFileRequestor}      ||System                    |
+#|File Access Denied                    |${GroupCollectionRequestor}||System                    |
+#|File Access Denied                    |${GlobalGroupPpmRequestor} ||System                    |
+#|File Access Denied on Collection Level|${UserFileRequestor}       ||${FileCollection}         |
+#|File Access Denied on Collection Level|${UserSystemRequestor}     ||${FileCollection}         |
+#|File Access Denied on Collection Level|${GroupFileRequestor}      ||${SystemCollection}       |
+#|File Access Denied on Collection Level|${GroupSystemRequestor}    ||${FileCollection}         |
+#|File Access Denied on Collection Level|${GlobalGroupPpmRequestor} ||${SystemCollection}       |
+#|File Access Without Permissions       |${UserWithoutPermissions}  ||File                      |
+#|File Access Without Permissions       |${UserWithoutPermissions}  ||System                    |
+#|Clear Environment                                                                             |

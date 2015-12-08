@@ -1,0 +1,34 @@
+!2 Main Scenario
+!|script      |
+|Main Scenario|
+
+#|Add system                                                                                                                                                                            |
+#|Add account                   |${ManagedAccount}           |with password            |${ManagedAccountPwd}         |                         |${NotFailed}                            |
+#|Create Account on System                                                                                                                                                              |
+#|Create Service which is run by|${ServiceAccount}           |and run under password is|${ManagedAccountPwd}         |on                       |${SystemAddress}                        |
+#|Create Scheduled Task         |${TaskName}                 |which is run under       |${HostName}\${ManagedAccount}|and run under password is|${ManagedAccountPwd}|on|${SystemAddress}|
+#|Start Service                 |${SuccessServiceStartResult}|on                       |${SystemAddress}                                                                                |
+#|events                        |${FunctAcct}                |                         |${FunctAcctPwd}              |                         |${SystemAddress}    |  |clear           |
+#|Reset Password                |${ManagedAccount}           |                         |${ResetPasswordSuccessful}                                                                      |
+#|pause                         |30000                                                                                                                                                  |
+#|events                        |${FunctAcct}                |                         |${FunctAcctPwd}              |                         |${SystemAddress}    |  |check           |
+#|Run Scheduled Task            |${TaskName}                 |on                       |${SystemAddress}                                                                                |
+#|Check Scheduled Task Status   |Running                     |on                       |${SystemAddress}                                                                                |
+#|Stop Scheduled Task           |${TaskName}                 |on                       |${SystemAddress}                                                                                |
+#|Stop Service on               |${SystemAddress}                                                                                                                                       |
+#|Restore environment on        |${SystemAddress}                                                                                                                                       |
+#|Delete Service on             |${SystemAddress}                                                                                                                                       |
+#|Remove system                 |${SystemName}                                                                                                                                          |
+#|Delete Account on System                                                                                                                                                              |
+
+#|Open |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+
+#|Stop Service on               |${SystemAddress}                                                                                                                                       |
+
+#|Managed System            |
+#|Managed Account           |
+#|Request Password and Login|
+#|Account Not there         |
+#|System Unreachable        |
+#|Delete All                |
+

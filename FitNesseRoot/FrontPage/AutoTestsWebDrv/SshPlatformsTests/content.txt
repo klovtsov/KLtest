@@ -1,0 +1,10 @@
+!contents
+
+
+
+!define ManagedAccountPwd {frujiE13}
+!define NewKeyName {${prefix}dsskey}
+!define PathToKeyToEnter {${ProjDir}\Scripts\Keys\KlKeyToEnter}
+!define PathToKeyToUpload {${ProjDir}\Scripts\Keys\KlKeyToUpload}
+
+

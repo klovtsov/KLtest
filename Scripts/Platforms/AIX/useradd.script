@@ -1,0 +1,7 @@
+mkuser %1
+#
+echo %1:'%2' | chpasswd
+#
+pwdadm -f ADMIN %1
+#
+exit

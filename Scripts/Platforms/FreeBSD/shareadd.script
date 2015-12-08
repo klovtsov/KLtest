@@ -1,0 +1,3 @@
+mkdir %1; grep --help > '%1/%2'
+#
+exit

@@ -1,0 +1,36 @@
+!define Delay {3}
+!note Paradmin login and logout are necessary, because getEval method does not work without an existing webdriver instance.
+!include -c <AutoTestsWebDrv.MiscellaneousTests.ManagedAccountOptions.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <SynchronizedPasswords.ScenarioLibrary
+
+!4 Create Sync Passowrd and subscribe two accounts
+!|script                                                                                                                                                    |
+|Add Sync Password     |${SyncPasswordName}|with value   |${SincPwdInitialValue}|Check Profile|${SyncPwdCheckProfile}|Change Profile|${SyncPwdChangeProfile}|
+|Add Subscriber        |${ManagedAccount}  |from         |${SystemName}                                                                                     |
+|Add Subscriber        |${ManagedAccount}  |from         |${SecSystemName}                                                                                  |
+|pause                 |${PauseValue}                                                                                                                       |
+|Check Sync Password   |${SyncPasswordName}|subscriber   |${ManagedAccount}     |from         |${SystemName}         |status is     |Current                |
+|Check Sync Password   |${SyncPasswordName}|subscriber   |${ManagedAccount}     |from         |${SecSystemName}      |status is     |Current                |
+|Login to first system |${SystemAddress}   |with password|${SincPwdInitialValue}                                                                            |
+|Login to second system|${SecSystemAddress}|with password|${SincPwdInitialValue}                                                                            |
+
+!|script                                                                                                                                      |
+|Open                                             |${TPAMURL}         |             |${TPAMAdmin}     |    |${DefaultPwd}                     |
+|Check that there is no any scheduled Post Release Change                                                                                     |
+|Request and Get Password for                     |${ManagedAccount}  |from         |${SystemName}                                            |
+|Login to second system                           |${SecSystemAddress}|with password|$GeneratedPwd                                            |
+|Cancel Request                                                                                                                               |
+|$delay=                                          |getEval            |return (${Delay})*60000;                                               |
+|pause                                            |$delay                                                                                     |
+|Check that scheduled Post Release Change appears                                                                                             |
+|Check Sync Password                              |${SyncPasswordName}|subscriber   |${ManagedAccount}|from|${SystemName}   |status is|Current|
+|Check Sync Password                              |${SyncPasswordName}|subscriber   |${ManagedAccount}|from|${SecSystemName}|status is|Current|
+|Check Login to second system failed with password|$GeneratedPwd                                                                              |
+|Logout                                                                                                                                       |
+
+!4 Delete sync password
+!|script                                                                            |
+|$res=            |CLI|${CLIBatch} DeleteSyncPass --SyncPassName ${SyncPasswordName}|
+|Verify_Contain_OR|$res;;successfully deleted                                       |
+

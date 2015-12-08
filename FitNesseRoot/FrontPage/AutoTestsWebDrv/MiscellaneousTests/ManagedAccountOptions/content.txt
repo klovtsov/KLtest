@@ -1,0 +1,5 @@
+!note Managed System settings
+!include -c <AutoTestsWebDrv.PlatformsTesting.MacOsxSix
+
+!define NotFailed {successfully} 
+!contents -g -p -f -h

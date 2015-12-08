@@ -1,0 +1,5 @@
+!define content {${ATPath}\PlatformsTesting\NovellNds\content.txt}
+
+
+!include -c <AutomatedTesting.PlatformsTesting.NovellNds
+!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

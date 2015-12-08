@@ -1,0 +1,15 @@
+!define SystemName {${prefix}Updclisys}
+!define NewSystemName {${prefix}newUpdclisys}
+!define PlatformName {Windows}
+!define NetworkAddress {x.x.x.x}
+
+!*> Includes
+!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+*!
+
+
+!|script                                                                                                                                                     |
+|Add System   |${CLIBatch}||--SystemName ${SystemName} --PlatformName ${PlatformName} --NetworkAddress ${NetworkAddress}||successfully                       |
+|Update System|${CLIBatch}||${SystemName},${NewSystemName}                                                              ||successfully                       |
+|List Systems |${CLIBatch}||${NewSystemName}                                                                            ||${NewSystemName}.*${NetworkAddress}|
+|Delete System|${CLIBatch}||${NewSystemName}                                                                            ||successfully                       |

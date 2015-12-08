@@ -1,0 +1,77 @@
+!contents
+
+!|scenario                          |Set Connection Tab                                                                                                                                            |
+|accountAction                      |Linux;;create;;${SystemAddress};;${SystemRoot};;${SystemRootPassword};;${SshAccount};;${ManagedAccountPwd}                                                    |
+|Check And Delete File on Dispatcher|${BrowserDownloadDir}\|                                                              |id_dsa.pub                                                              |
+|$res=                              |GroovyWebDriver       |SetMySQLConnectionTab;${TPAMHost};${TPAMAdmin};${DefaultPwd};${SystemName};${FunctAcct};${FunctAcctPwd};${ConnectionPort};${SshAccount}|
+|Verify_Contain_NOT                 |$res;;Test Failed                                                                                                                                             |
+|Verify_Contain_NOT                 |$res;;something went wrong                                                                                                                                    |
+|Verify_Contain_OR                  |$res;;Downloading SSH Key                                                                                                                                     |
+|pause                              |15000                                                                                                                                                         |
+|runBatch                           |UploadPublicSSHKey.bat;${SystemAddress};${SystemRoot};${SystemRootPassword};${SshAccount};${BrowserDownloadDir};${AuthorizedKeysFile}                         |
+
+
+#|waitForElementPresent|id=Connection                                                    |                                                                   |
+#|click                |id=Connection                                                    |                                                                   |
+#|type;                |id=PARFuncAcct                                                   |${FunctAcct}                                                       |
+#|type;                |id=pword                                                         |${FunctAcctPwd}                                                    |
+#|type;                |id=ConfPword                                                     |${FunctAcctPwd}                                                    |
+#|type;                |id=Timeout                                                       |${SystemTimeout}                                                   |
+#|type;                |id=Port                                                          |${ConnectionPort}                                                  |
+#|click                |id=cb_UseSshFl                                                                                                                       |
+#|pause                |1000                                                                                                                                 |
+#|type;                |id=SSHAccount                                                    |${SshAccount}                                                      |
+#|click                |id=rb_SshSpecific                                                                                                                    |
+#|pause                |1000                                                                                                                                 |
+#|click                |id=bt_Save                                                                                                                           |
+#|waitForTextPresent   |System changes for * saved successfully                                                                                              |
+#|click                |id=btGeneratePair20                                                                                                                  |
+#|waitForTextPresent   |Successfully*generated*key pair                                                                                                      |
+#|click                |id=bt_Save                                                                                                                           |
+#|waitForTextPresent   |System changes for * saved successfully                                                                                              |
+#|pause                |10000                                                                                                                                |
+#|click                |id=btDnldSpcOpenSSH2                                                                                                                 |
+#|pause                |15000                                                                                                                                |
+#|runBatch             |UploadPublicSSHKey.bat;${SystemAddress};${SystemRoot};${SystemRootPassword};${SshAccount};${BrowserDownloadDir};${AuthorizedKeysFile}|
+
+
+!|scenario                          |XXXSet Connection Tab                                                                                                                |
+|accountAction                      |Linux;;create;;${SystemAddress};;${SystemRoot};;${SystemRootPassword};;${SshAccount};;${ManagedAccountPwd}                           |
+|click                              |id=Connection                                        |                                                                               |
+|type;                              |id=PARFuncAcct                                       |${FunctAcct}                                                                   |
+|type;                              |id=pword                                             |${FunctAcctPwd}                                                                |
+|type;                              |id=ConfPword                                         |${FunctAcctPwd}                                                                |
+|type;                              |id=Timeout                                           |${SystemTimeout}                                                               |
+|type;                              |id=Port                                              |${ConnectionPort}                                                              |
+|click                              |id=cb_UseSshFl                                                                                                                       |
+|pause                              |1000                                                                                                                                 |
+|type;                              |id=SSHAccount                                        |${SshAccount}                                                                  |
+|click                              |id=rb_SshSpecific                                                                                                                    |
+|pause                              |1000                                                                                                                                 |
+|click                              |id=btGeneratePair20                                                                                                                  |
+|waitForTextPresent                 |Successfully*generated*key pair                                                                                                      |
+|pause                              |15000                                                                                                                                |
+|Check And Delete File on Dispatcher|${BrowserDownloadDir}\                               |                                  |id_dsa.pub                                  |
+|click                              |id=btDnldSpcOpenSSH2                                                                                                                 |
+|pause                              |15000                                                                                                                                |
+|runBatch                           |UploadPublicSSHKey.bat;${SystemAddress};${SystemRoot};${SystemRootPassword};${SshAccount};${BrowserDownloadDir};${AuthorizedKeysFile}|
+|click                              |id=bt_Save                                                                                                                           |
+|waitForTextPresent                 |System changes for * saved successfully                                                                                              |
+
+
+!|scenario            |Add system                               |
+|pause                |5000                                     |
+|clickOnLink         |link=Add System                          |
+|type;                |id=SystemName    |${SystemName}          |
+|type;                |id=NetworkAddress|${SystemAddress}       |
+|select;              |id=PlatformID    |label=${SystemPlatform}|
+|click                |id=bt_Save                               |
+|getConfirmation                                                |
+|waitForTextPresent   |System changes for * saved successfully  |
+
+
+
+!| scenario              |Delete All                                                                          |
+|Remove system           |${SystemName}                                                                       |
+|Delete Account on System|${ManagedAccount}                                                                   |
+|accountAction           |Linux;;delete;;${SystemAddress};;${SystemRoot};;${SystemRootPassword};;${SshAccount}|

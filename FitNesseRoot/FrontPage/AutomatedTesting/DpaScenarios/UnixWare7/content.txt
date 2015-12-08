@@ -1,0 +1,2 @@
+!include <AutomatedTesting.PlatformsTesting.UnixWare7
+!include -c <DpaScenarios.UnixWare7.PlatformSpecific

@@ -1,0 +1,414 @@
+!contents
+
+!|scenario                    |Prepare Many Users                                                                                                                    |
+|Create Many Users in Database|${DiscoveredUserName}||Ivan||Ivanov||111-111-111||${DiscoveredUserName}${AT}${TPAMEMailDomain}||222-222-222||some words from AD||10000|
+
+
+!|scenario                |Prepare Test                                                                                                                                                                                             |
+|Login                    |${TPAMURL}           ||${TPAMAdmin}           ||${DefaultPwd}                                                                                                                                            |
+|Add Group                |${TemplateGroupName}                                                                                                                                                                                     |
+|Add Collection           |${TemplateCollectionName}                                                                                                                                                                                |
+|Add System                                                                                                                                                                                                                         |
+|Add Account                                                                                                                                                                                                                        |
+|Add Fake User            |${FakeUserName}                                                                                                                                                                                          |
+|Add Fake System          |${FakeSystemName}                                                                                                                                                                                        |
+|Create Database                                                                                                                                                                                                                    |
+|Create DB User                                                                                                                                                                                                                     |
+|Create Tables                                                                                                                                                                                                                      |
+|Create User in Database  |3001                 ||${DiscoveredUserName}  ||Ivan         ||Ivanov                                        ||111-111-111||${DiscoveredUserName}${AT}${TPAMEMailDomain}||222-222-222||some words from AD|
+|Create User in Database  |3002                 ||${FakeUserName}        ||Petr         ||Petrov                                        ||111-111-111||${FakeUserName}${AT}${TPAMEMailDomain}      ||222-222-222||some words from AD|
+|Create System in Database|4001                 ||${DiscoveredSystemName}||192.168.100.5||${DiscoveredSystemName}${AT}${TPAMEMailDomain}||Super Computer from AD                                                                    |
+|Create System in Database|4002                 ||${FakeSystemName}      ||192.168.100.6||${FakeSystemName}${AT}${TPAMEMailDomain}      ||Super Computer from AD                                                                    |
+|Create Mailbox           |${AutoDiscoveryEMail}||${TPAMEMailPassword}                                                                                                                                                              |
+|Create User Template     |${UserTemplateName}                                                                                                                                                                                      |
+|Create System Template   |${SystemTemplateName}                                                                                                                                                                                    |
+|Create Generic User Mapping                                                                                                                                                                                                        |
+|Create Generic System Mapping                                                                                                                                                                                                      |
+
+
+#!| scenario       |Add System                                                                                                                                                                                                                                           |
+#|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"${SystemPlatform}\" --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --Timeout ${SystemTimeout} --DomainName ${DomainName}|
+#|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                     |
+
+!|scenario            |Add System                               |
+|pause                |5000                                     |
+|waitForElementPresent|link=Add System                          |
+|clickAndWait         |link=Add System                          |
+|waitForElementPresent|id=SystemName                            |
+|type;                |id=SystemName    |${SystemName}          |
+|type;                |id=NetworkAddress|${SystemAddress}       |
+|select;              |id=PlatformID    |label=${SystemPlatform}|
+|click                |id=Connection    |                       |
+|type;                |id=PARFuncAcct   |${FunctAcct}           |
+|type;                |id=pword         |${FunctAcctPwd}        |
+|type;                |id=ConfPword     |${FunctAcctPwd}        |
+|click                |id=bt_Save       |                       |
+|waitForTextPresent   |System changes for * saved successfully  |
+
+
+!| scenario       |Add Account                                                                                                          |
+|$res=            |CLI|${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName ${ManagedAccount} --Password ${ManagedAccountPwd}|
+|Verify_Contain_OR|$res;;successful                                                                                                     |
+
+
+
+!|scenario|Create DB User                                                                                                             |
+|runBatch |MSSQLAction;createuser;${SystemAddress};${FunctAcct};${FunctAcctPwd};${ManagedAccount};${ManagedAccountPwd};${DatabaseName}|
+
+!|scenario|Create Database                                                                   |
+|runBatch |MSSQLAction;createdb;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName}|
+
+!|scenario|Create Tables                                                                                                     |
+|runBatch |MSSQLAction;createusertable;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName};${UserTableName}        |
+|runBatch |MSSQLAction;createcomputertable;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName};${ComputerTableName}|
+
+!|scenario|Create User in Database     |userID     |     |userName     |     |firstName     |     |lastName     |     |phone     |     |eMail     |     |mobile     |     |description    |
+|runBatch |MSSQLAction;insertuser;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName};${UserTableName};@userID;@userName;@firstName;@lastName;@phone;@eMail;@mobile;@description|
+
+!|scenario|Create Many Users in Database     |userName     |     |firstName     |     |lastName     |     |phone     |     |eMail     |    |mobile    |    |description    |    |count    |
+|runBatch |MSSQLAction;insertusers;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName};${UserTableName};@userName;@firstName;@lastName;@phone;@eMail;@mobile;@description;@count|
+
+
+!|scenario|Create System in Database         |systemID         |         |systemName         |         |systemAddress        |        |eMail        |        |description        |
+|runBatch |MSSQLAction;insertcomputer;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName};${ComputerTableName};@systemID;@systemName;@systemAddress;@eMail;@description|
+
+
+!|scenario|Update System Name in Database                     |systemID                     |                     |newSystemName                     |
+|runBatch |MSSQLAction;updatecomputername;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName};${ComputerTableName};@systemID;@newSystemName|
+
+
+!|scenario|Delete Database                                                                   |
+|runBatch |MSSQLAction;deletedb;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName}|
+
+
+!|scenario|Delete DB User                            |userName                           |
+|runBatch |MSSQLAction;deleteuser;${SystemAddress};${FunctAcct};${FunctAcctPwd};@userName|
+
+!|scenario|Delete User Table                                                                                     |
+|runBatch |MSSQLAction;deletetable;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName};${UserTableName}|
+
+!|scenario|Delete Computer Table                                                                                     |
+|runBatch |MSSQLAction;deletetable;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName};${ComputerTableName}|
+
+
+
+!|scenario|Delete User in Database                                       |userName                                      |
+|runBatch |MSSQLAction;dropuser;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName};${UserTableName};@userName|
+
+!|scenario|Delete System in Database                                           |systemName                                          |
+|runBatch |MSSQLAction;deletecomputer;${SystemAddress};${FunctAcct};${FunctAcctPwd};${DatabaseName};${ComputerTableName};@systemName|
+
+
+
+!|scenario                                                |Auto Discovery                                                                                                    |
+|Login                                                    |${TPAMURL}             ||${TPAMAdmin}                                             ||${DefaultPwd}                 |
+|Select Generic Mapping for                               |${GroupName}                                                                                                      |
+|Run Discovery                                                                                                                                                               |
+|Select Generic Mapping for                               |${CollectionName}                                                                                                 |
+|Run Discovery                                                                                                                                                               |
+|pause                                                    |180000                                                                                                            |
+|Check User                                               |${DiscoveredUserName}  ||Ivan                                                     ||Ivanov||${DiscoveredUserEmail}|
+|BFER 6708 User Inherited Template Group Membership       |${DiscoveredUserName}                                                                                             |
+|Check User                                               |${FakeUserName}_1      ||Petr                                                     ||Petrov||${FakeUserEmail}      |
+|Check System                                             |${DiscoveredSystemName}||192.168.100.5                                                                            |
+|BFER 6708 System Inherited Template Collection Membership|${DiscoveredSystemName}                                                                                           |
+|Check System                                             |${FakeSystemName}_1    ||192.168.100.6                                                                            |
+|Check Mail                                               |${AutoDiscoveryEMail}  ||TPAM Generic Integration for collection ${CollectionName}||Adding system                 |
+|Check Mail                                               |${AutoDiscoveryEMail}  ||TPAM Generic Integration for group ${GroupName}          ||Adding user                   |
+|Check No Mail                                            |${AutoDiscoveryEMail}  ||TPAM Generic Integration for Collection                  ||Updated TPAM system           |
+|Delete Mails                                             |${AutoDiscoveryEMail}                                                                                             |
+|Logon Using Discovered SysAdmin User                                                                                                                                        |
+|BFER 6811 Discovered Computer Has Existing Computer Name                                                                                                                    |
+|BFER 5253 Deleted Computer Remains in Collection                                                                                                                            |
+
+!|scenario                     |Logon Using Discovered SysAdmin User                    |
+|Set Sys-Admin Password        |${DiscoveredUserName}||${DefaultPwd}                    |
+|Change Pwd                    |${DiscoveredUserName}||${DefaultPwd}        ||${UserPwd}|
+|Login                         |${TPAMAdminURL}      ||${DiscoveredUserName}||${UserPwd}|
+|Add Web-enabled Sys-Admin User|${NewUserName}                                          |
+
+!|scenario            |Set Sys-Admin Password|userName|             |password     |
+|Login                |${TPAMAdminURL}       |        |${TPAMMaster}||${MasterPwd}|
+|pause                |5000                                                       |
+|clickAndWait         |link=Manage Sys-Admin UserIDs                              |
+|pause                |5000                                                       |
+|type;                |id=UsrNm              |@userName                           |
+|pause                |1000                                                       |
+|click                |id=Listing                                                 |
+|pause                |5000                                                       |
+|waitForElementPresent|//td[contains(text(),'@userName')]                         |
+|mouseDown            |//td[contains(text(),'@userName')]                         |
+|click                |//td[contains(text(),'@userName')]                         |
+|pause                |1000                                                       |
+|click                |id=Details                                                 |
+|pause                |3000                                                       |
+|type;                |id=sPassword          |@password                           |
+|type;                |id=Confirm            |@password                           |
+|pause                |1000                                                       |
+|click                |id=SubmitChanges                                           |
+|type;                |id=FirstName          |changed                             |
+|pause                |1000                                                       |
+|click                |id=SubmitChanges                                           |
+|waitForTextPresent   |User updated successfully                                  |
+
+
+!|scenario         |Add Web-enabled Sys-Admin User|userName     |
+|pause             |5000                                        |
+|clickAndWait      |link=Add Sys-Admin UserID                   |
+|pause             |5000                                        |
+|type;             |id=UserName                   |@userName    |
+|pause             |1000                                        |
+|type;             |id=LastName                   |L            |
+|pause             |1000                                        |
+|type;             |id=FirstName                  |K            |
+|pause             |1000                                        |
+|type;             |id=sPassword                  |${DefaultPwd}|
+|pause             |1000                                        |
+|type;             |id=Confirm                    |${DefaultPwd}|
+|pause             |1000                                        |
+|click             |id=KeyBased                                 |
+|pause             |1000                                        |
+|click             |id=cb_CliAccess                             |
+|pause             |1000                                        |
+|click             |id=SubmitChanges                            |
+|waitForTextPresent|User added successfully                     |
+
+
+
+
+
+!|scenario            |Delete Sys-Admin User|userName                    |
+|Login                |${TPAMAdminURL}      ||${TPAMMaster}||${MasterPwd}|
+|pause                |10000                                             |
+|clickAndWait         |link=Manage Sys-Admin UserIDs                     |
+|waitForElementPresent|id=UsrNm                                          |
+|type;                |id=UsrNm             |@userName                   |
+|click                |id=Listing                                        |
+|waitForElementPresent|//td[contains(text(),'@userName')]                |
+|mouseDown            |//td[contains(text(),'@userName')]                |
+|click                |//td[contains(text(),'@userName')]                |
+|click                |id=Delete                                         |
+|getConfirmation                                                         |
+|waitForTextPresent   |has been successfully deleted                     |
+
+
+!|scenario            |Demote Sys-Admin User|userName                    |
+|Login                |${TPAMAdminURL}      ||${TPAMMaster}||${MasterPwd}|
+|clickAndWait         |link=Manage Sys-Admin UserIDs                     |
+|waitForElementPresent|id=UsrNm                                          |
+|type;                |id=UsrNm             |@userName                   |
+|click                |id=Listing                                        |
+|waitForElementPresent|//td[contains(text(),'@userName')]                |
+|mouseDown            |//td[contains(text(),'@userName')]                |
+|click                |//td[contains(text(),'@userName')]                |
+|pause                |2000                                              |
+|click                |id=Details                                        |
+|pause                |5000                                              |
+|click                |id=Demote                                         |
+|getConfirmation                                                         |
+|pause                |10000                                             |
+
+
+!|scenario|Generate Plink Key                                           |keyName                                          |
+|runBatch |AutoIt3.exe;${ProjDir}\Scripts\generate_putty_key.au3;${ProjDir}\Scripts\puttygen.exe;${PathToKeys}@keyName.ppk|
+
+
+!|scenario             |Clear Objects                          |
+|Login                 |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Delete Mailbox        |${AutoDiscoveryEMail}                  |
+|Delete Generic User Mapping                                   |
+|Delete Generic System Mapping                                 |
+|Remove User           |${FakeUserName}                        |
+|Demote Sys-Admin User |${FakeUserName}_1                      |
+|Demote Sys-Admin User |${DiscoveredUserName}                  |
+|Delete Sys-Admin User |${NewUserName}                         |
+|Remove User           |${FakeUserName}_1                      |
+|Remove User           |${DiscoveredUserName}                  |
+|Remove System         |${SystemName}                          |
+|Remove System         |${FakeSystemName}                      |
+|Remove System         |${FakeSystemName}_1                    |
+|Remove System         |${DiscoveredSystemName}new             |
+|Delete Group          |${GroupName}                           |
+|Delete Collection     |${CollectionName}                      |
+|Delete DB User        |${ManagedAccount}                      |
+|Delete User Table                                             |
+|Delete Computer Table                                         |
+|Delete Database                                               |
+|Login                 |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Delete User Template  |${UserTemplateName}                    |
+|Delete System Template|${SystemTemplateName}                  |
+|Delete Group          |${TemplateGroupName}                   |
+|Delete Collection     |${TemplateCollectionName}              |
+
+
+
+!|scenario            |Create User Template|templateName                    |
+|clickAndWait         |link=Add User Template                               |
+|pause                |5000                                                 |
+|waitForElementPresent|id=UserName                                          |
+|type;                |id=UserName         |@templateName                   |
+|type;                |id=FirstName        |John                            |
+|type;                |id=LastName         |Doe                             |
+|type;                |id=Phone            |777-777-777                     |
+|type;                |id=Pager            |888-888-888                     |
+|type;                |id=EmailID          |@templateName@${TPAMEMailDomain}|
+|type;                |id=Comment          |@templateName description       |
+|click                |id=cbxMobile                                         |
+|type;                |id=sPassword        |grain41R                        |
+|type;                |id=Confirm          |grain41R                        |
+|click                |id=KeyBased                                          |
+|waitForElementPresent|id=cb_CliAccess                                      |
+|click                |id=cb_CliAccess                                      |
+|click                |id=Time                                              |
+|waitForElementPresent|id=rbAllow                                           |
+|click                |id=rbAllow                                           |
+|click                |id=SubmitChanges                                     |
+|waitForTextPresent   |*User added successfully*                            |
+|Add User To Group    |@templateName       |      |${TemplateGroupName}     |
+
+
+!|scenario            |Create Generic User Mapping                                          |
+|clickAndWait         |link=Generic                                                         |
+|click                |id=AddUsersButton                                                    |
+|type;                |id=SystemName                          |${SystemName}                |
+|type;                |id=AccountName                         |${ManagedAccount}            |
+|type;                |id=Command                             |${SelectUserQuery}           |
+|select;              |id=AutoUpdFreq_Minutes                 |label=15                     |
+|select;              |id=NotifyType                          |label=All                    |
+|type;                |id=NotifyEmail                         |${AutoDiscoveryEMail}        |
+|select;              |id=ProtectedUser                       |label=Create Unique          |
+|select;              |id=MissingDN                           |label=Create Unique TPAM User|
+|select;              |id=ExistingDN                          |label=Create Unique TPAM User|
+|select;              |id=DeletedSource                       |label=Disable User in TPAM   |
+|click                |id=User                                                              |
+|waitForElementPresent|id=PARGroupName                                                      |
+|type;                |id=PARGroupName                        |${GroupName}                 |
+|click                |id=cb_SysAdminFl                                                     |
+|select;              |id=TemplateUserID                      |${UserTemplateName} [Basic]  |
+|pause                |1000                                                                 |
+|click                |id=SaveButton                                                        |
+|waitForTextPresent   |*successfully                                                        |
+|click                |id=Source                                                            |
+|waitForElementPresent|id=btnTestSQL                                                        |
+|click                |id=btnTestSQL                                                        |
+|waitForTextPresent   |*in result set                                                       |
+|select;              |//td[text()='UserID']/../td/select     |label=UniqueUserID (Required)|
+|click                |//td[text()='UserID']/../td/select                                   |
+|select;              |//td[text()='UserName']/../td/select   |label=UserName (Required)    |
+|click                |//td[text()='UserName']/../td/select                                 |
+|select;              |//td[text()='FirstName']/../td/select  |label=FirstName (Required)   |
+|click                |//td[text()='FirstName']/../td/select                                |
+|select;              |//td[text()='LastName']/../td/select   |label=LastName (Required)    |
+|click                |//td[text()='LastName']/../td/select                                 |
+|select;              |//td[text()='Phone']/../td/select      |label=Phone                  |
+|click                |//td[text()='Phone']/../td/select                                    |
+|select;              |//td[text()='EMail']/../td/select      |label=EmailID                |
+|click                |//td[text()='EMail']/../td/select                                    |
+|select;              |//td[text()='Mobile']/../td/select     |label=Mobile                 |
+|click                |//td[text()='Mobile']/../td/select                                   |
+|select;              |//td[text()='Description']/../td/select|label=Comments               |
+|click                |//td[text()='Description']/../td/select                              |
+|click                |id=SaveButton                                                        |
+|waitForTextPresent   |*successfully                                                        |
+
+
+!|scenario            |Check User      |userName||firstName||lastName||eMail|
+|clickAndWait         |link=Manage UserIDs                                  |
+|waitForElementPresent|id=UsrNm                                             |
+|type;                |id=UsrNm        |@userName                           |
+|click                |id=Listing                                           |
+|waitForElementPresent|//td[contains(text(),'@userName')]                   |
+|mouseDown            |//td[contains(text(),'@userName')]                   |
+|click                |//td[contains(text(),'@userName')]                   |
+|click                |id=Details      |                                    |
+|waitForElementPresent|id=cbxMobile                                         |
+|pause                |5000                                                 |
+|$res=                |isChecked       |id=Disabled                         |
+|Verify_Contain_OR    |$res;;false                                          |
+|$res=                |getValue        |//input[@id='LastName']             |
+|Verify_Contain_OR    |$res;;@lastName                                      |
+|$res=                |getValue        |//input[@id='FirstName']            |
+|Verify_Contain_OR    |$res;;@firstName                                     |
+|$res=                |getValue        |//input[@id='Phone']                |
+|Verify_Contain_OR    |$res;;111-111-111                                    |
+|$res=                |getValue        |//input[@id='Pager']                |
+|Verify_Contain_OR    |$res;;222-222-222                                    |
+|$res=                |getValue        |//input[@id='EmailID']              |
+|Verify_Contain_OR    |$res;;@eMail                                         |
+|$res=                |getValue        |//textarea[@id='Comment']           |
+|Verify_Contain_OR    |$res;;some words from AD                             |
+|$res=                |getSelectedLabel|id=UType                            |
+|Verify_Contain_OR    |$res;;Basic                                          |
+|$res=                |isChecked       |id=cb_WebAccess                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxMobile                        |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |getSelectedLabel|id=PrimAuthType                     |
+|Verify_Contain_OR    |$res;;Local                                          |
+|$res=                |getSelectedLabel|id=ExtAuthType                      |
+|Verify_Contain_OR    |$res;;None                                           |
+|click                |id=KeyBased     |                                    |
+|waitForElementPresent|id=cb_CliAccess                                      |
+|$res=                |isChecked       |id=cb_CliAccess                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cb_ApiAccess                     |
+|Verify_Contain_OR    |$res;;false                                          |
+|click                |id=Time         |                                    |
+|waitForElementPresent|id=rbAllow                                           |
+|$res=                |isChecked       |id=rbAllow                          |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay1                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay2                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay3                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay4                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay5                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay6                     |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cbxLogonDay7                     |
+|Verify_Contain_OR    |$res;;true                                           |
+
+!|scenario            |Set Collision Strategy To Errors             |
+|Login                |${TPAMURL}      ||${TPAMAdmin}||${DefaultPwd}|
+|pause                |3000                                         |
+|clickAndWait         |link=Generic                                 |
+|waitForElementPresent|id=CollGrpNm                                 |
+|type;                |id=CollGrpNm    |${CollectionName}           |
+|click                |id=Listing                                   |
+|pause                |2000                                         |
+|waitForElementPresent|//td[contains(text(),'${CollectionName}')]   |
+|mouseDown            |//td[contains(text(),'${CollectionName}')]   |
+|click                |//td[contains(text(),'${CollectionName}')]   |
+|pause                |3000                                         |
+|click                |id=Source                                    |
+|pause                |3000                                         |
+|select;              |id=MissingDN    |label=Report as Error       |
+|select;              |id=ExistingDN   |label=Report as Error       |
+|select;              |id=DeletedSource|label=Report as Error       |
+|pause                |1000                                         |
+|click                |id=SaveButton                                |
+|waitForTextPresent   |*successfully                                |
+
+
+!|scenario                     |BFER 6811 Discovered Computer Has Existing Computer Name                                                                                     |
+|Set Collision Strategy To Errors                                                                                                                                            |
+|Update System Name in Database|4001                 ||${DiscoveredSystemName}new                                                                                            |
+|Select Generic Mapping for    |${CollectionName}                                                                                                                            |
+|Run Discovery                                                                                                                                                               |
+|pause                         |180000                                                                                                                                       |
+|Check Mail                    |${AutoDiscoveryEMail}||TPAM Generic Integration for collection ${CollectionName}||Updated TPAM system ${DiscoveredSystemName}new with changes|
+|Delete Mails                  |${AutoDiscoveryEMail}                                                                                                                        |
+
+!|scenario                  |BFER 5253 Deleted Computer Remains in Collection                                                            |
+|Delete System in Database  |${DiscoveredSystemName}new                                                                                  |
+|Select Generic Mapping for |${CollectionName}                                                                                           |
+|Run Discovery                                                                                                                           |
+|pause                      |180000                                                                                                      |
+|Check Mail                 |${AutoDiscoveryEMail}||TPAM Generic Integration for collection ${CollectionName}||${DiscoveredSystemName}new|
+|Delete Mails               |${AutoDiscoveryEMail}                                                                                       |
+|Check Collection Membership|${CollectionName}    ||${DiscoveredSystemName}new                                                           |
+

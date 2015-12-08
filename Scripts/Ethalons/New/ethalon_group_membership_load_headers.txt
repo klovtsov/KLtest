@@ -1,0 +1,10 @@
+
+GroupName	UserName
+klbatch_group1	klbatchuser1
+klbatch_group1	klbatchuser2
+klbatch_group1	klbatchuser3
+klbatch_group1	klbatchuser5
+klbatch_group1	klbatchuser6
+klbatch_group1	klbatchuserwithveryverybigname
+klbatch_group2	klbatchuser5
+klbatch_group2	klbatchuser6

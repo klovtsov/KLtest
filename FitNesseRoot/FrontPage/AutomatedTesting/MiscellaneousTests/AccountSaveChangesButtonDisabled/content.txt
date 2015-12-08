@@ -1,0 +1,52 @@
+!********> Test Description
+This test checks that Save Changes button is disabled(after applying) when 3 Multi-Group Approvals selected.
+**************!
+
+!define UserName1 {${prefix}mguser1}
+!define UserName2 {${prefix}mguser2}
+!define UserName3 {${prefix}mguser3}
+
+!define GroupName1 {${prefix}mgroup1}
+!define GroupName2 {${prefix}mgroup2}
+!define GroupName3 {${prefix}mgroup3}
+
+
+!note Managed System settings
+!include -c <AutomatedTesting.PlatformsTesting.MacOsxSix
+
+!********> includes
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.GroovyJavaApiScenarios
+!include -c <AutomatedTesting.GroovyJavaApiScenarios.ListCommands.ScenarioLibrary
+!include -c <AutomatedTesting.MiscellaneousTests.AccountSaveChangesButtonDisabled.TestSpecific
+*********!
+
+
+!|script                                                                                                                                                                                  |
+|Add system                           |SystemName=${SystemName};NetworkAddress=${SystemAddress};FunctionalAccount=${FunctAcct};FuncAcctCred=${FunctAcctPwd};PlatformName=${SystemPlatform}|
+|Add Account                          |${ManagedAccount}                 |                |${SystemName}                                                                                  |
+|Add User with options                |${UserName1}                      |                |FirstName=test;LastName=test;Password=Password1                                                |
+|Add User with options                |${UserName2}                      |                |FirstName=test;LastName=test;Password=Password1                                                |
+|Add User with options                |${UserName3}                      |                |FirstName=test;LastName=test;Password=Password1                                                |
+|Add Group                            |${GroupName1}                                                                                                                                      |
+|Add Group                            |${GroupName2}                                                                                                                                      |
+|Add Group                            |${GroupName3}                                                                                                                                      |
+|Add Group Member                     |${UserName1}                      ||${GroupName1}                                                                                                   |
+|Add Group Member                     |${UserName2}                      ||${GroupName2}                                                                                                   |
+|Add Group Member                     |${UserName3}                      ||${GroupName3}                                                                                                   |
+|Open                                 |${TPAMURL}                        |                |${TPAMAdmin}                       |                       |${DefaultPwd}                      |
+|Check Require Multi-Group checkbox and select 3 groups                                                                                                                                   |
+|Check Save Changes button is disabled|${ManagedAccount}                                                                                                                                  |
+|Remove account                       |${ManagedAccount}                                                                                                                                  |
+|Remove system                        |${SystemName}                                                                                                                                      |
+|Remove User                          |${UserName1}                                                                                                                                       |
+|Remove User                          |${UserName2}                                                                                                                                       |
+|Remove User                          |${UserName3}                                                                                                                                       |
+|Delete Group                         |${GroupName1}                                                                                                                                      |
+|Delete Group                         |${GroupName2}                                                                                                                                      |
+|Delete Group                         |${GroupName3}                                                                                                                                      |
+
+
+
+

@@ -1,0 +1,29 @@
+!include -c <AutomatedTesting.SetUp
+
+!|import          |
+|fitnesse.fixtures|
+
+!|Library    |
+|page driver |
+|echo fixture|
+
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                                                   |
+|Create Account on System                                                                  |
+|Login               |${TPAMAdminURL}  |             |${TPAMMaster}          ||${MasterPwd}|
+|pause               |5000                                                                 |
+|Create Password Rule|${PasswdRuleName}                                                    |
+|Add system                                                                                |
+|Add account         |${ManagedAccount}|with password|${ManagedAccountPwdNew}||${NotFailed}|
+|Set requests auto-approved                                                                |
+|Set ISA Permissions |${CLI_user_1}                                                        |
+|pause               |${ApplyNewPoliciesInterval}                                          |
+|Assign Password Rule|${PasswdRuleName}|to account   |${ManagedAccount}                    |
+|stop                                                                                      |
+|finalize                                                                                  |
+#|Delete Password Rule|${PasswdRuleName}                                                    |
+

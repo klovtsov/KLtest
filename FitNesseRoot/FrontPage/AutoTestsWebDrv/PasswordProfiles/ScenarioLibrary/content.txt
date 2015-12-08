@@ -1,0 +1,504 @@
+''Check Current Status''
+
+!|scenario        |No Scheduled Password Checks                              |
+|click            |id=StatusButton                                           |
+|$res=            |getText|xpath=//table[@id='testTable']/tbody/tr[8]/td/span|
+|Verify_Contain_OR|$res;;No Scheduled Password Checks                        |
+
+''Turn off Disable Check\Change Schedule Flag''
+
+!|scenario     |Turn off Disable Check Schedule Flag|accountName|
+|Choose Account|@accountName                                    |
+|click         |id=Details                                      |
+|click         |id=Management                                   |
+|click         |id=DisableCheckScheduleFl                       |
+|click         |id=SubmitChangesButton                          |
+|waitForResult |Changes saved successfully for @accountName     |
+
+!|scenario     |Turn off Disable Change Schedule Flag|accountName|
+|Choose Account|@accountName                                     |
+|click         |id=Details                                       |
+|click         |id=Management                                    |
+|click         |id=DisableChangeScheduleFl                       |
+|click         |id=SubmitChangesButton                           |
+|waitForResult |Changes saved successfully for @accountName      |
+
+''Verify Manual Password Message''
+
+!|scenario        |Verify Manual Password Message                                   |
+|$res=            |getText               |id=divManualPasswordMessage               |
+|Verify_Contain_OR|$res;;Manual password management does not utilize check profiles.|
+
+''Verification Last Scheduled Check\Change Info''
+
+!|scenario         |Verify Last Change Date|contain||notcontian|
+|$res=             |getText                |id=LastChangeDt    |
+|Verify_Contain_OR |$res;;@contain                             |
+|Verify_Contain_NOT|$res;;@notcontian                          |
+
+!|scenario         |Verify Last Attempted Change Date|contain  |  |notcontian |
+|$res=             |getText                          |id=LastAttemptedChangeDt|
+|Verify_Contain_OR |$res;;@contain                                            |
+|Verify_Contain_NOT|$res;;@notcontian                                         |
+
+!|scenario         |Verify Last Check Date|contain||notcontian|
+|$res=             |getText               |id=LastCheckDt     |
+|Verify_Contain_OR |$res;;@contain                            |
+|Verify_Contain_NOT|$res;;@notcontian                         |
+
+!|scenario         |Verify Last Successful Check Date|contain  |  |notcontian |
+|$res=             |getText                          |id=LastSuccessfulCheckDt|
+|Verify_Contain_OR |$res;;@contain                                            |
+|Verify_Contain_NOT|$res;;@notcontian                                         |
+
+!|scenario         |Next Scheduled Check Window|contain  |  |notcontian  |
+|$res=             |getText                    |id=NextScheduledCheckInfo|
+|Verify_Contain_OR |$res;;@contain                                       |
+|Verify_Contain_NOT|$res;;@notcontian                                    |
+
+!|scenario         |Next Scheduled Change Window|contain   |  |notcontian  |
+|$res=             |getText                     |id=NextScheduledChangeInfo|
+|Verify_Contain_OR |$res;;@contain                                         |
+|Verify_Contain_NOT|$res;;@notcontian                                      |
+
+''Verification Next Scheduled Check\Change Info''
+
+!|scenario |Verify Next Scheduled Check Info|testResult  |
+|verifyText|id=NextScheduledCheckInfo       ||@testResult|
+
+!|scenario |Verify Next Scheduled Change Info|testResult  |
+|verifyText|id=NextScheduledChangeInfo       ||@testResult|
+
+''Check Logs'' 
+
+!|scenario     |Check Test Log                                     |accountName||testResult|
+|Choose Account|@accountName                                                               |
+|click         |id=Logs                                                                    |
+|click         |id=rb_LogsDtAll                                                            |
+|click         |id=TestLog                                                                 |
+|verifyText    |xpath=//table[@id='testLogTable']/tbody/tr[@id='0']|           |@testResult|
+
+!|scenario     |Check Change Log                                     |accountName||testResult|
+|Choose Account|@accountName                                                                 |
+|click         |id=Logs                                                                      |
+|click         |id=rb_LogsDtAll                                                              |
+|click         |id=ChangeLog                                                                 |
+|verifyText    |xpath=//table[@id='changeLogTable']/tbody/tr[@id='0']|           |@testResult|
+
+!|scenario     |Check Release Log             |accountName||testResult|
+|Choose Account|@accountName                                          |
+|click         |id=Logs                                               |
+|click         |id=rb_LogsDtAll                                       |
+|click         |id=ReleaseLog                                         |
+|verifyText    |xpath=(//tr[@id='0']/td[2])[2]|           |@testResult|
+
+''Check Account Lock Status''
+
+!|scenario        |Check Account Lock Status|accountName||Result|
+|Choose Account   |@accountName                                 |
+|click            |id=Details                                   |
+|$res=            |isChecked                |id=cb_AcctLockFl   |
+|Verify_Contain_OR|$res;;@Result                                |
+
+
+''Check Account Disable Status''
+
+!|scenario        |Check schedule disabled|accountName  |  |Result  |
+|Choose Account   |@accountName                                     |
+|click            |id=Details                                       |
+|click            |id=Management                                    |
+|$res=            |isChecked              |id=DisableCheckScheduleFl|
+|Verify_Contain_OR|$res;;@Result                                    |
+
+!|scenario        |Change schedule disabled|accountName   |  |Result  |
+|Choose Account   |@accountName                                       |
+|click            |id=Details                                         |
+|click            |id=Management                                      |
+|$res=            |isChecked               |id=DisableChangeScheduleFl|
+|Verify_Contain_OR|$res;;@Result                                      |
+
+
+!* Password Check Profile scenarios.
+Mismatch Action: Do Nothing, Reset password, Disable check schedule, Lock
+Consecutive Fail Action: Do Nothing, Disable check schedule, Lock,Increase retry interval
+*!
+
+!|scenario    |Create Password Check Profile|ProfileName||MismatchAction||ConsecutiveFailAction|
+|clickOnLink  |link=Profile Management                                                         |
+|select;      |id=ProfileType               |label=Password Check                              |
+|click        |id=NewButton                                                                    |
+|type;        |id=ProfileName               |@ProfileName                                      |
+|type;        |id=ConsecutiveFailCount      |1                                                 |
+|select;      |id=ConsecutiveFailAction     |label=@ConsecutiveFailAction                      |
+|click        |id=cbxFailNotify                                                                |
+|select;      |id=MismatchAction            |label=@MismatchAction                             |
+|click        |id=cbxMismatchNotify                                                            |
+|type;        |id=CheckChangeTimeout        |${CheckTimeout}                                   |
+|click        |id=SaveButton                                                                   |
+|waitForResult|The profile saved successfully                                                  |
+
+!|scenario    |Create Password Profile With No Schedule|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                                             |
+|select;      |id=ProfileType                          |label=Password @ProfileType|
+|click        |id=NewButton                                                        |
+|type;        |id=ProfileName                          |@ProfileName               |
+|click        |id=rb_NoSchedule                                                    |
+|click        |id=SaveButton                                                       |
+|waitForResult|The profile saved successfully                                      |
+
+!|scenario    |Create Password Profile With Daily Schedule|ProfileType||ProfileName||DailyCounter||Window|
+|clickOnLink  |link=Profile Management                                                                   |
+|select;      |id=ProfileType                             |label=Password @ProfileType                   |
+|click        |id=NewButton                                                                              |
+|type;        |id=ProfileName                             |@ProfileName                                  |
+|click        |id=rb_Daily                                                                               |
+|type;        |id=TimesPerDay                             |@DailyCounter                                 |
+|type;        |id=CheckChangeTime                         |@Window                                       |
+|click        |id=SaveButton                                                                             |
+|waitForResult|The profile saved successfully                                                            |
+
+!|scenario    |Create Password Profile With Weekly All Days Schedule|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                                                          |
+|select;      |id=ProfileType                                       |label=Password @ProfileType|
+|click        |id=NewButton                                                                     |
+|type;        |id=ProfileName                                       |@ProfileName               |
+|click        |id=rb_Weekly                                                                     |
+|click        |id=W0                                                                            |
+|click        |id=W1                                                                            |
+|click        |id=W2                                                                            |
+|click        |id=W3                                                                            |
+|click        |id=W4                                                                            |
+|click        |id=W5                                                                            |
+|click        |id=W6                                                                            |
+|click        |id=SaveButton                                                                    |
+|waitForResult|The profile saved successfully                                                   |
+
+!|scenario    |Create Password Profile With Weekly W0 Schedule|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                                                    |
+|select;      |id=ProfileType                                 |label=Password @ProfileType|
+|click        |id=NewButton                                                               |
+|type;        |id=ProfileName                                 |@ProfileName               |
+|click        |id=rb_Weekly                                                               |
+|click        |id=W0                                                                      |
+|click        |id=SaveButton                                                              |
+|waitForResult|The profile saved successfully                                             |
+
+!|scenario    |Create Password Profile With Weekly W6 Schedule|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                                                    |
+|select;      |id=ProfileType                                 |label=Password @ProfileType|
+|click        |id=NewButton                                                               |
+|type;        |id=ProfileName                                 |@ProfileName               |
+|click        |id=rb_Weekly                                                               |
+|click        |id=W6                                                                      |
+|click        |id=SaveButton                                                              |
+|waitForResult|The profile saved successfully                                             |
+
+!|scenario    |Create Password Profile With Weekly W3 Schedule|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                                                    |
+|select;      |id=ProfileType                                 |label=Password @ProfileType|
+|click        |id=NewButton                                                               |
+|type;        |id=ProfileName                                 |@ProfileName               |
+|click        |id=rb_Weekly                                                               |
+|click        |id=W3                                                                      |
+|click        |id=SaveButton                                                              |
+|waitForResult|The profile saved successfully                                             |
+
+!|scenario    |Create Password Profile With Weekly W345 Schedule|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                                                      |
+|select;      |id=ProfileType                                   |label=Password @ProfileType|
+|click        |id=NewButton                                                                 |
+|type;        |id=ProfileName                                   |@ProfileName               |
+|click        |id=rb_Weekly                                                                 |
+|click        |id=W3                                                                        |
+|click        |id=W4                                                                        |
+|click        |id=W5                                                                        |
+|click        |id=SaveButton                                                                |
+|waitForResult|The profile saved successfully                                               |
+
+!|scenario    |Create Password Profile With Every Schedule|ProfileType||ProfileName||days|
+|clickOnLink  |link=Profile Management                                                   |
+|select;      |id=ProfileType                             |label=Password @ProfileType   |
+|click        |id=NewButton                                                              |
+|type;        |id=ProfileName                             |@ProfileName                  |
+|click        |id=rb_Every                                                               |
+|type;        |id=EveryDays                               |@days                         |
+|click        |id=SaveButton                                                             |
+|waitForResult|The profile saved successfully                                            |
+
+!|scenario    |Create Password Profile With Monthly First Day Schedule|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                                                            |
+|select;      |id=ProfileType                                         |label=Password @ProfileType|
+|click        |id=NewButton                                                                       |
+|type;        |id=ProfileName                                         |@ProfileName               |
+|click        |id=rb_Monthly                                                                      |
+|click        |id=SaveButton                                                                      |
+|waitForResult|The profile saved successfully                                                     |
+
+!|scenario    |Create Password Profile With Monthly Last Day Schedule|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                                                           |
+|select;      |id=ProfileType                                        |label=Password @ProfileType|
+|click        |id=NewButton                                                                      |
+|type;        |id=ProfileName                                        |@ProfileName               |
+|click        |id=rb_Monthly                                                                     |
+|click        |id=rb_LastOfMonth                                                                 |
+|click        |id=SaveButton                                                                     |
+|waitForResult|The profile saved successfully                                                    |
+
+!|scenario    |Create Password Profile With Monthly Schedule|ProfileType||ProfileName||days|
+|clickOnLink  |link=Profile Management                                                     |
+|select;      |id=ProfileType                               |label=Password @ProfileType   |
+|click        |id=NewButton                                                                |
+|type;        |id=ProfileName                               |@ProfileName                  |
+|click        |id=rb_Monthly                                                               |
+|click        |id=rb_DaysOfMonth                                                           |
+|type;        |id=MonthlyDays                               |@days                         |
+|click        |id=SaveButton                                                               |
+|waitForResult|The profile saved successfully                                              |
+
+!|scenario    |Create Password Change Profile|ProfileName||ConsecutiveFailAction|
+|clickOnLink  |link=Profile Management                                          |
+|select;      |id=ProfileType                |label=Password Change             |
+|click        |id=NewButton                                                     |
+|type;        |id=ProfileName                |@ProfileName                      |
+|type;        |id=ConsecutiveFailCount       |1                                 |
+|select;      |id=ConsecutiveFailAction      |label=@ConsecutiveFailAction      |
+|click        |id=cbxFailNotify                                                 |
+|type;        |id=CheckChangeTimeout         |${ChangeTimeout}                  |
+|click        |id=SaveButton                                                    |
+|waitForResult|The profile saved successfully                                   |
+
+!|scenario    |Create Password Change Profile With Test Port|ProfileName          |
+|clickOnLink  |link=Profile Management                                            |
+|select;      |id=ProfileType                               |label=Password Change|
+|click        |id=NewButton                                                       |
+|type;        |id=ProfileName                               |@ProfileName         |
+|click        |id=cbxTestPort                                                     |
+|type;        |id=TestPortTimeout                           |${TestPortTimeout}   |
+|type;        |id=CheckChangeTimeout                        |${ChangeTimeout}     |
+|click        |id=SaveButton                                                      |
+|waitForResult|The profile saved successfully                                     |
+
+!|scenario    |Create Password Change Profile With Do Not Change|ProfileName          |
+|clickOnLink  |link=Profile Management                                                |
+|select;      |id=ProfileType                                   |label=Password Change|
+|click        |id=NewButton                                                           |
+|type;        |id=ProfileName                                   |@ProfileName         |
+|click        |id=cbxBlockAutoChangeFl                                                |
+|click        |id=SaveButton                                                          |
+|waitForResult|The profile saved successfully                                         |
+
+
+!|scenario    |Delete Password Profile|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                            |
+|select;      |id=ProfileType         |label=Password @ProfileType|
+|select;      |id=ProfileID           |label=@ProfileName         |
+|click        |id=DeleteButton                                    |
+|getConfirmation                                                  |
+|waitForResult|The profile was deleted successfully               |
+
+!|scenario    |Try to Delete Password Profile|ProfileType | |ProfileName |
+|clickOnLink  |link=Profile Management                                   |
+|select;      |id=ProfileType                |label=Password @ProfileType|
+|select;      |id=ProfileID                  |label=@ProfileName         |
+|click        |id=DeleteButton                                           |
+|getConfirmation                                                         |
+|waitForResult|The specified profile is in use and cannot be deleted     |
+
+''Check mail''
+
+!| scenario       |Check Mismatch Mail     |host      |     |user     |     |passwd     |     |from     |    |subject    |    |mailbody    |
+|$res=            |CheckMail               |@host;@user;@passwd;@from;@subject;@mailbody                                                   |
+|Verify_Contain_OR|$res;;A password mismatch was detected on.*while attempting to check the password for ${ManagedAccount} on ${SystemName}|
+
+!| scenario       |Check Failure Mail     |host      |     |user     |     |passwd     |     |from     |    |subject    |    |mailbody    |
+|$res=            |CheckMail              |@host;@user;@passwd;@from;@subject;@mailbody                                                   |
+|Verify_Contain_OR|$res;;A password check failure was detected on.*while attempting to check the password for ${NotExist} on ${SystemName}|
+
+!| scenario       |Change Failure Mail      |host      |      |user      |      |passwd      |      |from      |      |subject      |      |mailbody     |     |reason     |
+|$res=            |CheckMail                |@host;@user;@passwd;@from;@subject;@mailbody                                                                                  |
+|Verify_Contain_OR|$res;;An error occured on.*while attempting to change the password for ${NotExist} on ${SystemName}.  The reason for the attempted change was a @reason.|
+
+!| scenario       |Manual Account Mail   |host    |   |user   |   |passwd   |   |from   |   |subject   |  |mailbody  |
+|$res=            |CheckMail             |@host;@user;@passwd;@from;@subject;@mailbody                               |
+|Verify_Contain_OR|$res;;The manually managed password for ${ManagedAccount} on ${SystemName} is scheduled to change.|
+
+!| scenario             |Delete Mails|user                                 |
+|$res=                  |ClearMailbox|${MailServer};@user;${SystemEMailPwd}|
+|Verify_Contain_OR_alnum|$res;;Messages deleted                            |
+
+
+#!| scenario             |Check System Mail |
+#|Verify_Contain_OR_alnum|$res;;A password mismatch was detected on.*|
+
+
+''Check Messages''
+
+!| scenario       |Check Schedule|Result          |
+|$res=            |getText       |id=CheckSchedule|
+|Verify_Contain_OR|$res;;@Result                  |
+
+!| scenario       |Check Mismatch Action|Result                |
+|$res=            |getText              |id=CheckMismatchAction|
+|Verify_Contain_OR|$res;;@Result                               |
+
+!| scenario       |Check Failure Action|Result               |
+|$res=            |getText             |id=CheckFailureAction|
+|Verify_Contain_OR|$res;;@Result                             |
+
+!| scenario       |Check Timeout|Result         |
+|$res=            |getText      |id=CheckTimeout|
+|Verify_Contain_OR|$res;;@Result                |
+
+!| scenario        |Check No Timeout       |
+|$res=             |getText|id=CheckTimeout|
+|Verify_Contain_NOT|$res;;Check Timeout    |
+
+!| scenario       |Check Retry Time|Result           |
+|$res=            |getText         |id=CheckRetryTime|
+|Verify_Contain_OR|$res;;@Result                     |
+
+!| scenario       |Next Scheduled Check Info|Result                   |
+|$res=            |getText                  |id=NextScheduledCheckInfo|
+|Verify_Contain_OR|$res;;@Result                                      |
+
+!| scenario       |Check Consecutive Check Failures|Result                    |
+|$res=            |getText                         |id=ChkConsecutiveFailCount|
+|Verify_Contain_OR|$res;;@Result                                              |
+
+!| scenario       |Check Consecutive Change Failures|Result                    |
+|$res=            |getText                          |id=ChgConsecutiveFailCount|
+|Verify_Contain_OR|$res;;@Result                                               |
+
+
+!| scenario       |Change Schedule|Result           |
+|$res=            |getText        |id=ChangeSchedule|
+|Verify_Contain_OR|$res;;@Result                    |
+
+!| scenario       |Change Failure Action|Result                |
+|$res=            |getText              |id=ChangeFailureAction|
+|Verify_Contain_OR|$res;;@Result                               |
+
+!| scenario       |Block Auto Change|Result            |
+|$res=            |getText          |id=BlockAutoChange|
+|Verify_Contain_OR|$res;;@Result                       |
+
+!| scenario       |Test Port|Result     |
+|$res=            |getText  |id=TestPort|
+|Verify_Contain_OR|$res;;@Result        |
+
+!| scenario       |Change Timeout|Result          |
+|$res=            |getText       |id=ChangeTimeout|
+|Verify_Contain_OR|$res;;@Result                  |
+
+!| scenario        |Change No Timeout       |
+|$res=             |getText|id=ChangeTimeout|
+|Verify_Contain_NOT|$res;;Change Timeout    |
+
+!| scenario       |Change Retry Time|Result            |
+|$res=            |getText          |id=ChangeRetryTime|
+|Verify_Contain_OR|$res;;@Result                       |
+
+!| scenario       |Next Scheduled Change Info|Result                    |
+|$res=            |getText                   |id=NextScheduledChangeInfo|
+|Verify_Contain_OR|$res;;@Result                                        |
+
+
+!| scenario    |Management tab|accountName|
+|Choose Account|@accountName              |
+|click         |id=Details                |
+|click         |id=Management             |
+
+!| scenario       |Cancel|CLIBatch||options||result|
+|$res=            |CLI   |@CLIBatch Cancel @options|
+|Verify_Contain_OR|$res;;@result                   |
+
+!| scenario       |Add PwdRequest|CLIBatch  |  |options | |result |
+|$res=            |CLI           |@CLIBatch AddPwdRequest @options|
+|Verify_Contain_OR|$res;;@result                                  |
+|$RequestID=      |get_RequestID |$res                            |
+
+!| scenario |Check Password Consecutive Failures Report (1 or more failures)|System||Account||CheckProfile||ChangeProfile|
+|clickOnLink|link=Password Consecutive Failures                                                                          |
+|type;      |id=SystemName                                                  |@System                                     |
+|type;      |id=AccountName                                                 |@Account                                    |
+|select;    |id=PasswordCheckProfileID                                      |label=@CheckProfile                         |
+|select;    |id=PasswordChangeProfileID                                     |label=@ChangeProfile                        |
+|click      |id=run                                                                                                      |
+|Verify report data                                                                                                      |
+
+!| scenario |Check Password Consecutive Failures Report (Exactly)|System||Account||CheckProfile||ChangeProfile|
+|clickOnLink|link=Password Consecutive Failures                                                               |
+|type;      |id=SystemName                                       |@System                                     |
+|type;      |id=AccountName                                      |@Account                                    |
+|select;    |id=PasswordCheckProfileID                           |label=@CheckProfile                         |
+|select;    |id=PasswordChangeProfileID                          |label=@ChangeProfile                        |
+|click      |id=rb_filterCount1                                                                               |
+|type;      |id=FailCount                                        |1                                           |
+|click      |id=run                                                                                           |
+|Verify report data                                                                                           |
+
+!| scenario |Check Password Consecutive Failures Report (Range)|System||Account||CheckProfile||ChangeProfile|
+|clickOnLink|link=Password Consecutive Failures                                                             |
+|type;      |id=SystemName                                     |@System                                     |
+|type;      |id=AccountName                                    |@Account                                    |
+|select;    |id=PasswordCheckProfileID                         |label=@CheckProfile                         |
+|select;    |id=PasswordChangeProfileID                        |label=@ChangeProfile                        |
+|click      |id=rb_filterCount2                                                                             |
+|type;      |id=MinFailCount                                   |1                                           |
+|type;      |id=MaxFailCount                                   |1                                           |
+|click      |id=run                                                                                         |
+|Verify report data                                                                                         |
+
+!| scenario|Verify report data                                            |
+|verifyText|xpath=//th[@id='SystemName']       ||System Name              |
+|verifyText|xpath=//tr[@id='highlight0']/td[1] ||${SystemName}            |
+|verifyText|xpath=//th[@id='AccountName']      ||Account Name             |
+|verifyText|xpath=//tr[@id='highlight0']/td[2] ||${ManagedAccount}        |
+|verifyText|id=ConsecutiveChangeFails          ||Consecutive Change Fails |
+|verifyText|xpath=//tr[@id='highlight0']/td[3] ||1                        |
+|verifyText|id=ConsecutiveCheckFails           ||Consecutive Check Fails  |
+|verifyText|xpath=//tr[@id='highlight0']/td[6] ||1                        |
+|verifyText|id=ChangeProfile                   ||Change Profile           |
+|verifyText|xpath=//tr[@id='highlight0']/td[9] ||${ChangeProfile}         |
+|verifyText|id=ProfileChangeFailCount          ||Profile Change Fail Count|
+|verifyText|xpath=//tr[@id='highlight0']/td[10]||1                        |
+|verifyText|id=ChangeFailAction                ||Change Fail Action       |
+|verifyText|xpath=//tr[@id='highlight0']/td[11]||Nothing                  |
+|verifyText|id=ChangeFailNotifyOwner           ||Change Fail Notify Owner |
+|verifyText|xpath=//tr[@id='highlight0']/td[12]||Y                        |
+|verifyText|id=ChangeTestPort                  ||Change Test Port         |
+|verifyText|xpath=//tr[@id='highlight0']/td[13]||N                        |
+|verifyText|id=CheckProfile                    ||Check Profile            |
+|verifyText|xpath=//tr[@id='highlight0']/td[15]||${CheckProfile}          |
+|verifyText|id=ProfileCheckFailCount           ||Profile Check Fail Count |
+|verifyText|xpath=//tr[@id='highlight0']/td[16]||1                        |
+|verifyText|id=CheckFailAction                 ||Check Fail Action        |
+|verifyText|xpath=//tr[@id='highlight0']/td[17]||Nothing                  |
+|verifyText|id=CheckFailNotifyOwner            ||Check Fail Notify Owner  |
+|verifyText|xpath=//tr[@id='highlight0']/td[18]||Y                        |
+|verifyText|xpath=//th[@id='SystemName']       ||System Name              |
+|verifyText|xpath=//tr[@id='highlight1']/td[1] ||${SystemName}            |
+|verifyText|xpath=//th[@id='AccountName']      ||Account Name             |
+|verifyText|xpath=//tr[@id='highlight1']/td[2] ||${ManagedAccount}2       |
+|verifyText|id=ConsecutiveChangeFails          ||Consecutive Change Fails |
+|verifyText|xpath=//tr[@id='highlight1']/td[3] ||1                        |
+|verifyText|id=ConsecutiveCheckFails           ||Consecutive Check Fails  |
+|verifyText|xpath=//tr[@id='highlight1']/td[6] ||1                        |
+|verifyText|id=ChangeProfile                   ||Change Profile           |
+|verifyText|xpath=//tr[@id='highlight1']/td[9] ||${ChangeProfile}         |
+|verifyText|id=ProfileChangeFailCount          ||Profile Change Fail Count|
+|verifyText|xpath=//tr[@id='highlight1']/td[10]||1                        |
+|verifyText|id=ChangeFailAction                ||Change Fail Action       |
+|verifyText|xpath=//tr[@id='highlight1']/td[11]||Nothing                  |
+|verifyText|id=ChangeFailNotifyOwner           ||Change Fail Notify Owner |
+|verifyText|xpath=//tr[@id='highlight1']/td[12]||Y                        |
+|verifyText|id=ChangeTestPort                  ||Change Test Port         |
+|verifyText|xpath=//tr[@id='highlight1']/td[13]||N                        |
+|verifyText|id=CheckProfile                    ||Check Profile            |
+|verifyText|xpath=//tr[@id='highlight1']/td[15]||${CheckProfile}          |
+|verifyText|id=ProfileCheckFailCount           ||Profile Check Fail Count |
+|verifyText|xpath=//tr[@id='highlight1']/td[16]||1                        |
+|verifyText|id=CheckFailAction                 ||Check Fail Action        |
+|verifyText|xpath=//tr[@id='highlight1']/td[17]||Nothing                  |
+|verifyText|id=CheckFailNotifyOwner            ||Check Fail Notify Owner  |
+|verifyText|xpath=//tr[@id='highlight1']/td[18]||Y                        |

@@ -1,0 +1,566 @@
+!contents
+
+
+!| scenario       |Add Fake System|systemName                                                                                                                                                                                                                                                                                                          |
+|$res=            |CLI            |${CLIBatch} AddSystem --SystemName @systemName  --NetworkAddress 7.7.7.7 --PlatformName Windows --FunctionalAccount ${FunctAcct} --FuncAcctCred \"${FunctAcctPwd}\" --PasswordCheckProfile ${PersistentPasswordCheckProfile2} --PasswordChangeProfile ${PersistentPasswordChangeProfile2} --Timeout ${SystemTimeout}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                                                                    |
+
+!| scenario       |Add Fake User|userName                                                                                                    |
+|$res=            |CLI          |${CLIBatch} AddUser --UserName @userName --LastName Doe --FirstName John --Email John.Doe@${TPAMEMailDomain}|
+|Verify_Contain_OR|$res;;successful                                                                                                          |
+
+!| scenario       |Remove User|userName                                   |
+|$res=            |CLI        |${CLIBatch} DeleteUser --UserName @userName|
+|Verify_Contain_OR|$res;;successful                                       |
+
+!|scenario        |Add Group|GroupName                                                                  |
+|$res=            |CLI      |${CLIBatch} AddGroup --GroupName @GroupName --Description "TPAM Test Group"|
+|Verify_Contain_OR|$res;;successful                                                                     |
+
+!|scenario        |Delete Group|GroupName                                   |
+|$res=            |CLI         |${CLIBatch} DropGroup --GroupName @GroupName|
+|Verify_Contain_OR|$res;;successful                                         |
+
+!|scenario        |Add Collection|CollectionName                                                                                 |
+|$res=            |CLI           |${CLIBatch} AddCollection --CollectionName @CollectionName --Description "TPAM Test Collection"|
+|Verify_Contain_OR|$res;;successful                                                                                              |
+
+
+!|scenario        |Delete Collection|CollectionName                                             |
+|$res=            |CLI              |${CLIBatch} DropCollection --CollectionName @CollectionName|
+|Verify_Contain_OR|$res;;successful                                                             |
+
+!|scenario        |Remove System|SystemName                                       |
+|$res=            |CLI          |${CLIBatch} DeleteSystem --SystemName @SystemName|
+|Verify_Contain_OR|$res;;successful                                               |
+
+!|scenario        |Remove User|UserName                                   |
+|$res=            |CLI        |${CLIBatch} DeleteUser --UserName @UserName|
+|Verify_Contain_OR|$res;;successful                                       |
+
+!|scenario            |Create User Template|templateName                    |
+|clickOnLink          |link=Add User Template                               |
+|pause                |5000                                                 |
+|waitForElementPresent|id=UserName                                          |
+|type;                |id=UserName         |@templateName                   |
+|type;                |id=FirstName        |John                            |
+|type;                |id=LastName         |Doe                             |
+|type;                |id=Phone            |777-777-777                     |
+|type;                |id=Pager            |888-888-888                     |
+|type;                |id=EmailID          |@templateName@${TPAMEMailDomain}|
+|type;                |id=Comment          |@templateName description       |
+|click                |id=cbxMobile                                         |
+|type;                |id=sPassword        |grain41R                        |
+|type;                |id=Confirm          |grain41R                        |
+|click                |id=KeyBased                                          |
+|waitForElementPresent|id=cb_CliAccess                                      |
+|click                |id=cb_CliAccess                                      |
+|click                |id=Time                                              |
+|waitForElementPresent|id=rbAllow                                           |
+|click                |id=rbAllow                                           |
+|pause                |1000                                                 |
+|click                |id=cbxLogonDay2                                      |
+|pause                |1000                                                 |
+|click                |id=cbxLogonDay3                                      |
+|pause                |1000                                                 |
+|click                |id=cbxLogonDay4                                      |
+|pause                |1000                                                 |
+|click                |id=cbxLogonDay5                                      |
+|pause                |1000                                                 |
+|click                |id=cbxLogonDay6                                      |
+|pause                |1000                                                 |
+|click                |id=SubmitChanges                                     |
+|waitForTextPresent   |User added successfully                              |
+|Add User To Group    |@templateName       |      |${TemplateGroupName}     |
+
+
+!|scenario               |Create System Template    |templateName                             |
+|clickOnLink             |link=Add System Template                                            |
+|pause                   |5000                                                                |
+|type;                   |id=SystemName             |@templateName                            |
+|type;                   |id=NetworkAddress         |1.1.1.1                                  |
+|select;                 |id=PlatformID             |label=Windows                            |
+|select;                 |id=MaxDurationDays        |label=3                                  |
+|type;                   |id=PrimaryEmail           |@templateName@${TPAMEMailDomain}         |
+|type;                   |id=Comment                |@templateName description                |
+|type;                   |id=EscalationTime         |30                                       |
+|type;                   |id=EscalationEmail        |Escalation@${TPAMEMailDomain}            |
+|click                   |id=Connection                                                       |
+|waitForElementPresent   |id=cb_AllowFuncReqFl                                                |
+|type;                   |id=PARFuncAcct            |funk                                     |
+|type;                   |id=pword                  |grain41R                                 |
+|type;                   |id=ConfPword              |grain41R                                 |
+|click                   |id=cb_AllowFuncReqFl                                                |
+|click                   |id=Management                                                       |
+|pause                   |2000                                                                |
+|select;                 |id=PasswordCheckProfileID |label=${PersistentPasswordCheckProfile1} |
+|select;                 |id=PasswordChangeProfileID|label=${PersistentPasswordChangeProfile1}|
+|select;                 |id=DurationHrs            |label=3                                  |
+|select;                 |id=DurationQtrHrs         |label=30                                 |
+|click                   |id=cb_AllowISADuration                                              |
+|click                   |id=TicketSystem                                                     |
+|pause                   |1000                                                                |
+|click                   |id=RequireTixForRequest                                             |
+|click                   |id=RequireTixForCLI                                                 |
+|pause                   |1000                                                                |
+|type;                   |id=TixEmailNotify         |TicketNotify@${TPAMEMailDomain}          |
+|click                   |id=bt_Save                                                          |
+|waitForTextPresent      |System changes for @templateName saved successfully                 |
+|Add System To Collection|@templateName             |        |${TemplateCollectionName}       |
+
+
+!|scenario         |Create LDAP System Mapping                                  |
+|pause             |3000                                                        |
+|click             |id=AddComputersButton                                       |
+|pause             |3000                                                        |
+|select;           |id=SystemID           |label=${SystemName}                  |
+|click             |id=btnDNAdd                                                 |
+|pause             |3000                                                        |
+|type;             |id=DistinguishedName  |ou=${SystemContainerName},${BaseName}|
+|select;           |id=AutoUpdFreq_Minutes|label=15                             |
+|select;           |id=NotifyType         |label=All                            |
+|type;             |id=NotifyEmail        |${AutoDiscoveryEMail}                |
+|select;           |id=MissingDN          |label=Create Unique TPAM System      |
+|select;           |id=ExistingDN         |label=Create Unique TPAM System      |
+|type;             |id=PARCollectionName  |${CollectionName}                    |
+|select;           |id=TemplateID         |label=${SystemTemplateName} [Windows]|
+|click             |id=btnValidateDN                                            |
+|pause             |2000                                                        |
+|waitForTextPresent|The Distinguished name is valid                             |
+|pause             |1000                                                        |
+|click             |id=SaveButton                                               |
+|waitForTextPresent|New Auto Discovery mapping saved successfully               |
+|waitForTextPresent|Computer Distinguished Name Filter * saved successfully     |
+|pause             |10000                                                       |
+
+
+!|scenario         |Create LDAP User Mapping                                  |
+|clickOnLink       |link=LDAP Directory                                       |
+|click             |id=AddUsersButton                                         |
+|pause             |3000                                                      |
+|select;           |id=SystemID           |label=${SystemName}                |
+|click             |id=btnDNAdd                                               |
+|pause             |3000                                                      |
+|type;             |id=DistinguishedName  |ou=${UserContainerName},${BaseName}|
+|select;           |id=AutoUpdFreq_Minutes|label=15                           |
+|select;           |id=NotifyType         |label=All                          |
+|type;             |id=NotifyEmail        |${AutoDiscoveryEMail}              |
+|select;           |id=ProtectedUser      |label=Create Unique                |
+|select;           |id=MissingDN          |label=Create Unique TPAM User      |
+|select;           |id=ExistingDN         |label=Create Unique TPAM User      |
+|select;           |id=DeletedSource      |label=Disable User in TPAM         |
+|type;             |id=PARGroupName       |${GroupName}                       |
+|select;           |id=TemplateID         |label=${UserTemplateName} [Basic]  |
+|click             |id=btnValidateDN                                          |
+|pause             |2000                                                      |
+|waitForTextPresent|The Distinguished name is valid                           |
+|pause             |1000                                                      |
+|click             |id=SaveButton                                             |
+|waitForTextPresent|New Auto Discovery mapping saved successfully             |
+|waitForTextPresent|User Distinguished Name Filter * saved successfully       |
+|pause             |10000                                                     |
+
+
+!|scenario            |Create Generic System Mapping                                                         |
+|pause                |3000                                                                                  |
+|click                |id=AddSystemsButton                                                                   |
+|type;                |id=SystemName                                   |${SystemName}                        |
+|type;                |id=AccountName                                  |${ManagedAccount}                    |
+|type;                |id=Command                                      |${SelectComputerQuery}               |
+|select;              |id=AutoUpdFreq_Minutes                          |label=15                             |
+|select;              |id=NotifyType                                   |label=All                            |
+|type;                |id=NotifyEmail                                  |${AutoDiscoveryEMail}                |
+|select;              |id=MissingDN                                    |label=Create Unique TPAM System      |
+|select;              |id=ExistingDN                                   |label=Create Unique TPAM System      |
+|click                |id=System                                                                             |
+|waitForElementPresent|id=PARCollectionName                                                                  |
+|type;                |id=PARCollectionName                            |${CollectionName}                    |
+|select;              |id=TemplateSystemID                             |label=${SystemTemplateName} [Windows]|
+|pause                |1000                                                                                  |
+|click                |id=SaveButton                                                                         |
+|waitForTextPresent   |successfully                                                                          |
+|click                |id=Source                                                                             |
+|waitForElementPresent|id=btnTestSQL                                                                         |
+|click                |id=btnTestSQL                                                                         |
+|waitForTextPresent   |in result set                                                                         |
+|select;              |xpath=//td[text()='ComputerID']/../td/select    |label=UniqueSystemID (Required)      |
+|click                |xpath=//td[text()='ComputerID']/../td/select                                          |
+|select;              |xpath=//td[text()='ComputerName']/../td/select  |label=System Name (Required)         |
+|click                |xpath=//td[text()='ComputerName']/../td/select                                        |
+|select;              |xpath=//td[text()='NetworkAddress']/../td/select|label=Network Address (Required)     |
+|click                |xpath=//td[text()='NetworkAddress']/../td/select                                      |
+|select;              |xpath=//td[text()='Email']/../td/select         |label=Primary Email                  |
+|click                |xpath=//td[text()='Email']/../td/select                                               |
+|select;              |xpath=//td[text()='Description']/../td/select   |label=Description                    |
+|click                |xpath=//td[text()='Description']/../td/select                                         |
+|click                |id=SaveButton                                                                         |
+|waitForTextPresent   |successfully                                                                          |
+
+
+!|scenario            |Create Generic User Mapping                                                    |
+|clickOnLink          |link=Generic                                                                   |
+|click                |id=AddUsersButton                                                              |
+|type;                |id=SystemName                                |${SystemName}                    |
+|type;                |id=AccountName                               |${ManagedAccount}                |
+|type;                |id=Command                                   |${SelectUserQuery}               |
+|select;              |id=AutoUpdFreq_Minutes                       |label=15                         |
+|select;              |id=NotifyType                                |label=All                        |
+|type;                |id=NotifyEmail                               |${AutoDiscoveryEMail}            |
+|select;              |id=ProtectedUser                             |label=Create Unique              |
+|select;              |id=MissingDN                                 |label=Create Unique TPAM User    |
+|select;              |id=ExistingDN                                |label=Create Unique TPAM User    |
+|select;              |id=DeletedSource                             |label=Disable User in TPAM       |
+|click                |id=User                                                                        |
+|waitForElementPresent|id=PARGroupName                                                                |
+|type;                |id=PARGroupName                              |${GroupName}                     |
+|select;              |id=TemplateUserID                            |label=${UserTemplateName} [Basic]|
+|pause                |1000                                                                           |
+|click                |id=SaveButton                                                                  |
+|waitForTextPresent   |successfully                                                                   |
+|click                |id=Source                                                                      |
+|waitForElementPresent|id=btnTestSQL                                                                  |
+|click                |id=btnTestSQL                                                                  |
+|waitForTextPresent   |in result set                                                                  |
+|select;              |xpath=//td[text()='UserID']/../td/select     |label=UniqueUserID (Required)    |
+|click                |xpath=//td[text()='UserID']/../td/select                                       |
+|select;              |xpath=//td[text()='UserName']/../td/select   |label=UserName (Required)        |
+|click                |xpath=//td[text()='UserName']/../td/select                                     |
+|select;              |xpath=//td[text()='FirstName']/../td/select  |label=FirstName (Required)       |
+|click                |xpath=//td[text()='FirstName']/../td/select                                    |
+|select;              |xpath=//td[text()='LastName']/../td/select   |label=LastName (Required)        |
+|click                |xpath=//td[text()='LastName']/../td/select                                     |
+|select;              |xpath=//td[text()='Phone']/../td/select      |label=Phone                      |
+|click                |xpath=//td[text()='Phone']/../td/select                                        |
+|select;              |xpath=//td[text()='EMail']/../td/select      |label=EmailID                    |
+|click                |xpath=//td[text()='EMail']/../td/select                                        |
+|select;              |xpath=//td[text()='Mobile']/../td/select     |label=Mobile                     |
+|click                |xpath=//td[text()='Mobile']/../td/select                                       |
+|select;              |xpath=//td[text()='Description']/../td/select|label=Comments                   |
+|click                |xpath=//td[text()='Description']/../td/select                                  |
+|click                |id=SaveButton                                                                  |
+|waitForTextPresent   |successfully                                                                   |
+
+
+!|scenario            |Delete LDAP User Mapping                   |
+|clickOnLink          |link=LDAP Directory                        |
+|waitForElementPresent|id=SystemNm                                |
+|type;                |id=SystemNm         |${SystemName}         |
+|click                |id=Listing                                 |
+|pause                |2000                                       |
+|click                |xpath=//td[contains(text(),'${GroupName}')]|
+|click                |id=DeleteButton                            |
+|getConfirmation                                                  |
+|pause                |10000                                      |
+
+!|scenario            |Delete LDAP System Mapping                      |
+|clickOnLink          |link=LDAP Directory                             |
+|waitForElementPresent|id=SystemNm                                     |
+|type;                |id=SystemNm            |${SystemName}           |
+|click                |id=Listing                                      |
+|pause                |2000                                            |
+|click                |xpath=//td[contains(text(),'${CollectionName}')]|
+|click                |id=DeleteButton                                 |
+|getConfirmation                                                       |
+|pause                |10000                                           |
+
+!|scenario            |Delete Generic User Mapping                |
+|clickOnLink          |link=Generic                               |
+|waitForElementPresent|id=CollGrpNm                               |
+|type;                |id=CollGrpNm         |${GroupName}         |
+|click                |id=Listing                                 |
+|pause                |2000                                       |
+|click                |xpath=//td[contains(text(),'${GroupName}')]|
+|click                |id=DeleteButton                            |
+|getConfirmation                                                  |
+|pause                |10000                                      |
+
+!|scenario            |Delete Generic System Mapping                   |
+|clickOnLink          |link=Generic                                    |
+|waitForElementPresent|id=CollGrpNm                                    |
+|type;                |id=CollGrpNm         |${CollectionName}         |
+|click                |id=Listing                                      |
+|pause                |2000                                            |
+|click                |xpath=//td[contains(text(),'${CollectionName}')]|
+|click                |id=DeleteButton                                 |
+|getConfirmation                                                       |
+|pause                |10000                                           |
+
+
+
+
+!|scenario         |Delete User Template     |templateName      |
+|pause             |5000                                        |
+|clickOnLink       |link=Manage UserIDs                         |
+|type;             |id=UsrNm                 |@templateName     |
+|click             |id=Listing                                  |
+|click             |xpath=//td[contains(text(),'@templateName')]|
+|click             |id=Delete                                   |
+|getConfirmation                                                |
+|waitForTextPresent|@templateName has been successfully deleted |
+
+
+!|scenario         |Delete System Template    |templateName     |
+|pause             |2000                                        |
+|clickOnLink       |link=Manage Systems                         |
+|type;             |id=SystemNm               |@templateName    |
+|click             |id=Listing                                  |
+|click             |xpath=//td[contains(text(),'@templateName')]|
+|click             |id=bt_Del                                   |
+|getConfirmation                                                |
+|waitForTextPresent|@templateName has been successfully deleted |
+
+
+!|scenario            |Check System    |systemName    |    |systemAddress   |
+|clickOnLink          |link=Manage Systems                                  |
+|type;                |id=SystemNm     |@systemName                         |
+|click                |id=Listing                                           |
+|click                |xpath=//td[contains(text(),'@systemName')]           |
+|click                |id=Details                                           |
+|waitForElementPresent|xpath=//input[@id='NetworkAddress']                  |
+|$res=                |getValue        |xpath=//input[@id='NetworkAddress'] |
+|Verify_Contain_OR    |$res;;@systemAddress                                 |
+|$res=                |getSelectedLabel|id=PlatformID                       |
+|Verify_Contain_OR    |$res;;Windows                                        |
+|$res=                |getSelectedLabel|id=PwdRuleID                        |
+|Verify_Contain_OR    |$res;;Default Password Rule                          |
+|$res=                |getSelectedLabel|id=MaxDurationDays                  |
+|Verify_Contain_OR    |$res;;3                                              |
+|$res=                |getSelectedLabel|id=MaxDurationHrs                   |
+|Verify_Contain_OR    |$res;;0                                              |
+|$res=                |getSelectedLabel|id=MaxDurationQtrHrs                |
+|Verify_Contain_OR    |$res;;0                                              |
+|$res=                |isChecked       |id=cb_SystemAutoFl                  |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cb_EgpOnlyFl                     |
+|Verify_Contain_OR    |$res;;false                                          |
+|$res=                |getValue        |xpath=//input[@id='EscalationTime'] |
+|Verify_Contain_OR    |$res;;30                                             |
+|$res=                |getValue        |xpath=//input[@id='EscalationEmail']|
+|Verify_Contain_OR    |$res;;Escalation@${TPAMEMailDomain}                  |
+|$res=                |getValue        |xpath=//textarea[@id='Comment']     |
+|Verify_Contain_OR    |$res;;Super Computer from AD                         |
+|click                |id=Connection                                        |
+|waitForElementPresent|id=cb_AllowFuncReqFl                                 |
+|$res=                |getValue        |xpath=//input[@id='PARFuncAcct']    |
+|Verify_Contain_OR    |$res;;funk                                           |
+|$res=                |isChecked       |id=cb_NonPrivFuncFl                 |
+|Verify_Contain_OR    |$res;;false                                          |
+|$res=                |isChecked       |id=cb_AllowFuncReqFl                |
+|Verify_Contain_OR    |$res;;true                                           |
+|click                |id=Management                                        |
+|$res=                |getSelectedLabel|id=PasswordCheckProfileID           |
+|Verify_Contain_OR    |$res;;${PersistentPasswordCheckProfile1}             |
+|$res=                |getSelectedLabel|id=PasswordChangeProfileID          |
+|Verify_Contain_OR    |$res;;${PersistentPasswordChangeProfile1}            |
+|$res=                |getSelectedLabel|id=DurationDays                     |
+|Verify_Contain_OR    |$res;;0                                              |
+|$res=                |getSelectedLabel|id=DurationHrs                      |
+|Verify_Contain_OR    |$res;;3                                              |
+|$res=                |getSelectedLabel|id=DurationQtrHrs                   |
+|Verify_Contain_OR    |$res;;30                                             |
+|$res=                |isChecked       |id=cb_AllowISADuration              |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=cb_PushAuto2AcctFl               |
+|Verify_Contain_OR    |$res;;false                                          |
+|$res=                |isChecked       |id=cb_Push2AcctFl                   |
+|Verify_Contain_OR    |$res;;false                                          |
+|click                |id=TicketSystem                                      |
+|$res=                |isChecked       |id=RequireTixForRequest             |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |getSelectedLabel|id=TSID                             |
+|Verify_Contain_OR    |$res;;Any Ticket System                              |
+|$res=                |isChecked       |id=RequireTixForISA                 |
+|Verify_Contain_OR    |$res;;false                                          |
+|$res=                |isChecked       |id=RequireTixForCLI                 |
+|Verify_Contain_OR    |$res;;true                                           |
+|$res=                |isChecked       |id=RequireTixForAPI                 |
+|Verify_Contain_OR    |$res;;false                                          |
+|$res=                |isChecked       |id=RequireTixForPSM                 |
+|Verify_Contain_OR    |$res;;false                                          |
+|$res=                |getValue        |xpath=//input[@id='TixEmailNotify'] |
+|Verify_Contain_OR    |$res;;TicketNotify@${TPAMEMailDomain}                |
+
+!| scenario       |Check No System|systemName                                      |
+|$res=            |CLI            |${CLIBatch} ListSystems --SystemName @systemName|
+|Verify_Contain_OR|$res;;No Systems to list                                        |
+
+!| scenario       |Check No User|userName                                  |
+|$res=            |CLI          |${CLIBatch} ListUsers --UserName @userName|
+|Verify_Contain_OR|$res;;No Users to list                                  |
+
+
+
+!| scenario             |Check Mail|user          |          |subject          |         |body         |
+|$res=                  |CheckMail |${MailServer};@user;${TPAMEMailPassword};${FromMail};@subject;@body|
+|Verify_Contain_OR_alnum|$res;;@body;;too many messages                                                |
+
+!| scenario             |Delete Mails|user                                    |
+|$res=                  |ClearMailbox|${MailServer};@user;${TPAMEMailPassword}|
+|Verify_Contain_OR_alnum|$res;;Messages deleted                               |
+
+
+!|scenario            |Check That User Disabled|userName||disabledFlag|
+|clickOnLink          |link=Manage UserIDs                            |
+|type;                |id=UsrNm                |@userName             |
+|click                |id=Listing                                     |
+|click                |xpath=//td[contains(text(),'@userName')]       |
+|click                |id=Details              |                      |
+|waitForElementPresent|id=Disabled                                    |
+|pause                |5000                                           |
+|$res=                |isChecked               |id=Disabled           |
+|Verify_Contain_OR    |$res;;@disabledFlag                            |
+
+
+!|scenario        |Add System To Collection|SystemName                     |                     |CollectionName                     |
+|$res=            |CLI                     |${CLIBatch} AddCollectionMember --SystemName @SystemName --CollectionName @CollectionName|
+|Verify_Contain_OR|$res;;successful                                                                                                  |
+
+
+
+!| scenario        |Check Collection Membership|collectionName                       |                       |systemName                      |
+|$res=             |CLI                        |${CLIBatch} ListCollectionMembership --CollectionName @collectionName --SystemName @systemName|
+|Verify_Contain_OR |$res;;@systemName                                                                                                         |
+|Verify_Contain_NOT|$res;;No Collection Memberships to list                                                                                   |
+
+!|scenario                  |BFER 6708 System Inherited Template Collection Membership|systemName  |
+|Check Collection Membership|${TemplateCollectionName}                                ||@systemName|
+
+!|scenario        |Add User To Group|UserName                 |                 |GroupName                 |
+|$res=            |CLI              |${CLIBatch} AddGroupMember --UserName @UserName --GroupName @GroupName|
+|Verify_Contain_OR|$res;;successful                                                                        |
+
+
+!| scenario        |Check Group Membership|groupName                   |                   |userName                  |
+|$res=             |CLI                   |${CLIBatch} ListGroupMembership --GroupName @groupName --UserName @userName|
+|Verify_Contain_OR |$res;;@userName                                                                                   |
+|Verify_Contain_NOT|$res;;No Group Memberships to list                                                                |
+
+
+!|scenario             |BFER 6708 User Inherited Template Group Membership|userName  |
+|Check Group Membership|${TemplateGroupName}                              ||@userName|
+
+
+!| scenario       |Check No Collection Membership|collectionName                       |                       |systemName                      |
+|$res=            |CLI                           |${CLIBatch} ListCollectionMembership --CollectionName @collectionName --SystemName @systemName|
+|Verify_Contain_OR|$res;;No Collection Memberships to list                                                                                      |
+
+
+!| scenario       |Check No Group Membership|groupName                   |                   |userName                  |
+|$res=            |CLI                      |${CLIBatch} ListGroupMembership --GroupName @groupName --UserName @userName|
+|Verify_Contain_OR|$res;;No Group Memberships to list                                                                   |
+
+
+!| scenario             |Check No Mail|user          |          |subject          |         |body         |
+|$res=                  |CheckMail    |${MailServer};@user;${TPAMEMailPassword};${FromMail};@subject;@body|
+|Verify_Contain_OR_alnum|$res;;no messages                                                                |
+
+###### New scenarios for LDAP mappings
+
+!|scenario              |Run Discovery for         |containerName        |
+|Select LDAP Mapping for|@containerName                                  |
+|click                  |id=Source                                       |
+|pause                  |1000                                            |
+|Set Auto Update Minutes|0                                               |
+|pause                  |5000                                            |
+|click                  |id=SaveButton                                   |
+|waitForTextPresent     |Auto Discovery mapping change saved successfully|
+|click                  |id=SaveButton                                   |
+|Set Auto Update Minutes|15                                              |
+|pause                  |5000                                            |
+|select;                |id=NotifyType             |label=All            |
+|pause                  |5000                                            |
+|click                  |id=SaveButton                                   |
+|waitForTextPresent     |Auto Discovery mapping change saved successfully|
+|pause                  |10000                                           |
+
+!|scenario              |Run Discovery                                   |
+|pause                  |5000                                            |
+|Set Auto Update Minutes|0                                               |
+|pause                  |2000                                            |
+|click                  |id=SaveButton                                   |
+|pause                  |5000                                            |
+|waitForTextPresent     |Auto Discovery mapping change saved successfully|
+|pause                  |5000                                            |
+|Set Auto Update Minutes|15                                              |
+|pause                  |5000                                            |
+|select;                |id=NotifyType             |label=All            |
+|pause                  |5000                                            |
+|click                  |id=SaveButton                                   |
+|waitForTextPresent     |Auto Discovery mapping change saved successfully|
+|pause                  |10000                                           |
+
+
+!|scenario|Set Auto Update Minutes|min       |
+|select;  |id=AutoUpdFreq_Minutes |label=@min|
+
+!|scenario         |Add Mapping Row     |dn||filter||template|
+|click             |id=btnDNAdd                              |
+|pause             |3000                                     |
+|type;             |id=DistinguishedName|@dn                 |
+|pause             |3000                                     |
+|type;             |id=FilterString     |@filter             |
+|pause             |2000                                     |
+|select;           |id=TemplateID       |label=@template     |
+|pause             |1000                                     |
+|click             |id=btnValidateDN                         |
+|pause             |2000                                     |
+|waitForTextPresent|The Distinguished name is valid          |
+|pause             |10000                                    |
+
+!|scenario|Set User Collision Strategy|protectedUser||missingDN||existingDN||deletedSource|
+|select;  |id=ProtectedUser           |label=@protectedUser                               |
+|select;  |id=MissingDN               |label=@missingDN                                   |
+|select;  |id=ExistingDN              |label=@existingDN                                  |
+|select;  |id=DeletedSource           |label=@deletedSource                               |
+
+!|scenario|Set System Collision Strategy|missingDN||existingDN||deletedSource|
+|select;  |id=MissingDN                 |label=@missingDN                    |
+|select;  |id=ExistingDN                |label=@existingDN                   |
+|select;  |id=DeletedSource             |label=@deletedSource                |
+
+!|scenario            |Select LDAP Mapping for    |container    |
+|pause                |5000                                     |
+|clickOnLink          |link=LDAP Directory                      |
+|pause                |3000                                     |
+|waitForElementPresent|id=CollGrpNm                             |
+|type;                |id=CollGrpNm               |@container   |
+|pause                |2000                                     |
+|click                |id=Listing                               |
+|pause                |2000                                     |
+|waitForElementPresent|xpath=//td[contains(text(),'@container')]|
+|mouseMoveOver        |xpath=//td[contains(text(),'@container')]|
+|click                |xpath=//td[contains(text(),'@container')]|
+|pause                |5000                                     |
+|click                |id=Source                                |
+|pause                |5000                                     |
+
+!|scenario            |Select Generic Mapping for  |container   |
+|pause                |5000                                     |
+|clickOnLink          |link=Generic                             |
+|pause                |3000                                     |
+|waitForElementPresent|id=CollGrpNm                             |
+|type;                |id=CollGrpNm                |@container  |
+|pause                |2000                                     |
+|click                |id=Listing                               |
+|pause                |2000                                     |
+|waitForElementPresent|xpath=//td[contains(text(),'@container')]|
+|mouseMoveOver        |xpath=//td[contains(text(),'@container')]|
+|click                |xpath=//td[contains(text(),'@container')]|
+|pause                |5000                                     |
+|click                |id=Source                                |
+|pause                |5000                                     |
+
+
+!|scenario            |Add User    |UserName||Passwd||EMail|
+|pause                |5000                                |
+|clickOnLink          |link=Add UserID                     |
+|pause                |5000                                |
+|waitForElementPresent|id=UserName                         |
+|type;                |id=UserName |@UserName              |
+|type;                |id=FirstName|Vasily                 |
+|type;                |id=LastName |Pupkin                 |
+|type;                |id=EmailID  |@EMail                 |
+|type;                |id=sPassword|@Passwd                |
+|type;                |id=Confirm  |@Passwd                |
+|click                |id=SubmitChanges                    |
+|waitForTextPresent   |User added successfully             |

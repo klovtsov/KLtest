@@ -1,0 +1,79 @@
+!contents
+
+!|scenario         |Create Command Restriction Profile                                 |profileName|with action|actionName|
+|pause             |5000                                                                                                  |
+|clickOnLink       |link=Profile Management                                                                               |
+|pause             |1000                                                                                                  |
+|select;           |id=ProfileType                                                     |label=Restricted Command          |
+|click             |id=NewButton                                                                                          |
+|pause             |1000                                                                                                  |
+|type;             |id=ProfileName                                                     |@profileName                      |
+|click             |id=SNMPNotificationFl                                                                                 |
+|click             |id=EmailNotificationFl                                                                                |
+|type;             |id=NotificationEmail                                               |${NotifyRestrictedEmail}          |
+|click             |id=btnAddRow                                                                                          |
+|click             |xpath=//table[@id='tblCmdRestr']/tbody/tr[@id='dtl_0']/td[2]/input                                    |
+|click             |xpath=//table[@id='tblCmdRestr']/tbody/tr[@id='dtl_0']/td[4]/input                                    |
+|type;             |xpath=//table[@id='tblCmdRestr']/tbody/tr[@id='dtl_0']/td[3]/input |map.exe                           |
+|select;           |xpath=//table[@id='tblCmdRestr']/tbody/tr[@id='dtl_0']/td[5]/select|label=@actionName                 |
+|click             |id=SaveButton                                                                                         |
+|waitForTextPresent|The profile saved successfully                                                                        |
+
+
+
+!|scenario        |Open Session         |requestorName         |                       |systemName         |         |accountName         |         |responceAction        |
+|runBatch         |RunSNMPTrap;hide;fake                                                                                                                                   |
+|$res=            |CLI                  |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+|Verify_Contain_OR|$res;;submitted                                                                                                                                         |
+|$RequestID=      |get_session_RequestID|$res                                                                                                                              |
+|Approve Session  |${Approver1}                                                                                                                                            |
+|Login            |${TPAMURL}           |                      |@requestorName         |                   |${UserPwd}                                                     |
+|pause            |5000                                                                                                                                                    |
+|click            |id=CurrentRequests                                                                                                                                      |
+|clickOnLink      |link=$RequestID                                                                                                                                         |
+|click            |id=StartSessionButton                                                                                                                                   |
+|pause            |20000                                                                                                                                                   |
+|selectWindow     |Quest Software PSM Session (${SystemName}/${ManagedAccount}/$RequestID)                                                                                 |
+|pause            |5000                                                                                                                                                    |
+|SWaitMultiple    |map.png;map_small.jpg                                                                                                                                   |
+|SClickMultiple   |map.png;map_small.jpg                                                                                                                                   |
+|pause            |5000                                                                                                                                                    |
+|SWait            |@responceAction_win.png                                                                                                                                 |
+|SWait            |psm_ok.png                                                                                                                                              |
+|SClick           |psm_ok.png                                                                                                                                              |
+|pause            |150000                                                                                                                                                  |
+|stop                                                                                                                                                                      |
+|selectWindow     |Quest Software TPAM                                                                                                                                     |
+|stop                                                                                                                                                                      |
+|Cancel Session Request                                                                                                                                                    |
+
+
+
+!|scenario        |Open Session Do Nothing|requestorName         |                       |systemName         |         |accountName         |         |responceAction        |
+|runBatch         |RunSNMPTrap;hide;fake                                                                                                                                     |
+|$res=            |CLI                    |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+|Verify_Contain_OR|$res;;submitted                                                                                                                                           |
+|$RequestID=      |get_session_RequestID  |$res                                                                                                                              |
+|Approve Session  |${Approver1}                                                                                                                                              |
+|Login            |${TPAMURL}             |                      |@requestorName         |                   |${UserPwd}                                                     |
+|pause            |5000                                                                                                                                                      |
+|click            |id=CurrentRequests                                                                                                                                        |
+|clickOnLink      |link=$RequestID                                                                                                                                           |
+|click            |id=StartSessionButton                                                                                                                                     |
+|pause            |90000                                                                                                                                                     |
+|selectWindow     |Quest Software PSM Session (${SystemName}/${ManagedAccount}/$RequestID)                                                                                   |
+|pause            |5000                                                                                                                                                      |
+|SWaitMultiple    |map.png;map_small.jpg                                                                                                                                     |
+|SClickMultiple   |map.png;map_small.jpg                                                                                                                                     |
+|pause            |150000                                                                                                                                                    |
+|stop                                                                                                                                                                        |
+|selectWindow     |Quest Software TPAM                                                                                                                                       |
+|stop                                                                                                                                                                        |
+|runBatch         |KillWinProg;${SystemAddress};${FunctAcct};${FunctAcctPwd};${RestrictedCommand}                                                                            |
+|Cancel Session Request                                                                                                                                                      |
+
+
+!|scenario|Session Cleanup  |accountName                                                              |
+|$res=    |RunBatchGetOutput|CleanupSession;${SystemAddress};${FunctAcct};${FunctAcctPwd};@accountName|
+#|Verify_Contain_OR|$res;;testsuccessfully                                                                         |
+

@@ -1,0 +1,26 @@
+!*> Test Description
+ SystemName can only consist of alphanumeric characters and . _ - +
+*!
+
+!define SystemNameSuffix {test}
+!define SystemPlatform {Linux}
+!define SystemAddress {10.30.146.116}
+!define failedMessage {!-SystemName can only consist of alphanumeric characters and . _ - +-!}
+
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+
+!4 Try to create systems
+!|script                                                                                                                                                     |
+|Try to Add system|${prefix}+${SystemNameSuffix}    |with parameters|-systemAddress ${SystemAddress} -platform ${SystemPlatform}|with result|successfully    |
+|Try to Add system|${prefix}-${SystemNameSuffix}    |with parameters|-systemAddress ${SystemAddress} -platform ${SystemPlatform}|with result|successfully    |
+|Try to Add system|${prefix}_${SystemNameSuffix}    |with parameters|-systemAddress ${SystemAddress} -platform ${SystemPlatform}|with result|successfully    |
+|Try to Add system|${prefix}.${SystemNameSuffix}    |with parameters|-systemAddress ${SystemAddress} -platform ${SystemPlatform}|with result|successfully    |
+|Try to Add system|${prefix}!-$-!${SystemNameSuffix}|with parameters|-systemAddress ${SystemAddress} -platform ${SystemPlatform}|with result|${failedMessage}|
+
+!4 Delete all systems
+!|script                                    |
+|Delete system|${prefix}+${SystemNameSuffix}|
+|Delete system|${prefix}.${SystemNameSuffix}|
+|Delete system|${prefix}-${SystemNameSuffix}|
+|Delete system|${prefix}_${SystemNameSuffix}|

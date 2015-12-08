@@ -1,0 +1,15 @@
+!include -c <FrontPage.AutoTestsWebDrv.GroovyJavaApiScenarios.ListCommands.ScenarioLibrary
+!include -c <FrontPage.AutoTestsWebDrv.GroovyJavaApiScenarios.ScenarioLibrary
+
+!define LockUserName {${prefix}LockUser}
+
+
+!|script                                                                               |
+|Add User with options|${LockUserName}||FirstName=test;LastName=test;Password=Password1|
+|Lock User            |${LockUserName}                                                 |
+|Unlock User          |${LockUserName}                                                 |
+|Change Pwd           |${LockUserName}||Password1         |         |NPasword1         |
+|Remove User          |${LockUserName}                                                 |
+
+
+

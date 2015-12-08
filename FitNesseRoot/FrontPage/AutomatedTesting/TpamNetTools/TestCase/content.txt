@@ -1,0 +1,30 @@
+!define AdminUser  {${prefix}ntadmin}
+
+!*> Includes
+!include -c <AutomatedTesting.PlatformsTesting.EdmzSpcwDc2
+!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+!include -c <AutomatedTesting.TpamNetTools.ScenarioLibrary
+*!
+
+
+!*> Prepare
+!|script                                                                                                                              |
+|Add User  |${CLIBatch} ||--UserName ${AdminUser} --LastName test --FirstName test --UserType Admin --Password Password1||successfully|
+|Change Pwd|${AdminUser}||Password1                                                                                     ||Password2   |
+*!
+
+
+!|script                                                                                                                                        |
+|NetTools|${TPAMHost}||/tpam/||${AdminUser}||Password2||Ping      ||${SystemAddress}||Received = 4                                              |
+|NetTools|${TPAMHost}||/tpam/||${AdminUser}||Password2||Nslookup  ||${DomainName}   ||${SystemAddress}                                          |
+|NetTools|${TPAMHost}||/tpam/||${AdminUser}||Password2||TraceRoute||${SystemAddress}||Tracing route to ${SystemAddress}.*Trace complete         |
+|NetTools|${TPAMHost}||/tpam/||${AdminUser}||Password2||TelnetTest||${SystemAddress}||Telnet connection test to ${SystemAddress} on 23 completed|
+|NetTools|${TPAMHost}||/tpam/||${AdminUser}||Password2||ShowRoutes||fake            ||${TPAMHost}                                               |
+
+
+
+
+!*> Cleanup
+!|script                                                       |
+|Delete User|${CLIBatch}||--UserName ${AdminUser}||successfully|
+*!

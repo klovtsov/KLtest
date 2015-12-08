@@ -1,0 +1,14 @@
+!* Test description
+Check a working of autodiscoveryexcludelist option.
+*!
+
+!define ExcludeList {exuser}
+
+!include -c <AutomatedTesting.PlatformsTesting.LdAp
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                  |
+|Add system           |${SystemName}|with address|${SystemAddress}                      |platform|${SystemPlatform}|managed by |${FunctAcct}|additional parameters|-functAcctPwd ${FunctAcctPwd} -DomainName ${DomainName}|
+|Try to Update Account|${FunctAcct} |            |-Description "${FunctAcctDescription}"|by user |${API_user_1}    |with result|successful                                                                                |
+|Test System          |${TestSystemSuccessful}                                                                                                                                                                            |
+|Delete System        |${SystemName}                                                                                                                                                                                      |

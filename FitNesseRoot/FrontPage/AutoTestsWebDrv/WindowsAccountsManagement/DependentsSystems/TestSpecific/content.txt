@@ -1,0 +1,139 @@
+!|scenario|Logout|
+|stop            |
+
+!|scenario         |Create Email Receiver     |receiverName|             |receiverEmail|
+|Create Mailbox    |@receiverEmail            |            |${ReceiverEmailPassword}   |
+|Login             |${TPAMAdminURL}|            |${TPAMMaster}||${MasterPwd}|
+|pause             |1000                                                               |
+|clickOnLink       |link=Receivers                                                     |
+|click             |id=AddAlertReceiver                                                |
+|pause             |1000                                                               |
+|type;             |id=ReceiverName           |@receiverName                           |
+|type;             |id=Comment                |@receiverName description               |
+|select;           |id=RecvType               |label=E-Mail                            |
+|type;             |id=EmailAddress           |@receiverEmail                          |
+|type;             |id=MaxRetries             |0                                       |
+|click             |id=SubmitChanges                                                   |
+|waitForTextPresent|Receiver added successfully                                        |
+
+!|scenario            |Select Receiver                                               |receiverName |
+|clickOnLink          |link=Receivers                                                              |
+|type;                |xpath=//input[@id='ReceiverNm']                               |@receiverName|
+|click                |id=Listing                                                                  |
+|waitForElementPresent|xpath=//table[@id='receiverTable']//td[text()='@receiverName']|             |
+|click                |xpath=//table[@id='receiverTable']//td[text()='@receiverName']|             |
+
+
+!|scenario         |Delete Email Receiver     |receiverName|             |receiverEmail|
+|Logout                                                                                |
+|Login             |${TPAMAdminURL}|            |${TPAMMaster}||${MasterPwd}|
+|pause             |3000                                                               |
+|Select Receiver   |@receiverName                                                      |
+|click             |id=DeleteAlertReceiver                                             |
+|getConfirmation                                                                       |
+|waitForTextPresent|Alert Receiver successfully deleted                                |
+|Delete Mailbox    |@receiverEmail                                                     |
+
+!| scenario             |Check Mail|host ||user||passwd||from||subject||mailbody|
+|$res=                  |CheckMail |@host;@user;@passwd;@from;@subject;@mailbody|
+|Verify_Contain_OR_alnum|$res;;${ManagedAccount}                                |
+
+#|click             |id=DeleteAlertReceiver             |
+#|getConfirmation                                       |
+#|waitForTextPresent|Alert Receiver successfully deleted|
+
+#|Delete Mailbox    |@receiverEmail                                                |
+
+!|scenario         |Subscribe For Session Alerts|receiverName|
+|Select Receiver   |@receiverName                            |
+|click             |id=Alerts                                |
+|pause             |1000                                     |
+|click             |name=cbxAlert_L1_15                      |
+|click             |id=SubmitChanges                         |
+|waitForTextPresent|Subscriptions successfully saved         |
+
+!|scenario |Check Email Alert                                                                    |
+|Check Mail|${MailServer}||${receiverEmail}||password||${FromMail}||${EMailsubject}||${EMailbody}|
+
+#|$res=     |ClearMailbox|${MailServer};${FuncAccEMail};password                |
+
+!|scenario                   |Check Alert      |receiverName|            |receiverEmail |
+|Create Email Receiver       |@receiverName    |            |@receiverEmail             |
+|Subscribe For Session Alerts|@receiverName                                             |
+|Logout                                                                                 |
+|Login                       |${TPAMURL}       |            |${TPAMAdmin}||${DefaultPwd}|
+|Choose system                                                                          |
+|pause                       |5000                                                      |
+|click                       |id=Details       |                                        |
+|pause                       |5000                                                      |
+|type;                       |id=NetworkAddress|1.1.1.1                                 |
+|pause                       |5000                                                      |
+|click                       |id=bt_Save       |                                        |
+|waitForTextPresent          |System changes for * saved successfully                   |
+|Reset Password              |${ManagedAccount}|            |${ResetPasswordSuccessful} |
+|pause                       |300000                                                    |
+|Check Email Alert                                                                      |
+|Delete Email Receiver       |@receiverName    |            |@receiverEmail             |
+
+!|scenario|Run Scheduled Task         |SchTaskName         |on        |System        |
+|runBatch |manageScheduledTasks;run;@System;${FunctAcct};${FunctAcctPwd};@SchTaskName|
+|pause    |60000                                                                     |
+
+#!|scenario        |Add AD System|sysname                |                |platform                |                |address                |               |funcacc               |               |password               |
+#|$res=            |CLI       |${CLIBatch} AddSystem --SystemName @sysname --NetworkAddress @address --PlatformName \"@platform\" --FunctionalAccount @funcacct} --FuncAcctCred \"@password\" --Timeout ${SystemTimeout}|
+#|Verify_Contain_OR|$res;;successful                                                                                                                                                                                    |
+
+!|scenario        |Add AD system                                                                                                                                                                                                                                                                                        |
+|$res=            |CLI|${CLIBatch}        AddSystem --SystemName ${AdSystemName} --NetworkAddress ${AdSystemAddress} --PlatformName \"${AdSystemPlatform}\" --DomainName ${DomainName} --NetBiosName ${NETBIOSDomainName} --FunctionalAccount ${AdFunctAcct} --FuncAcctCred ${AdFunctAcctPwd} --Timeout ${SystemTimeout}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                                     |
+
+!| scenario       |Add account|acc                     |with password                     |pwd                     |                    |testRes                    |
+|$res=            |CLI        |${CLIBatch} AddAccount --System ${AdSystemName} --AccountName @acc --Password \"@pwd\" --Description \"${ManagedAccountDescription}\"|
+|Verify_Contain_OR|$res;;@testRes                                                                                                                                   |
+
+# --ChangeServiceFlag Y --ChangeTaskFlag Y --RestartServiceFlag Y
+
+!|scenario    |Create Account on System                                                                                                   |
+|accountAction|${AdSystemPlatform};;create;;${AdSystemAddress};;${AdFunctAcct};;${AdFunctAcctPwd};;${ManagedAccount};;${ManagedAccountPwd}|
+
+!|scenario    |Delete Account on System                                                                             |
+|accountAction|${AdSystemPlatform};;delete;;${AdSystemAddress};;${AdFunctAcct};;${AdFunctAcctPwd};;${ManagedAccount}|
+
+!| scenario       |Update Dependent Systems                                                                                              |
+|$res=            |CLI|${CLIBatch} UpdateDependentSystems --System ${AdSystemName} --AccountName ${ManagedAccount} --Assign ${SystemName}|
+|Verify_Contain_OR|$res;;successful                                                                                                      |
+
+!| scenario       |Reset Password|acc           |          |testRes          |
+|$res=            |CLI           |${CLIBatch} ForceReset ${AdSystemName},@acc|
+|Verify_Contain_OR|$res;;@testRes                                            |
+
+!|scenario|Delete Service on                                     |System                                    |
+|runBatch |manageServices;delete;@System;${FunctAcct};${FunctAcctPwd};${NETBIOSDomainName}\${ManagedAccount}|
+
+!|scenario       |Create Account on AD System             |accntName            |with password            |acntpwd            |
+|PowerShellScript|manageADusers.ps1 create ${dcName} ${NETBIOSDomainName}\${AdFunctAcct} ${AdFunctAcctPwd} @accntName @acntpwd|
+
+!| scenario                    |Main Scenario                                                                                                                                          |
+|Add AD system                                                                                                                                                                         |
+|Add system                                                                                                                                                                            |
+|Add account                   |${ManagedAccount}           |with password            |${ManagedAccountPwd}         |                         |${NotFailed}                            |
+|Create Account on AD System   |${ManagedAccount}           |with password            |"${ManagedAccountPwd}"                                                                          |
+|Update Dependent Systems                                                                                                                                                              |
+|Create Service which is run by|${ServiceAccount}           |and run under password is|${ManagedAccountPwd}         |on                       |${SystemAddress}                        |
+|Create Scheduled Task         |${TaskName}                 |which is run under       |${HostName}\${ManagedAccount}|and run under password is|${ManagedAccountPwd}|on|${SystemAddress}|
+|Start Service                 |${SuccessServiceStartResult}|on                       |${SystemAddress}                                                                                |
+|events                        |${FunctAcct}                |                         |${FunctAcctPwd}              |                         |${SystemAddress}    |  |clear           |
+|Reset Password                |${ManagedAccount}           |                         |${ResetPasswordSuccessful}                                                                      |
+|pause                         |30000                                                                                                                                                  |
+|events                        |${FunctAcct}                |                         |${FunctAcctPwd}              |                         |${SystemAddress}    |  |check           |
+|Run Scheduled Task            |${TaskName}                 |on                       |${SystemAddress}                                                                                |
+|Check Scheduled Task Status   |Running                     |on                       |${SystemAddress}                                                                                |
+|Stop Scheduled Task           |${TaskName}                 |on                       |${SystemAddress}                                                                                |
+|Check Alert                   |${receiverName}             |                         |${receiverEmail}                                                                                |
+|Stop Service on               |${SystemAddress}                                                                                                                                       |
+|Restore environment on        |${SystemAddress}                                                                                                                                       |
+|Delete Service on             |${SystemAddress}                                                                                                                                       |
+|Remove system                 |${SystemName}                                                                                                                                          |
+|Remove system                 |${AdSystemName}                                                                                                                                        |
+|Delete Account on System                                                                                                                                                              |
+|stop                                                                                                                                                                                  |

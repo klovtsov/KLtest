@@ -1,0 +1,4 @@
+!include <AutomatedTesting.PlatformsTesting.HpuxShadow
+!include -c <CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.HpuxShadow.PlatformSpecific
+

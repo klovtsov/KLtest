@@ -1,0 +1,14 @@
+!contents
+
+
+
+!| scenario       |Add User|userName                                                                                                                                                                                                                                                                                                                                                                                                          |
+|$res=            |CLI     |${CLIBatch} AddUser --UserName @userName --LastName Doe --FirstName John --Password ${UserInitialPassword} --UserType Admin --PrimaryAuthType LDAP --PrimaryAuthID ${LDAPUserName} --PrimaryAuthSystem ${LDAPServerName} --PrimaryAuthExtra "uid=${LDAPUserName},ou=${LDAPUserContainerName},${LDAPBaseName}" --SecondaryAuth Radius --SecondaryAuthSystem ${RADIUSServerName} --SecondaryUserID ${RADIUSUserName}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                                                                                                                                                           |
+
+
+
+!|scenario         |Test Login                                                                    |
+|Double Step Login|${TPAMURL}    ||${UserName}       ||${LDAPUserPassword}||${RADIUSUserPassword}|
+|Add New User     |${NewUserName}||${NewUserPassword}||${NewUserMail}                            |
+

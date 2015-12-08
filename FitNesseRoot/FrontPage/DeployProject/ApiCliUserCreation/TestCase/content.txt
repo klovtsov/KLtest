@@ -1,0 +1,15 @@
+!contents
+!include -c <FrontPage.AutomatedTesting.ScenarioLibrary
+
+
+!|script                                                   |
+|runBatch          |DeleteFileByMask;${PathToKeys}*.*      |
+|Open              |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|pause             |15000                                  |
+|Add API User      |${API_user_1}                          |
+|Add API User      |${API_user_2}                          |
+|Add CLI User      |${CLI_user_1}                          |
+|Generate Plink Key|${CLI_user_1}.ppk                      |
+|Add CLI User      |${CLI_user_2}                          |
+|Generate Plink Key|${CLI_user_2}.ppk                      |
+

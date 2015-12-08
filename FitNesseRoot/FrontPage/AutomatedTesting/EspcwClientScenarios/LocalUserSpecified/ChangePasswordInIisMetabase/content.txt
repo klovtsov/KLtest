@@ -1,0 +1,23 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ChangePasswordInIisMetabase.PlatformSpecific
+!include -c <AutomatedTesting.EspcwClientScenarios.KnownIssues
+#!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ChangePasswordInIisMetabase.BugWorkaround
+
+!|script                                                                                                                                                         |
+|Set IIS Anonymous User           |${ManagedAccountDomain}\${ManagedAccount}|with password|${ManagedAccountPwdNew}                  |on         |${SystemAddress}|
+|Uncheck Checkbox                 |changemeta                               |for user     |${ManagedAccount}                                                     |
+|Check Checkbox                   |changemeta                               |for user     |DEFAULT                                                               |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                       |
+|Check Password                   |${ManagedAccount}                        |             |${CheckPasswordNotMatch}                                              |
+|pause                            |25000                                                                                                                          |
+|Check IIS metabase on            |${SystemAddress}                         |for user     |${ManagedAccountDomain}\${ManagedAccount}|with result|same            |
+|Uncheck Checkbox                 |changemeta                               |for user     |DEFAULT                                                               |
+|Check Checkbox                   |changemeta                               |for user     |${ManagedAccount}                                                     |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                       |
+|Check Password                   |${ManagedAccount}                        |             |${CheckPasswordNotMatch}                                              |
+|pause                            |25000                                                                                                                          |
+|Check IIS metabase on            |${SystemAddress}                         |for user     |${ManagedAccountDomain}\${ManagedAccount}|with result|different       |
+|Uncheck Checkbox                 |changemeta                               |for user     |${ManagedAccount}                                                     |
+#|Reset Anonymous User                                                                                              |

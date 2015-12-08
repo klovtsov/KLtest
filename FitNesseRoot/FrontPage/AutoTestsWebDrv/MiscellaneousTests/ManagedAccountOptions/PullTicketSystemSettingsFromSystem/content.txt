@@ -1,0 +1,41 @@
+!*> Some notes
+The management settings should be pulled to all Auto and Manual managed accounts when the second box is unchecked.
+*!
+
+!define FileName {${prefix}Origin}
+!define tctSysEmail {biliter@mail.ru}
+!define ticketSystemName {${prefix}Bileter}
+
+!*> Including section
+!include -c <AutoTestsWebDrv.TicketSystemScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.TicketSystemScenarios.Test04ManualTicketSystem.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+
+!4 Prepare test
+!|script                                                                                        |
+|Create Manual Ticket System|${ticketSystemName}                                                |
+|Add account                |${ManagedAccount}2|on system|${SystemName}|with options|-AutoFlag M|
+
+
+!4 Auto Account
+!|script                                                                                                                                                                                                                                                                                                                   |
+|Update System                     |${SystemName}                                                                                                                                       |        |-TicketSystemName ${ticketSystemName} -TicketEmailNotify ${tctSysEmail} -RequireTicketForRequest Y -RequireTicketForPSM Y|
+|Pull Ticket Defaults from sytem to|${ManagedAccount}                                                                                                                                   |                                                                                                                                  |
+|List Accounts by filter           |-systemName ${SystemName} -accountName ${ManagedAccount} -propsToList ticketSystemName,requireTicketForRequest,requireTicketForPSM,ticketEmailNotify|contains|${ticketSystemName}\s+Y\s+Y\s+${tctSysEmail}                                                                             |
+
+!4 Manual managed account
+!|script                                                                                                                                                                                                                                                             |
+|Update System                     |${SystemName}                                                                                                                                      |        |-RequireTicketForAPI Y -RequireTicketForCLI Y -RequireTicketForISA Y|
+|Pull Ticket Defaults from sytem to|${ManagedAccount}2                                                                                                                                 |                                                                             |
+|List Accounts by filter           |-systemName ${SystemName} -accountName ${ManagedAccount}2 -propsToList ticketSystemName,requireTicketForISA,requireTicketForCLI,requireTicketForAPI|contains|${ticketSystemName}\s+Y\s+Y\s+Y                                     |
+
+!*> Return default values
+!|script                                                                                                                                                     |
+|Update System       |${SystemName}    ||-TicketSystemName !Any -TicketEmailNotify !Null -RequireTicketForAPI N -RequireTicketForCLI N -RequireTicketForISA N|
+|Update Account      |${ManagedAccount}||-TicketSystemName !Any -TicketEmailNotify !Null -RequireTicketForAPI N -RequireTicketForCLI N -RequireTicketForISA N|
+|Delete Account      |${ManagedAccount}2                                                                                                                     |
+|Delete Ticket System|${ticketSystemName}                                                                                                                    |
+*!

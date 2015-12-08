@@ -1,0 +1,13 @@
+!define ManagedAccount {${prefix}psAcnt}
+!define FlagValue {Y}
+!define systemCheckProfile {PersPassCheckProfile_1}
+!define accountCheckProfile {PpmPasswordCheckProfile}
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                                                 |
+|Add system             |${SystemName}                                                                                          |with address|${SystemAddress}|platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-passwordCheckProfile "${systemCheckProfile}"|
+|Add account            |${ManagedAccount}                                                                                      |on system   |${SystemName}   |with options|-description AAA                                                                                             |
+|Add account            |${ManagedAccount}2                                                                                     |on system   |${SystemName}   |with options|-passwordCheckProfile ${accountCheckProfile}                                                                 |
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount} -propsToList accountname,passwordCheckProfile |contains    |${ManagedAccount}.*${systemCheckProfile}                                                                                                   |
+|List Accounts by filter|-systemName ${SystemName} -AccountName ${ManagedAccount}2 -propsToList accountname,passwordCheckProfile|contains    |${ManagedAccount}.*${accountCheckProfile}                                                                                                  |
+|Delete System          |${SystemName}                                                                                                                                                                                                                                                   |

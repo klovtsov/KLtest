@@ -1,0 +1,3 @@
+!define ProfileName {${prefix}Detaiks}
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.AddDeleteDetail.TestSpecific

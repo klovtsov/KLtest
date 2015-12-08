@@ -1,0 +1,2 @@
+System Name,Network Address,Platform Name,Release Duration,Auto-Password Mgmt,Functional Account,Account Credential,PSM Only Flag,PSM DPA Affinity,PPM DPA Affinity
+klbatchbadsystem,192.168.5.5,Windows,240,N,Administrator,grain41R,Y,,DPAPLACEHOLDER/10

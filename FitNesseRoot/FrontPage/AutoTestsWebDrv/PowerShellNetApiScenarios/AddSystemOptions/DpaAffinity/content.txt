@@ -1,0 +1,12 @@
+!define DPAPriority {2}
+
+!include -c <AutoTestsWebDrv.FailoverScenarios.ScenarioLibrary
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                                                                                                                  |
+|Get DPA Name and IP Address                                                                                                                                                                                                                                                                              |
+|Add system     |${SystemName}            |with address |${SystemAddress}                        |platform|${SystemPlatform}                                                |managed by|${FunctAcct}|additional parameters|-PPMDPAAffinity $TPAMDPA/${DPAPriority} -PSMDPAAffinity $TPAMDPA/${DPAPriority}|
+|List Systems by|-systemName ${SystemName}|output params|SystemName,PPMDPAAffinity,PSMDPAAffinity|contain |${SystemName}\s+$TPAMDPA/${DPAPriority}\s+$TPAMDPA/${DPAPriority}|                                                                                                                             |
+|Update System  |${SystemName}            |             |-PPMDPAAffinity Local -PSMDPAAffinity Any                                                                                                                                                                                                          |
+|List Systems by|-systemName ${SystemName}|output params|SystemName,PPMDPAAffinity,PSMDPAAffinity|contain |${SystemName}\s+Local\s+Any                                        |                                                                                                                             |
+|Delete System  |${SystemName}                                                                                                                                                                                                                                                                            |

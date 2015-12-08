@@ -1,0 +1,28 @@
+!|scenario    |Set password                   |one                   |                  |switch                  |
+|accountAction|${SystemPlatform};;corrupt;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${PathtoKey};;@switch|
+
+!| scenario           |Add system                                                                                                                                                                   |
+|$res=                |NetAPI       |${APIBatch} ${CommandTimeout} AddSystem ${SystemName} ${SystemAddress} "${SystemPlatform}" "${SystemDescription}" ${SystemTimeout} ${FunctAcct} ${FunctAcctPwd} "${DomainName}."|
+|Verify_Contain_OR    |$res;;successful                                                                                                                                                             |
+#|Choose System                                                                                                                                                                                      |
+#|waitForElementPresent|id=Connection|                                                                                                                                                               |
+#|click                |id=Connection|                                                                                                                                                               |
+#|type;                |id=DomainName|${DomainName}.                                                                                                                                                     |
+#|click                |id=bt_Save   |                                                                                                                                                               |
+#|waitForTextPresent   |System changes for * saved successfully                                                                                                                                      |
+
+
+
+
+#!| scenario           |Add system                                                                                                                                                                   |
+#|$res=                |NetAPI       |${APIBatch} ${CommandTimeout} AddSystem ${SystemName} ${SystemAddress} "${SystemPlatform}" "${SystemDescription}" ${SystemTimeout} ${FunctAcct} ${FunctAcctPwd}|
+#|Verify_Contain_OR    |$res;;successful                                                                                                                                                             |
+#|Open                 |${TPAMURL}   |                                 |${TPAMAdmin}                                 |                                 |${DefaultPwd}                                |
+#|Choose System                                                                                                                                                                                      |
+#|waitForElementPresent|id=Connection|                                                                                                                                                               |
+#|click                |id=Connection|                                                                                                                                                               |
+#|type;                |id=DomainName|${DomainName}.                                                                                                                                                     |
+#|click                |id=bt_Save   |                                                                                                                                                               |
+#|waitForTextPresent   |System changes for * saved successfully                                                                                                                                      |
+
+

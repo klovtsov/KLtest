@@ -1,0 +1,20 @@
+!define keyFormat {OpenSSH}
+!define keyFileOrigin {ssh-dss}
+!define CommandTimeout {50}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.FileTransfer.ScenarioLibrary
+!include -c ScenarioLibrary
+!3 Run the test
+!|script                                           |
+|${addPsmAccountMethod}                            |
+|Set ISA permission on system for|${API_user_1}    |
+|Add Session Request                               |
+|Create Account on System        |${ManagedAccount}|
+|Retrieve Account Specific Key by Dot Net User     |
+|Copy account key to system      |${keyFormat}     |
+|Open session  and Check Logon                     |
+|Cancel Session Request                            |
+|Delete Account on System        |${ManagedAccount}|
+|Remove system                   |${SystemName}    |

@@ -1,0 +1,23 @@
+!define ManagedAccount {${prefix}psReportAccnt}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!*> Do some Activity (Create system, account, request and approve pwd). Get current time also 
+!|script                                                                                 |
+|Get Day Month and Year values                                                           |
+|Add System                                                                              |
+|Add account    |${ManagedAccount}|with password|${ManagedAccountPwdNew}                 |
+|Set Permissions|"PPM Requestor"  |on  account  |${ManagedAccount}|for user|${API_user_1}|
+|Set Permissions|"PPM Approver"   |on  account  |${ManagedAccount}|for user|${API_user_2}|
+|pause          |${ApplyNewPoliciesInterval}                                             |
+|Request Pwd by |${API_user_1}                                                           |
+|Approve Pwd by |${API_user_2}                                                           |
+|Delete Account |${ManagedAccount}                                                       |
+|Delete System  |${SystemName}                                                           |
+*!
+
+!|script                                                                                                                                        |
+|Report Activity for user|${API_user_1}|operation|Add              |objectType|System  |from|$Year,$Month,$Day|and result contains|${SystemName}|
+|Report Activity for user|${API_user_1}|operation|"Request Release"|objectType|Password|from|$Year,$Month,$Day|and result contains|Requestor    |
+|Report Activity for user|${API_user_2}|operation|Approved         |objectType|Password|from|$Year,$Month,$Day|and result contains|Approver     |
+

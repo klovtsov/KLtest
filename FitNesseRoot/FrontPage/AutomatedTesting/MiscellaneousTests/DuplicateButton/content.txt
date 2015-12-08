@@ -1,0 +1,2 @@
+!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${API_user_1} -apiUser ${API_user_1}}
+!contents -g -p -f -h

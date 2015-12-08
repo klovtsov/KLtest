@@ -1,0 +1,618 @@
+!contents
+
+
+!|scenario|Create Jump Box Environment            |
+|Login    |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Create Jump Box                                  |
+|Create Custom Jump Box Platform                  |
+|Logout                                           |
+
+!|scenario  |Test CLI Custom Platform |
+|Prepare CLI Test                     |
+|Check CLI Tag Values Sent To Jump Box|
+|PPM CLI Regular Activity             |
+|Clear CLI Test                       |
+
+
+!|scenario  |Test UI Custom Platform |
+|Prepare UI Test                     |
+|Check UI Tag Values Sent To Jump Box|
+|PPM UI Regular Activity             |
+|Test DPA                            |
+|Clear UI Test                       |
+
+
+!|scenario         |Create Jump Box                                                                                                                        |
+|pause             |10000                                                                                                                                  |
+|clickOnLink       |link=Jump Box                                                                                                                          |
+|pause             |3000                                                                                                                                   |
+|click             |id=AddServerButton                                                                                                                     |
+|pause             |5000                                                                                                                                   |
+|type;             |id=JumpBoxName                                               |${JumpBoxName}                                                           |
+|type;             |id=NetworkAddress                                            |${JumpBoxAddress}                                                        |
+|type;             |id=Timeout                                                   |${JumpBoxTimeout}                                                        |
+|type;             |id=Port                                                      |${JumpBoxPort}                                                           |
+|type;             |id=AccountName                                               |${JumpBoxAccount}                                                        |
+|type;             |id=Comments                                                  |${JumpBoxDescription}                                                    |
+|click             |id=SubmitChanges                                                                                                                       |
+|waitForTextPresent|saved successfully                                                                                                                     |
+|$res=             |getText                                                      |xpath=//div[@id='ResultsDiv']                                            |
+|Verify_Contain_OR |$res;;saved successfully                                                                                                               |
+|pause             |1000                                                                                                                                   |
+|click             |id=btGeneratePair0                                                                                                                     |
+|waitForTextPresent|The key was successfully reset for ${JumpBoxName}                                                                                      |
+|click             |id=TestButton                                                                                                                          |
+|waitForTextPresent|Permission denied                                                                                                                      |
+|$res=             |getText                                                      |xpath=//div[@id='resultsTab']                                            |
+|Verify_Contain_OR |$res;;Permission denied                                                                                                                |
+|click             |id=Details                                                                                                                             |
+|click             |id=btDnldSpcOpenSSH                                                                                                                    |
+|pause             |10000                                                                                                                                  |
+|runBatch          |UploadPublicSSHKey.bat;${JumpBoxAddress};${JumpBoxRoot};${JumpBoxRootPassword};${JumpBoxAccount};${BrowserDownloadDir};authorized_keys2|
+|pause             |10000                                                                                                                                  |
+|click             |id=TestButton                                                                                                                          |
+|waitForTextPresent|SUCCESS NOTIFICATION                                                                                                                   |
+|$res=             |getText                                                      |xpath=//div[@id='resultsTab']                                            |
+|Verify_Contain_OR |$res;;SUCCESS NOTIFICATION                                                                                                             |
+|runBatch          |UploadCustomScript.bat;${JumpBoxAddress};${JumpBoxRoot};${JumpBoxRootPassword};${JumpBoxScript};/usr/bin                               |
+|pause             |10000                                                                                                                                  |
+
+
+!|scenario         |Create Custom Jump Box Platform                        |
+|pause             |10000                                                  |
+|clickOnLink       |link=Custom Platforms                                  |
+|pause             |3000                                                   |
+|click             |id=btnAddPlatform                                      |
+|pause             |1000                                                   |
+|type;             |id=CustomPlatformName|${CustomPlatformName}            |
+|type;             |id=Description       |${CustomPlatformName} Description|
+|select;           |id=PlatformTypeID    |label=Jump Box                   |
+|pause             |1000                                                   |
+|type;             |id=Port              |${WrongCustomPLatformPort}       |
+|select;           |id=JumpBoxID         |label=${JumpBoxName}             |
+|type;             |id=ScriptName        |${JumpBoxScript}                 |
+|click             |id=SSHFl                                               |
+|click             |id=PasswordFl                                          |
+|type;             |id=PlatSpecificLabel |My Label                         |
+|click             |id=EnablePwdFl                                         |
+|click             |id=NetBiosNameFl                                       |
+|click             |id=DomainNameFl                                        |
+|click             |id=ActiveFl                                            |
+|pause             |1000                                                   |
+|click             |id=AutomationActiveFl                                  |
+|click             |id=btnSavePlatform                                     |
+|waitForTextPresent|saved successfully                                     |
+|$res=             |getText              |xpath=//div[@id='ResultsDiv']    |
+|Verify_Contain_OR |$res;;saved successfully                               |
+#|click             |id=AutomationActiveFl                                  |
+
+!|scenario            |Delete Custom Jump Box Platform                                                                         |
+|pause                |10000                                                                                                   |
+|clickOnLink          |link=Custom Platforms                                                                                   |
+|click                |id=Listing                                                                                              |
+|pause                |1000                                                                                                    |
+|waitForElementPresent|xpath=//td[contains(text(),'${CustomPlatformName}')]                                                    |
+|mouseMoveOver        |xpath=//td[contains(text(),'${CustomPlatformName}')]                                                    |
+|click                |xpath=//td[contains(text(),'${CustomPlatformName}')]                                                    |
+|pause                |1000                                                                                                    |
+|click                |id=btnDeletePlatform                                                                                    |
+|getConfirmation                                                                                                               |
+|waitForTextPresent   |deleted successfully                                                                                    |
+|$res=                |getText                                  |xpath=//div[@id='ResultsDiv']                                 |
+|Verify_Contain_OR    |$res;;deleted successfully                                                                              |
+|pause                |3000                                                                                                    |
+|runBatch             |RemoveCustomScript.bat;${JumpBoxAddress};${JumpBoxRoot};${JumpBoxRootPassword};${JumpBoxScript};/usr/bin|
+|pause                |10000                                                                                                   |
+
+
+!|scenario|Remove Jump Box Environment            |
+|Login    |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Delete Custom Jump Box Platform                  |
+|Delete Jump Box                                  |
+
+
+!|scenario                                   |Delete Jump Box                                 |
+|pause                                       |5000                                            |
+|clickOnLink                                 |link=Jump Box                                   |
+|pause                                       |3000                                            |
+|waitForElementPresent                       |xpath=//td[contains(text(),'${JumpBoxName}')]   |
+|mouseMoveOver                               |xpath=//td[contains(text(),'${JumpBoxName}')]   |
+|click                                       |xpath=//td[contains(text(),'${JumpBoxName}')]   |
+|pause                                       |1000                                            |
+|click                                       |id=ClearButton                                  |
+|pause                                       |1000                                            |
+|waitForTextPresent                          |*The results from the clearing*                 |
+|$res=                                       |getText      |xpath=//div[@id='resultsTab']     |
+|Verify_Contain_OR                           |$res;;Cleared ${JumpBoxAddress} from known_hosts|
+|click                                       |id=DeleteButton                                 |
+|getConfirmation                                                                              |
+|pause                                       |1000                                            |
+|waitForTextPresent                          |successfully                                    |
+|$res=                                       |getText      |xpath=//div[@id='ResultsDiv']     |
+|Verify_Contain_OR                           |$res;;successfully                              |
+|Logout                                                                                       |
+|Check Host Key is Not Present in Known Hosts|${JumpBoxAddress}                               |
+
+
+!|scenario|Create OUs                                                                                                |
+|runBatch |LDAPAction;createou;${SystemAddress};ou=${UserContainerName},${BaseName};${FuncAcctDN};${FuncAcctPassword}|
+
+!|scenario|Create User in Directory                                                        |userName                                                       |
+|runBatch |LDAPAction;createuser;${SystemAddress};ou=${UserContainerName},${BaseName};${FuncAcctDN};${FuncAcctPassword};@userName;${ManagedAccountPassword}|
+
+!|scenario|Delete OUs                                                                                                |
+|runBatch |LDAPAction;deleteou;${SystemAddress};ou=${UserContainerName},${BaseName};${FuncAcctDN};${FuncAcctPassword}|
+
+!|scenario|Delete User in Directory                                           |userName                                          |
+|runBatch |LDAPAction;deleteuser;${SystemAddress};ou=${UserContainerName},${BaseName};${FuncAcctDN};${FuncAcctPassword};@userName|
+
+!|scenario                    |Prepare UI Test                                                                                                                               |
+|Create Users                                                                                                                                                                |
+|Login                        |${TPAMURL}       |             |${TPAMAdmin}             |            |${DefaultPwd}                                                          |
+|Add UI LDAP System                                                                                                                                                          |
+|Update UI Account Description|${FuncAcct}      |             |${FuncAcctDescription}                                                                                        |
+|Create OUs                                                                                                                                                                  |
+|Create User in Directory     |${ManagedAccount}                                                                                                                             |
+|Add UI LDAP Account          |${ManagedAccount}|with password|${ManagedAccountPassword}|and profiles|${PersistentPasswordCheckProfile1}||${PersistentPasswordChangeProfile1}|
+
+
+!|scenario                         |Prepare CLI Test                                                                          |
+|Add CLI LDAP System                                                                                                          |
+|Update CLI Account Description    |${FuncAcct}      ||${FuncAcctDescription}                                                 |
+|Create OUs                                                                                                                   |
+|Create User in Directory          |${ManagedAccount}                                                                         |
+|Add CLI LDAP account With Profiles|${ManagedAccount}||${PersistentPasswordCheckProfile1}||${PersistentPasswordChangeProfile1}|
+
+
+!|scenario               |Clear UI Test                          |
+|Remove Users                                                    |
+|Login                   |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Remove UI System                                                |
+|Delete User in Directory|${ManagedAccount}                      |
+|Delete OUs                                                      |
+|Logout                                                          |
+
+
+!|scenario                  |Clear CLI Test                         |
+|Login                      |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Revoke CLI User Permissions|${CLI_user_1}                          |
+|Revoke CLI User Permissions|${CLI_user_2}                          |
+|Remove CLI System                                                  |
+|Hard-Delete System         |${SystemName}                          |
+|Delete User in Directory   |${ManagedAccount}                      |
+|Delete OUs                                                         |
+|Logout                                                             |
+
+
+!|scenario    |Create Account on System                                                                                                                   |
+|accountAction|${SystemPlatform};;create;;${SystemIPAddress};;${Context};;${FuncAcctDN};;${FuncAcctPassword};;${ManagedAccount};;${ManagedAccountPassword}|
+
+!|scenario    |Change Account Password on System                                          |NewPwd                                         |
+|accountAction|${SystemPlatform};;password;;${SystemIPAddress};;${Context};;${FuncAcctDN};;${FuncAcctPassword};;${ManagedAccount};;@NewPwd|
+
+!|scenario    |Login Account to System                            |ManPwd                            |
+|accountAction|${SystemPlatform};;login;;${SystemIPAddress};;${Context};;${ManagedAccountDN};;@ManPwd|
+
+!|scenario    |Delete Account on System                                                                                        |
+|accountAction|${SystemPlatform};;delete;;${SystemIPAddress};;${Context};;${FuncAcctDN};;${FuncAcctPassword};;${ManagedAccount}|
+
+
+!|scenario         |Test System                       |testResult                             |
+|Choose System     |${SystemName}                                                             |
+|click             |id=bt_Test                                                                |
+|waitForTextPresent|*from the test of system*                                                 |
+|pause             |2000                                                                      |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account DN         |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional credentials        |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Address                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Port                          |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Timeout                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Platform specific value       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account Description|
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Enable credentials            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Domain Name                   |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Netbios Domain Name           |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||@testResult                           |
+
+!|scenario         |Test DPA System                   |testResult                             |
+|Choose System     |${SystemName}                                                             |
+|click             |id=bt_Test                                                                |
+|waitForTextPresent|*from the test of system*                                                 |
+|pause             |2000                                                                      |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Processing the request on the DPA at  |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account DN         |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional credentials        |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Address                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Port                          |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Timeout                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Platform specific value       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account Description|
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Enable credentials            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Domain Name                   |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Netbios Domain Name           |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||@testResult                           |
+
+
+
+!|scenario         |Check Password                    |testResult                             |
+|click             |id=CheckPassButton                                                        |
+|waitForTextPresent|*Results from the*                                                        |
+|pause             |2000                                                                      |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account DN         |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional credentials        |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Address                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Port                          |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Timeout                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Platform specific value       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account Description|
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Enable credentials            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Domain Name                   |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Netbios Domain Name           |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account Name                  |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account DN                    |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Stored Password               |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account Description           |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||@testResult                           |
+
+
+!|scenario         |Check DPA Password                |testResult                             |
+|click             |id=CheckPassButton                                                        |
+|waitForTextPresent|*Results from the*                                                        |
+|pause             |20000                                                                     |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Processing the request on the DPA at  |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account DN         |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional credentials        |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Address                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Port                          |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Timeout                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Platform specific value       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account Description|
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Enable credentials            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Domain Name                   |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Netbios Domain Name           |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account Name                  |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account DN                    |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Stored Password               |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account Description           |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||@testResult                           |
+
+
+!|scenario         |Reset Password                    |testResult                             |
+|click             |id=ResetPassButton                                                        |
+|waitForTextPresent|*Results from the*                                                        |
+|pause             |2000                                                                      |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account DN         |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional credentials        |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Address                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Port                          |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Timeout                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Platform specific value       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account Description|
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Enable credentials            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Domain Name                   |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Netbios Domain Name           |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account Name                  |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account DN                    |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Stored Password               |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending New Password                  |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account Description           |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||@testResult                           |
+
+
+!|scenario         |Reset DPA Password                |testResult                             |
+|click             |id=ResetPassButton                                                        |
+|waitForTextPresent|*Results from the*                                                        |
+|pause             |2000                                                                      |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Processing the request on the DPA at  |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account DN         |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional credentials        |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Address                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Port                          |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Timeout                       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Platform specific value       |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Functional Account Description|
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Enable credentials            |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Domain Name                   |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Netbios Domain Name           |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account Name                  |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account DN                    |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Stored Password               |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending New Password                  |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||Sending Account Description           |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||@testResult                           |
+
+
+!| scenario       |Test CLI System|testRes                             |
+|$res=            |CLI            |${CLIBatch} TestSystem ${SystemName}|
+|Verify_Contain_OR|$res;;Sending Functional Account                    |
+|Verify_Contain_OR|$res;;Sending Functional Account DN                 |
+|Verify_Contain_OR|$res;;Sending Functional credentials                |
+|Verify_Contain_OR|$res;;Sending Address                               |
+|Verify_Contain_OR|$res;;Sending Port                                  |
+|Verify_Contain_OR|$res;;Sending Timeout                               |
+|Verify_Contain_OR|$res;;Sending Platform specific value               |
+|Verify_Contain_OR|$res;;Sending Functional Account Description        |
+|Verify_Contain_OR|$res;;Sending Enable credentials                    |
+|Verify_Contain_OR|$res;;Sending Domain Name                           |
+|Verify_Contain_OR|$res;;Sending Netbios Domain Name                   |
+|Verify_Contain_OR|$res;;@testRes                                      |
+
+!| scenario       |Check CLI Password|acc           |           |testRes          |
+|$res=            |CLI               |${CLIBatch} CheckPassword ${SystemName},@acc|
+|Verify_Contain_OR|$res;;Sending Functional Account                               |
+|Verify_Contain_OR|$res;;Sending Functional Account DN                            |
+|Verify_Contain_OR|$res;;Sending Functional credentials                           |
+|Verify_Contain_OR|$res;;Sending Address                                          |
+|Verify_Contain_OR|$res;;Sending Port                                             |
+|Verify_Contain_OR|$res;;Sending Timeout                                          |
+|Verify_Contain_OR|$res;;Sending Platform specific value                          |
+|Verify_Contain_OR|$res;;Sending Functional Account Description                   |
+|Verify_Contain_OR|$res;;Sending Enable credentials                               |
+|Verify_Contain_OR|$res;;Sending Domain Name                                      |
+|Verify_Contain_OR|$res;;Sending Netbios Domain Name                              |
+|Verify_Contain_OR|$res;;Sending Account Name                                     |
+|Verify_Contain_OR|$res;;Sending Account DN                                       |
+|Verify_Contain_OR|$res;;Sending Stored Password                                  |
+|Verify_Contain_OR|$res;;Sending Account Description                              |
+|Verify_Contain_OR|$res;;@testRes                                                 |
+
+
+!| scenario       |Reset CLI Password|acc          |          |testRes         |
+|$res=            |CLI               |${CLIBatch} ForceReset ${SystemName},@acc|
+|Verify_Contain_OR|$res;;Sending Functional Account                            |
+|Verify_Contain_OR|$res;;Sending Functional Account DN                         |
+|Verify_Contain_OR|$res;;Sending Functional credentials                        |
+|Verify_Contain_OR|$res;;Sending Address                                       |
+|Verify_Contain_OR|$res;;Sending Port                                          |
+|Verify_Contain_OR|$res;;Sending Timeout                                       |
+|Verify_Contain_OR|$res;;Sending Platform specific value                       |
+|Verify_Contain_OR|$res;;Sending Functional Account Description                |
+|Verify_Contain_OR|$res;;Sending Enable credentials                            |
+|Verify_Contain_OR|$res;;Sending Domain Name                                   |
+|Verify_Contain_OR|$res;;Sending Netbios Domain Name                           |
+|Verify_Contain_OR|$res;;Sending Account Name                                  |
+|Verify_Contain_OR|$res;;Sending Account DN                                    |
+|Verify_Contain_OR|$res;;Sending Stored Password                               |
+|Verify_Contain_OR|$res;;Sending New Password                                  |
+|Verify_Contain_OR|$res;;Sending Account Description                           |
+|Verify_Contain_OR|$res;;@testRes                                              |
+
+
+!| scenario        |Check UI Tag Values Sent To Jump Box|
+|Choose System     |${SystemName}                       |
+|click             |id=bt_Test                          |
+|waitForTextPresent|*from the test of system*           |
+|Test System Log                                        |
+|Choose Account    |${ManagedAccount}                   |
+|click             |id=CheckPassButton                  |
+|waitForTextPresent|*Results from the*                  |
+|Check Password Log                                     |
+|Choose Account    |${ManagedAccount}                   |
+|click             |id=ResetPassButton                  |
+|waitForTextPresent|*Results from the*                  |
+|Change Password Log                                    |
+
+
+
+!| scenario|Check CLI Tag Values Sent To Jump Box                    |
+|CLI       |${CLIBatch} TestSystem ${SystemName}                     |
+|Test System Log                                                     |
+|CLI       |${CLIBatch} CheckPassword ${SystemName},${ManagedAccount}|
+|Check Password Log                                                  |
+|CLI       |${CLIBatch} ForceReset ${SystemName},${ManagedAccount}   |
+|Change Password Log                                                 |
+
+
+!| scenario      |Test System Log                           |
+|Check Log String|OPERATION:CheckSystem                     |
+|Check Log String|FUNCTIONAL_ACCOUNT:${FuncAcct}            |
+|Check Log String|FUNC_ACC_PASSWORD:${FuncAcctPassword}     |
+|Check Log String|SYSTEM_ADDRESS:${SystemAddress}           |
+|Check Log String|PORT:${SystemPort}                        |
+|Check Log String|PLATFORM_SPECIFIC:${PlatformSpecificValue}|
+|Check Log String|FUNC_ACC_DESCRIPTION:${FuncAcctDN}        |
+|Check Log String|FUNCTIONAL_ACCOUNT_DN:${FuncAcctDN}       |
+|Check Log String|ENABLE_PASSWORD:${EnablePassword}         |
+|Check Log String|DOMAIN:${DomainName}                      |
+|Check Log String|NETBIOS:${NetBIOSDomainName}              |
+
+
+!| scenario      |Check Password Log                        |
+|Check Log String|OPERATION:CheckPassword                   |
+|Check Log String|FUNCTIONAL_ACCOUNT:${FuncAcct}            |
+|Check Log String|FUNC_ACC_PASSWORD:${FuncAcctPassword}     |
+|Check Log String|SYSTEM_ADDRESS:${SystemAddress}           |
+|Check Log String|PORT:${SystemPort}                        |
+|Check Log String|PLATFORM_SPECIFIC:${PlatformSpecificValue}|
+|Check Log String|FUNC_ACC_DESCRIPTION:${FuncAcctDN}        |
+|Check Log String|FUNCTIONAL_ACCOUNT_DN:${FuncAcctDN}       |
+|Check Log String|ENABLE_PASSWORD:${EnablePassword}         |
+|Check Log String|DOMAIN:${DomainName}                      |
+|Check Log String|NETBIOS:${NetBIOSDomainName}              |
+|Check Log String|MANAGED_ACCOUNT:${ManagedAccount}         |
+|Check Log String|MAN_ACC_PASSWORD:${ManagedAccountPassword}|
+|Check Log String|MAN_ACC_DESCRIPTION:${ManagedAccountDN}   |
+|Check Log String|MAN_ACC_DN:${ManagedAccountDN}            |
+
+
+
+!| scenario      |Change Password Log                           |
+|Check Log String|OPERATION:ChangePassword                      |
+|Check Log String|FUNCTIONAL_ACCOUNT:${FuncAcct}                |
+|Check Log String|FUNC_ACC_PASSWORD:${FuncAcctPassword}         |
+|Check Log String|SYSTEM_ADDRESS:${SystemAddress}               |
+|Check Log String|PORT:${SystemPort}                            |
+|Check Log String|PLATFORM_SPECIFIC:${PlatformSpecificValue}    |
+|Check Log String|FUNC_ACC_DESCRIPTION:${FuncAcctDN}            |
+|Check Log String|FUNCTIONAL_ACCOUNT_DN:${FuncAcctDN}           |
+|Check Log String|ENABLE_PASSWORD:${EnablePassword}             |
+|Check Log String|DOMAIN:${DomainName}                          |
+|Check Log String|NETBIOS:${NetBIOSDomainName}                  |
+|Check Log String|MANAGED_ACCOUNT:${ManagedAccount}             |
+|Check Log String|OLD_MAN_ACC_PASSWORD:${ManagedAccountPassword}|
+|Check Log String|NEW_MAN_ACC_PASSWORD:                         |
+|Check Log String|MAN_ACC_DESCRIPTION:${ManagedAccountDN}       |
+|Check Log String|MAN_ACC_DN:${ManagedAccountDN}                |
+
+
+
+
+!| scenario       |Check Log String |stringValue                                                                                     |
+|$res=            |RunBatchGetOutput|CheckLogString;${JumpBoxAddress};${JumpBoxRoot};${JumpBoxRootPassword};${PathToLog};@stringValue|
+|Verify_Contain_OR|$res;;1                                                                                                           |
+
+
+!| scenario       |Check Regex Log String|stringValue                                                                                           |
+|$res=            |RunBatchGetOutput     |CheckRegExpLogString;${JumpBoxAddress};${JumpBoxRoot};${JumpBoxRootPassword};${PathToLog};@stringValue|
+|Verify_Contain_OR|$res;;1                                                                                                                      |
+
+
+!|scenario         |Enable-Disable Key Authentication    |
+|Deactivate Platform Automation                          |
+|pause             |1000                                 |
+|click             |id=PasswordFl                        |
+|pause             |1000                                 |
+|click             |id=SSHFl                             |
+|pause             |1000                                 |
+|click             |id=btnSavePlatform                   |
+|getConfirmation                                         |
+|waitForTextPresent|saved successfully                   |
+|pause             |1000                                 |
+|click             |id=AutomationActiveFl                |
+|pause             |1000                                 |
+|click             |id=btnSavePlatform                   |
+|waitForTextPresent|saved successfully                   |
+|$res=             |getText|xpath=//div[@id='ResultsDiv']|
+|Verify_Contain_OR |$res;;saved successfully             |
+
+
+!|scenario         |Remove system                |sysName                                           |
+|Choose system     |@sysName                                                                        |
+|click             |id=Details                   |                                                  |
+|click             |id=bt_Clear                  |                                                  |
+|waitForTextPresent|*The results from the clearing*                                                 |
+|$res=             |getText                      |xpath=//div[@id='ResultDetailDiv']                |
+|Verify_Contain_OR |$res;;Known hosts for this system must be cleared on the Jump Box ${JumpBoxName}|
+|click             |id=bt_Del                    |                                                  |
+|getConfirmation                                                                                    |
+|waitForTextPresent|has been successfully deleted                                                   |
+
+
+!|scenario            |Add UI LDAP System                              |
+|pause                |5000                                            |
+|clickOnLink          |link=Add System                                 |
+|waitForElementPresent|id=SystemName                                   |
+|type;                |id=SystemName       |${SystemName}              |
+|type;                |id=NetworkAddress   |${SystemAddress}           |
+|select;              |id=PlatformID       |label=${CustomPlatformName}|
+|type;                |id=PlatSpecificValue|${PlatformSpecificValue}   |
+|click                |id=Connection       |                           |
+|type;                |id=PARFuncAcct      |${FuncAcct}                |
+|type;                |id=pword            |${FuncAcctPassword}        |
+|type;                |id=ConfPword        |${FuncAcctPassword}        |
+|type;                |id=PARFuncAcctDN    |${FuncAcctDN}              |
+|type;                |id=EnablePwd        |${EnablePassword}          |
+|type;                |id=ConfEnablePwd    |${EnablePassword}          |
+|type;                |id=DomainName       |${DomainName}              |
+|type;                |id=NetBiosName      |${NetBIOSDomainName}       |
+|type;                |id=Port             |${SystemPort}              |
+|click                |id=bt_Save          |                           |
+|waitForTextPresent   |System changes for * saved successfully         |
+
+
+!| scenario                       |Managed UI Account                                                                                                       |
+|Choose Account                   |${ManagedAccount}                                                                                                        |
+|Reset Password                   |error occurred changing the password                                                                                     |
+|Remove account                   |${ManagedAccount}                                                                                                        |
+|Add UI LDAP account              |${ManagedAccount}|with password|${ManagedAccountPwd}|and profiles|${PersistentPasswordCheckProfile1}||${PpmChangeProfile}|
+|Forced Reset                     |Failed                                                                                                                   |
+|Choose Account                   |${FuncAcct}                                                                                                              |
+|Set password                     |${FuncAcct}      |             |${FuncAcctPassword}                                                                      |
+|pause                            |${RestoreFunctAcctPasswordTimeout}                                                                                       |
+|Remove account                   |${ManagedAccount}                                                                                                        |
+|Add UI LDAP account              |${ManagedAccount}|with password|${ManagedAccountPwd}|and profiles|${PpmCheckProfile}                ||${PpmChangeProfile}|
+|pause                            |180000                                                                                                                   |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                                                                  |
+|Choose Account                   |${ManagedAccount}                                                                                                        |
+|Check Password                   |DOES NOT MATCH                                                                                                           |
+|pause                            |${RestoreFunctAcctPasswordTimeout}                                                                                       |
+|Check Status                     |Success          |for reason   |Mismatch                                                                                 |
+|Reset Password                   |successful                                                                                                               |
+|Remove account                   |${ManagedAccount}                                                                                                        |
+|Change Account Password on System|${ManagedAccountPwd}                                                                                                     |
+|Add UI LDAP account              |${ManagedAccount}|with password|${ManagedAccountPwd}|and profiles|${PersistentPasswordCheckProfile1}||${PpmChangeProfile}|
+|Forced Reset                     |Success                                                                                                                  |
+|Logout                                                                                                                                                     |
+
+
+!| scenario       |Add CLI LDAP account With Profiles|acc                                               |                                               |passCheck                                              |                                              |passChange                                              |
+|$res=            |CLI                               |${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName @acc --Password \"${ManagedAccountPassword}\" --Description \"${ManagedAccountDescription}\" --AccountDN ${ManagedAccountDN} --PasswordCheckProfile @passCheck --PasswordChangeProfile @passChange|
+|Verify_Contain_OR|$res;;successfully                                                                                                                                                                                                                                                                                   |
+
+
+!| scenario       |Add CLI LDAP System                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${SystemName} --NetworkAddress ${SystemAddress} --PlatformName \"Custom Platform/${CustomPlatformName}\" --FunctionalAccount ${FuncAcct} --FuncAcctCred \"${FuncAcctPassword}\" --FuncAcctDN ${FuncAcctDN} --Timeout ${SystemTimeout} --DomainName ${DomainName} --NetBiosName ${NetBIOSDomainName} --PortNumber ${SystemPort} --EnablePassword ${EnablePassword} --PlatSpecificValue ${PlatformSpecificValue} --PasswordCheckProfile ${PpmCheckProfile} --PasswordChangeProfile ${PpmChangeProfile}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+
+!| scenario       |Update CLI Account Description and DN|accountName                   |                   |accountDescription                   |                   |accountDN                  |
+|$res=            |CLI                                  |${CLIBatch} UpdateAccount --SystemName ${SystemName} --AccountName @accountName --Description @accountDescription --AccountDN @accountDN|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                              |
+
+
+!| scenario                        |Managed CLI LDAP Account                                                            |
+|Login                             |${TPAMURL}       |          |${TPAMAdmin}                      ||${DefaultPwd}      |
+|Reset CLI Password                |${ManagedAccount}|          |error occurred changing the password                   |
+|Remove CLI Account                |${ManagedAccount}                                                                   |
+|Change Account Password on System |${ManagedAccountPwd}                                                                |
+|Add CLI LDAP account With Profiles|${ManagedAccount}|          |${PpmCheckProfile}                ||${PpmChangeProfile}|
+|Schedule Reset CLI Password       |Failed                                                                              |
+|Change Account Password on System |${ManagedAccountPwdNew}                                                             |
+|Set CLI password                  |${FuncAcct}      |          |${FuncAcctPassword}                                    |
+|pause                             |${RestoreFunctAcctPasswordTimeout}                                                  |
+|Check CLI Password                |${ManagedAccount}|          |DOES NOT MATCH                                         |
+|pause                             |${RestoreFunctAcctPasswordTimeout}                                                  |
+|Choose Account                    |${ManagedAccount}                                                                   |
+|Check Status                      |Success          |for reason|Mismatch                                               |
+|Reset CLI Password                |${ManagedAccount}|          |successful                                             |
+|Remove CLI Account                |${ManagedAccount}                                                                   |
+|Change Account Password on System |${ManagedAccountPwd}                                                                |
+|Add CLI LDAP account With Profiles|${ManagedAccount}|          |${PersistentPasswordCheckProfile1}||${PpmChangeProfile}|
+|Schedule Reset CLI Password       |Success                                                                             |
+|Logout                                                                                                                 |
+
+!|scenario                  |PPM CLI Regular Activity                                  |
+|Update CLI Account Profiles|${ManagedAccount}||${PpmCheckProfile}||${PpmChangeProfile}|
+|Managed CLI System                                                                    |
+|Managed CLI LDAP Account                                                              |
+|Request CLI Password and Login                                                        |
+
+
+!|scenario                         |Schedule Failed Reset CLI Password                        |
+|Remove CLI Account                |${ManagedAccount}                                         |
+|Add CLI LDAP account With Profiles|${ManagedAccount}||${PpmCheckProfile}||${PpmChangeProfile}|
+|pause                             |240000                                                    |
+
+
+!|scenario            |Add UI LDAP account                         |accountName|with password|accPwd|and profiles|checkProfile||changeProfile|
+|clickOnLink          |link=Add Account                                                                                                      |
+|type;                |id=SystemNm                                 |${SystemName}                                                            |
+|click                |id=System                                   |                                                                         |
+|waitForElementPresent|xpath=//td[contains(text(),'${SystemName}')]|                                                                         |
+|click                |xpath=//td[contains(text(),'${SystemName}')]|                                                                         |
+|click                |id=Details                                  |                                                                         |
+|type;                |id=AccountName                              |@accountName                                                             |
+|type;                |id=sPswd                                    |@accPwd                                                                  |
+|type;                |id=sConfPswd                                |@accPwd                                                                  |
+|type;                |id=AcctDN                                   |${ManagedAccountDN}                                                      |
+|type;                |id=AcctDesc                                 |${ManagedAccountDescription}                                             |
+|click                |id=Management                                                                                                         |
+|select;              |id=PasswordCheckProfileID                   |label=@checkProfile                                                      |
+|select;              |id=PasswordChangeProfileID                  |label=@changeProfile                                                     |
+|click                |id=SubmitChangesButton                      |                                                                         |
+|waitForTextPresent   |Changes saved successfully for                                                                                        |

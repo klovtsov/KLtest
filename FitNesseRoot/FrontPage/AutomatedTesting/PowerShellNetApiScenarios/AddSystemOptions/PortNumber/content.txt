@@ -1,0 +1,12 @@
+!* Test Description
+Test by MySQL platform
+*!
+!include <AutomatedTesting.PlatformsTesting.MySql
+!define ConnectionPort {3307}
+
+!include -c  <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                             |
+|Add system     |${SystemName}            |with address |${SystemAddress}     |platform|"${SystemPlatform}"|managed by|${FunctAcct}|additional parameters|-functAcctPwd ${FunctAcctPwd} -portNumber ${ConnectionPort}|
+|List Systems by|-systemName ${SystemName}|output params|SystemName,PortNumber|contain |${SystemName}.*${ConnectionPort}                                                                                             |
+|Delete System  |${SystemName}                                                                                                                                                                                       |

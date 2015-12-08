@@ -1,0 +1,24 @@
+!define ADSystemName {${prefix}ADSystem}
+!define ADAccountName {${prefix}ADAccount}
+!define LinuxSystemName {${prefix}LinuxSystem}
+!define LinuxAccountName {${prefix}LinuxAccount}
+
+!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+
+
+
+!|script                                                                                                                                                                          |
+|Add System |${CLIBatch}||--SystemName ${ADSystemName} --PlatformName \"Windows Active Dir\" --NetworkAddress 7.6.5.4 --NetBiosName NetBios --DomainName Domain.name||successfully|
+|Add Account|${CLIBatch}||--SystemName ${ADSystemName} --AccountName ${ADAccountName} --AutoFlag N --MinimumApprovers 0                                             ||successfully|
+
+!|script                                                                                                                                                                                                                                                                                               |
+|Add System        |${CLIBatch}||--SystemName ${LinuxSystemName} --PlatformName Linux --NetworkAddress 1.2.3.4                                                                                                                                                          ||successfully                 |
+|Add Account       |${CLIBatch}||--SystemName ${LinuxSystemName} --AccountName ${LinuxAccountName} --AutoFlag N --MinimumApprovers 0                                                                                                                                    ||successfully                 |
+|Update PSM Account|${CLIBatch}||--System ${LinuxSystemName} --Account ${LinuxAccountName} --EnableFlag Y --MinApprovers 0 --PasswordMethod \"Windows Domain Account\" --ProxyType \"SSH - Automatic Login Using Password\" --DomainAccount domain.name\${ADAccountName}||successfully                 |
+|List PSM Accounts |${CLIBatch}||--SystemName ${LinuxSystemName} --AccountName ${LinuxAccountName}                                                                                                                                                                      ||Domain.name.*${ADAccountName}|
+
+!|script                                                                 |
+|Delete System|${CLIBatch}||--SystemName ${LinuxSystemName}||successfully|
+|Delete System|${CLIBatch}||--SystemName ${ADSystemName}   ||successfully|
+
+

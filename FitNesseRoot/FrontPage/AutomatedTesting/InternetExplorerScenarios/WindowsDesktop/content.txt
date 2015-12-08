@@ -1,0 +1,4 @@
+!include <AutomatedTesting.PlatformsTesting.WindowsDesktop
+!include -c <AutomatedTesting.InternetExplorerScenarios.ScenarioLibrary
+
+

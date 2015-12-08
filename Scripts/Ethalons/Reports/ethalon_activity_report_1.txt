@@ -1,0 +1,4 @@
+kl777RepRequestor1	Ivanov, Ivan	N/A	Authentication	Logout	0	kl777RepRequestor1	TPAMCONSOLE
+kl777RepRequestor1	Ivanov, Ivan	N/A	Authentication	Login	0		TPAMCONSOLE
+kl777RepRequestor1	Ivanov, Ivan	N/A	Authentication	Logout	0	kl777RepRequestor1	TPAMCONSOLE
+kl777RepRequestor1	Ivanov, Ivan	N/A	Authentication	Login	0		TPAMCONSOLE

@@ -1,0 +1,17 @@
+!contents
+
+
+!include -c .FrontPage.AutomatedTesting.CliScenarios.WindowsActiveDir.PlatformSpecific
+!include -c .FrontPage.AutoTestsWebDrv.AutoDiscovery.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.AutoDiscovery.WindowsActiveDir.ScenarioLibrary
+!include -c .FrontPage.AutoTestsWebDrv.AutoDiscovery.WindowsActiveDirCertAuth.ScenarioLibrary
+
+
+
+
+
+!|script      |
+|Prepare Test |
+|Auto Discovery |
+|Clear Objects|
+

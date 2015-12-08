@@ -1,0 +1,5 @@
+!contents
+!include -c <AutomatedTesting.PlatformsTesting.SqlServer
+!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary
+!include -c <AutomatedTesting.AccountDiscovery.SqlServer.PlatformSpecific
+!define TemplateName {${SystemName}Template}

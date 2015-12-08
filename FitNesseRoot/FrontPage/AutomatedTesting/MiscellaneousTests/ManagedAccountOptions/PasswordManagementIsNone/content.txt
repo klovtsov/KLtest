@@ -1,0 +1,18 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.KnownIssues
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                                                                            |
+|Change Account Password on System    |${ManagedAccountPwdNew}                      |
+|Schedule Password Change                                                           |
+|Set Password Management to None                                                    |
+|Check status of last Scheduled Change|Auto status for this account turned OFF      |
+|Check Password                       |${ManagedAccount}||${CheckPasswordFailed}    |
+|pause                                |${RestoreFunctAcctPasswordTimeout}           |
+|Check Password                       |${ManagedAccount}||${CheckPasswordNotMatch}  |
+|Set Password Management to Automatic                                               |
+|Schedule Password Change                                                           |
+|pause                                |300000                                       |
+|Check status of last Scheduled Change|Success                                      |
+|Check Password                       |${ManagedAccount}||${CheckPasswordSuccessful}|

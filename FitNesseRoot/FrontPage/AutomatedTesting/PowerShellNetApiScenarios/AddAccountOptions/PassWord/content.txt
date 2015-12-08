@@ -1,0 +1,13 @@
+!include <AutomatedTesting.PlatformsTesting.WindowsLocalHost
+!define ManagedAccount {${prefix}psAcnt}
+!define ManagedAccountPwd {T0P$ecret}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                           |
+|Create Account on System                                                                                                                                                          |
+|Add system              |${SystemName}    |with address |${SystemAddress}|platform|${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-functAcctPwd "${FunctAcctPwd}"|
+|Add account             |${ManagedAccount}|with password|${ManagedAccountPwd}                                                                                                     |
+|Check Password          |${CheckPasswordSuccessful}                                                                                                                               |
+|Delete Account on System|${ManagedAccount}                                                                                                                                        |
+|Delete System           |${SystemName}                                                                                                                                            |

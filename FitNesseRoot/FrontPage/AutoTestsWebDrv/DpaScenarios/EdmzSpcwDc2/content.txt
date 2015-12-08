@@ -1,0 +1,4 @@
+!define SystemTimeout {120}
+!include <AutoTestsWebDrv.PlatformsTesting.EdmzSpcwDc2
+!include -c <AutoTestsWebDrv.PlatformsTesting.EdmzSpcwDc2.PlatformSpecific
+!include -c <DpaScenarios.EdmzSpcw2.PlatformSpecific

@@ -1,0 +1,45 @@
+!*> Includes
+''System''
+!include -c <AutoTestsWebDrv.PlatformsTesting.WindowsLocalHost
+''Libraries''
+!include -c <AutoTestsWebDrv.UsersTests.UserTypes.ScenarioLibrary
+!include -c <PasswordProfiles.ScenarioLibrary
+*!
+
+''Mismatch - Reset password''
+!note Scheduled Check Password
+!|script                                                                                                                                                                                                                                                                  |
+|Open                     |${TPAMURL}       ||${TPAMAdmin}                                                                                                                         ||${DefaultPwd}                                                                        |
+|Add Account              |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password "WrongPWD" --PasswordCheckProfile ${CheckProfile2NismatchReset}||successfully                                                                         |
+|pause                    |${defaultPause}                                                                                                                                                                                                                                |
+|Check Test Log           |${ManagedAccount}||Failed - Password Mismatch                                                                                                                                                                                                  |
+|Check Mismatch Mail      |${MailServer}    ||${SystemEMail}                                                                                                                       ||${SystemEMailPwd}||${FromMail}||${MailSubjectCheckMismatch}||${MailBodyCheckMismatch}|
+|Check Change Log         |${ManagedAccount}||Password Mismatch Success                                                                                                                                                                                                   |
+|Check Password           |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount}                                                                           ||The password for ${ManagedAccount} on ${SystemName} was checked successfully.        |
+|Management tab           |${ManagedAccount}                                                                                                                                                                                                                              |
+|Check Schedule           |${DaylySchedule1}                                                                                                                                                                                                                              |
+|Check Mismatch Action    |${MismatchReset}                                                                                                                                                                                                                               |
+|Check Account Lock Status|${ManagedAccount}||false                                                                                                                                                                                                                       |
+|Change schedule disabled |${ManagedAccount}||false                                                                                                                                                                                                                       |
+|Update Account           |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --Password "WrongPWD" --AutoFlag N                                        ||successfully                                                                         |
+|Update Account           |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --AutoFlag Y --PasswordCheckProfile ${CheckProfile2NismatchReset}         ||successfully                                                                         |
+|Delete Mails             |${SystemEMail}                                                                                                                                                                                                                                 |
+#need get login ?
+
+!note Manual Check Password
+!|script                                                                                                                                                                                                                                          |
+|Check Password                  |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount}                                            ||The stored password for ${ManagedAccount} DOES NOT MATCH the managed system          |
+|Check Test Log                  |${ManagedAccount}||Failed - Password Mismatch                                                                                                                                                                   |
+|pause                           |${defaultPause}                                                                                                                                                                                                 |
+|Check Account Lock Status       |${ManagedAccount}||false                                                                                                                                                                                        |
+|Check Mismatch Mail             |${MailServer}    ||${SystemEMail}                                                                                        ||${SystemEMailPwd}||${FromMail}||${MailSubjectCheckMismatch}||${MailBodyCheckMismatch}|
+|Check Change Log                |${ManagedAccount}||Password Mismatch Success                                                                                                                                                                    |
+|Check Password                  |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount}                                            ||The password for ${ManagedAccount} on ${SystemName} was checked successfully.        |
+|Management tab                  |${ManagedAccount}                                                                                                                                                                                               |
+|Check Consecutive Check Failures|0                                                                                                                                                                                                               |
+|Check Account Lock Status       |${ManagedAccount}||false                                                                                                                                                                                        |
+|Change schedule disabled        |${ManagedAccount}||false                                                                                                                                                                                        |
+|Update Account                  |${CLIBatch}      ||--SystemName ${SystemName} --AccountName ${ManagedAccount} --PasswordCheckProfile "!NULL" --AutoFlag N||successfully                                                                         |
+|Delete Account                  |${CLIBatch}      ||--SystemName ${SystemName}  --AccountName ${ManagedAccount}                                           ||successfully                                                                         |
+|Delete Mails                    |${SystemEMail}                                                                                                                                                                                                  |
+|stop                                                                                                                                                                                                                                             |

@@ -1,0 +1,21 @@
+!*> Short description
+Options that are specific for Cisco System:
+lineDef,enablePassword
+*!
+!include -c  <AutoTestsWebDrv.PlatformsTesting.CiscoRouterSsh
+!define newSystemAddress {5.4.3.6}
+!define lineDefValue {AAA}
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+
+!4 Create system, make template from system and create system from template
+!|script                                                                                                                                                                                                                                                                |
+|Add system          |${SystemName}   |with address   |${SystemAddress}                                                      |platform    |"Cisco Router (TEL)"|managed by|${FunctAcct}|additional parameters|-enablePassword ${EnablePassword} -lineDef ${lineDefValue}|
+|Make System Template|${TemplateName} |from           |${SystemName}                                                         |with account|${FunctAcct}                                                                                                                 |
+|Try to Add system   |${newSystemName}|with parameters|-systemAddress ${newSystemAddress} -templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully                                                                       |
+
+!4 Check new system properties
+!|script                                                                                                                 |
+|List Systems by|-systemName ${newSystemName}|output params|SystemName,lineDef|contain|${newSystemName}\s+${lineDefValue}|

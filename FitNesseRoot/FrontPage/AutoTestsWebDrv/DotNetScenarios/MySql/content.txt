@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.MySql
+!include -c <DotNetScenarios.ScenarioLibrary
+!include -c <DotNetScenarios.MySql.PlatformSpecific
+

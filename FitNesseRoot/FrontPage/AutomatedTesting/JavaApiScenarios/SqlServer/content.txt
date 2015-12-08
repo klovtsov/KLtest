@@ -1,0 +1,9 @@
+!include <AutomatedTesting.PlatformsTesting.SqlServer
+!*> Added to workaround Java API issues with difficult passwords
+!define FunctAcct {sa}
+!define FunctAcctPwd {=1qwerty}
+!define ManagedAccountPwd {=1qwerty}
+!include -c <AutomatedTesting.ScenarioLibrary
+*!
+!include -c <JavaApiScenarios.ScenarioLibrary
+

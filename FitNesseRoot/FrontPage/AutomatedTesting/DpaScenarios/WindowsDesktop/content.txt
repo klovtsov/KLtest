@@ -1,0 +1,3 @@
+!include <AutomatedTesting.PlatformsTesting.WindowsDesktop
+!include -c <DpaScenarios.ScenarioLibrary
+

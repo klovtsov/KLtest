@@ -1,0 +1,1 @@
+.\Scripts\psexec.exe -e -i -h \\%1 -u %2 -p %3 net user %4 %5 /Add

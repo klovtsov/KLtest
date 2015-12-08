@@ -1,0 +1,19 @@
+!* Test description
+The GUI should allow the system connection timeout to be set to 4 characters.
+This feature has a special importance for SPCW systems.
+*!
+
+!define LongSystemTimeout {9876}
+
+!include -c <AutomatedTesting.PlatformsTesting.EdmzSpcw2
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c >TestSpecific
+
+!|script                                                        |
+|Add system                                                     |
+|Open                   |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Choose System                                                  |
+|Set Connection Tab                                             |
+|Logout                                                         |
+|Check system timeout is|${LongSystemTimeout}                   |
+|Remove system          |${SystemName}                          |

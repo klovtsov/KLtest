@@ -1,0 +1,32 @@
+!*> Test description
+Only alpha or numeric symbols are permitted as first in generated passords.
+Passwords for managed accounts and synchronized passwords are checked.
+Not matched password can't be set to sync password.
+If password matches the rule it will be set successfully. 
+*!
+
+!define pwdRegexp {!-^[a-zA-Z0-9].*-!}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SynchronizedPasswords.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!3 Set the password rule settings.
+!|script                                                                 |
+|Login       |${TPAMAdminURL}       |        |${TPAMMaster}||${MasterPwd}|
+|Let Off                                                                 |
+|Set         |MaxChars              |equal to|8                          |
+|Set         |MinChars              |equal to|6                          |
+|Select value|Permitted             |for     |ReqUpper                   |
+|Select value|Permitted             |for     |ReqLower                   |
+|Select value|Permitted             |for     |ReqNum                     |
+|Select value|Require at least 3    |for     |ReqNonAN                   |
+|Select value|AlphaNumeric Permitted|for     |ReqFirst                   |
+|click       |id=SubmitChangesButton                                     |
+
+!3 Test the Rule
+!|script                                                                                                             |
+|Test password generator            |${pwdRegexp}       |should present    |Y                                        |
+|Generated account password contains|${pwdRegexp}                                                                    |
+|Check that Synchronized Password   |${SyncPasswordName}|with Password Rule|${PasswdRuleName}||contains||${pwdRegexp}|

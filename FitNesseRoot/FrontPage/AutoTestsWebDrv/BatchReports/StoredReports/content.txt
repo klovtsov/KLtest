@@ -1,0 +1,41 @@
+!contents
+
+!|script                                    |
+|Check Stored Report|CollectionMembership   |
+|Check Stored Report|DlyActivityLog         |
+|Check Stored Report|DlyApproverActivity    |
+|Check Stored Report|DlyFailedLogins        |
+|Check Stored Report|DlyFileAging           |
+|Check Stored Report|DlyFileRelActivity     |
+|Check Stored Report|DlyFirewallLog         |
+|Check Stored Report|DlyGNSystemMappings    |
+|Check Stored Report|DlyGNUserMappings      |
+|Check Stored Report|DlyLDAPSystemMappings  |
+|Check Stored Report|DlyLDAPUserMappings    |
+|Check Stored Report|DlyPasswordAging       |
+|Check Stored Report|DlyPwdTestResults      |
+|Check Stored Report|DlyPwdTestSummary      |
+|Check Stored Report|DlyPwdUpdateResults    |
+|Check Stored Report|DlyPwdUpdateSummary    |
+|Check Stored Report|DlyReleaseActivity     |
+|Check Stored Report|DlySecurityLog         |
+|Check Stored Report|DlySessionActivity     |
+|Check Stored Report|DlySessionActivityDtls |
+|Check Stored Report|DlySysAdminActivity    |
+|Check Stored Report|GroupMembership        |
+|Check Stored Report|MgmtSummaryReport      |
+|Check Stored Report|SystemDPAAffinity      |
+|Check Stored Report|SystemsNoAccount       |
+|Check Stored Report|SystemsNoCollection    |
+|Check Stored Report|UserEGPEntitlement     |
+|Check Stored Report|UserEntitlement        |
+|Check Stored Report|UserFileEntitlement    |
+|Check Stored Report|UsersNoGroup           |
+|Check Stored Report|WklyAppUsageReport     |
+|Check Stored Report|WklyFileRelActivity    |
+|Check Stored Report|WklyReleaseActivity    |
+|Check Stored Report|WklySessionActivity    |
+|Check Stored Report|WklySessionActivityDtls|
+#|Check Stored Report|DlyReviewerActivity    |
+#|Check Stored Report|PendingReleaseReviews  |
+#|Check Stored Report|PendingSessionReviews  |

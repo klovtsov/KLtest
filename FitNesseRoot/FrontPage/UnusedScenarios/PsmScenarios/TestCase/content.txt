@@ -1,0 +1,8 @@
+!contents
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PsmScenarios.ScenarioLibrary
+
+|script        |
+|PSM File Upload And Download|
+#|Sikuli test|
+

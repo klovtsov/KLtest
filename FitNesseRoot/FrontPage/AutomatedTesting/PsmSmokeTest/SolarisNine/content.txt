@@ -1,0 +1,22 @@
+!define OSType {Sol}
+!define ProxyType {SSH}
+
+!include -c <AutomatedTesting.SessionAlertsScenarios
+!include -c <AutomatedTesting.PlatformsTesting.SolarisNine
+!define ManagedAccountPwd {grain41R}
+
+!include -c <AutomatedTesting.SessionAlertsScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.SessionAlertsScenarios.WindowsEight.PlatformSpecific
+!include -c <AutomatedTesting.PsmSmokeTest.ScenarioLibrary
+!include -c <AutomatedTesting.PsmSmokeTest.LinuxRedHat.PlatformSpecific
+
+
+
+
+
+
+!|script      |
+|Prepare Test |
+|Open Session |
+|Clear Objects|
+

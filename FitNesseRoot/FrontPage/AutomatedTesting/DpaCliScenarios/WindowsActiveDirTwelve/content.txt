@@ -1,0 +1,2 @@
+!include <AutomatedTesting.CliScenarios.WindowsActiveDirTwelve
+!include -c ScenarioLibrary

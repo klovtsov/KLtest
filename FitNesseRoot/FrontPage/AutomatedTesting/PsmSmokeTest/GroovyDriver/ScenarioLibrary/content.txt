@@ -1,0 +1,11 @@
+!|scenario        |Open Session Do Nothing|requestorName        |                  |systemName        |                    |accountName        |       |responceAction       |
+|$res=            |CLI                    |${CLIBatch} AddSessionRequest --SystemName @systemName --AccountName @accountName --ForUserName @requestorName --RequestNotes test|
+|Verify_Contain_OR|$res;;submitted                                                                                                                                           |
+|$RequestID=      |get_session_RequestID  |$res                                                                                                                              |
+|Connect          |@requestorName         |                     |${UserPwd}        |                  |@accountName        |                   |$RequestID                   |
+#|Cancel Session Request                                                                                                                                                      |
+
+!|scenario         |Connect        |userName                   |                   |userPwd                   |                   |accountName                   |                   |requestID                   |
+|$res=             |GroovyWebDriver|PSMSmokeTest;TPAMaddress=${TPAMHost};UserName=@userName;UserPassword=@userPwd;AccountName=@accountName;RequestID=@requestID;Browser=${Browser};OSType=${OSType};Image=${Image}|
+|Verify_Contain_NOT|$res;;SClickMultiple failed                                                                                                                                                                   |
+|Verify_Contain_OR |$res;;Finished                                                                                                                                                                                |

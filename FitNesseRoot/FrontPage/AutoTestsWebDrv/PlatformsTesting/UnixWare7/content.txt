@@ -1,0 +1,11 @@
+!define SystemName {${prefix}_unixware7}
+!define SystemPlatform {Unixware 7.X}
+!define SystemAddress {10.30.46.209}
+!define FunctAcct {rooto}
+!define FunctAcctPwd {\)&(|<>$}
+!define ManagedAccountPwd {\)&(|<>$}
+!define UnixWareRuleName {${prefix}_UnixWare}
+!define browser {firefox}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <PlatformsTesting.UnixWare7.PlatformSpecific

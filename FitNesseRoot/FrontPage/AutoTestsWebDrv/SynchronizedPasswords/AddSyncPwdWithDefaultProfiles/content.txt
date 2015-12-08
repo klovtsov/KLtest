@@ -1,0 +1,18 @@
+!*> Test description
+Earlier: Synchronized Password cann't be created without specifing Pass Change/Check profiles
+Now (after bfer 7906 fixing): default check/change profiles now put in when syncpass is added
+*!
+!define FakeSyncPwdName {${prefix}FakePwd}
+!define FakeSyncPwdValue {Pwd4Sync}
+!define defaultCheckProfile {Check and Reset}
+!define defaultChangeProfile {First of Month}
+#!define noChangeProfileError {Synchronized Password must have a Password Change Profile}
+#!define noCheckProfileError {Synchronized Password must have a Password Check Profile when UseAccountCheckProfile is turned off}
+
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!|script                               |
+|Create Sync Pwd without profiles      |
+|Create Sync Pwd without Check Profile |
+|Create Sync Pwd without Change Profile|

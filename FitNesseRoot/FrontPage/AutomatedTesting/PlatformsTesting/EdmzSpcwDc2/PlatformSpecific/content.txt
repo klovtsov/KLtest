@@ -1,0 +1,68 @@
+!|scenario            |Set Connection Tab                     |
+|waitForElementPresent|id=Connection   |                      |
+|click                |id=Connection   |                      |
+|type;                |id=PARFuncAcct  |${ParFunctAcct}       |
+|type;                |id=EGPFuncAcct  |${PsmFunctAcct}       |
+|type;                |id=Timeout      |${SystemTimeout}      |
+|type;                |id=DomainName   |${DomainName}         |
+|type;                |id=NetBiosName  |${NETBIOSDomainName}  |
+|click                |id=bt_Save      |                      |
+|waitForTextPresent   |System changes for * saved successfully|
+
+
+!|scenario    |Set password                   |one                   |                  |switch                  |
+|accountAction|${SystemPlatform};;corrupt;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${PathtoKey};;@switch|
+
+!|scenario            |Add account                           |accountName|with password|accPwd|
+|clickAndWait         |link=Add Account                      |                                |
+|type;                |id=SystemNm                           |${SystemName}                   |
+|click                |id=System                             |                                |
+|waitForElementPresent|//td[contains(text(),'${SystemName}')]|                                |
+|mouseDown            |//td[contains(text(),'${SystemName}')]|                                |
+|click                |//td[contains(text(),'${SystemName}')]|                                |
+|click                |id=Details                            |                                |
+|type;                |id=AccountName                        |@accountName                    |
+|type;                |id=sPswd                              |@accPwd                         |
+|type;                |id=sConfPswd                          |@accPwd                         |
+|click                |id=SubmitChangesButton                |                                |
+|waitForTextPresent   |Changes saved successfully for @accountName                            |
+|Set description      |${ManagedAccountDescription}          |                                |
+
+!| scenario    |Managed System                           |
+|Create Account on System                                |
+|Open          |${TPAMURL}  ||${TPAMAdmin}||${DefaultPwd}|
+|Add system                                              |
+|Set Connection Tab                                      |
+|Test System   |${TestSystemSuccessful}                  |
+|Set password  |${FunctAcct}||${FunctAcctWrongPwd}       |
+|Test System   |${TestSystemFailed}                      |
+|Choose Account|${ParFunctAcct}                          |
+|Check Password|${CheckPasswordFailed}                   |
+
+#!| scenario                       |Managed Account                                     |
+#|Add account                      |${ManagedAccount}|with password|${ManagedAccountPwd}|
+#|Reset Password                   |${ResetPasswordFailed}                              |
+#|Change Account Password on System|${ManagedAccountPwdNew}                             |
+#|pause                            |${ChangeManagedAccountPasswordTimeout}              |
+#|Set password                     |${FunctAcct}     |             |${FunctAcctPwd}     |
+#|Choose Account                   |${ManagedAccount}                                   |
+#|Check Password                   |${CheckPasswordNotMatch}                            |
+#|pause                            |${RestoreFunctAcctPasswordTimeout}                  |
+#|Check Status                     |Success          |for reason   |Mismatch            |
+#|Reset Password                   |${ResetPasswordSuccessful}                          |
+
+
+!| scenario                       |Managed Account                                     |
+|Add account                      |${ManagedAccount}|with password|${ManagedAccountPwd}|
+|Reset Password                   |${ResetPasswordFailed}                              |
+|Schedule Reset Password          |Failed                                              |
+|Change Account Password on System|${ManagedAccountPwdNew}                             |
+|pause                            |${ChangeManagedAccountPasswordTimeout}              |
+|Set password                     |${FunctAcct}     |             |${FunctAcctPwd}     |
+|Choose Account                   |${ManagedAccount}                                   |
+|Check Password                   |${CheckPasswordNotMatch}                            |
+|pause                            |${RestoreFunctAcctPasswordTimeout}                  |
+|Check Status                     |Success          |for reason   |Mismatch            |
+|Reset Password                   |${ResetPasswordSuccessful}                          |
+|Schedule Reset Password          |Success                                             |
+

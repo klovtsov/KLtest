@@ -1,0 +1,3 @@
+!include <AutomatedTesting.PlatformsTesting.UnixWare7 
+!include -c <JavaApiScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.JavaApiScenarios.UnixWare7.PlatformSpecific

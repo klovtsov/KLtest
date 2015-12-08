@@ -1,0 +1,10 @@
+!define seleniumBrowser {*firefox}
+!include <AutomatedTesting.SetUp
+!|script     |
+|Open|${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Remove Users|
+|stop        |
+|finalize    |
+
+
+#|Check Mail|${MailServer}||${RequestorEMail}||${RequestorEMailPwd}||${FromMail}||${ReleaseRequestNotificationSubject}||${ReleaseRequestNotificationBody}|

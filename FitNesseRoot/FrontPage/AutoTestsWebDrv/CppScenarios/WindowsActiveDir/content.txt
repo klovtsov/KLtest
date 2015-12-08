@@ -1,0 +1,4 @@
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsActiveDir
+!include -c <CppScenarios.ScenarioLibrary
+!include -c <CppScenarios.WindowsActiveDir.PlatformSpecific
+

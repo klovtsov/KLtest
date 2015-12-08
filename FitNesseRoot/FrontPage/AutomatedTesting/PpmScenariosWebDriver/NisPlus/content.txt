@@ -1,0 +1,6 @@
+!define content {${ATPath}\PlatformsTesting\NisPlus\content.txt}
+
+
+!include -c <AutomatedTesting.PlatformsTesting.NisPlus 
+!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary
+!include -c <AutomatedTesting.PpmScenariosWebDriver.NisPlus.PlatformSpecific

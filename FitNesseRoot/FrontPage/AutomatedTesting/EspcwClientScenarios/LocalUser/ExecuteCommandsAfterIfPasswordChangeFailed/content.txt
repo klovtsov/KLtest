@@ -1,0 +1,18 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <FrontPage.AutomatedTesting.KnownIssues
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ExecuteCommandBefore.TestSpecific
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ExecuteCommandsAfter.TestSpecific
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ExecuteCommandIfPasswordChangeFailed.TestSpecific
+
+!define FileName {After}
+
+!|script                                                                                                                                               |
+|Create bat file on system|${FileName}    |on             |${SystemAddress}                                                                            |
+|Check Checkbox           |successenabled |for user       |DEFAULT                                                                                     |
+|Set After Command        |cmd.exe        |with parameters|/c c:\test\${FileName}.bat|cmd path|C:\windows\system32|for user|DEFAULT|on|${SystemAddress}|
+|Attempt to change password                                                                                                                            |
+|Check Log File           |${FileName}.log|with result    |File does not exist       |on      |${SystemAddress}                                        |
+|Delete files on          |${SystemAddress}                                                                                                            |
+|Uncheck Checkbox         |successenabled |for user       |DEFAULT                                                                                     |

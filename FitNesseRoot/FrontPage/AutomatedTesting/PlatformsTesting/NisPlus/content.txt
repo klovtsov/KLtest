@@ -1,0 +1,15 @@
+!define SystemName {${prefix}_NisPlus}
+!define SystemPlatform {NIS Plus}
+!define SystemAddress {10.30.37.114}
+#!define FunctAcct {root4}
+#!define FunctAcctPwd {A\)&(d|ef<j>k$l1}
+!define FunctAcct {root}
+!define FunctAcctPwd {master}
+!define FunctAcctWrongPwd {1}
+!define ManagedAccountPwd {A\)&(d|ef<j>k$l1}
+!define PathtoKey {/export/home/id_dsa.pub}
+!define DomainName {nisplus.tpam.spb.qsft}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.NisPlus.PlatformSpecific
+!include -c <AutomatedTesting.PlatformsTesting.MacOsxSix.PlatformSpecific

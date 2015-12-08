@@ -1,0 +1,21 @@
+!*> Includes
+!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+*!
+
+
+!|script                                                                                                         |
+|Add User   |${CLIBatch}||--UserName "${prefix}${User" --LastName test --FirstName test        ||successfully    |
+|Add User   |${CLIBatch}||--UserName "${prefix}{}" --LastName test --FirstName test            ||successfully    |
+|Add User   |${CLIBatch}||--UserName "${prefix}^{" --LastName test --FirstName test            ||successfully    |
+|Add User   |${CLIBatch}||--UserName "${prefix}~!#$%^&()_`-{}" --LastName test --FirstName test||successfully    |
+|Add User   |${CLIBatch}||--UserName ""ib5~!}%^}" --LastName test --FirstName test             ||successfully    |
+|Add User   |${CLIBatch}||--UserName "$%^&()_`-{" --LastName test --FirstName test             ||successfully    |
+|Add User   |${CLIBatch}||--UserName "${prefix}~!#$%^&(_`-{" --LastName test --FirstName test  ||successfully    |
+|Delete User|${CLIBatch}||--UserName "${prefix}${User"                                         ||successfully    |
+|Delete User|${CLIBatch}||--UserName "${prefix}{}"                                             ||successfully    |
+|Delete User|${CLIBatch}||--UserName "${prefix}^{"                                             ||successfully    |
+|Delete User|${CLIBatch}||--UserName "${prefix}~!#$%^&()_`-{}"                                 ||successfully    |
+|Delete User|${CLIBatch}||--UserName "ib5~!}%^}"                                               ||successfully    |
+|Delete User|${CLIBatch}||--UserName "$%^&()_`-{"                                              ||successfully    |
+|Delete User|${CLIBatch}||--UserName "${prefix}~!#$%^&(_`-{"                                   ||successfully    |
+|List Users |${CLIBatch}||--UserName "${prefix}^{"                                             ||No Users to list|

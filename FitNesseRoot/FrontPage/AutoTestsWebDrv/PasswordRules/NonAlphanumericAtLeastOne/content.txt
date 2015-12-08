@@ -1,0 +1,26 @@
+!define ValidNonAlphaNumSymbols {!-`!@#^()[={}|:<,]>./\-!}
+!define checkRegexp {!-.*[`!@#^()\[={}|:<,\]>./\\].*-!}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.SynchronizedPasswords.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!4 Set the password rule settings.
+!|script                                                                                    |
+|Login                              |${TPAMAdminURL}   |        |${TPAMMaster}||${MasterPwd}|
+|Let Off                                                                                    |
+|Select Password Rule               |${PasswdRuleName}                                      |
+|Set                                |MaxChars          |equal to|10                         |
+|Select value                       |Permitted         |for     |ReqUpper                   |
+|Select value                       |Permitted         |for     |ReqLower                   |
+|Select value                       |Permitted         |for     |ReqNum                     |
+|Select value                       |Require at least 1|for     |ReqNonAN                   |
+|Set Valid Non Alpha Numeric Symbols|${ValidNonAlphaNumSymbols}                             |
+|click                              |id=SubmitChangesButton                                 |
+
+!4 Test Rule
+!|script                                                                                                               |
+|Test password generator            |${checkRegexp}     |should present    |Y                                          |
+|Generated account password contains|${checkRegexp}                                                                    |
+|Check that Synchronized Password   |${SyncPasswordName}|with Password Rule|${PasswdRuleName}||contains||${checkRegexp}|

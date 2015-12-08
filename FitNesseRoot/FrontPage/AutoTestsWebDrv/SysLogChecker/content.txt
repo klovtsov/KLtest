@@ -1,0 +1,15 @@
+!define SysLogHost {Spb9449}
+!define SysLogHostUser {root}
+!define HostUserPwd {spb9449}
+
+!define SysLogAdminUser {${prefix}SysAdmin}
+!define SysLogAdminUserPwd {Password2}
+
+!define SysLogUser {${prefix}SysLogUser}
+!define CLISysLogUser  {-i ${SysLogUser}.ppk -C ${SysLogUser}@${TPAMHost}}
+
+!define GroupName {${prefix}SysLogGroup}
+
+
+
+!contents -p -g -R2 -f

@@ -1,0 +1,19 @@
+!define psConnectOptions {-tpamAddress ${TPAMHost} -keyFile ${API_user_1} -apiUser ${API_user_1}}
+#!define runScriptFileName {runPsScript32.bat}
+
+!note Managed System settings
+!define SystemName {${prefix}Truba}
+!define SystemPlatform {Linux}
+!define SystemAddress {10.30.46.27}
+!define SystemTimeout {60}
+!define SystemDescription {Test system for powershell}
+!define FunctAcct {root}
+!define FunctAcctPwd {=1qwerty}
+
+!*> Result variables 
+!define TestSystemSuccessful {Success}
+!define ResetPasswordSuccessful {Success}
+!define CheckPasswordSuccessful {Success}
+*!
+
+!contents -R2 -g -p -h -f

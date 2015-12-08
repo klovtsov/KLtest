@@ -1,0 +1,91 @@
+
+<table border="1" width="5800">
+  <thead>
+      <tr>
+        <td colspan="24" bgcolor="#C0C0C0" align="center"><font size="5"><b>Listing of Files</b></font></td>
+      </tr>
+    <tr>
+      <td bgcolor="#C0C0C0" width="200"><b>System Name</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Network Address</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Platform Name</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>File Name</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Local File Name</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>File Size (bytes)</b></td>
+      <td bgcolor="#C0C0C0" width="100"><b>File Stored Date</b></td>
+      <td bgcolor="#C0C0C0" width="100"><b>Min Approvers</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Max Release Duration</b></td>
+      <td bgcolor="#C0C0C0" width="250"><b>Notification Email</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b># Past Versions</b></td>
+      <td bgcolor="#C0C0C0" width="150"><b>Oldest Past Version Date</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Ticket System</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Require Ticket for Request</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Require Ticket for ISA Retrieve</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Require Ticket for CLI Retrieve</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Require Ticket for API Retrieve</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>Ticket Notification Email</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>SystemCustom1</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>SystemCustom2</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>SystemCustom3</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>SystemCustom4</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>SystemCustom5</b></td>
+      <td bgcolor="#C0C0C0" width="200"><b>SystemCustom6</b></td>
+    </tr>
+  </thead>
+  <tbody>
+	
+		<tr>
+			<td>prefixListSystem1</td>
+			<td>1.1.1.1</td>
+			<td>Windows</td>
+			<td>prefixListFile1.txt</td> 
+			<td>prefixListFile1.txt</td> 
+			<td>7</td> 
+			<td></td> 
+			<td>1</td> 
+			<td>10080</td> 
+			<td>prefixListFile@email.com</td> 
+			<td>1</td> 
+			<td></td> 
+         <td></td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+		</tr>
+	
+		<tr>
+			<td>prefixListSystem1</td>
+			<td>1.1.1.1</td>
+			<td>Windows</td>
+			<td>prefixListFile12.txt</td> 
+			<td>prefixListFile12.txt</td> 
+			<td>7</td> 
+			<td></td> 
+			<td>1</td> 
+			<td>10080</td> 
+			<td>prefixListFile@email.com</td> 
+			<td>1</td> 
+			<td></td> 
+         <td></td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td>N</td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+         <td></td>
+		</tr>
+	
+  </tbody>
+</table>

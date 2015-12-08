@@ -1,0 +1,42 @@
+!* Test description
+A user has permissions for a collection of accounts and for an account directly.
+Permission on account should have a precedence
+*!
+
+!define CollectionName {${prefix}AccntColtn}
+
+!define OverlappedPolicy {Requestor}
+!define lowLevelType {collection}
+!define lowLevelObjectName {${CollectionName}}
+!define lowLevelSubjectType {user}
+!define lowLevelSubjectName {${CLI_user_2}}
+
+!define OverlappingPolicy {Approver}
+!define upLevelType {account}
+!define upLevelObjectName {${ManagedAccount}}
+!define upLevelSubjectType {user}
+!define upLevelSubjectName {${CLI_user_2}}
+
+!*> Include section
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EmailScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+!*> Create Environment
+!|script                                                                                                                            |
+|Add system                                                                                                                         |
+|Add Collection           |${CollectionName}                                                                                        |
+|Add account              |${ManagedAccount}|with password|${ManagedAccountPwd}           |             |${NotFailed}               |
+|Add Account To Collection|${SystemName}    |             |${ManagedAccount}              |             |${CollectionName}          |
+*!
+
+!|script|
+|Main test|
+
+!*> Clear Environment
+!|script|
+|Remove account           |${ManagedAccount}                                                                                        |
+|Remove system            |${SystemName}                                                                                            |
+|Delete Collection        |${CollectionName}                                                                                        |
+*!

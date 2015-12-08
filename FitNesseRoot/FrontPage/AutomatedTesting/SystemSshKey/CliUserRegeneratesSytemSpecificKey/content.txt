@@ -1,0 +1,19 @@
+!define keyFormat {OpenSSH}
+!define keyFileOrigin {ssh-dss}
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+
+!3 Run the test
+
+!|script                                               |
+|${addSystemMethod}                                    |
+|Create Account on System      |${FunctAcct}           |
+|Retrieve System Specific Key  |${keyFormat}           |
+|Copy key to system            |${keyFormat}           |
+|Test System                   |${TestSystemSuccessful}|
+|Regenerate System Specific Key|${keyFormat}           |
+|Test System                   |${TestSystemFailed}    |
+|Copy key to system            |${keyFormat}           |
+|Test System                   |${TestSystemSuccessful}|
+|Remove All                                            |

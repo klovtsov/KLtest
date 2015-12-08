@@ -1,0 +1,49 @@
+!*> Includes
+!include -c <AutomatedTesting.UsersTests.UserTypes.ScenarioLibrary
+!include -c <AutomatedTesting.ConfigInterfaceSmokeTest.ScenarioLibrary
+*!
+
+!*> Prepare
+!|script                                                                                                                                            |
+|AddSysAdminUser   |${SysAdminUser}||${SysAdminUserPwd}                                                                                             |
+|Add Custom Columns|${SysAdminUser}||${SysAdminUserPwd}                                                                                             |
+|Add User          |${CLIBatch}    ||--UserName ${AdminUser} --FirstName test --LastName test --UserType Admin --Password Password1||successfully   |
+|Change Pwd        |${AdminUser}   ||Password1                                                                                     ||${AdminUserPwd}|
+
+!|script                                                                                                          |
+|Add System |${CLIBatch}||--SystemName ${SystemName} --PlatformName Windows --NetworkAddress x.x.x.x||successfully|
+|Add Account|${CLIBatch}||--SystemName ${SystemName} --AccountName ${AccountName}                   ||successfully|
+|Add User   |${CLIBatch}||--UserName ${UserName} --FirstName test --LastName test                   ||successfully|
+*!
+
+!note Update Custom Columns via CLI
+!|script                                                                                                                                                                                    |
+|Update Account|${CLIBatch}||--SystemName ${SystemName} --AccountName ${AccountName} --Custom1 Acc1 --Custom2 Acc2 --Custom3 Acc3 --Custom4 Acc4 --Custom5 Acc5 --Custom6 Acc6||successfully|
+|Update System |${CLIBatch}||--SystemName ${SystemName} --Custom1 Scc1 --Custom2 Scc2 --Custom3 Scc3 --Custom4 Scc4 --Custom5 Scc5 --Custom6 Scc6                             ||successfully|
+|Update User   |${CLIBatch}||--UserName ${UserName} --Custom1 Ucc1 --Custom2 Ucc2 --Custom3 Ucc3 --Custom4 Ucc4 --Custom5 Ucc5 --Custom6 Ucc6                                 ||successfully|
+
+!note Check Custom Columns via CLI
+!|script                                                                                                                               |
+|List Systems |${CLIBatch}||--SystemName ${SystemName}                             ||${SystemName}.*Scc1.*Scc2.*Scc3.*Scc4.*Scc5.*Scc6 |
+|List Accounts|${CLIBatch}||--SystemName ${SystemName} --AccountName ${AccountName}||${AccountName}.*Acc1.*Acc2.*Acc3.*Acc4.*Acc5.*Acc6|
+|List Users   |${CLIBatch}||--UserName ${UserName}                                 ||${UserName}.*Ucc1.*Ucc2.*Ucc3.*Ucc4.*Ucc5.*Ucc6   |
+
+!note Update,Check & Lisr Custom Columns via UI
+!|script                                                                                                                                                                                                                                                                                                                                 |
+|UI Custom Columns|${AdminUser}||${AdminUserPwd}||System ||${SystemName} ||System Custom Colimn1.*SystemCustom1.*System Custom Colimn2.*SystemCustom2.*System Custom Colimn3.*SystemCustom3.*System Custom Colimn4.*SystemCustom4.*System Custom Colimn5.*SystemCustom5.*System Custom Colimn6.*SystemCustom6.*${SystemName}             |
+|UI Custom Columns|${AdminUser}||${AdminUserPwd}||Account||${AccountName}||Account Custom Colimn1.*AccountCustom1.*Account Custom Colimn2.*AccountCustom2.*Account Custom Colimn3.*AccountCustom3.*Account Custom Colimn4.*AccountCustom4.*Account Custom Colimn5.*AccountCustom5.*Account Custom Colimn6.*AccountCustom6.*${AccountName}|
+|UI Custom Columns|${AdminUser}||${AdminUserPwd}||User   ||${UserName}   ||User Custom Colimn1.*UserCustom1.*User Custom Colimn2.*UserCustom2.*User Custom Colimn3.*UserCustom3.*User Custom Colimn4.*UserCustom4.*User Custom Colimn5.*UserCustom5.*User Custom Colimn6.*UserCustom6.*${UserName}                                       |
+
+!*> Cleanup
+!|script                                                            |
+|Delete System|${CLIBatch}||--SystemName ${SystemName}||successfully|
+|Delete User  |${CLIBatch}||--UserName ${UserName}    ||successfully|
+
+
+!|script                                                                     |
+|Delete Custom Columns|${SysAdminUser}||${SysAdminUserPwd}                   |
+|DeleteSysAdminUser   |${SysAdminUser}                                       |
+|Delete User          |${CLIBatch}    ||--UserName ${AdminUser}||successfully|
+
+
+*!

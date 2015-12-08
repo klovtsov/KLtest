@@ -1,0 +1,13 @@
+!contents
+
+
+
+!define Bits {2048}
+
+!include -c <AutomatedTesting.UserSshKey.ScenarioLibrary
+
+
+!|script            |
+|Prepare Environment|
+|Test UserSSHKey    |
+|Clear Environment  |

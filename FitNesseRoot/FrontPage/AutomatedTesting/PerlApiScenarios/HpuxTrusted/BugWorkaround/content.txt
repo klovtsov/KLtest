@@ -1,0 +1,12 @@
+!| scenario                       |Managed Account                                                   |
+|Add account                      |${ManagedAccount}|with password|${ManagedAccountPwd}||${NotFailed}|
+|Reset Password                   |${ManagedAccount}|             |${ResetPasswordFailed}            |
+|Choose Account                   |${ManagedAccount}                                                 |
+|BFER3624                                                                                            |
+|Change Account Password on System|${ManagedAccountPwdNew}                                           |
+|pause                            |${ChangeManagedAccountPasswordTimeout}                            |
+|Set password                     |${FunctAcct}     |             |${FunctAcctPwd}                   |
+|Check Password                   |${ManagedAccount}|             |${CheckPasswordNotMatch}          |
+|pause                            |${RestoreFunctAcctPasswordTimeout}                                |
+|Reset Password                   |${ManagedAccount}|             |${ResetPasswordSuccessful}        |
+

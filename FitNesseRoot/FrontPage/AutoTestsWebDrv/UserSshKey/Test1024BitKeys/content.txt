@@ -1,0 +1,16 @@
+!contents
+
+
+!define Bits {1024}
+
+!include -c <AutoTestsWebDrv.UserSshKey.ScenarioLibrary
+
+
+
+
+!|script                              |
+|Set Allow Use of 1024-bit Keys to Yes|
+|Prepare Environment                  |
+|Test UserSSHKey                      |
+|Clear Environment                    |
+|Set Allow Use of 1024-bit Keys to No |

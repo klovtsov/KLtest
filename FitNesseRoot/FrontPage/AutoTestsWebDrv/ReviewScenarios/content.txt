@@ -1,0 +1,20 @@
+!contents -R2 -g -p -f
+
+#!define prefix {kl${SEED}}
+
+!define SystemName {${prefix}RevSys2}
+!define SystemPlatform {Windows Active Dir}
+!define DomainName {kltest21.spb.qsft}
+!define NETBIOSDomainName {KLTEST21}
+!define SystemAddress {10.30.46.235}
+!define FunctAcct {Administrator}
+!define FuncAccPwd {grain41R}
+!define ManagedAccount {${prefix}ManAcc}
+!define ManagedAccountPassword {frujiE15}
+!define Requestor {${prefix}Requestor}
+!define Approver {${prefix}Approver}
+!define Reviewer1 {${prefix}Reviewer1}
+!define Reviewer2 {${prefix}Reviewer2}
+!define Auditor {${prefix}Auditor}
+!define ISA {${prefix}ISA}
+!define ReviewerGroup {${prefix}RevGroup}

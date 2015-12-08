@@ -1,0 +1,36 @@
+!*> Some notes
+The management settings should be pushed to all Auto and Manual managed accounts when the second box is unchecked.
+*!
+
+!define pwdChangeProfile {First of Month}
+!define pwdCheckProfile {Check and Reset}
+!define accountChangeProfile {Daily}
+!define accountCheckProfile {PersPassCheckProfile_1}
+!define newReleaseDuration {30}
+!define allowIsaFlagValue {Y}
+
+!*> Including section
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c ScenarioLibrary
+*!
+
+!|script                                                                                                                                                                                                                                                                                                                                                           |
+|Add account            |${ManagedAccount}2                                                                                                                                    |on system|${SystemName}                |with options               |-passwordChangeProfile "${accountChangeProfile}"  -passwordCheckProfile "${accountCheckProfile}"               |
+|Add account            |${ManagedAccount}3                                                                                                                                    |on system|${SystemName}            |with options           |-passwordChangeProfile "${accountChangeProfile}"  -passwordCheckProfile "${accountCheckProfile}" -AutoFlag M           |
+|Update System          |${SystemName}                                                                                                                                         |         |-passwordChangeProfile "${pwdChangeProfile}" -passwordCheckProfile "${pwdCheckProfile}" -releaseDuration ${newReleaseDuration} -AllowISADurationFlag ${allowIsaFlagValue}|
+|Push defaults out to all accounts                                                                                                                                                                                                                                                                                                                                 |
+|List Accounts by filter|-systemName ${SystemName} -accountName ${ManagedAccount} -propsToList passwordCheckProfile,passwordChangeProfile,releaseDuration,allowISADurationFlag |contains |${pwdCheckProfile}\s+${pwdChangeProfile}\s+${newReleaseDuration}\s+${allowIsaFlagValue}                                                                                  |
+|List Accounts by filter|-systemName ${SystemName} -accountName ${ManagedAccount}2 -propsToList passwordCheckProfile,passwordChangeProfile,releaseDuration,allowISADurationFlag|contains |${pwdCheckProfile}\s+${pwdChangeProfile}\s+${newReleaseDuration}\s+${allowIsaFlagValue}                                                                                  |
+|List Accounts by filter|-systemName ${SystemName} -accountName ${ManagedAccount}3 -propsToList passwordCheckProfile,passwordChangeProfile,releaseDuration,allowISADurationFlag|contains |${pwdCheckProfile}\s+${pwdChangeProfile}\s+${newReleaseDuration}\s+${allowIsaFlagValue}                                                                                  |
+|List Accounts by filter|-systemName ${SystemName} -accountName ${ManagedAccount}3 -propsToList accountName,accountAutoFl                                                      |contains |${ManagedAccount}3\s+M                                                                                                                                                   |
+
+
+
+!*> Return default values
+!|script                                                                                                               |
+|Update Account|${ManagedAccount}||-passwordChangeProfile ${PpmChangeProfile}  -passwordCheckProfile ${PpmCheckProfile}|
+|Delete Account|${ManagedAccount}2                                                                                     |
+|Delete Account|${ManagedAccount}3                                                                                     |
+
+*!

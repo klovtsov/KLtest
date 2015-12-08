@@ -1,0 +1,3 @@
+!include <AutoTestsWebDrv.PlatformsTesting.OraclePlatform
+!include -c <DpaScenarios.ScenarioLibrary
+

@@ -1,0 +1,16 @@
+!define ManagedAccountDomain {.}
+!define HostName {klseven}
+!define ServiceAccount {${ManagedAccount}}
+
+!include <AutoTestsWebDrv.PlatformsTesting.WindowsDesktop
+!include -c <AutoTestsWebDrv.CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ChangeScheduledTasks.TestSpecific
+!include -c <AutoTestsWebDrv.EspcwClientScenarios.LocalUser.ChangeServices.TestSpecific
+!include -c <AutoTestsWebDrv.WindowsAccountsManagement.ScenarioLibrary
+#!include -c <AutomatedTesting.WindowsAccountsManagement.WindowsActiveDir.BugWorkaround
+
+
+
+
+
+

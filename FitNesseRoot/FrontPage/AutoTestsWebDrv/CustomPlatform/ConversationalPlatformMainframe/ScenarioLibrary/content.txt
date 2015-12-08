@@ -1,0 +1,225 @@
+!contents
+
+!|scenario|Test UI Custom Platform|
+|Prepare UI Test                  |
+|PPM UI Regular Activity          |
+|PSM Activity                     |
+|Clear UI Test                    |
+#
+
+!|scenario           |Prepare UI Test                        |
+|Create Password Rule|${MainframePasswordRule}               |
+|Prepare TST10 Scripts                                       |
+|Create Users                                                |
+|Login               |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Add UI System                                               |
+|Add UI Account      |${ManagedAccount}                      |
+|Change Account Password on System                           |
+
+
+!|scenario            |Add UI System                                   |
+|pause                |5000                                            |
+|clickOnLink          |link=Add System                                 |
+|waitForElementPresent|id=SystemName                                   |
+|type;                |id=SystemName    |${SystemName}                 |
+|type;                |id=NetworkAddress|${SystemAddress}              |
+|select;              |id=PlatformID    |label=${CustomPlatformName}   |
+|select;              |id=PwdRuleID     |label=${MainframePasswordRule}|
+|click                |id=Connection    |                              |
+|type;                |id=PARFuncAcct   |${FuncAcct}                   |
+|type;                |id=pword         |${FuncAcctPassword}           |
+|type;                |id=ConfPword     |${FuncAcctPassword}           |
+|type;                |id=Timeout       |${SystemTimeout}              |
+|click                |id=bt_Save       |                              |
+|waitForTextPresent   |System changes for * saved successfully         |
+
+
+
+!| scenario    |Managed UI System                |
+|Test System   |successful                       |
+|Choose Account|${FuncAcct}                      |
+|Check Password|matches the managed system       |
+|Choose Account|${ManagedAccount}                |
+|Check Password|matches the managed system       |
+|Choose Account|${FuncAcct}                      |
+|Set password  |${FuncAcct}||${FunctAcctWrongPwd}|
+|Test System   |failed                           |
+|Choose Account|${FuncAcct}                      |
+|Check Password|DOES NOT MATCH                   |
+
+
+!| scenario     |Managed UI Account                                                                                                                                         |
+|Choose Account |${ManagedAccount}                                                                                                                                          |
+|Reset Password |error occurred changing the password                                                                                                                       |
+|Remove account |${ManagedAccount}                                                                                                                                          |
+|Add PPM account|${ManagedAccount}                             |with password|${ManagedAccountPassword}|and profiles|${PersistentPasswordCheckProfile1}||${PpmChangeProfile}|
+|Forced Reset   |Failed                                                                                                                                                     |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}|             |${ManagedAccountPassword}|            |${ManagedAccountPwdNew}                                |
+|Change Account Password on System                                                                                                                                          |
+|Choose Account |${FuncAcct}                                                                                                                                                |
+|Set password   |${FuncAcct}                                   |             |${FuncAcctPassword}                                                                           |
+|Remove account |${ManagedAccount}                                                                                                                                          |
+|Add PPM account|${ManagedAccount}                             |with password|${ManagedAccountPassword}|and profiles|${PpmCheckProfile}||${PersistentPasswordChangeProfile1}|
+|pause          |20000                                                                                                                                                      |
+|Choose Account |${ManagedAccount}                                                                                                                                          |
+|Check Password |DOES NOT MATCH                                                                                                                                             |
+|pause          |120000                                                                                                                                                     |
+|Check Status   |Success                                       |for reason   |Mismatch                                                                                      |
+|Reset Password |successful                                                                                                                                                 |
+|Remove account |${ManagedAccount}                                                                                                                                          |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}|             |${ManagedAccountPwdNew}  |            |${ManagedAccountPassword}                              |
+|Change Account Password on System                                                                                                                                          |
+|Add PPM account|${ManagedAccount}                             |with password|${ManagedAccountPassword}|and profiles|${PersistentPasswordCheckProfile1}||${PpmChangeProfile}|
+|Forced Reset   |Success                                                                                                                                                    |
+|Choose Account |${ManagedAccount}                                                                                                                                          |
+|Check Password |Running Ascii.*matches the managed system                                                                                                                  |
+|Logout                                                                                                                                                                     |
+
+
+!|scenario         |Test system                       |testResult  |
+|Choose System     |${SystemName}                                  |
+|click             |id=bt_Test                                     |
+|pause             |60000                                          |
+|waitForTextPresent|*from the test of system*                      |
+|pause             |60000                                          |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||@testResult|
+
+
+!|scenario         |Check Password                    |testResult  |
+|click             |id=CheckPassButton                             |
+|pause             |60000                                          |
+|waitForTextPresent|*Results from the*                             |
+|pause             |60000                                          |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||@testResult|
+
+!|scenario         |Reset Password                    |testResult  |
+|click             |id=ResetPassButton                             |
+|pause             |60000                                          |
+|waitForTextPresent|*Results from the*                             |
+|pause             |60000                                          |
+|verifyText        |xpath=//div[@id='ResultDetailDiv']||@testResult|
+
+
+
+!|scenario           |Clear UI Test                          |
+|Un-Prepare TST10 Scripts                                    |
+|Login               |${TPAMURL}||${TPAMAdmin}||${DefaultPwd}|
+|Remove Users                                                |
+|Remove UI System                                            |
+|Delete Password Rule|${MainframePasswordRule}               |
+|Logout                                                      |
+
+
+!|scenario         |Enable PSM on Custom Platform                                                        |
+|Deactivate Platform Automation                                                                          |
+|Login             |${TPAMURL}         |          |${TPAMAdmin}         |         |${DefaultPwd}         |
+|pause             |10000                                                                                |
+|clickOnLink       |link=Custom Platforms                                                                |
+|click             |id=Listing                                                                           |
+|click             |xpath=//td[contains(text(),'${CustomPlatformName}')]                                 |
+|pause             |1000                                                                                 |
+|click             |id=Details                                                                           |
+|pause             |1000                                                                                 |
+|click             |id=PSMEnabledFl                                                                      |
+|pause             |2000                                                                                 |
+|click             |xpath=//select[@id='ProxyTypes']/option[.='x3270 - Interactive Login Using Password']|
+|pause             |1000                                                                                 |
+|click             |id=btnSavePlatform                                                                   |
+|getConfirmation                                                                                         |
+|waitForTextPresent|saved successfully                                                                   |
+|pause             |1000                                                                                 |
+|click             |id=AutomationActiveFl                                                                |
+|pause             |1000                                                                                 |
+|click             |id=btnSavePlatform                                                                   |
+|waitForTextPresent|saved successfully                                                                   |
+|$res=             |getText            |xpath=//div[@id='ResultsDiv']                                    |
+|Verify_Contain_OR |$res;;saved successfully                                                             |
+|pause             |60000                                                                                |
+|Logout                                                                                                  |
+
+!| scenario                   |Enable PSM for Account                                                                                                                                                                                                                                             |
+|Set Password Approvers Number|${ManagedAccount}|                                                                                                                        |0                                                                                                                       |
+|$res=                        |CLI              |${CLIBatch} UpdateEGPAccount --System ${SystemName} --Account ${ManagedAccount}  --ProxyType \"x3270 - Interactive Login Using Password\" --DefaultSessionDuration 120 --EnableFlag Y  --MinApprovers 0 --RecordingRequiredFlag N --ReviewCount 0|
+|Verify_Contain_OR            |$res;;successful                                                                                                                                                                                                                                                   |
+
+
+!| scenario        |Request and Open Session                                                                    |
+|Get DPA Name and IP Address                                                                                    |
+|Set Affinity                                                                                                   |
+|Login             |${TPAMURL}           |            |${Requestor}           |           |${UserPwd}           |
+|pause             |20000                                                                                       |
+|clickOnLink       |link=Add Session Request                                                                    |
+|type;             |id=SystemNm          |${SystemName}                                                         |
+|type;             |id=AccountNm         |${ManagedAccount}                                                     |
+|click             |id=Accounts          |                                                                      |
+|click             |xpath=//input[@type='checkbox']                                                             |
+|click             |id=Details                                                                                  |
+|type;             |id=RequestReason     |session request reason                                                |
+|pause             |1000                                                                                        |
+|click             |id=SubmitChanges                                                                            |
+|waitForTextPresent|submitted                                                                                   |
+|$res=             |getText              |xpath=//div[@id='ResultsDiv']                                         |
+|Verify_Contain_OR |$res;;submitted                                                                             |
+|$SessionRequestID=|get_session_RequestID|$res                                                                  |
+|Logout                                                                                                         |
+|$res=             |GroovyWebDriver      |openSessionX3270;${TPAMHost};${Requestor};${UserPwd};$SessionRequestID|
+|Verify_Contain_OR |$res;;x3270 terminal logon succeeded                                                        |
+
+
+!|scenario|Change Account Password on System                |
+|$res=    |RunBatchGetOutput|${SystemPlatform};password;fake|
+#|Verify_Contain_OR|$res;;1                                                             |
+
+
+!|scenario        |Login Account to System|ManPwd                         |
+|$res=            |RunBatchGetOutput      |${SystemPlatform};login;@ManPwd|
+|Verify_Contain_OR|$res;;OUT.TXT: 1                                       |
+
+!|scenario            |Get DPA Name and IP Address                                                 |
+|Login                |${TPAMURL}|          |${TPAMAdmin}         |         |${DefaultPwd}         |
+|pause                |6000                                                                        |
+|clickOnLink          |link=DPAs                                                                   |
+|pause                |3000                                                                        |
+|waitForElementPresent|xpath=//table[@id='serversTable']//td[text()='Up']                          |
+|$TPAMDPA=            |getText   |xpath=//table[@id='serversTable']//td[text()='Up']/../td[1]      |
+|Verify_Contain_OR    |$TPAMDPA;;DPA                                                               |
+|$DPAAddress=         |getText   |xpath=//table[@id='serversTable']//td[text()='$TPAMDPA']/../td[2]|
+|Logout                                                                                            |
+
+!|scenario            |Set Affinity                                                                                             |
+|Login                |${TPAMURL}                                                                  ||${TPAMAdmin}||${DefaultPwd}|
+|pause                |10000                                                                                                    |
+|Choose system        |${SystemName}                                                                                            |
+|click                |id=Affinity                                                                                              |
+|waitForElementPresent|id=rbEGPAffinitySelected                                                                                 |
+|click                |id=rbEGPAffinitySelected                                                                                 |
+|type;                |xpath=//table[@id='tblEGPDPAAffinity']//td[text()='LocalServer']/../td/input|1                           |
+|type;                |xpath=//table[@id='tblEGPDPAAffinity']//td[text()='$TPAMDPA']/../td/input   |10                          |
+|waitForElementPresent|id=rbPARAffinitySelected                                                                                 |
+|click                |id=rbPARAffinitySelected                                                                                 |
+|type;                |xpath=//table[@id='tblPARDPAAffinity']//input                               |1                           |
+|click                |id=bt_Save                                                                                               |
+|waitForTextPresent   |System changes for * saved successfully                                                                  |
+|Logout                                                                                                                         |
+
+
+
+!| scenario     |Prepare TST10 Scripts                                                                            |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||IPADDRESSPLACEHOLDER  ||${SystemAddress}         |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||PORTPLACEHOLDER       ||${SystemPort}            |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||FUNCACCTPLACEHOLDER   ||${FuncAcct}              |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||FUNCACCTPWDPLACEHOLDER||${FuncAcctPassword}      |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||MANACCTPLACEHOLDER    ||${ManagedAccount}        |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||MANACCTPWDPLACEHOLDER ||${ManagedAccountPassword}|
+
+
+
+!| scenario     |Un-Prepare TST10 Scripts                                                                         |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||${SystemAddress}         ||IPADDRESSPLACEHOLDER  |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||${SystemPort}            ||PORTPLACEHOLDER       |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||${FuncAcct}              ||FUNCACCTPLACEHOLDER   |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||${FuncAcctPassword}      ||FUNCACCTPWDPLACEHOLDER|
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||${ManagedAccount}        ||MANACCTPLACEHOLDER    |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||${ManagedAccountPassword}||MANACCTPWDPLACEHOLDER |
+|Prepare Scripts|${ProjDir}\Scripts\Platforms\${SystemPlatform}||$GeneratedPwd            ||NEWPASSWORDPLACEHOLDER|
+

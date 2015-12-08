@@ -1,0 +1,53 @@
+!|scenario        |Add Active Directory system                                                                                                                                                                                                                                                               |
+|$res=            |CLI|${CLIBatch} AddSystem --SystemName ${AdSystemName} --NetworkAddress ${AdSystemAddress} --PlatformName \"${AdSystemPlatform}\" --DomainName ${DomainName} --NetBiosName ${NETBIOSDomainName} --FunctionalAccount ${FunctAcct} --FuncAcctCred ${FunctAcctPwd} --Timeout ${SystemTimeout}|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                                                                                                                          |
+
+!| scenario       |Create account on AD system|accntName                     |with password                     |accntPwd                     |                    |
+|$res=            |PowerShellScript           |manageADusers.ps1 create ${AdSystemAddress} ${NETBIOSDomainName}\${FunctAcct} ${FunctAcctPwd} @accntName "@accntPwd"|
+|Verify_Contain_OR|$res;;successful                                                                                                                                |
+
+!|scenario        |Delete Account on AD System|accntName                                                                          |
+|$res=            |PowerShellScript           |manageADusers.ps1 delete ${AdSystemAddress} ${FunctAcct} ${FunctAcctPwd} @accntName|
+|Verify_Contain_OR|$res;;successful                                                                                               |
+
+!|scenario        |Create domain account|accntName                             |with password                             |accntPwd                            |
+|$res=            |CLI                  |${CLIBatch} AddAccount --System ${AdSystemName} --AccountName @accntName --Password \"@accntPwd\" --MinimumApprovers 0|
+|Verify_Contain_OR|$res;;successfully                                                                                                                          |
+
+!|scenario        |Create PSM account|accntName                                                   |authenticated by domain account                                                   |domaccnt                                                  |
+|$res=            |CLI               |${CLIBatch} AddAccount --SystemName ${SystemName} --AccountName @accntName --AutoFlag N --MinimumApprovers 0                                                                                              |
+|Verify_Contain_OR|$res;;Changes saved successfully for @accntName                                                                                                                                                                              |
+|$res=            |CLI               |${CLIBatch} Updatepsmaccount --System ${SystemName} --Account @accntName --EnableFlag Y --ProxyType \"${PsmProxy}\" --MinApprovers 0 --PasswordMethod \"Windows Domain Account\" --DomainAccount @domaccnt|
+|Verify_Contain_OR|$res;;PSM Details saved successfully                                                                                                                                                                                         |
+
+!|scenario    |Create PSM connection profile|profileName|domain format|domformat     |
+|Open         |${TPAMURL}                   |           |${TPAMAdmin} ||${DefaultPwd}|
+|clickOnLink  |link=Profile Management                                               |
+|select;      |id=ProfileType               |label=PSM Connection                    |
+|click        |id=NewButton                                                          |
+|select;      |id=ProxyTypeID               |label=${PsmProxy}                       |
+|type;        |id=ProfileName               |@profileName                            |
+|type;        |id=Description               |Test profile                            |
+|type;        |id=String1                   |@domformat                              |
+|click        |id=SaveButton                                                         |
+|waitForResult|The profile saved successfully                                        |
+|stop                                                                                |
+
+!|scenario    |Delete PSM connection profile|profileName                 |
+|Open         |${TPAMURL}                   ||${TPAMAdmin}||${DefaultPwd}|
+|clickOnLink  |link=Profile Management                                   |
+|select;      |id=ProfileType               |label=PSM Connection        |
+|select;      |id=ProfileID                 |label=@profileName          |
+|click        |id=DeleteButton              |                            |
+|getConfirmation                                                         |
+|waitForResult|The profile was deleted successfully                      |
+|stop                                                                    |
+
+!|scenario         |Open session check prompt|expectedImages                                                                  |
+|$res =            |GroovyWebDriver          |openSshSession;${TPAMHost};${TPAMAdmin};${DefaultPwd};$RequestID;@expectedImages|
+|Verify_Contain_NOT|$res;;something went wrong                                                                                |
+|Verify_Contain_OR |$res;;CLICK on                                                                                            |
+
+!|scenario        |Change PSM rofile to|psmProfName                           |for                           |accntName                          |
+|$res=            |CLI                 |${CLIBatch} Updatepsmaccount --System ${SystemName} --Account @accntName --ConnectionProfile @psmProfName|
+|Verify_Contain_OR|$res;;PSM Details saved successfully                                                                                          |

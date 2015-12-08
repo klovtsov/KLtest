@@ -1,0 +1,8 @@
+!define SystemName {${prefix}_Win2012R2}
+!define SystemPlatform {Windows}
+!define SystemAddress {10.30.46.246}
+!define FunctAcct {Administrator}
+!define FunctAcctPwd {=1qwerty}
+!define ManagedAccountPwd {A\)&(d|<j>k$}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+#!include -c <AutoTestsWebDrv.PlatformsTesting.PlatformSpecific.ManagedAccountCanCheckPassword 

@@ -1,0 +1,3 @@
+!include <AutoTestsWebDrv.PlatformsTesting.VmwareVsphere
+!include -c <CliScenarios.ScenarioLibrary
+!include -c <AutoTestsWebDrv.CliScenarios.VmwareVsphere.PlatformSpecific

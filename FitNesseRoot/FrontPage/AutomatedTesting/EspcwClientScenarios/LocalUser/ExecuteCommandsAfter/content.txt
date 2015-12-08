@@ -1,0 +1,20 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ExecuteCommandBefore.TestSpecific
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ExecuteCommandsAfter.TestSpecific
+
+!define FileName {After}
+
+!|script                                                                                                                                                 |
+|Create bat file on system|${FileName}      |on             |${SystemAddress}                                                                            |
+|Check Checkbox           |successenabled   |for user       |DEFAULT                                                                                     |
+|Set After Command        |cmd.exe          |with parameters|/c c:\test\${FileName}.bat|cmd path|C:\windows\system32|for user|DEFAULT|on|${SystemAddress}|
+|Reset Password           |${ManagedAccount}|               |${ResetPasswordSuccessful}                                                                  |
+|Check Log File           |${FileName}.log  |with result    |File exists               |on      |${SystemAddress}                                        |
+|Delete files on          |${SystemAddress}                                                                                                              |
+|Create bat file on system|${FileName}      |on             |${SystemAddress}                                                                            |
+|Uncheck Checkbox         |successenabled   |for user       |DEFAULT                                                                                     |
+|Reset Password           |${ManagedAccount}|               |${ResetPasswordSuccessful}                                                                  |
+|Check Log File           |${FileName}.log  |with result    |File does not exist       |on      |${SystemAddress}                                        |
+|Delete files on          |${SystemAddress}                                                                                                              |

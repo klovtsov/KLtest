@@ -1,0 +1,11 @@
+!contents
+
+!include -c <AutomatedTesting.PlatformsTesting.HpuxShadow
+
+#!define FunctAcct {klroot3}
+#!define FunctAcctPwd {frujiE15}
+!define AuthorizedKeysFile {authorized_keys2}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.PlatformsTesting.HpuxShadow.PlatformSpecific
+!include -c <AutomatedTesting.SshPlatformsTests.AixSshPlatform.PlatformSpecific

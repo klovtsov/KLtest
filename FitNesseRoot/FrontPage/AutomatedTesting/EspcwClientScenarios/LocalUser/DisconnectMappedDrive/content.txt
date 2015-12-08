@@ -1,0 +1,23 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.DisconnectMappedDrive.TestSpecific
+
+!define NetworkDriveLetter {Q:}
+!define SuccessAppStartResult {EXIT 0}
+!define FailAppStartResult {EXIT -2147467238}
+
+!|script                                                                                                  |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                |
+|Check Checkbox                   |terminatefso         |for user   |DEFAULT                              |
+|Create Network Drive             |${NetworkDriveLetter}|under      |${ManagedAccount}|to|${SystemAddress}|
+|Check Network Drive              |${NetworkDriveLetter}|with result|File is available                    |
+|Reset Password                   |${ManagedAccount}    |           |${ResetPasswordSuccessful}           |
+|Check Network Drive              |${NetworkDriveLetter}|with result|File is unavailable                  |
+|Remove Network Drive             |${NetworkDriveLetter}                                                  |
+|Change Account Password on System|${ManagedAccountPwdNew}                                                |
+|Uncheck Checkbox                 |terminatefso         |for user   |DEFAULT                              |
+|Create Network Drive             |${NetworkDriveLetter}|under      |${ManagedAccount}|to|${SystemAddress}|
+|Reset Password                   |${ManagedAccount}    |           |${ResetPasswordSuccessful}           |
+|Check Network Drive              |${NetworkDriveLetter}|with result|File is available                    |
+|Remove Network Drive             |${NetworkDriveLetter}                                                  |

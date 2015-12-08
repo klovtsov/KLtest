@@ -1,0 +1,44 @@
+!|scenario                    |Create Account Discovery Profile                                                                                                                                            |
+|clickOnLink                  |link=Profile Management                                                                                                                                                     |
+|select;                      |id=ProfileType          |label=Account Discovery                                                                                                                            |
+|waitForElementPresent        |id=NewButton            |                                                                                                                                                   |
+|click                        |id=NewButton                                                                                                                                                                |
+|type;                        |id=ProfileName          |${ProfileName}                                                                                                                                     |
+|type;                        |id=Description          |Description                                                                                                                                        |
+|Set Delete Account properties|Turn Off Auto-Management||${DeleteAccountDiscoveryEmail1},:System:,:Functional:                                                                                             |
+|Add Detail                   |0                       ||Create Account||${TemplateName}/${AutoDiscoveryAccount1}||${NewAccountDiscoveryEmail1},:System:,:Functional:||||||${AutoDiscoveryAccount1}|||||||||
+|click                        |id=SaveButton                                                                                                                                                               |
+|waitForTextPresent           |The profile saved successfully                                                                                                                                              |
+
+
+!|scenario                         |New Account Action                                                                                  |
+|Remove account                    |${AutoDiscoveryAccount1}                                                                            |
+|Set AccDiscovery profile to System|${ProfileName}          ||${SystemName}                                                             |
+|Run AccDiscovery                                                                                                                       |
+|Check results                     |${AutoDiscoveryAccount1}||${SystemName}                                                             |
+|pause                             |180000                                                                                              |
+|Check No Mail                     |${MailServer}           ||${NewAccountDiscoveryEmail1}||password||${FromMail}||${AADNAN}||${AADNANb}|
+|Check No Mail                     |${MailServer}           ||${SystemEMail}              ||password||${FromMail}||${AADNAN}||${AADNANb}|
+|Check No Mail                     |${MailServer}           ||${FuncAccEMail}             ||password||${FromMail}||${AADNAN}||${AADNANb}|
+
+
+!|scenario               |Delete Account Action                                                                       |
+|Delete Account on System|${ManagedAccount1}                                                                          |
+|Run AccDiscovery                                                                                                     |
+|Choose Account          |${AutoDiscoveryAccount1}                                                                    |
+|click                   |id=Details                                                                                  |
+|$res=                   |isChecked    |id=pwdMgmtNone                                                                |
+|Verify_Contain_OR       |$res;;true                                                                                  |
+|pause                   |120000                                                                                      |
+|Check No Mail           |${MailServer}||${DeleteAccountDiscoveryEmail1}||password||${FromMail}||${AADDAN}||${AADDANb}|
+|Check No Mail           |${MailServer}||${SystemEMail}                 ||password||${FromMail}||${AADDAN}||${AADDANb}|
+|Check No Mail           |${MailServer}||${FuncAccEMail}                ||password||${FromMail}||${AADDAN}||${AADDANb}|
+
+!|scenario|Add Detail                  |Index||NewAccountAction||TemplateAccount||EmailAddresses||UID||SID||Name||Group||Role||Task||Service|
+|click    |id=btnAddRow                                                                                                                     |
+|select;  |className=autoNewAction     |label=@NewAccountAction                                                                             |
+|select;  |className=autoAcctTemplate  |label=@TemplateAccount                                                                              |
+|type;    |className=autoEmailAddresses|@EmailAddresses                                                                                     |
+|type;    |className=autoSIDFilter     |@SID                                                                                                |
+|type;    |className=autoNameFilter    |@Name                                                                                               |
+|type;    |className=autoGroupFilter   |@Group                                                                                              |

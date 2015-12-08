@@ -1,0 +1,11 @@
+!note Domain Controller parameters
+!include -c <AutomatedTesting.PlatformsTesting.EdmzSpcwDc2
+!define ManagedAccountDomain {${NETBIOSDomainName}}
+!note Dependent System Parameters
+!define DMSystemName {${prefix}_DomainMmbr}
+!define DMSystemPlatform {SPCW 2}
+!define DMSystemAddress {10.30.39.144}
+!note Delay between an account password changing and execution on client 
+!define ExecDelay {60000}
+
+!contents -p

@@ -1,0 +1,14 @@
+!define CollectionName {${prefix}AtstCollection}
+!define collDescription {Old Description}
+!define newDescription {NewDescr}
+!define DPAPriority {2}
+
+!include -c <AutoTestsWebDrv.FailoverScenarios.ScenarioLibrary
+!include -c <PowerShellNetApiScenarios.ScenarioLibrary
+
+!|script                                                                                                                                                                                                            |
+|Get DPA Name and IP Address                                                                                                                                                                                                                              |
+|Add Collection           |${CollectionName}                                                                                                                                                                        |
+|Update Collection        |${CollectionName}                                                                           |new values         |-Description ${newDescription} -PSMDPAAffinity $TPAMDPA/${DPAPriority}|
+|List Collection by filter|-collectionName ${CollectionName} --propsToList collectionName,PSMDPAAffinity,collectionDesc|and result contains|${CollectionName}\s+$TPAMDPA/${DPAPriority}\s+${newDescription}       |
+|Delete Collection        |${CollectionName}                                                                                                                                                                        |

@@ -1,0 +1,17 @@
+!define PolicyName {"Approver-Requestor"}
+!define RequestWithCodeResult {has been submitted}
+
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.ReasonCodes.ScenarioLibrary
+
+!|script                                                          |
+|Set  Permission|${PolicyName}|for user|${TPAMAdmin}|
+|Set  Permission|${PolicyName}|for user|${CLI_user_1}|
+|pause|${ApplyNewPoliciesInterval}| 
+|Enable Psm for account|${ManagedAccount}| 	
+|Request Session with Reason Code|${RequestWithCodeResult}|
+|Check Session Request Contains Reason Code|${ReasonCodeName}|
+|Cancel Session Request|
+|Revoke  Permission|${PolicyName}|for user|${TPAMAdmin}|
+|Revoke  Permission|${PolicyName}|for user|${CLI_user_1}|

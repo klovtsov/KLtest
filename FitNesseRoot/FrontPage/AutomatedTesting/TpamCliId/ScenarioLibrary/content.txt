@@ -1,0 +1,25 @@
+!|scenario         |CreateEnv                                                                                                                                                                                              |
+|$res=             |GroovyWebDriver|CheckTpamCliId;createenv;${TPAMAdmin};${DefaultPwd};${PathToKey};${TpamCLIIDUserName};${CLIUserName};${TPAMHost};${TPAMaddresses};${SystemName};${content};${AccountName};${AccountPwd}|
+|Verify_Contain_NOT|$res;;failed                                                                                                                                                                                           |
+|Verify_Contain_OR |$res;;User added successfully.*Add System.*System changes for ${SystemName} saved successfully.*Changes saved successfully.*has been added successfully.*SaveChanges button is disabled                |
+                                                                                                                                                                                                                              
+!|scenario        |DeleteEnv                                                                                                                                                      |
+|$res=            |GroovyWebDriver|CheckTpamCliId;deleteenv;${TPAMAdmin};${DefaultPwd};${PathToKey};${TpamCLIIDUserName};${CLIUserName};${TPAMHost};${TPAMaddresses};${SystemName}|
+|Verify_Contain_OR|$res;;System deleted.*has been successfully deleted.*has been successfully deleted.*dsa is deleted                                                             |
+                                                                                                                                                                                                                              
+!|scenario    |Create Account on System                                                                                 |
+|accountAction|${SystemPlatform};;create;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${AccountName};;${AccountPwd}|
+
+!|scenario    |Delete Account on System                                                                  |
+|accountAction|${SystemPlatform};;delete;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${AccountName}|
+
+
+!|scenario|Create logon script                                                                          |
+|runBatch |logon;create;${SystemAddress};${FunctAcct};${FunctAcctPwd};${AccountName};${OSType};${prefix}|
+
+!|scenario        |Check logon script                                                                             |
+|$res=            |RunBatchGetOutput|logon;check;${SystemAddress};${FunctAcct};${FunctAcctPwd};${OSType};${prefix}|
+|Verify_Contain_OR|$res;;testsuccessfully                                                                         |
+
+!|scenario|Delete logon script                                                                           |
+|runBatch |logon;delete;${SystemAddress};${FunctAcct};${FunctAcctPwd};${AccountName};${OSType};${prefix}||

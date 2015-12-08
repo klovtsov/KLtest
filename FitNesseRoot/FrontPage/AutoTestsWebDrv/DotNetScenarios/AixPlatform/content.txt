@@ -1,0 +1,2 @@
+!include <AutoTestsWebDrv.PlatformsTesting.AixPlatform
+!include -c <DotNetScenarios.ScenarioLibrary

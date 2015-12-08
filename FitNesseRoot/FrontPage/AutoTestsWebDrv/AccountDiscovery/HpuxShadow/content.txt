@@ -1,0 +1,10 @@
+!contents
+
+!define ProfileName {${SystemName}AccDiscProfile5}
+!include -c <AutoTestsWebDrv.PlatformsTesting.HpuxShadow
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.ScenarioLibrary.NixScenarioLibrary
+
+!include -c <AutoTestsWebDrv.AccountDiscovery.HpuxTrusted.PlatformSpecific
+!define TemplateName {${SystemName}Template}

@@ -1,0 +1,10 @@
+%Host% 23
+WAIT "login"
+SEND "%RunningUser%\m"
+WAIT "password"
+SEND "%RunningUserPassword%\m"
+WAIT "MP>"
+SEND "CM\m"
+WAIT "CM>"
+SEND "WHO\m"
+WAIT "TELNET"

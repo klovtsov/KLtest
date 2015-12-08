@@ -1,0 +1,29 @@
+!note Last parameter is ID of test site
+
+!|scenario|Set IIS Anonymous User       |account      |with password      |password      |on      |System      |
+|runBatch |manageIISusers.bat;create;@System;${FunctAcct};${FunctAcctPwd};@account;@password;1;${IisConfigPath}|
+#|Verify_Contain_OR_exp|$res;;EXIT 0                                                          |
+
+!|scenario            |Check IIS metabase on|System         |for user         |account         |with result         |result         |
+|$res=                |RunBatchGetOutput    |manageIISusers.bat;check;@System;${FunctAcct};${FunctAcctPwd};@account;${IisConfigPath}|
+|Verify_Contain_OR_exp|$res;;@result                                                                                                |
+
+!|scenario            |Reset Anonymous User on|System                                                          |
+|$res=                |RunBatchGetOutput      |manageIISusers.bat;delete;@System;${FunctAcct};${FunctAcctPwd};1|
+|Verify_Contain_OR_exp|$res;;EXIT 0                                                                            |
+
+!|scenario        |Create Application Pool|poolName               |on               |system               |with identity               |user              |password              |userPwd              |
+|$res=            |PowerShellScript       |manageIISappPools.ps1  -ComputerName @system -User ${FunctAcct} -UserPwd ${FunctAcctPwd} create -appPoolName @poolName -identity @user -identityPwd @userPwd|
+|Verify_Contain_OR|$res;;successful                                                                                                                                                                    |
+
+!|scenario        |Remove Application Pool|poolName                                  |on                                 |system                                 |
+|$res=            |PowerShellScript       |manageIISappPools.ps1  -ComputerName @system -User ${FunctAcct} -UserPwd ${FunctAcctPwd} remove -appPoolName @poolName|
+|Verify_Contain_OR|$res;;successful                                                                                                                              |
+
+!|scenario        |Check Application Pool|poolName              |on              |system             |password is equal to             |expectedPwd             |
+|$res=            |PowerShellScript      |manageIISappPools.ps1  -ComputerName @system -User ${FunctAcct} -UserPwd ${FunctAcctPwd} getPwd -appPoolName @poolName|
+|Verify_Contain_OR|$res;;@expectedPwd                                                                                                                           |
+
+!|scenario         |Check Application Pool|poolName             |on             |system             |password is NOT equal to            |expectedPwd            |
+|$res=             |PowerShellScript      |manageIISappPools.ps1  -ComputerName @system -User ${FunctAcct} -UserPwd ${FunctAcctPwd} getPwd -appPoolName @poolName|
+|Verify_Contain_NOT|$res;;@expectedPwd                                                                                                                           |

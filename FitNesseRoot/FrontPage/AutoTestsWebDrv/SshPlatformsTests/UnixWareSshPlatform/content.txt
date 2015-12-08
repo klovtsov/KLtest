@@ -1,0 +1,12 @@
+!contents
+
+!include -c <AutoTestsWebDrv.PlatformsTesting.UnixWare7
+
+!define FunctAcct {klroot}
+!define FunctAcctPwd {frujiE15}
+!define ManagedAccountPwd {frujiE13}
+!define AuthorizedKeysFile {authorized_keys}
+
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.UnixWare7.PlatformSpecific
+!include -c <AutoTestsWebDrv.SshPlatformsTests.AixSshPlatform.PlatformSpecific

@@ -1,0 +1,9 @@
+passwd %1
+Enter choice
+p
+New password
+%2
+Re-enter new password
+%2
+successfully
+exit

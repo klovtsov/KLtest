@@ -1,0 +1,15 @@
+!define SystemName {${prefix}_ora12}
+!define SystemPlatform {Oracle}
+!define SystemAddress {10.10.206.79}
+!define FunctAcct {TPAMADMIN}
+!define FunctAcctPwd {Password1}
+!define ManagedAccountPwd {A\)&(d|ef<j>k$l1}
+!define Port {1521}
+!define SID {tpam.maximian.vi.lan}
+!define CheckPasswordInterval {90000}
+!include -c <AutoTestsWebDrv.ScenarioLibrary
+!include -c <AutoTestsWebDrv.PlatformsTesting.OraclePlatform.PlatformSpecific
+!include -c <AutoTestsWebDrv.PlatformsTesting.OracleTwelve.PlatformSpecific
+!include -c <AutoTestsWebDrv.PlatformsTesting.PlatformSpecific.ManagedAccountCanCheckPassword
+
+

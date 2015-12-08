@@ -1,0 +1,22 @@
+!include -c <AutomatedTesting.ScenarioLibrary
+!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.DomainUser.ScenarioLibrary
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ExecuteCommandBefore.TestSpecific
+!include -c <AutomatedTesting.EspcwClientScenarios.LocalUser.ExecuteCommandsAfter.TestSpecific
+
+!define FileName {After}
+
+!|script                                                                                                                                                   |
+|Create bat file on system|${FileName}      |on             |${DMSystemAddress}                                                                            |
+|Check Checkbox           |successenabled   |for user       |DEFAULT                                                                                       |
+|Set After Command        |cmd.exe          |with parameters|/c c:\test\${FileName}.bat|cmd path|C:\windows\system32|for user|DEFAULT|on|${DMSystemAddress}|
+|Reset Password           |${ManagedAccount}|               |${ResetPasswordSuccessful}                                                                    |
+|pause                    |${ExecDelay}                                                                                                                    |
+|Check Log File           |${FileName}.log  |with result    |File exists               |on      |${DMSystemAddress}                                        |
+|Delete files on          |${DMSystemAddress}                                                                                                              |
+|Create bat file on system|${FileName}      |on             |${DMSystemAddress}                                                                            |
+|Uncheck Checkbox         |successenabled   |for user       |DEFAULT                                                                                       |
+|Reset Password           |${ManagedAccount}|               |${ResetPasswordSuccessful}                                                                    |
+|pause                    |${ExecDelay}                                                                                                                    |
+|Check Log File           |${FileName}.log  |with result    |File does not exist       |on      |${DMSystemAddress}                                        |
+|Delete files on          |${DMSystemAddress}                                                                                                              |

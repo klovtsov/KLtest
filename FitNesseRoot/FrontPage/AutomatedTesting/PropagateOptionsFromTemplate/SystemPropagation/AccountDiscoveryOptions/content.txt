@@ -1,0 +1,17 @@
+!define profilename {depprof}
+!define excludeList {luda;ludovik}
+!define newSystemAddress {10.30.45.65}
+
+!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
+!include -c <PropagateOptionsFromTemplate.ScenarioLibrary
+
+!4 Create system, make template from system and create system from template
+!|script                                                                                                                                                                                                                                                                                |
+|Add system          |${SystemName}   |with address   |${SystemAddress}                                                      |platform    |${SystemPlatform}|managed by|${FunctAcct}|additional parameters|-AutoDiscoveryProfile ${profilename} -AutoDiscoveryExcludeList ${excludeList}|
+|Make System Template|${TemplateName} |from           |${SystemName}                                                         |with account|${FunctAcct}                                                                                                                                 |
+|Try to Add system   |${newSystemName}|with parameters|-systemAddress ${newSystemAddress} -templateSystemName ${TemplateName}|with result |System changes for ${newSystemName} saved successfully                                                                                       |
+
+!4 Check new system properties
+!|script                                                                                                                                                                       |
+|List Systems by|-systemName ${newSystemName}|output params|SystemName,autoDiscoveryProfile,autoDiscoveryExcludeList|contain|${newSystemName}\s+${profilename}\s+${excludeList}|
+

@@ -1,0 +1,18 @@
+!contents
+
+!|scenario|Create Account on System2|Account                              |
+|SSH      |useradd.script;;@Account                     |
+|SSH      |passwd.script;;@Account;;${ManagedAccountPwd}|
+
+!|scenario    |Create Group w Account on System                 |Account                 |                |Group                |
+|Create Account on System2|@Account                              |
+|accountAction|${SystemPlatform};;group;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;@Account;;@Group|
+
+
+!|scenario|Create Account on System |Account                             |
+|SSH      |mod.script;;${FunctAcct}                              |
+|SSH      |useradd.script;;@Account                     |
+|SSH      |passwd.script;;@Account;;${ManagedAccountPwd}|
+
+!|scenario|Change Account Password on System |NewPwd|
+|SSH      |passwd.script;;${ManagedAccount};;@NewPwd|

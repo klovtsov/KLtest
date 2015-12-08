@@ -1,0 +1,3 @@
+!include <AutoTestsWebDrv.PlatformsTesting.EdmzSpcwPwd
+!include -c <DpaScenarios.EdmzSpcw2.PlatformSpecific
+!include -c <AutoTestsWebDrv.PlatformsTesting.EdmzSpcwPwd.PlatformSpecific

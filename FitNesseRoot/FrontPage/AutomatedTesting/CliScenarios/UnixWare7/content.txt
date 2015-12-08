@@ -1,3 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.UnixWare7
-!include -c <CliScenarios.ScenarioLibrary
-!include -c <AutomatedTesting.CliScenarios.UnixWare7.PlatformSpecific

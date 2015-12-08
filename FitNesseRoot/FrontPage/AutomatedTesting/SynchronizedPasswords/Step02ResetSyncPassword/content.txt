@@ -1,9 +1,0 @@
-!define NewSyncPassword {gr@in41R}
-!include -c <SynchronizedPasswords.ScenarioLibrary
-
-!|script|
-|Reset Sync Password to|${NewSyncPassword}|
-|pause|${PauseValue}|
-|Login to first system|${SystemAddress}|with password|${NewSyncPassword}|
-|Login to second system|${SecSystemAddress}|with password|${NewSyncPassword}|
-

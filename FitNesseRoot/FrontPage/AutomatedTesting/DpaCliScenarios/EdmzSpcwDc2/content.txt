@@ -1,3 +1,0 @@
-!include <AutomatedTesting.CliScenarios.EdmzSpcwDc2
-!include -c ScenarioLibrary
-!include -c EspcwTwo.PlatformSpecific

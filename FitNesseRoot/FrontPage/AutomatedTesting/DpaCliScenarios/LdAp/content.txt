@@ -1,2 +1,0 @@
-!include <AutomatedTesting.CliScenarios.LdAp
-!include -c ScenarioLibrary

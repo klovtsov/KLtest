@@ -1,3 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.EdmzSpcwPwd
-!include -c <CppScenarios.ScenarioLibrary
-!include -c <CppScenarios.EdmzSpcw2.PlatformSpecific

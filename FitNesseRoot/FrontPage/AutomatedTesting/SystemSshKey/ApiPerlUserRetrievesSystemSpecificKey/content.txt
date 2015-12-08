@@ -1,9 +1,0 @@
-!define CreateSystemMethod {Add System with specific key api}
-!define RetrieveKeyMethod {Retrieve System Specific Key by Perl User}
-!define keyFormat {OpenSSH}
-!define keyFileOrigin {ssh-dss}
-
-!include -c <AutomatedTesting.ScenarioLibrary
-
-!3 Run the test
-!include <SystemSshKey.RetrieveSystemKeyBaseTest

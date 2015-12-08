@@ -1,6 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.IbmHmc
-!include -c <DpaScenarios.ScenarioLibrary
-!include -c <DpaScenarios.IbmHmc.BugWorkaround
-
-
-

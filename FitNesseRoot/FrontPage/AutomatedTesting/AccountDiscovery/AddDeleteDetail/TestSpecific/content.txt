@@ -1,3 +1,0 @@
-!|scenario        |Account Discovery                                                                                                                                                                |
-|$res=            |GroovyWebDriver                                              |AccountDiscovery;${TPAMHost};${TPAMAdmin};${DefaultPwd};${ProfileName}                                             |
-|Verify_Contain_OR|$res;;Detail added.*Detail deleted.*You must create at least one Auto Discovery row.*Detail added.*Are you sure you want to delete all the detail rows.*Detail deleted.*Finished.|

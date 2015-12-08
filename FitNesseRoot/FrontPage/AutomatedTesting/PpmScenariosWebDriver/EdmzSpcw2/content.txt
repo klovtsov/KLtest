@@ -1,7 +1,0 @@
-!define content {${ATPath}\PlatformsTesting\EdmzSpcw2\content.txt}
-
-
-!include -c <AutomatedTesting.PlatformsTesting.EdmzSpcw2
-!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary
-!include -c <AutomatedTesting.PpmScenariosWebDriver.NisPlus.PlatformSpecific
-!include -c <AutomatedTesting.PpmScenariosWebDriver.EdmzSpcw2.PlatformSpecific

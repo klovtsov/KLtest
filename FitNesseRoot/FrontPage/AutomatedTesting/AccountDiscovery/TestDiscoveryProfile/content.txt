@@ -1,4 +1,0 @@
-!define ProfileName {${prefix}TestProfile}
-
-!include -c <AutomatedTesting.AccountDiscovery.WindowsLocalHost
-!include -c <AutomatedTesting.AccountDiscovery.TestDiscoveryProfile.TestSpecific

@@ -1,5 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.WindowsActiveDir
-!include -c <CppScenarios.ScenarioLibrary
-!include -c <CppScenarios.WindowsActiveDir.PlatformSpecific
-!include -c <CppScenarios.WindowsActiveDir.BugWorkaround
-

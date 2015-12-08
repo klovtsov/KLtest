@@ -1,2 +1,0 @@
-!include <AutomatedTesting.CliScenarios.WindowsLocalHost
-!include -c ScenarioLibrary

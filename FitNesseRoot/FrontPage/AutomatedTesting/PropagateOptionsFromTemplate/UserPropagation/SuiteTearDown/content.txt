@@ -1,7 +1,0 @@
-!include -c <AutomatedTesting.SetUp
-!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
-
-!|script                                       |
-|Delete fake external auth system|${AuthSystem}|
-
-!include <PropagateOptionsFromTemplate.TearDown

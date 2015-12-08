@@ -1,5 +1,0 @@
-!define content {${ATPath}\PlatformsTesting\HpuxUntrusted\content.txt}
-
-
-!include -c <AutomatedTesting.PlatformsTesting.HpuxUntrusted
-!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

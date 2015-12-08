@@ -1,3 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.MacOsxSix
-!include -c <CppScenarios.ScenarioLibrary
-

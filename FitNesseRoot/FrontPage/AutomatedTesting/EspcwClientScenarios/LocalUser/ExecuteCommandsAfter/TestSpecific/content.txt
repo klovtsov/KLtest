@@ -1,8 +1,0 @@
-!|scenario|Set After Command       |command       |with parameters       |prmtrs       |cmd path       |path      |for user      |user      |on|System|
-|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;successpath;@path;${ClientSettingsPath};@user         |
-|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;successcmd;@command;${ClientSettingsPath};@user       |
-|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;successargs;@prmtrs;${ClientSettingsPath};@user       |
-|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;successtimeout;3;${ClientSettingsPath};@user          |
-
-!|scenario|Set Timeout                       |value                       |for user                       |user                      |on|System|
-|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;successtimeout;@value;${ClientSettingsPath};@user|

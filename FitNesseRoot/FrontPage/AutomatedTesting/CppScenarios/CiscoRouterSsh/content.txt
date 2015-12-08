@@ -1,8 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.CiscoRouterSsh
-!include -c <CppScenarios.ScenarioLibrary
-!include -c <CppScenarios.CiscoRouterSsh.PlatformSpecific
-
-
-
-
-

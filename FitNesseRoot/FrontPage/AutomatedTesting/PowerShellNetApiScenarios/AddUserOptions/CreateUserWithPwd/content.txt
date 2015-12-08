@@ -1,9 +1,0 @@
-!define testUser {${prefix}listUser}
-!define newUserPwd {yHRa02HV}
-
-!include -c <PowerShellNetApiScenarios.ScenarioLibrary
-
-!|script                                                                   |
-|Add User   |${testUser}|usertype|Basic        |with password|${newUserPwd}|
-|Change Pwd |${testUser}|        |${newUserPwd}|             |${DefaultPwd}|
-|Delete User|${testUser}                                                   |

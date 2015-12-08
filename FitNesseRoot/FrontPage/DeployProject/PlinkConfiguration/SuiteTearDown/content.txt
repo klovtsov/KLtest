@@ -1,3 +1,0 @@
-!|script                                   |
-|runBatch|storesshkey;${TPAMHost};fake;fake|
-|finalize                                  |

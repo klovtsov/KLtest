@@ -1,2 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.VmwareVsphere
-!include -c <CppScenarios.ScenarioLibrary

@@ -1,8 +1,0 @@
-!contents
-
-!define TPAMhost {10.30.44.209}
-!define SystemName {yk_webdriver_sample}
-!define SystemPlatform {FreeBSD}
-!define SystemAddress {4.4.4.4}
-!define FunctAcct {root4}
-!define FunctAcctPwd {Q1w2e3r4t5}

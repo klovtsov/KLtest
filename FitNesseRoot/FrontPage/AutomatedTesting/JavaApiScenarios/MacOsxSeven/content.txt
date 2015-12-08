@@ -1,2 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.MacOsxSeven
-!include -c <JavaApiScenarios.ScenarioLibrary

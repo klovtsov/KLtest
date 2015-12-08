@@ -1,5 +1,0 @@
-!include -c <AutomatedTesting.PerlApiScenarios.MiscellaneousTests
-!include <AutomatedTesting.PlatformsTesting.UnixWare7
-!include -c <PerlApiScenarios.ScenarioLibrary
-!include -c <AutomatedTesting.PerlApiScenarios.UnixWare7.PlatformSpecific
-

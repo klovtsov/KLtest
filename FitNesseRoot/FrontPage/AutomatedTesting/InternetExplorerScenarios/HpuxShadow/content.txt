@@ -1,2 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.HpuxShadow
-#!include -c <AutomatedTesting.InternetExplorerScenarios.FreeBsd.BugWorkaround

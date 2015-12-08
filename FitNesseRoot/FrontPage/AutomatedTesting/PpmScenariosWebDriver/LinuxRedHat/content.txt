@@ -1,5 +1,0 @@
-!define content {${ATPath}\PlatformsTesting\LinuxRedHat\content.txt}
-
-
-!include -c <AutomatedTesting.PlatformsTesting.LinuxRedHat
-!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

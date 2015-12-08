@@ -1,4 +1,0 @@
-
-!| scenario       |Add system                                                                                                                                                            |
-|$res=            |PerlAPI|${APIBatch} addSystemWinAD ${SystemName} ${SystemAddress} "${SystemPlatform}" ${FunctAcct} ${FunctAcctPwd} ${SystemTimeout} ${DomainName} ${NETBIOSDomainName}|
-|Verify_Contain_OR|$res;;successful                                                                                                                                                      |

@@ -1,7 +1,0 @@
-!include -c <AutomatedTesting.ScenarioLibrary
-
-!|script                                                             |
-|Open                                 |${TPAMURL}                ||${TPAMAdmin}                 ||${DefaultPwd}|
-|Login                                |${TPAMURL}                ||${TPAMAdmin}                 ||${DefaultPwd}|
-|Add User With Space In Name|Buba Kastorsky||User4PAR||abc@gmail.com|
-

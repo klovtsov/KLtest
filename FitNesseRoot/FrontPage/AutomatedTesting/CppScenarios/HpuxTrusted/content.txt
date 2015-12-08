@@ -1,6 +1,0 @@
-!include -c <AutomatedTesting.KnownIssues.ScenarioLibrary
-!include <AutomatedTesting.PlatformsTesting.HpuxTrusted
-!include -c <AutomatedTesting.CppScenarios.ScenarioLibrary
-!include -c <AutomatedTesting.PlatformsTesting.HpuxShadow.PlatformSpecific
-#!include -c <AutomatedTesting.CppScenarios.HpuxTrusted.BugWorkaround
-

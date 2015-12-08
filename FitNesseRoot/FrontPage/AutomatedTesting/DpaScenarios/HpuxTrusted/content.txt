@@ -1,7 +1,0 @@
-!define seleniumTimeout {200}
-
-!include <AutomatedTesting.PlatformsTesting.HpuxTrusted
-!include -c <DpaScenarios.ScenarioLibrary
-!include -c <AutomatedTesting.DpaScenarios.HpuxTrusted.BugWorkaround
-!include -c <AutomatedTesting.PlatformsTesting.HpuxTrusted.PlatformSpecific
-

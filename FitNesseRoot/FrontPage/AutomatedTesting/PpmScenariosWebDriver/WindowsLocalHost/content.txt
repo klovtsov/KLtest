@@ -1,5 +1,0 @@
-!define content {${ATPath}\PlatformsTesting\WindowsLocalHost\content.txt}
-!define browser {chrome}
-
-!include -c <AutomatedTesting.PlatformsTesting.WindowsLocalHost
-!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

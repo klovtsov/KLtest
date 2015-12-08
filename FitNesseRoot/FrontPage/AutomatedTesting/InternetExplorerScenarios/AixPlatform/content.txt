@@ -1,3 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.AixPlatform
-#!include -c <AutomatedTesting.InternetExplorerScenarios.AixPlatform.BugWorkaround
-

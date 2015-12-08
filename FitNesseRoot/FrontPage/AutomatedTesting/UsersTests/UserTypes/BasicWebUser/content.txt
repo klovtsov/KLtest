@@ -1,8 +1,0 @@
-!|Script                                                                                                                                           |
-|Add User                          |${CLIBatch}    ||--UserName ${BasicWebUser} --FirstName test --LastName test --Password Password1||successful  |
-|Change Pwd                        |${BasicWebUser}||Password1                                                                       ||Password2   |
-|Check Non Admin Interface         |${TPAMHost}    ||${BasicWebUser}                                                                 ||Password2   |
-|Verify_Contain_OR                 |$res;;Ready.GO.Activity Report exists.Finished.                                                                |
-|Check Basic User                  |${BasicWebUser}                                                                                                |
-|Basic User can not get Collsctions|${TPAMHost}    ||${BasicWebUser}                                                                 ||Password2   |
-|Delete User                       |${CLIBatch}    ||--UserName ${BasicWebUser}                                                      ||successfully|

@@ -1,3 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.SqlServer
-!include -c <CppScenarios.ScenarioLibrary
-

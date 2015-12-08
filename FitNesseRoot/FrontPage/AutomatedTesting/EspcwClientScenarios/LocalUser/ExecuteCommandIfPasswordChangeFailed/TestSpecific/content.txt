@@ -1,8 +1,0 @@
-!|scenario|Set Fail Command   |command   |with parameters   |prmtrs   |cmd path   |path   |for user   |user  |on  |System  |
-|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;failpath;@path;${ClientSettingsPath};@user  |
-|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;failcmd;@command;${ClientSettingsPath};@user|
-|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;failargs;@prmtrs;${ClientSettingsPath};@user|
-|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;failtimeout;3;${ClientSettingsPath};@user   |
-
-!|scenario|Set Timeout             |value            |for user            |user            |on            |System            |
-|runBatch |ChangeSPCWSetting.bat;${FunctAcct};"${FunctAcctPwd}";@System;failtimeout;@value;${ClientSettingsPath};@user|

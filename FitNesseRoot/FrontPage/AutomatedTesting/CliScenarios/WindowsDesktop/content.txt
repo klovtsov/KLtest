@@ -1,3 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.WindowsDesktop
-!include -c <CliScenarios.ScenarioLibrary
-

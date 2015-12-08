@@ -1,2 +1,0 @@
-!include <AutomatedTesting.CliScenarios.LinuxRedHat
-!include -c ScenarioLibrary

@@ -1,5 +1,0 @@
-!define content {${ATPath}\PlatformsTesting\MacOsxSeven\content.txt}
-
-
-!include -c <AutomatedTesting.PlatformsTesting.MacOsxSeven 
-!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

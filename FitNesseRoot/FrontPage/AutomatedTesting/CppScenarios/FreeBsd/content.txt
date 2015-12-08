@@ -1,5 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.FreeBsd
-!include -c <CppScenarios.ScenarioLibrary
-
-
-

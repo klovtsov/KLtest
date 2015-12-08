@@ -1,3 +1,0 @@
-!define ProfileName {${prefix}Detaiks}
-
-!include -c <AutomatedTesting.AccountDiscovery.AddDeleteDetail.TestSpecific

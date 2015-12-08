@@ -1,3 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.VmwareVsphere
-!include -c <DpaScenarios.ScenarioLibrary
-

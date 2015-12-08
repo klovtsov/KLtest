@@ -1,0 +1,15 @@
+MANACCDN=$(echo $spec | sed -e "s/cn=.*,?/cn=$acct,/")
+echo MANAGED_ACC_DN:$MANACCDN >> kllog
+
+MESSAGE=$(ldapwhoami -h $ipaddr -w $acctpwd -D $MANACCDN)
+ERR="ldap_bind: Invalid credentials (49)"
+SUCCESS=dn:$spec
+
+echo MESS:$MESSAGE >> kllog
+
+
+if [ "$MESSAGE" = "$SUCCESS" ]; then
+	echo -n "%check success%"
+	elif [[ $MESSAGE =~ $ERR ]]; then
+	echo -n "%check failure%"
+fi

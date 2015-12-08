@@ -1,5 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.WindowsLocalHost
-
-!include -c <AutomatedTesting.ScenarioLibrary
-
-!include -c <JavaApiScenarios.ScenarioLibrary

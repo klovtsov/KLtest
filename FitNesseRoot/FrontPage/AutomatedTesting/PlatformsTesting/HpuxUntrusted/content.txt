@@ -1,9 +1,0 @@
-!define SystemName {${prefix}_HP_untr}
-!define SystemPlatform {HP-UX Untrusted}
-!define SystemAddress {10.30.44.154}
-!define FunctAcct {klroot}
-!define FunctAcctPwd {A\)&(d|e}
-!define ManagedAccountPwd {A\)&(d|e}
-!include -c <AutomatedTesting.ScenarioLibrary
-!include -c <AutomatedTesting.PlatformsTesting.HpuxShadow.PlatformSpecific
-

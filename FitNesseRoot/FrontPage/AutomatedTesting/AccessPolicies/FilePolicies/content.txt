@@ -1,7 +1,0 @@
-!include -c <AutomatedTesting.ScenarioLibrary
-!include -c <AutomatedTesting.AccessPolicies.ScenarioLibrary
-!include -c <AutomatedTesting.AccessPolicies.FilePolicies.ScenarioLibrary
-
-
-
-

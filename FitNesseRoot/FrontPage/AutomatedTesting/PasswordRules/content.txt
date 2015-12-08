@@ -1,6 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.WindowsDesktop
-#!define SystemName {${prefix}_xp}
-!define NotFailed {successfully}
-!define PasswdRuleName {${prefix}_verifyrule}
-
-!contents -R -p -g

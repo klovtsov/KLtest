@@ -1,6 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.CiscoRouterTelnet
-!include -c <DotNetScenarios.ScenarioLibrary
-!include -c <DotNetScenarios.CiscoRouterSsh.ScenarioLibrary
-
-
-

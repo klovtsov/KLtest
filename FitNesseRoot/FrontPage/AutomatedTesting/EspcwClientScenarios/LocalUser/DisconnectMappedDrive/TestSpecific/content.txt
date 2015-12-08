@@ -1,9 +1,0 @@
-!|scenario        |Create Network Drive            |Letter            |under           |Account           |to           |System           |
-|RunBatchGetOutput|eSPCWtestexes\ManageNetworkDrive.bat;create;@System;${ClientInstallationDrive};@Account;${ManagedAccountPwdNew};@Letter|
-
-!|scenario        |Check Network Drive|Letter         |with result        |Result        |
-|$res=            |RunBatchGetOutput  |eSPCWtestexes\ManageNetworkDrive.bat;check;@Letter|
-|Verify_Contain_OR|$res;;@Result                                                         |
-
-!|scenario        |Remove Network Drive               |Letter                |
-|RunBatchGetOutput|eSPCWtestexes\ManageNetworkDrive.bat;delete;@Letter;${ClientInstallationDrive}|

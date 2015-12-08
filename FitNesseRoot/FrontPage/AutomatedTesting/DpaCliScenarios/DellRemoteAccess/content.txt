@@ -1,4 +1,0 @@
-!define bfer5604timeout {500000}
-!include <AutomatedTesting.CliScenarios.DellRemoteAccess
-!include -c ScenarioLibrary
-#!include -c >PlatformSpecific

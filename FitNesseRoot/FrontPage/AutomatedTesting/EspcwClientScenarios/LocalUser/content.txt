@@ -1,5 +1,0 @@
-!include -c <AutomatedTesting.PlatformsTesting.EdmzSpcw2
-!define ManagedAccountPwd {`123qwe}
-!define ManagedAccountDomain {.}
-
-!contents -p

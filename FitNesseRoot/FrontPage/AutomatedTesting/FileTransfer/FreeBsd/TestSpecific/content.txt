@@ -1,9 +1,0 @@
-!|scenario|Create Share                                                                                                                   |
-|ssh      |${SystemAddress};;${ManagedAccount};;${ManagedAccountPwd};;${SystemPlatform}\shareadd.script;;${shareFolder};;${fileToDownload}|
-
-!|scenario|Delete files on System                                                                                      |
-|ssh      |${SystemAddress};;${ManagedAccount};;${ManagedAccountPwd};;${SystemPlatform}\sharedel.script;;${shareFolder}|
-
-!|scenario        |Check file on system|fileToCheck                                                                                                                |
-|$res=            |ssh                 |${SystemAddress};;${ManagedAccount};;${ManagedAccountPwd};;${SystemPlatform}\checkFile.script;;${shareFolder};;@fileToCheck|
-|Verify_Contain_OR|$res;;true                                                                                                                                      |

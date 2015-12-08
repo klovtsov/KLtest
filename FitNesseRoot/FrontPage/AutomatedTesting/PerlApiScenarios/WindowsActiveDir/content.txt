@@ -1,7 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.WindowsActiveDir
-!include -c <PerlApiScenarios.ScenarioLibrary
-!include -c <PerlApiScenarios.WindowsActiveDir.PlatformSpecific
-!include -c <PerlApiScenarios.WindowsActiveDir.BugWorkaround
-
-
-

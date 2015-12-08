@@ -1,8 +1,0 @@
-!include -c <AutomatedTesting.SetUp
-
-!include -c <AutomatedTesting.PowerShellNetApiScenarios.ScenarioLibrary
-
-!|script                                       |
-|Create fake external auth system|${AuthSystem}|
-
-!include <PropagateOptionsFromTemplate.TearDown

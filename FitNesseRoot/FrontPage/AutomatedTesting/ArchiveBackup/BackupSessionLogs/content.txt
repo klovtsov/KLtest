@@ -1,6 +1,0 @@
-!define ArchiveServer {sles11sp1x86}
-!define ArchiveServerUser {root}
-!define ArchiveServerUserPassword {master}
-!define ArchiveServerPath {/tmp/tpamsessions2}
-!define HowOld {-5}
-!define WhatToFind {gzenc}

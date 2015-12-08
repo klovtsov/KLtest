@@ -1,4 +1,0 @@
-!include -c <AutomatedTesting.WebDriverSample.ScenarioLibrary
-
-!|script            |
-|Groovy WebDriver Example|

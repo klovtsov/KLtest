@@ -1,6 +1,0 @@
-!define content {${ATPath}\PlatformsTesting\UnixWare7\content.txt}
-
-
-!include -c <AutomatedTesting.PlatformsTesting.UnixWare7
-!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary
-!include -c <AutomatedTesting.PpmScenariosWebDriver.UnixWare7.PlatformSpecific

@@ -1,4 +1,0 @@
-!contents
-
-!|script         |
-|Check CPU Alerts|

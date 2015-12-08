@@ -1,4 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.LdAps
-!include -c <JavaApiScenarios.ScenarioLibrary
-!include -c <JavaApiScenarios.LdAp.PlatformSpecific
-

@@ -1,4 +1,0 @@
-!include -c <AutomatedTesting.PlatformsTesting.LinuxRedHat
-
-!contents
-

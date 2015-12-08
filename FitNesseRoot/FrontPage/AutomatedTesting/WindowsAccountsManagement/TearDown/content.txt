@@ -1,5 +1,0 @@
-!include <AutomatedTesting.WindowsAccountsManagement.TestCase
-
-!|script |
-|stop    |
-|finalize|

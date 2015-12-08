@@ -1,9 +1,0 @@
-!include -c <FrontPage.AutomatedTesting.SetUp
-!include -c <AutomatedTesting.UserSshKey.ScenarioLibrary
-!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
-!include -c ScenarioLibrary
-
-!|script                             |
-|Delete Sys-Admin User|${CliSysAdmin}|
-
-!include -c TearDown

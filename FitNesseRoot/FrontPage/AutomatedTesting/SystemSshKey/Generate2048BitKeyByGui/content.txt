@@ -1,7 +1,0 @@
-!* Test description
-Test checks that GUI button which generates a 2048 bit key is working. 
-*!
-
-!define addSystemMethod {Add System with specific 2048 bit key}
-
-!include -c CliUserRegeneratesSytemSpecificKey

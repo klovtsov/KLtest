@@ -1,4 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.WindowsLocalHost
-!include -c <DpaScenarios.ScenarioLibrary
-
-

@@ -1,6 +1,0 @@
-!|scenario    |Restore Func Acc Pwd                                 |switch                                |
-|accountAction|${SystemPlatform};;corrupt;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${PathtoKey};;0|
-
-!|scenario    |Set Password           |one           |          |switch          |          |fake          |
-|accountAction|${SystemPlatform};;corrupt;;${SystemAddress};;${FunctAcct};;${FunctAcctPwd};;${PathtoKey};;1|
-

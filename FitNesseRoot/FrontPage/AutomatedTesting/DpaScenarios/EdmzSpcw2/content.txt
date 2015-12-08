@@ -1,5 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.EdmzSpcw2
-!include -c <DpaScenarios.ScenarioLibrary
-!include -c <DpaScenarios.EdmzSpcw2.PlatformSpecific
-#!include -c <DpaScenarios.EdmzSpcw2.BugWorkaround
-

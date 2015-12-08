@@ -1,7 +1,0 @@
-!include -c <PowerShellNetApiScenarios.ScenarioLibrary
-
-!|script                            |
-|Add System                         |
-|List Systems contains|${SystemName}|
-|Delete System    |${SystemName}     |
-

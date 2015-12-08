@@ -1,4 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.NisPlus
-!include -c <DotNetScenarios.ScenarioLibrary
-!include -c <DotNetScenarios.NisPlus.PlatformSpecific
-

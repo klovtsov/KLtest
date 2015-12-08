@@ -1,2 +1,0 @@
-!include <AutomatedTesting.CliScenarios.SybasePlatform
-!include -c ScenarioLibrary

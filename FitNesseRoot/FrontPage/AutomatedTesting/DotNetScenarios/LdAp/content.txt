@@ -1,5 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.LdAp
-!include -c <DotNetScenarios.ScenarioLibrary
-!include -c <DotNetScenarios.NovellNds.PlatformSpecific
-!include -c <DotNetScenarios.LdAp.PlatformSpecific
-

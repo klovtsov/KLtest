@@ -1,6 +1,0 @@
-!include -c <FrontPage.AutomatedTesting.ScenarioLibrary
-
-!|script                                                           |
-|Open   |${TPAMURL}|     |${TPAMAdmin}     |     |${DefaultPwd}    |
-|$res=  |getText   |//p[contains(text(),'Version:')]               |
-|$build=|getEval   |var str="$res";str=str.replace("Version: ","");|

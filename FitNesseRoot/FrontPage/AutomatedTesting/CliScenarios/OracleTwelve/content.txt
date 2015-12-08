@@ -1,3 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.OracleTwelve 
-!include -c <CliScenarios.ScenarioLibrary
-!include -c <CliScenarios.OracleTwelve.PlatformSpecific

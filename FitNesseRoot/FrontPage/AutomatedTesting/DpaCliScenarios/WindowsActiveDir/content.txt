@@ -1,2 +1,0 @@
-!include <AutomatedTesting.CliScenarios.WindowsActiveDir
-!include -c ScenarioLibrary

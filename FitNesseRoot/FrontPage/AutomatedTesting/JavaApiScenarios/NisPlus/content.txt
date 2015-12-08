@@ -1,9 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.NisPlus
-
-!*> Added to workaround Java API issues with difficult passwords
-!define ManagedAccountPwd {=1qwerty}
-!include -c <AutomatedTesting.ScenarioLibrary
-*!
-!include -c <AutomatedTesting.JavaApiScenarios.ScenarioLibrary
-!include -c <AutomatedTesting.PlatformsTesting.NisPlus.PlatformSpecific
-!include -c <JavaApiScenarios.NisPlus.PlatformSpecific

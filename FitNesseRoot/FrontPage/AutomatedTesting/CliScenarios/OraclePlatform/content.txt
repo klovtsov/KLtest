@@ -1,4 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.OraclePlatform
-!include -c <CliScenarios.ScenarioLibrary
-!include -c <CliScenarios.OraclePlatform.PlatformSpecific
-

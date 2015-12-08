@@ -1,4 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.UnixWare7
-!include -c <DotNetScenarios.ScenarioLibrary
-!include -c <AutomatedTesting.DotNetScenarios.UnixWare7.PlatformSpecific
-

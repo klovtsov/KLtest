@@ -1,3 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.EdmzSpcwDc2
-!include -c <PerlApiScenarios.ScenarioLibrary
-!include -c <PerlApiScenarios.EdmzSpcwDc2.PlatformSpecific

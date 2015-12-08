@@ -1,5 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.IbmHmc
-!include -c <PerlApiScenarios.ScenarioLibrary
-
-
-

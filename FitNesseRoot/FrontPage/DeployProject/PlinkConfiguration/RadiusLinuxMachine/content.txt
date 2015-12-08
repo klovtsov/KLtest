@@ -1,3 +1,0 @@
-!define SystemAddress {10.30.38.210}
-!define FunctAcct {root}
-!define FunctAcctPwd {master}

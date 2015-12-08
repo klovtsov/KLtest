@@ -1,8 +1,0 @@
-!include -c <FrontPage.AutomatedTesting.SetUp
-!include -c <AutomatedTesting.SessionAlertsScenarios.ScenarioLibrary
-!|script                 |
-|Remove User|${Requestor}|
-|Remove User|${Approver} |
-|Remove User  |${Reviewer}       |
-
-!include -c TearDown

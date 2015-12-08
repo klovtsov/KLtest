@@ -1,5 +1,0 @@
-!contents
-!define ProfileName {${SystemName}AccDiscProfile5}
-!include -c <AutomatedTesting.PlatformsTesting.MacOsxFive
-!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary
-!define TemplateName {${SystemName}Template}

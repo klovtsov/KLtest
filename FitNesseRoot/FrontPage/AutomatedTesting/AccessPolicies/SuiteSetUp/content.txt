@@ -1,8 +1,0 @@
-!include -c <AutomatedTesting.ScenarioLibrary
-!include -c <AccessPolicies.ScenarioLibrary
-!include -c <FrontPage.AutomatedTesting.SetUp
-
-!|script           |
-|Create Environment|
-
-!include -c <AccessPolicies.TearDown

@@ -1,4 +1,0 @@
-!note Managed System settings
-!include -c <AutomatedTesting.PlatformsTesting.WindowsDesktop
-!define NotFailed {successfully} 
-!contents -g -p -f -h

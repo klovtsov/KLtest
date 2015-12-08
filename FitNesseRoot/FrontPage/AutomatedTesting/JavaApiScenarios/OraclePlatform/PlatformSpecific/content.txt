@@ -1,4 +1,0 @@
-!| scenario       |Add system                                                                                                                                                |
-|$res=            |JavaAPI     |${APIBatch};addSystemOracle;${SystemName};${SystemAddress};${SystemPlatform};${FunctAcct};${FunctAcctPwd};${SystemTimeout};${Port};SID;${SID}|
-|Verify_Contain_OR|$res;;successfully                                                                                                                                        |
-

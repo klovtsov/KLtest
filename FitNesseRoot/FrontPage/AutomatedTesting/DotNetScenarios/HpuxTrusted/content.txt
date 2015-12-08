@@ -1,6 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.HpuxTrusted
-!include -c <DotNetScenarios.ScenarioLibrary
-!include -c <AutomatedTesting.PlatformsTesting.HpuxShadow.PlatformSpecific
-#!include -c <AutomatedTesting.DotNetScenarios.HpuxTrusted.BugWorkaround
-
-

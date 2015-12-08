@@ -1,4 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.NovellNds
-!include -c <CliScenarios.ScenarioLibrary
-!include -c <CliScenarios.NovellNds.PlatformSpecific
-

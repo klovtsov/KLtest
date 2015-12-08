@@ -1,5 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.WindowsActiveDir
-!include -c <DotNetScenarios.ScenarioLibrary
-!include -c <DotNetScenarios.WindowsActiveDir.PlatformSpecific
-!include -c <DotNetScenarios.WindowsActiveDir.BugWorkaround
-

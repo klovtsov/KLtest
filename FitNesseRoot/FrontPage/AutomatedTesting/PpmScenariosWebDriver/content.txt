@@ -1,6 +1,0 @@
-!define browser {chrome}
-
-
-
-
-!contents -R

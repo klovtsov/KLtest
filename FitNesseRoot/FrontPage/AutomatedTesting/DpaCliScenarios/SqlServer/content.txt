@@ -1,2 +1,0 @@
-!include <AutomatedTesting.CliScenarios.SqlServer
-!include -c ScenarioLibrary

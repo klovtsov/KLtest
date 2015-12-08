@@ -1,9 +1,0 @@
-!include -c <AutomatedTesting.CliScenarios.ScenarioLibrary
-!include -c ScenarioLibrary
-
-!|script                   |
-|Request Pwd               |
-|Approve Pwd               |
-|Get Pwd                   |
-|Get Last Released Password|
-

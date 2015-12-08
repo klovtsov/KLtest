@@ -1,9 +1,0 @@
-!define TestSystemSuccessful {.*DPA.*successful}
-!define TestSystemFailed {.*DPA.*failed;;.*DPA.*.does not exist;;.*DPA.*imed out;;.*DPA.*Unable to;;.*DPA.*Permission denied (publickey);;.*DPA.*Failure;;.*DPA.*ost.*nreachable;;.*DPA.*man-in-the-middle attack;;.*DPA.*Connection refused}
-!define ResetPasswordSuccessful {.*DPA.*successful}
-!define ResetPasswordFailed {.*DPA.*Permission denied (publickey);;.*DPA.*ost.*nreachable;;.*DPA.*password change failed;;.*DPA.*Unable to connect to;;.*DPA.*Failure;;.*DPA.*rror;;.*DPA.*timed out}
-!define CheckPasswordNotMatch {.*DPA.*NOT MATCH}
-!define CheckPasswordFailed {.*DPA.*failed;;.*DPA.*does not exist;;.*DPA.*invalid user;;.*DPA.*NOT MATCH;;.*DPA.*error occurred;;.*DPA.*imed out;;.*DPA.*no listener;;.*DPA.*Unable to connect to;;.*DPA.*no such entry;;.*DPA.*Permission denied (publickey);;.*DPA.*ost.*nreachable}
-!define SystemTimeout {90}
-!define seleniumTimeout {100}
-!contents -R

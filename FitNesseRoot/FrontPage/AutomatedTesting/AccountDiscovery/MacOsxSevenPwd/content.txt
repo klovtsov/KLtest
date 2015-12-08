@@ -1,4 +1,0 @@
-!define ProfileName {${SystemName}Prof5}
-!include -c <AutomatedTesting.PlatformsTesting.MacOsxSeven
-!include -c <AutomatedTesting.AccountDiscovery.ScenarioLibrary
-!define TemplateName {${SystemName}Template}

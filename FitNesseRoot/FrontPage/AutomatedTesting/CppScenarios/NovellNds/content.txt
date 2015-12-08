@@ -1,4 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.NovellNds
-!include -c <CppScenarios.ScenarioLibrary
-!include -c <CppScenarios.NovellNds.PlatformSpecific
-

@@ -1,3 +1,0 @@
-!define addSystemMethod {Add System with specific 1024 bit key}
-
-!include -c CliUserRegeneratesSytemSpecificKey

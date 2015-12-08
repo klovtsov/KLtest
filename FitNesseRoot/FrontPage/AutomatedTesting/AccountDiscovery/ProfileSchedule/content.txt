@@ -1,4 +1,0 @@
-!define ProfileName {${prefix}PSAccDiscProfile5}
-!include -c <AutomatedTesting.AccountDiscovery.AixPlatform
-!include -c <AutomatedTesting.AccountDiscovery.ProfileSchedule.TestSpecific
-!define ProfileName {PSAccDiscProfile5}

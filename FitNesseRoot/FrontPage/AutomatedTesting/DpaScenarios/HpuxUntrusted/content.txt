@@ -1,5 +1,0 @@
-!include <AutomatedTesting.PlatformsTesting.HpuxUntrusted
-!include -c <DpaScenarios.ScenarioLibrary
-#!include -c <AutomatedTesting.PlatformsTesting.HpuxShadow.ScenarioLibrary
-
-

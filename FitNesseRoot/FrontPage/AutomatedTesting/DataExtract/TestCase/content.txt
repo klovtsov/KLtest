@@ -1,9 +1,0 @@
-!contents
-
-!|script                              |
-|Create and Configure Archive Server  |
-|Configure Data Extract Schedule      |
-|Start CSV Data Extraction on Schedule|
-|Start Zipped Data Extraction Manually|
-|Rollback Schedule                    |
-|Remove Archive Server                |

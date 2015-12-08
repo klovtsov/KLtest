@@ -1,5 +1,0 @@
-!define content {${ATPath}\PlatformsTesting\LdAps\content.txt}
-
-
-!include -c <AutomatedTesting.PlatformsTesting.LdAps
-!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

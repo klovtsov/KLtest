@@ -1,5 +1,0 @@
-!define content {${ATPath}\PlatformsTesting\FreeBsd\content.txt}
-
-
-!include -c <AutomatedTesting.PlatformsTesting.FreeBsd
-!include -c <AutomatedTesting.PpmScenariosWebDriver.ScenarioLibrary

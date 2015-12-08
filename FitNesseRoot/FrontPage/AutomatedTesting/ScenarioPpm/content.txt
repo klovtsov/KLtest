@@ -1,8 +1,0 @@
-!2 Main PPM Scenario
-!|script                   |
-|Managed System            |
-|Managed Account           |
-|Request Password and Login|
-|Account Not there         |
-|System Unreachable        |
-|Delete All                |

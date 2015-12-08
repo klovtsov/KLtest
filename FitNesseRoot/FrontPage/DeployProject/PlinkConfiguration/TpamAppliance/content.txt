@@ -1,3 +1,0 @@
-!define SystemAddress {${TPAMHost}}
-!define FunctAcct {${TPAMAdmin}}
-!define FunctAcctPwd {${DefaultPwd}}
